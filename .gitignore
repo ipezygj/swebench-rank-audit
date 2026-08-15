@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+# marketing + outreach drafts — not for the public repo
+teardown.html
+EMAIL_*.md
+ISSUE_*.md
+_issue_body.md
+_dark*/
+# raw upstream data (rebuildable from SWE-bench/experiments); large scrape
+lb_swebench.json
+swebench_exp/
