@@ -8,6 +8,8 @@ its order is real.
 This repo does that for **SWE-bench** (four splits), **MTEB**, and **HELM Lite** — three
 benchmark families with no shared data, scoring, maintainers or outcome type — from public data.
 
+> 📄 Write-up: [`paper.tex`](paper.tex) — *How Much of a Leaderboard Ranking Survives Its Own Sampling Error?* (draft; compile on Overleaf/arXiv).
+
 ## The finding
 
 On **SWE-bench Verified** (134 systems × 500 instances), exact McNemar on the instances
