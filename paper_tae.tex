@@ -1,24 +1,27 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
+\documentclass{article}
+
+% TAE (Trust-AI-Eval) @ NeurIPS 2026 workshop submission — DOUBLE-BLIND, non-archival, <= 8 pages.
+% Requires neurips_2026.sty (NeurIPS 2026 template; available on Overleaf as "NeurIPS 2026" or from the
+% workshop). The dblblindworkshop option anonymises the author block automatically.
+\usepackage[dblblindworkshop]{neurips_2026}
+
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{microtype}
-\usepackage{natbib}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+\usepackage{url}
 \usepackage[hidelinks]{hyperref}
 \emergencystretch=3em
 \Urlmuskip=0mu plus 1mu\relax
-\usepackage{xcolor}
 \sloppy
 
-\title{\bfseries How Much of a Leaderboard Ranking Survives Its Own Sampling Error?\\
-\large A Paired-Resolution Audit of Five AI Benchmarks}
-\author{Ilpo V\"a\"at\"ainen\\
-\small Independent Researcher\\
-\small \texttt{github.com/ipezygj/swebench-rank-audit}}
-\date{August 2026}
+\title{How Much of a Leaderboard Ranking Survives Its Own Sampling Error?\\
+A Paired-Resolution Audit of Five AI Benchmarks}
+\workshoptitle{TAE (Trust-AI-Eval): Can We Trust AI Evaluation?}
+
+% Author block is anonymised by the dblblindworkshop option; do not add names or affiliations.
 
 \begin{document}
 \maketitle
@@ -42,10 +45,10 @@ cost.
 \end{abstract}
 
 \section{Introduction}
-Leaderboards have become the primary product of a benchmark: as \citet{hardt2025} observes, what
-practitioners take away is not an evaluation but an \emph{ordering}. A crisp number sits beside each
-model and the order is read as settled. But at the crowded top of a board that order is often
-softer---an accident of which items happened to be on the test.
+Leaderboards have become the primary product of a benchmark: what practitioners take away is not an
+evaluation but an \emph{ordering} \citep{hardt2025}. A crisp number sits beside each model and the
+order is read as settled. But at the crowded top of a board that order is often softer---an accident
+of which items happened to be on the test.
 
 This is checkable, because a benchmark scores every entrant on the same items and (for the boards we
 study) each entrant publishes exactly which items it solved. The ordering is therefore a
@@ -53,15 +56,15 @@ study) each entrant publishes exactly which items it solved. The ordering is the
 need only look at the items on which they \emph{disagree}. Items both solved, or both missed, carry
 no information about the order.
 
-Recent work has circled this point from several sides. \citet{singh2025} show that dropping a small
-share of Chatbot Arena's data reshuffles its top ranks; \citet{huang2025} reach the same conclusion
-via influence functions; \citet{mizzaro2025} find that leaderboard \emph{rankings} stay stable under
+Recent work circles this point from several sides. \citet{singh2025} show that dropping a small share
+of Chatbot Arena's data reshuffles its top ranks; \citet{huang2025} reach the same conclusion via
+influence functions; \citet{mizzaro2025} find that leaderboard \emph{rankings} stay stable under
 paraphrase even as absolute scores collapse; \citet{miller2024} argues for error bars on eval
-numbers; and \citet{polo2024} and \citet{kipnis2024} show, through item-response theory, how few
-items actually carry a benchmark's signal. We contribute a direct, uniform, and reproducible test of
-the object those threads all bear on---the \emph{rank}---and a bound that says, from a board's size
-alone, which ranks it can and cannot resolve. Our contributions:
-\begin{enumerate}\itemsep2pt
+numbers; and \citet{polo2024} and \citet{kipnis2024} show, through item-response theory, how few items
+carry a benchmark's signal. We contribute a direct, uniform, and reproducible test of the object those
+threads all bear on---the \emph{rank}---and a bound that says, from a board's size alone, which ranks
+it can and cannot resolve. Our contributions:
+\begin{enumerate}\itemsep1pt
   \item A single method---exact McNemar for pass/fail, paired item-bootstrap for scores---that tests
   adjacent-rank separability on any board publishing per-item results, applied uniformly to five.
   \item A measured census: most adjacent ranks on four of the five boards are not separable, while
@@ -78,14 +81,13 @@ Let a board rank $m$ systems on $n$ shared items. For a pair $(A,B)$ adjacent in
 
 \paragraph{Pass/fail benchmarks.} Each item is solved or not. Restricting to the $b+c$ \emph{discordant}
 items ($A$ solves and $B$ does not: $b$; the reverse: $c$), the null ``no difference'' is a fair coin,
-and we apply the \emph{exact} McNemar test---a two-sided binomial test of $b$ successes in $b+c$
-trials against $p=\tfrac12$. Concordant items are excluded because they cannot distinguish the two
-systems.
+and we apply the \emph{exact} McNemar test---a two-sided binomial test of $b$ successes in $b+c$ trials
+against $p=\tfrac12$. Concordant items cannot distinguish the two systems and are excluded.
 
 \paragraph{Scored benchmarks.} Each item yields a real score per system. We take a paired bootstrap
-over items: resample the $n$ items with replacement, recompute each system's mean, and read the
-$95\%$ interval of the paired difference $A-B$; the pair is separated iff that interval excludes zero.
-The same resampled items are used for both systems, preserving the pairing.
+over items: resample the $n$ items with replacement, recompute each system's mean, and read the $95\%$
+interval of the paired difference $A-B$; the pair is separated iff that interval excludes zero. The
+same resampled items are used for both systems, preserving the pairing.
 
 \paragraph{Aggregate metrics.} When a board ranks by a composite (e.g.\ a mean win rate over
 sub-benchmarks), we first \emph{reproduce the published metric} from raw sub-scores and gate on exact
@@ -94,25 +96,24 @@ parity before testing, so we test the number the board actually shows.
 \paragraph{Self-tests.} No number is reported before a control suite passes: (i) identical systems are
 never ordered, in both modes---the negative control; (ii) $60$ planted losses and a uniform score
 shift are both detected at $p<10^{-6}$, so the negative control is not passing merely because nothing
-is ever detected; (iii) a published Wilson interval is reproduced ($5/10 \to [0.2366, 0.7634]$). The
-tool is $\sim\!200$ lines (\texttt{numpy}/\texttt{pandas}/\texttt{scipy}) and ships all three.
+is ever detected; (iii) a published Wilson interval is reproduced ($5/10 \to [0.2366, 0.7634]$).
 
 \section{Results}
 \label{sec:results}
-Table~\ref{tab:main} summarises. On \textbf{SWE-bench Verified} ($134$ systems, $500$ instances),
-$129$ of the $133$ adjacent-rank pairs are not separable at $5\%$; eight systems are statistically
-indistinguishable from the \#1 (ranks 1--8, $76.4$--$79.2\%$); the \#1 and \#2 resolve the same count,
-and of their $36$ disagreements the split is $18/18$ ($p=1.000$). Yet $7{,}835$ of all $8{,}911$ pairs
-($87.9\%$) \emph{are} separated: the board discriminates distant systems well. The median $95\%$ rank
-interval is $13$ places wide of $134$; $102$ systems span $\ge 10$ places. The recomputed resolve
-rates match the official board for all $133$ systems with a result file (max $|\Delta|=0$).
+On \textbf{SWE-bench Verified} ($134$ systems, $500$ instances), $129$ of the $133$ adjacent-rank pairs
+are not separable at $5\%$; eight systems are statistically indistinguishable from the \#1 (ranks
+1--8, $76.4$--$79.2\%$); the \#1 and \#2 resolve the same count, and of their $36$ disagreements the
+split is $18/18$ ($p=1.000$). Yet $7{,}835$ of all $8{,}911$ pairs ($87.9\%$) \emph{are} separated: the
+board discriminates distant systems well. The median $95\%$ rank interval is $13$ places wide of $134$;
+$102$ systems span $\ge 10$ places. The recomputed resolve rates match the official board for all $133$
+systems with a result file (max $|\Delta|=0$).
 
 Extending to all four SWE-bench splits (Table~\ref{tab:splits}) separates cause from artifact. The
 full-size \textbf{Test} split ($2{,}294$ items) has a clear, stable \#1 that survives a $50$-way task
 reshuffle every time; the crowded \textbf{Verified}, \textbf{Lite}, and \textbf{Multimodal} splits do
 not. A preregistered prediction---that the undecidable gap scales as $1/\sqrt{n}$ from the Verified
-anchor---held for $2$ of $3$ held-out splits (the miss, Multimodal, is explained post hoc by its
-small pair count and is reported as a miss).
+anchor---held for $2$ of $3$ held-out splits (the miss, Multimodal, is explained post hoc by its small
+pair count and is reported as a miss).
 
 Two further boards, with no shared data, scoring, maintainers, or outcome type, give the same shape.
 On \textbf{MTEB} (eng, v2; $181$ systems $\times$ $41$ tasks, scored), $176$ of $180$ adjacent pairs
@@ -122,8 +123,7 @@ $10$ scenarios, ranked by mean win rate) the win-rate matrix reproduces the publ
 extreme case, because ten scenarios cannot order ninety models.
 
 \begin{table}[t]
-\centering
-\small
+\centering\small
 \begin{tabular}{lrrcr}
 \toprule
 Board & Systems & Items & Adjacent pairs \emph{not} separable & All pairs separated\\
@@ -141,8 +141,7 @@ pairs); neighbours do not. LMArena already reports this via confidence intervals
 \end{table}
 
 \begin{table}[t]
-\centering
-\small
+\centering\small
 \begin{tabular}{lrrccr}
 \toprule
 Split & Systems & Items & Adjacent unclear & \#1 survives reshuffle & Largest unclear gap\\
@@ -169,8 +168,8 @@ differ), $b/(b+c)-\tfrac12 = \delta/2d$. The power of the underlying binomial te
 \label{eq:law}
 \end{equation}
 Two consequences: resolution improves only as $\sqrt{n}$, and---less obviously---it \emph{worsens} as
-$\sqrt{d}$: the more two systems differ item-by-item, the harder they are to order at the same
-headline gap. Both $d$ and $\delta$ are readable from published files, and no board reports either
+$\sqrt{d}$: the more two systems differ item-by-item, the harder they are to order at the same headline
+gap. Both $d$ and $\delta$ are readable from published files, and no board reports either
 (Figure~\ref{fig:frontier}).
 
 \begin{figure}[t]
@@ -213,10 +212,10 @@ the board has $500$, which is why the top eight are one block.
 \section{A Positive Control}
 \label{sec:lmarena}
 LMArena is the board that already does this. It ranks on a Bradley--Terry score with bootstrap $95\%$
-confidence intervals, and its published \texttt{final\_ranking} assigns the \emph{same} rank to models
-whose intervals overlap. From its own public numbers ($242$ models), $238$ of $241$ adjacent-by-rating
-pairs have overlapping intervals and ranks $2$--$11$ are a ten-way tie---yet the \#1 is genuinely
-separated, and the rank column is honest because it surfaces the ties rather than printing a false
+confidence intervals, and its published tie-aware rank assigns the \emph{same} rank to models whose
+intervals overlap. From its own public numbers ($242$ models), $238$ of $241$ adjacent-by-rating pairs
+have overlapping intervals and ranks $2$--$11$ are a ten-way tie---yet the \#1 is genuinely separated,
+and the rank column is honest because it surfaces the ties rather than printing a false
 $1$-through-$242$ order. This is precisely the change the other four boards need, and it costs a board
 nothing it does not already compute.
 
@@ -231,19 +230,16 @@ the \emph{resolution} of a ranking, computed from Eq.~\eqref{eq:law} or a paired
 ranking itself.
 
 \paragraph{Limitations.} The test conditions on the items a board publishes and treats them as the
-sampling unit; it therefore measures separability \emph{given} those items and their labels. It does
-not address label noise or rater disagreement, a complementary source of rank uncertainty
-\citep{aroyo2015}, nor item-selection bias, and it assumes items are exchangeable within a board.
-These narrow, rather than overturn, the claim: even granting the labels and the item set, most
-adjacent ranks are already inside the sampling noise, so the two uncertainties compound rather than
-cancel. Reporting resolution is a lower bound on the honesty a leaderboard owes its readers, not the
-whole of it.
+sampling unit; it measures separability \emph{given} those items and their labels. It does not address
+label noise or rater disagreement, a complementary source of rank uncertainty \citep{aroyo2015}, nor
+item-selection bias, and it assumes items are exchangeable within a board. These narrow, rather than
+overturn, the claim: even granting the labels and the item set, most adjacent ranks are already inside
+the sampling noise, so the two uncertainties compound rather than cancel.
 
-\paragraph{Reproducibility.} All data are public and all figures recompute from
-\url{https://github.com/ipezygj/swebench-rank-audit},
-which ships the tool, the per-item matrices, and the self-test suite; the preregistered split
-prediction is in the repository's \texttt{PREREGISTERED.md}, written before the held-out splits were
-fetched.
+\paragraph{Reproducibility.} All data are public; every figure recomputes from a public repository
+(anonymised for review; the URL will be included in the camera-ready) that ships the tool, the per-item
+matrices, and the self-test suite. The preregistered split prediction was written before the held-out
+splits were fetched.
 
 \begin{thebibliography}{9}\small
 \bibitem[Hardt(2025)]{hardt2025} M.~Hardt. \emph{The Emerging Science of Machine Learning Benchmarks}. 2025.
@@ -253,9 +249,9 @@ fetched.
 \bibitem[Miller(2024)]{miller2024} E.~Miller. Adding Error Bars to Evals. \emph{arXiv:2411.00640}, 2024.
 \bibitem[Polo et al.(2024)]{polo2024} F.~Maia Polo et al. tinyBenchmarks: Evaluating LLMs with Fewer Examples. \emph{arXiv:2402.14992}, 2024.
 \bibitem[Kipnis et al.(2024)]{kipnis2024} A.~Kipnis et al. metabench: A Sparse Benchmark of Reasoning and Knowledge in LLMs. \emph{arXiv:2407.12844}, 2024.
+\bibitem[Aroyo \& Welty(2015)]{aroyo2015} L.~Aroyo and C.~Welty. Truth Is a Lie: Crowd Truth and the Seven Myths of Human Annotation. \emph{AI Magazine}, 2015.
 \bibitem[Chiang et al.(2024)]{chiang2024} W.-L.~Chiang et al. Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference. \emph{ICML}, 2024.
 \bibitem[Jimenez et al.(2024)]{swebench} C.~E.~Jimenez et al. SWE-bench: Can Language Models Resolve Real-World GitHub Issues? \emph{ICLR}, 2024.
-\bibitem[Aroyo \& Welty(2015)]{aroyo2015} L.~Aroyo and C.~Welty. Truth Is a Lie: Crowd Truth and the Seven Myths of Human Annotation. \emph{AI Magazine}, 2015.
 \end{thebibliography}
 
 \end{document}
