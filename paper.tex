@@ -4,6 +4,8 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
 
@@ -164,7 +166,37 @@ differ), $b/(b+c)-\tfrac12 = \delta/2d$. The power of the underlying binomial te
 \end{equation}
 Two consequences: resolution improves only as $\sqrt{n}$, and---less obviously---it \emph{worsens} as
 $\sqrt{d}$: the more two systems differ item-by-item, the harder they are to order at the same
-headline gap. Both $d$ and $\delta$ are readable from published files, and no board reports either.
+headline gap. Both $d$ and $\delta$ are readable from published files, and no board reports either
+(Figure~\ref{fig:frontier}).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\linewidth, height=5.6cm,
+  xmode=log, log basis x=10,
+  xlabel={benchmark size $n$ (items)},
+  ylabel={resolvable gap $\delta$ (pp)},
+  xmin=8, xmax=4000, ymin=0, ymax=9,
+  grid=both, grid style={gray!20},
+  legend pos=north east, legend cell align=left, legend style={font=\footnotesize},
+  tick label style={font=\footnotesize}, label style={font=\small},
+]
+\addplot[thick, domain=8:4000, samples=120]{2.80*sqrt(0.13/x)*100};
+\addlegendentry{$\delta=2.80\sqrt{d/n}$ (guide, $d{=}0.13$)}
+\addplot[only marks, mark=*, mark size=2.6pt] coordinates {(300,7.08) (500,5.31) (517,3.71)};
+\addlegendentry{coin toss: Lite, Verified, Multimodal}
+\addplot[only marks, mark=triangle*, mark size=3.4pt] coordinates {(2294,1.58)};
+\addlegendentry{real champion: Test}
+\end{axis}
+\end{tikzpicture}
+\caption{The resolution frontier: the smallest rank gap a benchmark of $n$ items can decide. Each
+SWE-bench split is plotted at its own measured near-pair discordance $d$. The three small splits
+resolve only $3.7$--$7.1$ pp---coarser than the gaps at their crowded tops---so their neighbours are
+ties; only the $2{,}294$-item Test split resolves finely enough ($1.6$ pp) to order a champion.
+Resolution improves as $\sqrt{n}$, so a board buys ordering power only by growing.}
+\label{fig:frontier}
+\end{figure}
 
 We validate Eq.~\eqref{eq:law} pair by pair, predicting each pair's outcome from its own $(\delta,d,n)$
 with no free parameters and scoring against the exact test: agreement is $95.6\%$, $92.4\%$, $98.2\%$,
