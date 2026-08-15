@@ -57,7 +57,10 @@ Recent work has circled this point from several sides. \citet{singh2025} show th
 share of Chatbot Arena's data reshuffles its top ranks; \citet{huang2025} reach the same conclusion
 via influence functions; \citet{mizzaro2025} find that leaderboard \emph{rankings} stay stable under
 paraphrase even as absolute scores collapse; \citet{miller2024} argues for error bars on eval
-numbers; and \citet{polo2024} and \citet{kipnis2024} show, through item-response theory, how few
+numbers, and \citet{wang2025} decomposes eval noise into its item and run components; \citet{zhang2024}
+prove that no aggregation of a multi-task board can be both diverse and stable under such perturbations;
+\citet{chatzi2024} replace point ranks with rank-sets that carry the uncertainty; and \citet{polo2024} and
+\citet{kipnis2024} show, through item-response theory, how few
 items actually carry a benchmark's signal. We contribute a direct, uniform, and reproducible test of
 the object those threads all bear on---the \emph{rank}---and a bound that says, from a board's size
 alone, which ranks it can and cannot resolve. Our contributions:
@@ -253,6 +256,9 @@ fetched.
 \bibitem[Miller(2024)]{miller2024} E.~Miller. Adding Error Bars to Evals. \emph{arXiv:2411.00640}, 2024.
 \bibitem[Polo et al.(2024)]{polo2024} F.~Maia Polo et al. tinyBenchmarks: Evaluating LLMs with Fewer Examples. \emph{arXiv:2402.14992}, 2024.
 \bibitem[Kipnis et al.(2024)]{kipnis2024} A.~Kipnis et al. metabench: A Sparse Benchmark of Reasoning and Knowledge in LLMs. \emph{arXiv:2407.12844}, 2024.
+\bibitem[Wang(2025)]{wang2025} S.~Wang. Measuring All the Noises of LLM Evals. \emph{arXiv:2512.21326}, 2025.
+\bibitem[Zhang \& Hardt(2024)]{zhang2024} G.~Zhang and M.~Hardt. Inherent Trade-Offs between Diversity and Stability in Multi-Task Benchmarks. \emph{ICML}, 2024. \emph{arXiv:2405.01719}.
+\bibitem[Chatzi et al.(2024)]{chatzi2024} I.~Chatzi, E.~Straitouri, S.~Thejaswi, and M.~Gomez Rodriguez. Prediction-Powered Ranking of Large Language Models. \emph{NeurIPS}, 2024. \emph{arXiv:2402.17826}.
 \bibitem[Chiang et al.(2024)]{chiang2024} W.-L.~Chiang et al. Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference. \emph{ICML}, 2024.
 \bibitem[Jimenez et al.(2024)]{swebench} C.~E.~Jimenez et al. SWE-bench: Can Language Models Resolve Real-World GitHub Issues? \emph{ICLR}, 2024.
 \bibitem[Aroyo \& Welty(2015)]{aroyo2015} L.~Aroyo and C.~Welty. Truth Is a Lie: Crowd Truth and the Seven Myths of Human Annotation. \emph{AI Magazine}, 2015.
