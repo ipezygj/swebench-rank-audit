@@ -31,12 +31,23 @@ The same test across four splits, and across a different benchmark family:
 | SWE-bench Multimodal | 517 | 5 | never |
 | MTEB (eng, v2) | 41 | 4 tied w/ top | 176/180 adjacent pairs not ordered |
 | HELM Lite (mean win rate) | 10 | 5 tied w/ top | **89/89** adjacent pairs not ordered |
+| LMArena — *positive control* | 3.5M votes | 8-way tie for #2 | 238/241 CIs overlap — **and the rank column shows it** |
 
 Whether a board can order its leaders comes down to item count and spread, not benchmark
 quality. HELM Lite makes the point at the extreme: it ranks 90 models on 10 scenarios, and
 **none** of the 89 adjacent-rank pairs is separable (only 70.3% of all pairs are). The
 win-rate matrix reproduces HELM's published "Mean win rate" exactly (parity max |Δ| =
-0.0000) before the test is run. Full write-up and derivation in [`RESULTS.md`](RESULTS.md); the fixed test set
+0.0000) before the test is run.
+
+**LMArena is the positive control** — the board that already does this. It ranks on a
+Bradley-Terry score with bootstrap 95% CIs, and its published `final_ranking` assigns the
+*same* rank to models whose intervals overlap. From its own public numbers
+(`elo_results_20250829`, 242 models): 238 of 241 adjacent-by-rating pairs have overlapping
+CIs and ranks 2–9 are an eight-way tie — but the #1 is genuinely separated, and the rank
+column is honest because it surfaces this instead of printing a false 1-through-242 order.
+That is exactly the change the other four boards need. See `lmarena_resolution.py`.
+
+Full write-up and derivation in [`RESULTS.md`](RESULTS.md); the fixed test set
 and prediction written down first in [`PREREGISTERED.md`](PREREGISTERED.md).
 
 ## The tool

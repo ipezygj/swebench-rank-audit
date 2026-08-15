@@ -13,3 +13,8 @@ swebench_exp/
 # raw HELM leaderboard dump (rebuildable via helm_matrix.py from the public URL)
 helm_core.json
 _*.txt
+
+# raw LMArena bootstrap pkl (fetch from HF space, see lmarena_resolution.py)
+lmarena_elo.pkl
+aa_index.csv
+_aa_scrape.py
