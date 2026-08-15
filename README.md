@@ -5,7 +5,8 @@ every entrant is scored on the *same* items and publishes which it solved, so th
 is a paired experiment, not a list of independent numbers — and you can ask it whether
 its order is real.
 
-This repo does that for **SWE-bench** (four splits) and **MTEB**, from public data.
+This repo does that for **SWE-bench** (four splits), **MTEB**, and **HELM Lite** — three
+benchmark families with no shared data, scoring, maintainers or outcome type — from public data.
 
 ## The finding
 
@@ -29,9 +30,13 @@ The same test across four splits, and across a different benchmark family:
 | SWE-bench Lite | 300 | 4 | never |
 | SWE-bench Multimodal | 517 | 5 | never |
 | MTEB (eng, v2) | 41 | 4 tied w/ top | 176/180 adjacent pairs not ordered |
+| HELM Lite (mean win rate) | 10 | 5 tied w/ top | **89/89** adjacent pairs not ordered |
 
-Whether a board can order its leaders comes down to task count and spread, not benchmark
-quality. Full write-up and derivation in [`RESULTS.md`](RESULTS.md); the fixed test set
+Whether a board can order its leaders comes down to item count and spread, not benchmark
+quality. HELM Lite makes the point at the extreme: it ranks 90 models on 10 scenarios, and
+**none** of the 89 adjacent-rank pairs is separable (only 70.3% of all pairs are). The
+win-rate matrix reproduces HELM's published "Mean win rate" exactly (parity max |Δ| =
+0.0000) before the test is run. Full write-up and derivation in [`RESULTS.md`](RESULTS.md); the fixed test set
 and prediction written down first in [`PREREGISTERED.md`](PREREGISTERED.md).
 
 ## The tool
@@ -46,6 +51,8 @@ One code path, ~200 lines (numpy / pandas / scipy).
 python leaderboard_resolution.py --selftest                 # run this first
 python leaderboard_resolution.py swebench_verified_matrix.csv   # binary, auto-detected
 python leaderboard_resolution.py mteb_eng_v2_wide.csv          # continuous scores
+python helm_matrix.py                                         # rebuild HELM win-rate matrix (parity gate)
+python leaderboard_resolution.py helm_winrate_matrix.csv      # HELM Lite, 90 models x 10 scenarios
 python swebench_rank_noise.py                                 # the Verified deep-dive
 ```
 
@@ -59,7 +66,10 @@ control isn't passing merely because nothing is ever caught.
 matrices the analysis runs on, included here so the results above reproduce directly.
 `swebench_matrix.py` and `all_splits.py` rebuild those matrices from a local checkout of
 [SWE-bench/experiments](https://github.com/SWE-bench/experiments) (the `evaluation/<split>`
-result files); point them at that checkout to regenerate from scratch.
+result files); point them at that checkout to regenerate from scratch. `helm_matrix.py`
+rebuilds `helm_winrate_matrix.csv` from HELM Lite's public `core_scenarios.json`
+(release v1.13.0), converting per-scenario scores to win rates and parity-checking the
+result against HELM's published Mean win rate before writing.
 
 Parity: the recomputed resolve rates match the official leaderboard for all 133 systems
 with a result file, exact to the digits it prints.

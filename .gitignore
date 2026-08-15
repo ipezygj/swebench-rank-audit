@@ -9,3 +9,7 @@ _dark*/
 # raw upstream data (rebuildable from SWE-bench/experiments); large scrape
 lb_swebench.json
 swebench_exp/
+
+# raw HELM leaderboard dump (rebuildable via helm_matrix.py from the public URL)
+helm_core.json
+_*.txt
