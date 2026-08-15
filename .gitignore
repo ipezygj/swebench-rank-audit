@@ -20,3 +20,8 @@ aa_index.csv
 _aa_scrape.py
 _*.md
 _*.txt
+*.pdf
+*.log
+*.aux
+*.out
+neurips_2026.sty
