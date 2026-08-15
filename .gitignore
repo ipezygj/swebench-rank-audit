@@ -18,3 +18,5 @@ _*.txt
 lmarena_elo.pkl
 aa_index.csv
 _aa_scrape.py
+_*.md
+_*.txt
