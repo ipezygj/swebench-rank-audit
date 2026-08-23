@@ -1,0 +1,15 @@
+WITHIN A FAMILY OR BETWEEN FAMILIES: WHERE IS THE SPREAD?
+========================================================================================
+  board                family means      labelled  families  between  within  ratio   largest within-family spread
+  SWE-bench Verified   base model              54        11   17.15p  11.54p   0.67              63.4p in claude-3
+  MTEB English v2      organisation           123        25    8.71p   4.18p   0.48                29.2p in deepvk
+  ProteinGym DMS       method family           51         8    6.15p   5.33p   0.87                  29.8p in carp
+
+  ratio at least 0.5: 2/3 (pre-registered >= 2)
+  highest ratio: ProteinGym DMS (pre-registered: SWE-bench)
+  largest within-family spread above 15 points: 3/3 (pre-registered: all)
+
+  'between' is the SD of family means, 'within' the pooled SD of members
+  around their family mean. On SWE-bench the within-family variation is a
+  different harness on the same LLM; on MTEB a different model from the
+  same lab; on ProteinGym a different size of the same method.
