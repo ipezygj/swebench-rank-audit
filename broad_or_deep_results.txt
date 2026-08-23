@@ -1,0 +1,16 @@
+IS REAL IMPROVEMENT BROAD OR DEEP? SHAPE OF THE FRONTIER STEP
+========================================================================================
+  board                 adv  w real   w sim     dw | |z| real  |z| sim  ratio | u real  u sim
+  SWE-bench Verified     32   54.4%   51.6%  +2.8 |     0.89     0.78   1.14 |   0.40   0.37
+  SWE-bench Lite         17   60.3%   52.3%  +8.0 |     1.16     1.06   1.09 |   0.57   0.48
+  MTEB English v2        16   58.5%   53.7%  +4.9 |     1.12     0.51   2.21 |   0.27   0.24
+  LiveBench              12   50.4%   53.0%  -2.6 |     0.93     1.06   0.88 |   0.41   0.46
+  ProteinGym DMS         11   58.6%   52.3%  +6.3 |     2.99     0.94   3.19 |   0.50   0.33
+
+  real w exceeds simulated w by >= 5 points: 2/5 (pre-registered >= 4)
+  real |z| larger at matched u: 4/5 (pre-registered >= 4)
+
+  w = share of items the new leader beats the old one on; z = the paired
+  t-like statistic; both computed only for advances whose u lies in the
+  real middle band (20th-80th percentile), so size is held fixed and only
+  shape can differ. The simulated field is the chase model with its own fit.
