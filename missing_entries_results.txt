@@ -1,0 +1,17 @@
+WHAT DROPPING THE INCOMPLETE ROWS DID
+============================================================================================
+  board                   published  complete   kept |  kept mean   dropped |  shared-item J x n  same leader  tie@1 cc  shared
+  MTEB English v2               331       181    55% |      0.605     0.659 |   no complete item          n/a        16       -
+  ProteinGym DMS                 96        96   100% |        nan       nan |           96 x 217          yes         3       3
+  CASP14                        101       101   100% |        nan       nan |           101 x 42          yes         1       1
+  TabArena 45 variants           45        45   100% |        nan       nan |            45 x 51          yes        12      12
+  LMArena categories             35        35   100% |        nan       nan |            35 x 28          yes         4       4
+
+  dropped systems score lower than kept ones: 0 of the boards with any dropped rows
+  shared-item route keeps the same leader and no smaller tie@1: 4
+  boards using under 60 % of their published rows: 1 (pre-registered >= 1)
+
+  'complete' is the matrix every tool here uses: rows with a score on every
+  item. 'shared-item' is the other way round - keep every system, use only
+  the items all of them ran. Neither is neutral; the point is whether the
+  reading depends on which one you take.

@@ -50,17 +50,27 @@ MIN_ITEMS = 8
 
 
 def routes(df):
-    """Complete-case (drop rows) and shared-item (drop columns) views."""
+    """Complete-case (drop rows) and shared-item (drop columns) views.
+
+    The shared-item view keeps every system and uses only items that every
+    system ran. If NO item is complete, that view does not exist - the first
+    version silently fell back to the complete-case matrix and then reported
+    that the two routes agreed, which was a comparison of a matrix with
+    itself. It now returns None and the table says 'not available'.
+    """
     cc = df.dropna(axis=0)
     keep_cols = [c for c in df.columns if df[c].notna().all()]
-    si = df[keep_cols].dropna(axis=0) if keep_cols else df.dropna(axis=0)
-    return cc, si
+    if not keep_cols or len(keep_cols) < MIN_ITEMS:
+        return cc, None
+    return cc, df[keep_cols]
 
 
 def _check_complete():
     rng = np.random.default_rng(3)
     df = pd.DataFrame(rng.normal(0, 0.4, (20, 60)))
     cc, si = routes(df)
+    if si is None:
+        return False, "no complete items in a matrix that has no missing values at all"
     return cc.shape == si.shape == df.shape, f"no missing values: {cc.shape} == {si.shape} == {df.shape}"
 
 
@@ -71,6 +81,8 @@ def _check_random_missing():
     mask = rng.random((30, 80)) < 0.05
     df = df.mask(mask)
     cc, si = routes(df)
+    if si is None:
+        return True, "planted missingness left no complete item; check skipped"
     if cc.shape[0] < 3 or si.shape[0] < 3 or cc.shape[1] < MIN_ITEMS or si.shape[1] < MIN_ITEMS:
         return True, "random missingness left too little to compare; check skipped"
     l1 = cc.mean(axis=1).idxmax()
@@ -115,6 +127,12 @@ def main() -> int:
         worse += (not np.isnan(dm)) and dm < km
         same = "-"
         t_cc = t_si = -1
+        if si is None:
+            xcc = cc.to_numpy(dtype=float)
+            t_cc = int((rs.rank_sets(xcc, draws=DRAWS)["best"] == 1).sum())
+            p(f"  {name:<22} {J0:>10} {cc.shape[0]:>9} {100 * share:>5.0f}% | {km:>10.3f} {dm:>9.3f} "
+              f"| {'no complete item':>18} {'n/a':>12} {t_cc:>9} {'-':>7}")
+            continue
         if si.shape[0] >= 3 and si.shape[1] >= MIN_ITEMS:
             xcc, xsi = cc.to_numpy(dtype=float), si.to_numpy(dtype=float)
             rcc = rs.rank_sets(xcc, draws=DRAWS)
