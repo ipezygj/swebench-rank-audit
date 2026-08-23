@@ -1,0 +1,22 @@
+WHAT A NEWCOMER GETS FOR ITS ITEM BUDGET
+====================================================================================
+  leaderboard                n       5%      10%      25%      50%     100%  25 % / full  10 % / full
+  SWE-bench Verified       500     87.2     64.2     46.0     32.6     25.0         1.84         2.57
+  MTEB English v2           41     72.3     61.3     68.1     55.6     41.0         1.66         1.50
+  HELM classic              10     40.2     39.7     40.0     41.4     35.4         1.13         1.12
+  ProteinGym DMS           217     62.4     57.1     43.2     30.1     21.9         1.97         2.61
+  TabArena 16 models        51     10.2     10.8     10.4      9.8      8.7         1.20         1.25
+  TabArena 45 variants      51     30.0     27.6     27.0     23.2     19.3         1.40         1.43
+  CASP14                    42     54.4     52.3     48.3     45.6     38.3         1.26         1.36
+  LiveBench                200    120.4    113.5     80.0     59.0     41.2         1.94         2.76
+  MathArena 2025           183     31.4     29.8     22.8     16.5     11.8         1.93         2.52
+
+  25 % of items keeps the width under 2x: 9/9 (pre-registered >= 7)
+  10 % of items costs more than 3x: 0/9 (pre-registered >= 5)
+  25 % ratio between 1.5 and 2.5, as 1/sqrt(k) predicts: 5/9
+
+  The newcomer's comparisons use only its own items; the incumbents keep
+  their full scores. Width is worst rank minus best rank plus one, averaged
+  over 12 held-out systems and 4 random subsets each. A board whose
+  ratio at 25 % is near 1 can accept cheap submissions without losing
+  anything; one whose ratio is 4 cannot.
