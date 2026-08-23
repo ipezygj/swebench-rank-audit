@@ -1,0 +1,17 @@
+PAIR SHARPNESS: IS THE FRONTIER COMPARISON SHARPER THAN THE BOARD?
+======================================================================================
+  board                 adv  kappa frontier  all pairs  gap-matched  vs all  vs matched
+  SWE-bench Verified     32           0.882      1.010        0.914     yes         yes
+  SWE-bench Lite         17           0.942      1.011        0.979     yes         yes
+  MTEB English v2        16           0.530      0.993        0.780     yes         yes
+  LiveBench              12           0.894      1.011        0.944     yes         yes
+  ProteinGym DMS         11           0.633      1.024        0.960     yes         yes
+
+  frontier kappa below all-pair kappa: 5/5 (pre-registered >= 4)
+  frontier kappa below gap-matched kappa: 5/5 (pre-registered >= 4)
+  exploratory: Spearman(kappa deficit, P gap) = +0.80 (p 0.10)
+
+  kappa = sd(x_j - x_k) / sqrt(sd_j^2 + sd_k^2): 1 under independence,
+  below 1 when two systems move together and their comparison is sharper
+  than the board's global resolution. Every twin in this repo uses one
+  kappa for all pairs; the frontier is where that assumption is tested.

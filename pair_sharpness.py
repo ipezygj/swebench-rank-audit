@@ -55,6 +55,16 @@ P_GAP = {"SWE-bench Verified": 0.11, "SWE-bench Lite": 0.01,
 
 
 def kappa_matrix(x):
+    """Item difficulty is removed first.
+
+    The first build used the raw row SDs in the denominator and its iid
+    self-check gave 0.85, not 1: a system's score SD across items is mostly
+    ITEM DIFFICULTY, which is common to both systems and cancels in the
+    difference, so independence does not imply sd(d)^2 = sd_j^2 + sd_k^2 on
+    raw scores. Removing the item means leaves each system's own deviation
+    from the item's difficulty, and there independence does imply it.
+    """
+    x = x - x.mean(axis=0, keepdims=True)
     J = x.shape[0]
     sd = x.std(axis=1, ddof=1)
     K = np.ones((J, J))
