@@ -28,6 +28,16 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
     the law needs, and the law is weaker than hoped: it would then require a
     shape of the field, not four numbers.
 
+FIRST RUN (fc7a8cd, 2026-08-23): FALSIFIED. twin 2a fit 3 of 9 (twin 1: 6 of
+9), MTEB -27.7, SWE-bench moved -6.5. Cause: the per-system noise was taken
+as the SD of the system's scores across items, which is dominated by item
+difficulty - a common shift that cancels in every pairwise comparison and
+is NOT noise. The self-check field had no item difficulty, so it passed.
+Fixed: noise = residual SD after removing item and system means; the
+self-check field now has item difficulty larger than most noise. The
+pre-registered expectations above are re-stated unchanged for the fixed
+build and tested again.
+
 SELF-CHECKS
   * twin 2a of a heteroscedastic Gaussian field reproduces its H/ceiling
     within 3 points and its median sigma_p within 10 %;
@@ -59,7 +69,13 @@ def twin2(x: np.ndarray, rng, aligned: bool) -> np.ndarray:
     J, n = x.shape
     sc = x.mean(axis=1)
     tau = float(sc.std(ddof=1))
-    s = x.std(axis=1, ddof=1)                       # per-system item SD
+    # per-system NOISE, not per-system spread: remove item difficulty first.
+    # The first build used x.std(axis=1), which is mostly item difficulty
+    # (common to all systems, cancels in every pairwise comparison) - the
+    # twin got several times too much noise and H rose to 82 % on MTEB
+    # against 54 % real. That run is kept in git (fc7a8cd -> result commit).
+    resid = x - x.mean(axis=1, keepdims=True) - x.mean(axis=0, keepdims=True) + x.mean()
+    s = resid.std(axis=1, ddof=1)
     latent = max(tau ** 2 - float(np.mean(s ** 2)) / n, 0.0) ** 0.5
     ability = rng.normal(0.0, latent, J)
     if aligned:
@@ -72,7 +88,8 @@ def twin2(x: np.ndarray, rng, aligned: bool) -> np.ndarray:
         s_use = s_by_rank[order_twin]
     else:
         s_use = rng.permutation(s)
-    return ability[:, None] + rng.normal(0.0, 1.0, (J, n)) * s_use[:, None]
+    item = x.mean(axis=0) - x.mean()
+    return ability[:, None] + item[None, :] + rng.normal(0.0, 1.0, (J, n)) * s_use[:, None]
 
 
 def hfrac(x, rng):
@@ -84,7 +101,8 @@ def _check_hetero_field():
     J, n = 80, 200
     ability = rng.normal(0, 0.06, J)
     s = rng.choice([0.15, 0.6], size=J)             # strongly unequal noise
-    x = ability[:, None] + rng.normal(0, 1, (J, n)) * s[:, None]
+    item = rng.normal(0, 0.25, n)                   # item difficulty, larger than most noise
+    x = ability[:, None] + item[None, :] + rng.normal(0, 1, (J, n)) * s[:, None]
     a = stats_of(x, 500, 600, rng)
     y = twin2(x, np.random.default_rng(22), aligned=False)
     b = stats_of(y, 500, 600, rng)
