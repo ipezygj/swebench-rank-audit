@@ -105,6 +105,30 @@ def load_all() -> dict:
     if pg.exists():
         g = pd.read_csv(pg, index_col=0).dropna(axis=0)
         out["ProteinGym DMS"] = g.to_numpy(dtype=float)
+    # THE SIXTH - THE DISCRIMINATING TEST OF THE POST-HOC MECHANISM HYPOTHESIS,
+    # written before it is run (2026-08-23, evening). TabArena: tabular
+    # prediction, 51 OpenML datasets, error normalised within each dataset
+    # (1 = best, 0 = worst). Two matrices from the same data, on purpose:
+    #   one-per-model   16 architecturally distinct methods (one tuned+ensembled
+    #                   config each: CatBoost, XGBoost, LightGBM, RealMLP, TabM,
+    #                   TabPFN v2, TabICL, TabDPT, EBM, RF, XT, KNN, LR, ...)
+    #   all variants    45 rows = the same models x {default, tuned, tuned+ens}
+    # PREDICTIONS. The hypothesis says the top-10 antichain comes from a
+    # frontier that shares base systems. So:
+    #   A. one-per-model: the top ten is NOT a complete antichain
+    #      (top-10 H < 21.8 by at least 2 bits) - distinct architectures separate;
+    #   B. all-variants:  top-10 H is HIGHER than one-per-model's, because
+    #      three configs of one model are near-ties that re-create the
+    #      shared-base structure inside the top;
+    #   C. no prediction on H/ceiling - that hypothesis is already dead.
+    # If A fails (16 distinct architectures also give a complete antichain),
+    # the mechanism hypothesis dies. If B fails, the mechanism is wrong even
+    # if A happens to hold.
+    for fn, label in (("tabarena/matrix_one_per_model.csv", "TabArena 16 models"),
+                      ("tabarena/matrix_all45.csv", "TabArena 45 variants")):
+        q = Path(fn)
+        if q.exists():
+            out[label] = pd.read_csv(q, index_col=0).dropna(axis=0).to_numpy(dtype=float)
     ma = Path("matharena/matrix.csv")
     if ma.exists():
         m = pd.read_csv(ma, index_col=0).dropna(axis=0)
@@ -252,6 +276,38 @@ def main(argv=None) -> int:
     # matrix existed. Nothing below is adjusted to the outcome.
     fourth = next((m for m in rows if m["name"].startswith("MathArena")), None)
     fifth = next((m for m in rows if m["name"].startswith("ProteinGym")), None)
+    one = next((m for m in rows if m["name"] == "TabArena 16 models"), None)
+    allv = next((m for m in rows if m["name"] == "TabArena 45 variants"), None)
+    if one and allv:
+        p("")
+        p("THE PRE-REGISTERED PREDICTIONS FOR THE SIXTH (TabArena), THE")
+        p("DISCRIMINATING TEST OF THE POST-HOC MECHANISM HYPOTHESIS")
+        p("  written into load_all() and committed before it was run")
+        p("")
+        ceil10 = math.log2(math.factorial(10))
+        okA = one["H10"] <= ceil10 - 2.0
+        p(f"  A. 16 distinct architectures: top-10 NOT an antichain   "
+          f"{'HOLDS' if okA else 'FAILS'}   ({one['H10']:.1f}/21.8, "
+          f"{one['tie_top']} could be first)")
+        okB = allv["H10"] > one["H10"]
+        p(f"  B. 45 variants: top-10 H higher than 16-model's        "
+          f"{'HOLDS' if okB else 'FAILS'}   ({allv['H10']:.1f} vs {one['H10']:.1f})")
+        p(f"  C. H/ceiling: no prediction                observed {100 * one['H_frac']:.1f} % / {100 * allv['H_frac']:.1f} %")
+        p("")
+        if okA and okB:
+            p("  Both hold. A field of distinct architectures resolves its top;")
+            p("  re-introducing near-duplicate variants of the same models makes")
+            p("  the top less resolved. That is what the mechanism predicts, and")
+            p("  it is the first test the mechanism has passed. It is ONE test.")
+        elif not okA:
+            p("  A fails: sixteen distinct architectures still give a complete")
+            p("  antichain. The mechanism hypothesis - shared base systems make")
+            p("  the top unresolvable - is dead, and the antichain has some other")
+            p("  cause or none.")
+        else:
+            p("  A holds but B fails: distinct architectures resolve the top, yet")
+            p("  adding variants does not blur it. The mechanism as stated is")
+            p("  wrong even though its headline prediction came out right.")
     if fifth:
         p("")
         p("THE PRE-REGISTERED PREDICTIONS FOR THE FIFTH BENCHMARK (ProteinGym)")
