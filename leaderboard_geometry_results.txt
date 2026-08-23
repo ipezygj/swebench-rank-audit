@@ -1,0 +1,51 @@
+THE GEOMETRY OF A LEADERBOARD
+==========================================================================
+134 systems, 500 items
+
+I. TIERS - how many performance levels the instrument resolves
+  relations 'significantly above'   6719 of 17822 ordered pairs (37.7 %)
+  transitivity violations           0
+  HEIGHT (longest chain)            10
+  largest antichain                 27
+
+  -> this leaderboard prints 134 positions and resolves 10 levels.
+     27 of its systems cannot be ordered among themselves at all.
+
+  tier sizes, best first:
+   19, 23, 18, 18, 22, 13, 11, 3, 3, 4
+  tier 1 (19 systems), first few:
+    0.732  20250522_tools_claude-4-opus
+    0.744  20250603_Refact_Agent_claude-4-sonnet
+    0.752  20250612_trae
+    0.746  20250720_Lingxi-v1.5_claude-4-sonnet-20250514
+    0.748  20250731_harness_ai
+    0.768  20250804_epam-ai-run-claude-4-sonnet
+
+II. DIMENSIONS - how many numbers the benchmark is measuring
+   component   singular value   permutation 95%   ratio  var share
+           1           32.347            28.081    1.15      14.0% *
+           2           23.283            21.036    1.11       7.3% *
+           3           13.052            11.465    1.14       2.3% *
+           4           12.136            11.189    1.08       2.0% *
+           5           11.797            11.011    1.07       1.9% *
+           6           11.578            10.832    1.07       1.8% *
+           7           11.192            10.687    1.05       1.7% *
+           8           11.022            10.563    1.04       1.6% *
+
+  clearly above the null (ratio > 1.5):   0
+  marginally above (1.0 to 1.5):          12
+  A component that clears a permutation null by two per cent is not
+  a dimension anyone should build on. The honest count is the first
+  column, and the marginal ones are shown so nobody has to take my
+  word for where the line was drawn.
+  -> no component clears the null by more than 15 %.
+     The calibration returned exactly zero components on data built
+     with no second axis at this same shape, so the small excess is
+     real rather than an artefact - and it is small. On this
+     benchmark the systems differ in HOW MANY items they solve,
+     barely in which ones. One axis is the right model, and the
+     ranking loses precision but not a hidden second ability.
+
+     I expected the opposite. The first version of this file used a
+     permutation null and reported eight dimensions; that null was
+     wrong and the number was mine, not the data's.
