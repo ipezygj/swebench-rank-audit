@@ -1,97 +1,150 @@
-# How much of a leaderboard ranking survives its own sampling error?
+# Leaderboard measurement toolkit
 
-A benchmark leaderboard arrives already sorted, a crisp number beside every name. But
-every entrant is scored on the *same* items and publishes which it solved, so the board
-is a paired experiment, not a list of independent numbers — and you can ask it whether
-its order is real.
+*What a systems x items matrix supports, and what a printed ranking claims.*
 
-This repo does that for **SWE-bench** (four splits), **MTEB**, and **HELM Lite** — three
-benchmark families with no shared data, scoring, maintainers or outcome type — from public data.
+Two documents state the results:
 
-> 📄 Write-up: [`paper.tex`](paper.tex) — *How Much of a Leaderboard Ranking Survives Its Own Sampling Error?* (draft; compile on Overleaf/arXiv).
+- **[LEADERBOARD_STANDARD.md](LEADERBOARD_STANDARD.md)** - what a leaderboard must
+  publish beside its ranking (draft 0.2, 10 required fields and
+  5 prohibited presentations), with `leaderboard_standard.py` as the reference
+  implementation.
+- **[LAWS.md](LAWS.md)** - two relations that predict how much ranking a benchmark
+  supports and how much of a printed order is evidence, tested on ten boards from
+  five fields, including one held out until after the relations were fixed.
 
-## The finding
+Everything is computed from the score matrix alone. No tool needs metadata, and
+the ones that use names (lineage detection, base-model families) say so and are
+validated against a permutation null.
 
-On **SWE-bench Verified** (134 systems × 500 instances), exact McNemar on the instances
-where each pair disagrees:
+## Matrices
 
-- **129 of 133 adjacent-rank pairs are not separable** at the 5% level.
-- **8 systems are statistically inseparable from the #1** (ranks 1–8, 76.4–79.2%).
-- #1 vs #2 resolve the same count; of 36 disagreements the split is 18/18, p = 1.000.
+| board | shape | notes |
+|---|---|---|
+| SWE-bench Verified | 134 x 500 | binary, per-instance resolve lists |
+| SWE-bench Lite | 84 x 300 | binary |
+| SWE-bench test | 24 x 2294 | binary, pre-selected entrants |
+| MTEB English v2 | 181 x 41 | continuous task scores; 174 dated from HF createdAt |
+| HELM classic | 90 x 10 | win rates |
+| ProteinGym DMS | 96 x 217 | Spearman per assay; dated from reference URLs |
+| TabArena | 16 x 51 and 45 x 51 | min-max normalised within dataset |
+| CASP14 | 101 x 42 | GDT_TS / 100 |
+| LiveBench | 152 x 200 | judged scores, largest complete block |
+| MathArena 2025 | 35 x 183 | per-problem correctness |
+| LMArena categories | 35 x 28 | category win rates; held out during the 2026-08-23 loop |
 
-It is **not** that the benchmark is broken: 87.9% of all 8,911 pairs *are* separated. The
-board discriminates distant systems cleanly and can't order neighbours — and neighbours
-are what the top of a ranking is made of.
+## Tools
 
-The same test across four splits, and across a different benchmark family:
+### The standard and its reference implementation
 
-| split | tasks | tied for first | "#1" survives a 50-way task reshuffle |
-|---|---:|---:|---|
-| SWE-bench Test | 2,294 | 1 | every time — a real champion |
-| SWE-bench Verified | 500 | 3 | never |
-| SWE-bench Lite | 300 | 4 | never |
-| SWE-bench Multimodal | 517 | 5 | never |
-| MTEB (eng, v2) | 41 | 4 tied w/ top | 176/180 adjacent pairs not ordered |
-| HELM Lite (mean win rate) | 10 | 5 tied w/ top | **89/89** adjacent pairs not ordered |
-| LMArena — *positive control* | 3.5M votes | 10-way tie for #2 | 238/241 CIs overlap — **and the rank column shows it** |
+- `leaderboard_standard.py` - Reference implementation of the Leaderboard Reporting Standard (draft 0.1)
+- `export_card_data.py` - Export the SWE-bench report-card data as JSON for the certified-leaderboard page
+- `build_certified_page.py` - Render card_data.json as the certified SWE-bench leaderboard page (HTML)
+- `export_card_mteb.py` - Export MTEB English v2 as standard-0.2 report-card data, R10 included
+- `build_certified_mteb.py` - Render card_data_mteb.json as a standard-0.2 certified leaderboard page
+- `build_laws_md.py` - Assemble LAWS.md from the results files, so no number is retyped by hand
+- `build_readme.py` - Generate README.md: the map of this repo, with the tool index read from the code
 
-Whether a board can order its leaders comes down to item count and spread, not benchmark
-quality. HELM Lite makes the point at the extreme: it ranks 90 models on 10 scenarios, and
-**none** of the 89 adjacent-rank pairs is separable (only 70.3% of all pairs are). The
-win-rate matrix reproduces HELM's published "Mean win rate" exactly (parity max |Δ| =
-0.0000) before the test is run.
+### Core measurement
 
-**LMArena is the positive control** — the board that already does this. It ranks on a
-Bradley-Terry score with bootstrap 95% CIs, and its published `final_ranking` assigns the
-*same* rank to models whose intervals overlap. From its own public numbers
-(`elo_results_20250829`, 242 models): 238 of 241 adjacent-by-rating pairs have overlapping
-CIs and ranks 2–11 are a ten-way tie — but the #1 is genuinely separated, and the rank
-column is honest because it surfaces this instead of printing a false 1-through-242 order.
-That is exactly the change the other four boards need. See `lmarena_resolution.py`.
+- `rank_sets.py` - Simultaneous confidence sets for a leaderboard's RANKS, not its pairs
+- `two_way_bootstrap.py` - Which bootstrap? The answer depends on what you claim to generalise to
+- `leaderboard_entropy.py` - How many bits of the published ranking does the data not determine?
+- `leaderboard_geometry.py` - A leaderboard is a line. The data underneath it is not, and this measures how
+- `invariant_core.py` - If the ranking depends on the basket, which comparisons do not?
+- `measurement_invariance.py` - Is this a measurement, or is it an index?
+- `ordinal_invariance.py` - Two of my own results contradict each other. Resolving it sharpens the theorem
+- `benchmark_spectrum.py` - The benchmark as an instrument: resolution spectrum, aperture, dead pixels
+- `information_depletion.py` - A benchmark is a depleting resource. This measures how much is left
+- `recount_margin.py` - How many test cases would have to be re-graded for someone else to lead?
+- `pattern_anomaly.py` - Does this system's answer pattern look like a coherent ability?
+- `reweighting_polytope.py` - Who could be number one if the benchmark had been assembled differently?
+- `saturation_horizon.py` - The leaderboard of the future is inside today's hardest items
+- `deflated_benchmark.py` - How much of the top score is just the fact that it is a maximum?
+- `progress_or_selection.py` - Was it progress, or just more attempts? A leaderboard is a time series
+- `selection_sbi.py` - How many attempts stood behind this leaderboard? Ask the shape, not me
+- `leaderboard_resolution.py` - What is this leaderboard's resolution, and which of its rows are ordered?
+- `resolution_law.py` - How many instances does a benchmark need before its ranking means anything?
+- `swebench_rank_noise.py` - How much of the SWE-bench Verified ranking survives its own sampling error?
 
-Full write-up and derivation in [`RESULTS.md`](RESULTS.md); the fixed test set
-and prediction written down first in [`PREREGISTERED.md`](PREREGISTERED.md).
+### The two laws
 
-## The tool
+- `resolution_law_test.py` - Is the established share of a leaderboard determined by one number?
+- `entropy_law_test.py` - Is a leaderboard's entropy also determined by (J, n, SNR)?
+- `evidence_trajectory.py` - Do the two laws hold THROUGH TIME inside one leaderboard?
+- `entropy_law_twin2.py` - Entropy law, second attempt: a twin that keeps the NOISE PROFILE
+- `entropy_decomposition.py` - Where does the entropy law's residual live? A two-term decomposition
+- `residual_correlation.py` - Is the universal negative residual the CORRELATION of entrants' residuals?
+- `law1_pairwise.py` - Law 1 with pair-specific resolution instead of one sigma_p
+- `tenth_board.py` - A tenth board, untouched all evening: LMArena categories x models
+- `universality.py` - Is any of this a law? The same quantities on three unrelated leaderboards
 
-`leaderboard_resolution.py` takes any matrix of per-item outcomes — one row per system,
-one column per item — and reports which adjacent ranks are separated, the tie-groups, and
-how many more items it would take to resolve a given gap. Pass/fail data goes through exact
-McNemar on discordant items; a score per item goes through a paired bootstrap over items.
-One code path, ~200 lines (numpy / pandas / scipy).
+### Pair resolution (R10) and lineage
 
-```bash
-python leaderboard_resolution.py --selftest                 # run this first
-python leaderboard_resolution.py swebench_verified_matrix.csv   # binary, auto-detected
-python leaderboard_resolution.py mteb_eng_v2_wide.csv          # continuous scores
-python helm_matrix.py                                         # rebuild HELM win-rate matrix (parity gate)
-python leaderboard_resolution.py helm_winrate_matrix.csv      # HELM Lite, 90 models x 10 scenarios
-python swebench_rank_noise.py                                 # the Verified deep-dive
-```
+- `pair_sharpness.py` - Pair sharpness: resolution is a property of the PAIR, not the benchmark
+- `kappa_reliability.py` - Is pair sharpness a property of the pair, or of the items it was measured on?
+- `kappa_generality.py` - Does the sharp-pair finding hold at ranks other than the top?
+- `kappa_trend.py` - Is the frontier getting sharper? Pair sharpness over time
+- `kappa_predicts_future.py` - Does pair sharpness predict the FUTURE, or only describe the past?
+- `lineage_detection.py` - Can the matrix alone tell which entrants are relatives?
+- `independence_flag.py` - How many independent lineages are in the top ten?
+- `effective_entrants.py` - How many INDEPENDENT entrants does a leaderboard really have?
+- `isotonic_families.py` - Families, conditioned on ability: isotonic residuals
+- `pairing_dividend.py` - What does pairing buy? Rank sets with and without the pair covariance
+- `prescription_pairwise.py` - What does pair-specific resolution cost, or save, in items?
+- `incentive_asymmetry.py` - Does pair-specific resolution reward derivative work?
+- `swebench_base_models.py` - Base-model families for SWE-bench submissions, from a fixed vocabulary
 
-The `--selftest` must pass before any number is believed: identical systems are never
-ordered (in both modes); 60 planted losses and a uniform shift are both detected, so the
-control isn't passing merely because nothing is ever caught.
+### SOTA claims through time
 
-## Reproducing from raw data
+- `sota_audit.py` - Every time the frontier moved: was the new leader separable from the old one?
+- `sota_twin.py` - Is the share of 'real' SOTA advances predictable from the field's drift?
+- `step_sizes.py` - How big is a SOTA step, in units of what the benchmark can resolve?
+- `fourth_board.py` - The pre-registered test of the step-size reading on a FOURTH dated board
+- `fifth_board.py` - Fifth dated board, from a DIFFERENT FIELD: ProteinGym DMS (96 x 217)
+- `sota_luck_law.py` - How large is a SOTA step compared with luck among equals? (corrected)
+- `sota_families.py` - Does the frontier move within families?
+- `frontier_lineage.py` - The open question, asked of the names instead of the residuals
+- `leader_luck.py` - The winner's curse, seen in the residuals
+- `chase_model.py` - A generative account of the frontier: entrants CHASE the record
+- `chase_correlated.py` - Chase model with the board's own noise: does correlation fix P?
+- `chase_refit.py` - The fair version: chase parameters fitted INSIDE the board's own noise
+- `sibling_chase.py` - Chase model, final form: the chaser inherits the record-holder's noise
+- `lineage_tree.py` - The chase model with a family tree, which is what sibling_chase was missing
+- `broad_or_deep.py` - Why are real SOTA steps more separable than simulated steps of the same size?
+- `decisiveness_history.py` - Was the top of the board ever decisive, and when did it stop being so?
+- `crown_stability.py` - How often does the crown change hands if the items are resampled?
+- `model_or_harness.py` - On SWE-bench, how much of a submission's score is the model and how much the harness?
+- `within_family_spread.py` - Is 'the harness is two thirds of the model' peculiar to agentic coding?
 
-`swebench_verified_matrix.csv` and `mteb_eng_v2_wide.csv` are the processed per-item
-matrices the analysis runs on, included here so the results above reproduce directly.
-`swebench_matrix.py` and `all_splits.py` rebuild those matrices from a local checkout of
-[SWE-bench/experiments](https://github.com/SWE-bench/experiments) (the `evaluation/<split>`
-result files); point them at that checkout to regenerate from scratch. `helm_matrix.py`
-rebuilds `helm_winrate_matrix.csv` from HELM Lite's public `core_scenarios.json`
-(release v1.13.0), converting per-scenario scores to win rates and parity-checking the
-result against HELM's published Mean win rate before writing.
+### Prescription
 
-Parity: the recomputed resolve rates match the official leaderboard for all 133 systems
-with a result file, exact to the digits it prints.
+- `refill_prescription.py` - What would this benchmark need, to answer the question it is asked?
+- `refill_all.py` - How many new items would each leaderboard need to settle its top pair?
 
-## Related
+### Matrix builders
 
-Filed against SWE-bench/experiments: the duplicate instance IDs under `evaluation/test/20240402`
-([#463](https://github.com/SWE-bench/experiments/issues/463), fix in
-[#465](https://github.com/SWE-bench/experiments/pull/465)) and the rank-resolution point
-([#466](https://github.com/SWE-bench/experiments/issues/466)).
+- `swebench_matrix.py` - Build the SWE-bench Verified system x instance outcome matrix
+- `all_splits.py` - Run the Verified analysis on every SWE-bench split that publishes per-instance
+- `helm_matrix.py` - Build a HELM Lite per-scenario WIN-RATE matrix from the public leaderboard JSON,
+- `mteb_dates.py` - Fetch HF model creation dates for the MTEB matrix rows -> mteb_dates.csv
+- `lmarena_resolution.py` - LMArena (Chatbot Arena) is the POSITIVE control for this whole repo: it ranks on a
+- `matharena/build_matrix.py` - Build a systems x problems correctness matrix from MathArena output files
+- `casp/build_matrix.py` - Groups x domains GDT_TS matrix from CASP14 result tables (model 1 only)
+- `proteingym/dates.py` - Date the ProteinGym models from their reference URLs -> proteingym/dates.csv
 
-— Ilpo Väätäinen · [Measured, Not Believed](https://leanpub.com/measurednotbelieved)
+### Unsorted (add to a group in build_readme.py)
+
+- `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
+- `casp/probe2.py` - (no docstring)
+
+## How the results were produced
+
+Each tool prints its own self-checks first and refuses to print a table if one
+fails. Thresholds and expectations are written into the module docstring and
+committed to git BEFORE the run that tests them; when an expectation fails, the
+failure is recorded in the same file rather than removed. Where a construction
+was changed after a failed check, the change and its reason are in the docstring.
+
+Results live next to each tool as `*_results.txt` and are regenerated by running
+the tool. `build_laws_md.py` and `build_readme.py` assemble the documents from
+those files and from the code, so neither document can drift silently.
