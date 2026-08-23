@@ -26,14 +26,14 @@ ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
 code{font-family:var(--mono);font-size:.85em}
 </style>
 <main>
-<h1>Silmukka 23.8. — kolmekymmentäneljä iteraatiota</h1>
-<p class="sub">Autonominen silmukka klo 16:01–17:45 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 69 committia</p>
+<h1>Silmukka 23.8. — neljäkymmentäseitsemän iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–18:13 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 94 committia</p>
 
 <div class="grid">
-<div class="card"><b>34</b><span>iteraatiota, joista 21 tuotti uuden mittarin tai lain-testin</span></div>
-<div class="card"><b>14</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
+<div class="card"><b>47</b><span>iteraatiota, joista 29 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>19</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
 <div class="card"><b>κ 0,44–0,94</b><span>SOTA-väitteen parin erotuskyky, kun taulun keskiarvo on 1,00</span></div>
-<div class="card"><b>1</b><span>itsenäinen sukulinja SWE-benchin ja MathArenan koko kärkikympissä</span></div>
+<div class="card"><b>8/10</b><span>taulua joiden kärkiparia ei voi erottaa toisistaan</span></div>
 </div>
 
 <h2>Illan päälöydös: erotuskyky on parin ominaisuus</h2>
@@ -126,6 +126,13 @@ code{font-family:var(--mono);font-size:.85em}
 <h2>Miksi rintama liikkuu niin kuin liikkuu</h2>
 <p>Viisi päivättyä taulua kolmelta alalta tuottaa 1,4–2,6× enemmän rintama-askelia kuin samalla vauhdilla ajelehtiva gaussinen kenttä, ja ne ovat pienempiä. <strong>Jahtausmalli</strong> — tulokas ei ole poiminta kentästä vaan poiminta suhteessa nykyiseen ennätykseen — selittää määrän ja koon paremmin kuin lineaarinen nousu neljällä taululla viidestä. Se ei selitä sitä, että todelliset askeleet ovat useammin tilastollisesti erotettavia kuin samankokoiset simuloidut; sen selittää κ, ja kun jahtaaja perii ennätyksen haltijan käyttäytymisen, vaje kapenee mutta ei sulkeudu. Perintö tulee sukulinjasta, ei nykyisestä ennätyksestä — sukupuumalli on illan suurin avoin rakennuspalikka.</p>
 <p>Yksi ennakko kaatui hyödyllisesti: oletin ProteinGymin, joka ei ole kilpa vaan julkaistujen menetelmien kokoelma, näyttävän <em>vähiten</em> jahtausta. Sen suhde on 2,62 — korkein viidestä. Rintaman jahtaus ei vaadi tulostaulukilpaa.</p>
+
+<h2>Malli vai kehikko?</h2>
+<p>SWE-benchin lähetystunnuksista 54/134 nimeää pohjamallinsa. Niistä laskettuna hajonta <em>saman</em> pohjamallin eri kehikoiden välillä on 0,67× hajonta eri pohjamallien välillä (0,54 kun verrataan vain saman vuosineljänneksen lähetyksiä). Claude-3:lla rakennetut ratkaisut ulottuvat 7,0 %:sta 70,4 %:iin, Geminillä 44,2:sta 77,4:ään. Yhdeksäntoista paria, joissa vanhemman mallin paras kehikko voittaa uudemman mallin mediaanikehikon.</p>
+<p>Sama hajotelma muualla: MTEB (perhe = organisaatio) 0,48, ProteinGym (perhe = menetelmä, sisäinen vaihtelu = koko) 0,87 — korkein, vastoin ennakkoani. Perheen sisäinen vaihteluväli on 29–63 pistettä kaikilla kolmella. Tulostaulun sija ei ole malli- eikä perheparemmuusjärjestys.</p>
+
+<h2>Kuka olisi ykkönen, jos tehtävät arvottaisiin uudelleen?</h2>
+<p>Tehtäväbootstrap, 2 000 uudelleenotosta. CASP14 100 %, LiveBench 99,8 %, ProteinGym 86 %, TabArena 73–87 %, HELM 66 % — ja sitten SWE-bench 32,8 % (kakkonen 31,1 %), MathArena 41,3 %, MTEB 44,8 %. Kolmella taululla kruunu on kolikonheitto. MTEB tarkistettiin 20 000 otoksella: painettu kakkonen voittaa 48,7 %, painettu ykkönen 46,1 %, pisteiden ero 0,0001. Se ei ole "väärä järjestys" vaan kolikonheitto, jonka painettu puoli sattuu olemaan epätodennäköisempi.</p>
 
 <h2>Mitä kaatui — ja miksi se on hyvä</h2>
 <ul>
