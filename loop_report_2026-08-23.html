@@ -26,12 +26,12 @@ ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
 code{font-family:var(--mono);font-size:.85em}
 </style>
 <main>
-<h1>Silmukka 23.8. — kuusikymmentäyhdeksän iteraatiota</h1>
-<p class="sub">Autonominen silmukka klo 16:01–19:05 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 140 committia</p>
+<h1>Silmukka 23.8. — kahdeksankymmentäyksi iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–19:31 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 168 committia</p>
 
 <div class="grid">
-<div class="card"><b>69</b><span>iteraatiota, joista 45 tuotti uuden mittarin tai lain-testin</span></div>
-<div class="card"><b>27</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
+<div class="card"><b>81</b><span>iteraatiota, joista 54 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>33</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
 <div class="card"><b>κ 0,44–0,94</b><span>SOTA-väitteen parin erotuskyky, kun taulun keskiarvo on 1,00</span></div>
 <div class="card"><b>8/10</b><span>taulua joiden kärkiparia ei voi erottaa toisistaan</span></div>
 </div>
@@ -156,6 +156,10 @@ code{font-family:var(--mono);font-size:.85em}
 <tr><td>Kuinka kauan kärjen ratkeamiseen?</td><td>Kentän omalla historiallisella vauhdilla: SWE-bench 1,8 kk, MTEB 6,8 kk (ulkopuoliselle 12,8), ProteinGym 17,6 kk. LiveBench 0 — sen kärki on jo ratkeava.</td></tr>
 <tr><td>Kuinka paljon kokoonpano ratkaisee?</td><td>Vähemmän kuin kohina: kun jokainen tehtäväryhmä saa painaa 0,5–2× todellista osuuttaan, SWE-benchillä kolme järjestelmää voisi olla ykkönen — kohina sallii yhdeksäntoista.</td></tr>
 </table></div>
+
+<h2>Kaksi viimeistä löydöstä</h2>
+<p><strong>R10 on hyökkäyspinta ilman lukittua tehtäväjoukkoa.</strong> Kun standardi vaatii parikohtaisen tunnusluvun, se kutsuu väittäjää valitsemaan tehtävät. Ahne poiminta nostaa kärkiparin t:n yli kahden yhdeksällä taululla yhdeksästä — SWE-benchillä 19 tehtävää 500:sta riittää nostamaan sen nollasta 18,0:aan. Puolustus on yhtä yksinkertainen ja se toimii: pisteytä väite niillä tehtävillä joita valitsija <em>ei</em> ottanut. Kahdeksalla yhdeksästä kuratoitu väite romahtaa siellä (ulkopuolinen t −4,3…+0,4); CASP14:llä, jossa ero on todellinen, se säilyy 10,7:ssä. Standardiin lisättiin kohta 4a.</p>
+<p><strong>SNR ennustaa aggregaatit, ei kärkeä.</strong> Simuloitu taulu SWE-benchin muodossa ja sen omalla signaali-kohinasuhteella osuu vakiintuneiden pareihin (38,3 % vs 37,9 %) ja entropiaan (52,7 % vs 54,2 %) — ja on kuusinkertaisesti väärässä siinä montako järjestelmää voisi olla ykkönen (3 vs 19). Aggregaatit ovat neljän luvun asia; kärki on kentän muodon asia, ja jokaisella oikealla taululla on kärjessä tiheä kasauma jota gaussinen kenttä ei tunne. Sama johtopäätös tuli illan aikana kolmesta suunnasta: entropian hajotelmasta, κ:sta ja nyt suunnittelutaulukosta.</p>
 
 <h2>Mitä kaatui — ja miksi se on hyvä</h2>
 <ul>
