@@ -1,0 +1,21 @@
+THE SAME INSTRUMENT, TRANSPOSED: RANKING THE ITEMS
+==========================================================================================
+  leaderboard             J used  n used  H systems   H items   diff  sign(n-J)  match  estab items
+  SWE-bench Verified         134     260      60.3%     64.8%  +4.5          1    yes        34.1%
+  MTEB English v2            181      41      54.5%     19.6% -34.8         -1    yes        47.0%
+  HELM classic                90      10      64.1%    100.0% +35.9         -1     NO         0.0%
+  ProteinGym DMS              96     217      49.4%     53.8%  +4.4          1    yes        37.0%
+  TabArena 16 models          16      51      61.3%     79.5% +18.2          1    yes         8.6%
+  TabArena 45 variants        45      51      58.5%     62.9%  +4.4          1    yes        23.6%
+  CASP14                     101      42      68.4%     41.3% -27.1         -1    yes        40.6%
+  LiveBench                  152     200      63.8%     57.4%  -6.4          1     NO        34.6%
+  MathArena 2025              35     183      56.1%     80.8% +24.7          1    yes        17.7%
+
+  sign matches sign(n - J): 7/9 (pre-registered >= 7)
+  SWE-bench item side blurrier: yes (+4.5 points)
+  boards that resolve items better than systems: 3/9 (pre-registered >= 1)
+
+  Both sides are capped at 260 rows and columns, drawn at random with a
+  fixed seed, so the two entropies are computed on the same submatrix and the
+  comparison is not a comparison of sizes. 'estab items' is the share of item
+  pairs whose difficulty ordering the board establishes.
