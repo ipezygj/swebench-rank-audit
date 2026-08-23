@@ -1,0 +1,29 @@
+WHAT PAIR-SPECIFIC RESOLUTION COSTS OR SAVES, IN ITEMS
+==========================================================================================
+  leaderboard             n now  kappa   pair rule  board rule  ratio 1/kappa^2  excess
+  SWE-bench Verified        500   0.61         inf         inf    nan      2.69   +nan%
+  MTEB English v2            41   0.58     5623961    11455602   2.04      2.96   +104%
+  HELM classic               10   0.44          87        3918  44.82      5.05  +4382%
+  ProteinGym DMS            217   0.69        1481        4662   3.15      2.08   +215%
+  TabArena 16 models         51   0.59         309        1329   4.30      2.89   +330%
+  TabArena 45 variants       51   0.51         993        4954   4.99      3.89   +399%
+  CASP14                     42   0.79          11           3   0.30      1.62    -70%
+  LiveBench                 200   0.87         183         171   0.94      1.33     -6%
+  MathArena 2025            183   0.49        6224       25337   4.07      4.16   +307%
+
+  ratio equals 1/kappa^2 within 15 %: 1/9 (pre-registered >= 8)
+  board rule asks more than 20 % extra: 6/9 (pre-registered >= 6)
+  ordering of boards unchanged: Spearman +0.90 (pre-registered > 0.9)
+
+  dated board           median frontier advance   pair rule  board rule  ratio
+  SWE-bench Verified                         32        4942        6035   1.22
+  SWE-bench Lite                             17        1766        1788   1.01
+  MTEB English v2                            16         277        1126   4.06
+  LiveBench                                  12        1816        2343   1.29
+  ProteinGym DMS                             11         198        1610   8.13
+
+  'pair rule' = items needed to separate that pair at 80 % power, 5 %,
+  using the pair's own difference vector (refill_all.py). 'board rule'
+  substitutes the board's typical pair variance, which is what a single
+  published resolution number invites. The gap between them is the cost
+  of not reporting R10.

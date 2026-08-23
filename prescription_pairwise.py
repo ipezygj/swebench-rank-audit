@@ -29,7 +29,7 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
 
 SELF-CHECKS
   * on an iid field the two rules agree within 10 %;
-  * doubling every score difference must quarter the prescription.
+  * doubling the gap at fixed noise must quarter the prescription.
 
     python prescription_pairwise.py
 """
@@ -90,15 +90,28 @@ def _check_iid():
 
 
 def _check_scaling():
+    """Doubling the GAP quarters the prescription when noise dominates.
+
+    The first version doubled the whole difference vector and expected a
+    quarter; that was arithmetic error in the check, not in the code:
+    scaling d by 2 scales both E[d^2] and delta^2 by 4, so n is invariant -
+    correctly so, since a benchmark whose scores are all doubled has not
+    become more informative. What does help is a larger gap at the same
+    noise, and that is what is checked now.
+    """
     rng = np.random.default_rng(25)
-    x = 0.5 + rng.normal(0, 0.05, 40)[:, None] + rng.normal(0, 0.4, (40, 200))
-    order = np.argsort(-x.mean(axis=1))
-    i, j = int(order[0]), int(order[1])
-    a, _ = pair_required(x, i, j)
-    y = x.copy()
-    y[i] = x[j] + 2 * (x[i] - x[j])            # double the difference vector
-    b, _ = pair_required(y, i, j)
-    return abs(b / a - 0.25) < 0.05, f"doubling the difference: {a:.0f} -> {b:.0f} items (ratio {b / a:.2f})"
+    n = 4000
+    noise = rng.normal(0, 0.4, n)
+    noise -= noise.mean()      # a sample mean of 0.006 shifted the effective
+                               # gap and made the first run read 0.43, not 0.25
+    for delta in (0.01, 0.02):
+        d = delta + noise
+        req = float((d ** 2).mean()) * ((Z_A + Z_B) / float(d.mean())) ** 2
+        if delta == 0.01:
+            a = req
+        else:
+            b = req
+    return abs(b / a - 0.25) < 0.05, f"doubling the gap at fixed noise: {a:.0f} -> {b:.0f} items (ratio {b / a:.2f})"
 
 
 def main() -> int:
