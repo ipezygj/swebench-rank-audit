@@ -67,10 +67,21 @@ MATRICES = {
 
 
 def predict(tau: float, sigma_p: float, n: int, c: float) -> float:
+    """Predicted share of ORDERED pairs established.
+
+    The Gaussian argument gives the share of unordered pairs whose gap
+    exceeds the half-width, 2 Phibar(z). Every tool here reports the beats
+    matrix over ordered pairs, J(J-1), where a separated pair contributes
+    one entry - so the comparable number is half: Phibar(z). The first
+    version returned 2 Phibar(z) and failed its own Gaussian self-check by
+    exactly a factor of two (13.9 vs 7.0), which is how the mismatch in
+    definitions was found. Stated for every table: 'established' is the
+    ordered-pair share; the unordered share is twice it.
+    """
     if tau <= 0:
         return 0.0
     z = c * sigma_p / (math.sqrt(2 * n) * tau)
-    return float(2 * norm.sf(z))
+    return float(norm.sf(z))
 
 
 def measure(x: np.ndarray, draws: int = 800):
@@ -104,7 +115,9 @@ def _check_gaussian_field() -> tuple[bool, str]:
 def _check_limits() -> tuple[bool, str]:
     lo = predict(0.0, 0.3, 200, 4.0)
     hi = predict(1e6, 0.3, 200, 4.0)
-    return lo == 0.0 and hi > 0.999, f"tau=0 -> {lo:.3f}, tau->inf -> {hi:.3f}"
+    # Ordered-pair share: at most half of J(J-1) entries can be set, so the
+    # ceiling is 0.5, not 1 - the same definition reconciliation as predict().
+    return lo == 0.0 and abs(hi - 0.5) < 1e-3, f"tau=0 -> {lo:.3f}, tau->inf -> {hi:.3f} (ceiling 0.5 for ordered pairs)"
 
 
 def main() -> int:
@@ -140,8 +153,12 @@ def main() -> int:
     p(f"  mean |error|: Gaussian-SD {100 * np.mean(errs_sd):.1f} points, "
       f"IQR-robust {100 * np.mean(errs_iqr):.1f} points")
     p("")
+    p("  'observed' and 'pred' are shares of ORDERED pairs (the beats matrix),")
+    p("  so the share of unordered pairs separated is twice each. The first")
+    p("  version predicted the unordered share and failed its Gaussian check")
+    p("  by exactly 2x - the definitions were reconciled, not the data.")
     p("  SNR = tau * sqrt(2n) / (c * sigma_p): the field's spread in units of")
-    p("  one pair's simultaneous resolution. established = 2 * Phibar(1 / SNR).")
+    p("  one pair's simultaneous resolution. established (ordered) = Phibar(1 / SNR).")
     p("  'pred (sd)' uses the SD of scores as tau; 'pred (iqr)' uses the IQR")
     p("  scaled to a Gaussian SD, which ignores outliers at the bottom or top")
     p("  of the field. The pre-registered expectation was that the SD version")

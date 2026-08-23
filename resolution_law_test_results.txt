@@ -1,0 +1,27 @@
+IS THE ESTABLISHED SHARE DETERMINED BY ONE NUMBER?
+==============================================================================
+  leaderboard               J    n    SNR  observed  pred (sd)  pred (iqr)  err sd  err iqr
+  SWE-bench Verified      134  500   3.12     37.9%      37.4%       38.4%   -0.4    +0.5
+  MTEB English v2         181   41   2.51     34.2%      34.5%       30.0%   +0.3    -4.3
+  HELM classic             90   10   1.39     24.4%      23.7%       27.6%   -0.7    +3.2
+  ProteinGym DMS           96  217   2.98     36.0%      36.9%       31.8%   +0.9    -4.2
+  TabArena 16 models       16   51   3.64     22.1%      39.2%       14.8%  +17.1    -7.3
+  TabArena 45 variants     45   51   3.70     25.3%      39.3%       16.7%  +14.0    -8.6
+  CASP14                  101   42   1.88     24.9%      29.7%       25.1%   +4.8    +0.2
+  LiveBench               152  200   1.81     30.4%      29.0%       31.4%   -1.4    +1.0
+  MathArena 2025           35  183   2.08     31.6%      31.5%       30.6%   -0.1    -1.0
+
+  mean |error|: Gaussian-SD 4.4 points, IQR-robust 3.4 points
+
+  'observed' and 'pred' are shares of ORDERED pairs (the beats matrix),
+  so the share of unordered pairs separated is twice each. The first
+  version predicted the unordered share and failed its Gaussian check
+  by exactly 2x - the definitions were reconciled, not the data.
+  SNR = tau * sqrt(2n) / (c * sigma_p): the field's spread in units of
+  one pair's simultaneous resolution. established (ordered) = Phibar(1 / SNR).
+  'pred (sd)' uses the SD of scores as tau; 'pred (iqr)' uses the IQR
+  scaled to a Gaussian SD, which ignores outliers at the bottom or top
+  of the field. The pre-registered expectation was that the SD version
+  over-predicts on heavy-tailed fields (SWE-bench, CASP14) and the IQR
+  version fits better there. Whether it did is in the last two columns,
+  and the law is as good as the smaller of them.
