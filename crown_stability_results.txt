@@ -19,3 +19,15 @@ IF THE ITEMS WERE RESAMPLED, WHO WOULD BE FIRST?
   share of resamples in which the printed first-place system is still
   first. tie@1 is the simultaneous statement - how many systems have a
   rank set containing 1 - and it is the more conservative of the two.
+
+  VERIFICATION OF THE MTEB REVERSAL (20 000 resamples, added after the run
+  because 2 000 draws put the two within 4 points of each other):
+    printed #1  jcorners/ingot-8b-r3            0.7598   wins 46.1 %
+    printed #2  Kingsoft-LLM/QZhou-Embedding    0.7597   wins 48.7 %
+    Monte Carlo SE 0.35 points, so the 2.6-point difference is real as a
+    bootstrap statistic - but the underlying score gap is 0.0001, one part
+    in seven thousand, and the paired t is 0.01. The honest statement is
+    that MTEB's first place is a coin flip whose printed side is the less
+    likely one, not that the ranking is wrong.
+    Third most frequent winner: codefuse-ai/F2LLM-4B, printed 7th, 5.0 %.
+
