@@ -1,0 +1,17 @@
+THE CHASE MODEL: ENTRANTS DRAWN RELATIVE TO THE CURRENT RECORD
+============================================================================================
+  board                    q  lambda | A real  chase  drift | u real  chase | P real  chase
+  SWE-bench Verified    0.35  0.0107 |     32   28.8   13.6 |   0.40   0.42 |    25%    14%
+  SWE-bench Lite        0.25  0.0220 |     17   14.8   11.3 |   0.57   0.55 |    24%    23%
+  MTEB English v2       0.35  0.0002 |     16    9.2    8.5 |   0.27   0.22 |    38%    14%
+  LiveBench             0.20  0.0178 |     12   21.2    8.5 |   0.41   0.46 |    33%    14%
+  ProteinGym DMS        0.15  0.0099 |     11   11.6    4.2 |   0.50   0.66 |    55%    28%
+
+  A within 30 %:        3/5 (pre-registered >= 4)
+  median u (FITTED, convergence only): 4/5 within 0.15
+  P within 15 points:   2/5 (pre-registered >= 4)
+  chase beats drift on |A error|: 4/5 (pre-registered >= 4)
+
+  q and lambda are fitted jointly to TOTAL CLIMB and MEDIAN STEP; A and P
+  are predictions. The drift column is sota_twin's linear-rise twin,
+  fitted to the same climb through beta - the comparison is like for like.
