@@ -1,0 +1,23 @@
+IS ENTROPY DETERMINED BY (J, n, tau, sigma_p)? REAL vs GAUSSIAN TWIN
+==============================================================================
+  leaderboard               J    n  H/ceil real    twin   diff  estab real    twin
+  SWE-bench Verified      134  500        54.5%   52.9%  +1.6       37.9%   38.4%
+  MTEB English v2         181   41        54.7%   58.2%  -3.4       34.2%   35.3%
+  HELM classic             90   10        64.7%   64.1%  +0.6       24.4%   26.0%
+  ProteinGym DMS           96  217        50.4%   52.1%  -1.7       36.0%   37.3%
+  TabArena 16 models       16   51        61.9%   32.1% +29.8       22.1%   40.2%
+  TabArena 45 variants     45   51        58.9%   42.1% +16.8       25.3%   40.1%
+  CASP14                  101   42        68.2%   61.1%  +7.1       24.9%   30.6%
+  LiveBench               152  200        63.6%   63.8%  -0.2       30.4%   30.6%
+  MathArena 2025           35  183        56.1%   52.2%  +3.9       31.6%   32.9%
+
+  within 5 points: 6 of 9
+  TabArena direction (pre-registered: real HIGHER than twin): 16 +29.8, 45 +16.8
+
+  The twin has the same J, n, score spread and per-item pair noise and
+  NOTHING else of the real field - no skew, no clusters, no outliers.
+  Where it matches, entropy is a function of those four numbers and a
+  benchmark owner can compute it from a planned size and an expected
+  spread before a single system is run. Where it does not, the field's
+  shape carries information the four numbers do not, and the
+  difference is the size of that information.
