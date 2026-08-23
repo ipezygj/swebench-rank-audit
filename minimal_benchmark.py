@@ -64,7 +64,11 @@ def greedy(x, target=TARGET, rng=None):
     if total == 0:
         return None
     rng = rng or np.random.default_rng(SEED)
-    block = max(1, int(round(STEP_FRAC * n)))
+    # At least two items per block: rank_sets needs n >= 2, and with a block
+    # of one the first trial subset had length 1, was skipped, and the loop
+    # broke immediately - five of nine boards returned "0 items, 0 % recovered"
+    # in the first run. That was the block size, not the boards.
+    block = max(2, int(round(STEP_FRAC * n)))
     chosen = []
     remaining = list(range(n))
     # score each item once by how much it discriminates: variance of the
