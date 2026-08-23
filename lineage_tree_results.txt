@@ -1,0 +1,18 @@
+THE CHASE MODEL WITH A FAMILY TREE
+========================================================================================
+  board                kap real   rho   lambda | A real  A sim | P real  P tree  P sib | kap sim
+  SWE-bench Verified       0.88  0.22   0.0133 |     32   43.2 |    25%     10%    16% |    0.98
+  SWE-bench Lite           0.94  0.11   0.0160 |     17   24.9 |    24%     11%    22% |    0.99
+  MTEB English v2          0.53  0.72   0.0023 |     16   35.1 |    38%      2%    17% |    0.79
+  LiveBench                0.89  0.20   0.0112 |     12   41.1 |    33%      2%    20% |    0.98
+  ProteinGym DMS           0.63  0.60   0.0039 |     11   30.2 |    55%      5%    34% |    0.85
+
+  P within 15 points: 2/5 (pre-registered >= 3; sibling chase 3)
+  simulated frontier kappa within 0.10: 3/5 (pre-registered >= 4)
+  MTEB simulated kappa below 0.70: NO (0.79; sibling chain gave 0.88 against a real 0.53)
+  A within 30 %: 0/5 (pre-registered >= 3)
+
+  Every entrant descends from one of the top five systems present when it
+  arrives, inheriting its item behaviour to degree rho and its ability plus
+  an exponential step. rho is set from the board's own frontier kappa;
+  lambda is fitted to total climb; the parent pool is 5 on every board.
