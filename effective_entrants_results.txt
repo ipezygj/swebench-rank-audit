@@ -1,0 +1,21 @@
+EFFECTIVE NUMBER OF INDEPENDENT ENTRANTS
+========================================================================
+  leaderboard               J    n      PR  PR null      F   J_eff  resid
+  SWE-bench Verified      134  500    29.3    105.2   0.28    37.3   -2.3
+  MTEB English v2         181   41     5.0     32.8   0.15    27.6   -8.3
+  HELM classic             90   10     5.3      8.3   0.64    57.4   -1.9
+  ProteinGym DMS           96  217     9.1     66.2   0.14    13.2   -8.8
+  TabArena 16 models       16   51     6.4     10.7   0.59     9.5  -10.6
+  TabArena 45 variants     45   51     7.2     23.0   0.31    14.2   -5.5
+  CASP14                  101   42    10.7     29.3   0.37    36.9   -2.0
+  LiveBench               152  200    28.2     85.9   0.33    49.9   -1.7
+  MathArena 2025           35  183    10.5     28.7   0.37    12.8   -3.3
+
+  calibration: J_eff(TabArena 45) 14.2 vs 1.5 x J_eff(TabArena 16) 14.2  -> yes
+  F < 1 on all boards: yes (max F 0.64)
+  exploratory: Spearman(1 - F, |residual term|) = +0.32 (p 0.41); expected positive
+
+  PR = participation ratio of the residual correlation spectrum; null =
+  the same board with each system's residuals permuted (no families).
+  F = PR / null is the share of entrants that are effectively independent;
+  J_eff = F * J. A leaderboard of J entrants carries the evidence of J_eff.
