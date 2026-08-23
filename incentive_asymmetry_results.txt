@@ -1,0 +1,25 @@
+WHAT A CLAIM COSTS, DEPENDING ON WHO MAKES IT
+============================================================================================
+  leaderboard                n  kappa rel  relative needs  outsider needs  saving  largest step seen
+  SWE-bench Verified       500      0.882           4.87p           5.52p     12%              8.80p
+  MTEB English v2           41      0.530           2.60p           4.90p     47%              3.81p
+  HELM classic              10      0.990           6.60p           6.66p      1%                  -
+  ProteinGym DMS           217      0.633           1.48p           2.33p     37%              4.96p
+  TabArena 16 models        51      0.953           3.64p           3.82p      5%                  -
+  TabArena 45 variants      51      0.624           2.74p           4.39p     38%                  -
+  CASP14                    42      0.783           6.36p           8.11p     22%                  -
+  LiveBench                200      0.894           8.98p          10.05p     11%             22.62p
+  MathArena 2025           183      0.749           3.66p           4.88p     25%                  -
+
+  relative needs at least 15 % less improvement: 5/9 (pre-registered >= 7)
+  outsider's requirement exceeds the largest step ever seen: 1/4 dated boards (pre-registered >= 3)
+  relative's requirement is below the largest step: 4/4 dated boards (pre-registered >= 7 of 9,
+    which only 4 boards can answer - recorded as a mis-specified threshold)
+
+  'relative' = an entrant whose pair sharpness with the leader matches the
+  board's frontier level; 'outsider' = kappa 1, independent behaviour. Both
+  need the same power against the same leader on the same items. The saving
+  is exactly the kappa ratio - which is the honest number, and also an
+  incentive: on a board where relatives are sharp, a variant of the leader
+  can make a separable claim on an improvement an unrelated system cannot.
+  A standard that requires pair resolution (R10) should say so out loud.
