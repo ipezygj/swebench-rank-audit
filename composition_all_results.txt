@@ -1,0 +1,21 @@
+WHO COULD BE FIRST UNDER A DIFFERENT COMPOSITION?
+======================================================================================
+  board                   groups  champions  within 2x  tie@1   lowest champion   lowest within 2x
+  SWE-bench Verified          12        122          3     19      rank 128/134         rank 3/134
+  MathArena 2025               5          5          3     11         rank 6/35          rank 3/35
+  CASP14                      33         20          1      1       rank 74/101         rank 1/101
+  MTEB English v2             19         23          3     12      rank 147/174         rank 7/174
+
+  champion set larger than one: 4/4 (pre-registered: all but CASP14)
+  champion set smaller than tie@1: 1/4 (pre-registered >= 3)
+  SWE-bench has a champion outside the printed top ten: yes
+
+  A champion is a system for which SOME non-negative weighting of the item
+  groups puts it first. The weights a benchmark actually uses are its group
+  sizes, which are an artefact of collection. This is exact linear
+  programming - no sampling, no confidence level - and it answers a
+  different question from the rank sets: not what the noise allows, but
+  what the composition allows. The unconstrained column allows a corner of
+  the simplex - all weight on one repository - which is why it is nearly
+  vacuous. The 'within 2x' column keeps every group between half and twice
+  its actual share, which is the range a benchmark owner could defend.

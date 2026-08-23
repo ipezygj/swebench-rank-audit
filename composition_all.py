@@ -59,13 +59,27 @@ def group_matrix(df, labels):
     return p, sizes / sizes.sum(), groups
 
 
-def can_lead(p, t):
-    """Is there a weight vector w >= 0, sum w = 1, with (p_j - p_t) . w <= 0 for all j?"""
+def can_lead(p, t, w0=None, factor=None):
+    """Is there a weight vector putting system t first?
+
+    With `factor` given, the weights are confined to within that factor of
+    the board's actual composition w0 (each group between w0/factor and
+    w0*factor, renormalised by the equality constraint). Without it, any
+    point of the simplex is allowed, INCLUDING its corners - which means a
+    system that leads on one single group is a champion, and the answer is
+    close to vacuous. The unconstrained version was run first and is kept
+    for comparison; the constrained one is the question a benchmark owner
+    can actually be asked.
+    """
     J, G = p.shape
     A = p - p[t][None, :]
     A = np.delete(A, t, axis=0)
+    if factor is None or w0 is None:
+        bounds = [(0, None)] * G
+    else:
+        bounds = [(float(w / factor), float(min(w * factor, 1.0))) for w in w0]
     res = linprog(c=np.zeros(G), A_ub=A, b_ub=np.zeros(A.shape[0]),
-                  A_eq=np.ones((1, G)), b_eq=[1.0], bounds=[(0, None)] * G, method="highs")
+                  A_eq=np.ones((1, G)), b_eq=[1.0], bounds=bounds, method="highs")
     return bool(res.status == 0)
 
 
@@ -95,8 +109,8 @@ def main() -> int:
     p_ = L.append
     p_("WHO COULD BE FIRST UNDER A DIFFERENT COMPOSITION?")
     p_("=" * 86)
-    p_(f"  {'board':<22} {'groups':>7} {'champions':>10} {'tie@1':>6} {'smaller':>8} "
-      f"{'lowest-ranked champion':>24}")
+    p_(f"  {'board':<22} {'groups':>7} {'champions':>10} {'within 2x':>10} {'tie@1':>6} "
+      f"{'lowest champion':>17} {'lowest within 2x':>18}")
     bigger, smaller, outside = 0, 0, 0
     for name, (path, fn) in BOARDS.items():
         df = pd.read_csv(path, index_col=0).dropna(axis=0)
@@ -104,6 +118,7 @@ def main() -> int:
         p, w0, groups = group_matrix(df, labels)
         J = p.shape[0]
         champs = [t for t in range(J) if can_lead(p, t)]
+        champs2 = [t for t in range(J) if can_lead(p, t, w0, factor=2.0)]
         r = rs.rank_sets(df.to_numpy(dtype=float), draws=800)
         tie1 = int((r["best"] == 1).sum())
         order = list(np.argsort(-df.to_numpy(dtype=float).mean(axis=1)))
@@ -113,8 +128,9 @@ def main() -> int:
         smaller += len(champs) < tie1
         if name.startswith("SWE"):
             outside = worst_champ > 10
-        p_(f"  {name:<22} {len(groups):>7} {len(champs):>10} {tie1:>6} {'yes' if len(champs) < tie1 else 'no':>8} "
-           f"{f'rank {worst_champ} of {J}':>24}")
+        worst2 = max(ranks[c] for c in champs2) if champs2 else 0
+        p_(f"  {name:<22} {len(groups):>7} {len(champs):>10} {len(champs2):>10} {tie1:>6} "
+           f"{f'rank {worst_champ}/{J}':>17} {f'rank {worst2}/{J}':>18}")
     p_("")
     p_(f"  champion set larger than one: {bigger}/4 (pre-registered: all but CASP14)")
     p_(f"  champion set smaller than tie@1: {smaller}/4 (pre-registered >= 3)")
@@ -125,7 +141,10 @@ def main() -> int:
     p_("  sizes, which are an artefact of collection. This is exact linear")
     p_("  programming - no sampling, no confidence level - and it answers a")
     p_("  different question from the rank sets: not what the noise allows, but")
-    p_("  what the composition allows.")
+    p_("  what the composition allows. The unconstrained column allows a corner of")
+    p_("  the simplex - all weight on one repository - which is why it is nearly")
+    p_("  vacuous. The 'within 2x' column keeps every group between half and twice")
+    p_("  its actual share, which is the range a benchmark owner could defend.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("composition_all_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
