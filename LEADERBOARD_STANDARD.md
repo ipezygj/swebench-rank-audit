@@ -23,6 +23,17 @@ or a method move together item by item, and their comparison is sharper
 than the board average. Reporting therefore splits into board-level fields
 (R2–R8) and claim-level fields (R10).
 
+One more fact belongs here, because a standard that only reports what a
+board cannot prove would be misleading. Following a leaderboard's top row
+is worth doing: measured out of sample, on the half of the items the choice
+did not see, picking the leader costs 0.00 to 2.00 points against the best
+system available, while picking at random from the top ten costs 1.8 to 27
+and picking at random from the board costs 5 to 51 (`selection_regret.py`).
+A board can be unable to prove who is first and still be useful, because
+the systems it cannot separate are ones a reader would be equally happy
+with. The requirements below exist so that the two statements can be told
+apart, not so that ranking stops.
+
 A leaderboard **conforms** if it publishes the required fields below with the
 matrix they were computed from. A reference implementation
 (`leaderboard_standard.py`) computes every field from the matrix; conformance
