@@ -1,0 +1,22 @@
+HOW MANY NEW ITEMS WOULD SETTLE THE TOP PAIR? EVERY BENCHMARK, ONE LAW
+==============================================================================
+  leaderboard                n      pair     gap  discord  items needed  x benchmark
+  SWE-bench Verified       500    1 vs 3   +0.4%    0.128        62,791       125.6x
+  MTEB English v2           41    1 vs 2   +0.0%    0.004     5,623,961    137169.8x
+  HELM classic              10    1 vs 2   +1.0%    0.001            87         8.7x
+  ProteinGym DMS           217    1 vs 2   +0.6%    0.007         1,481         6.8x
+  TabArena 16 models        51    1 vs 2   +0.9%    0.003           309         6.1x
+  TabArena 45 variants      51    1 vs 2   +0.5%    0.003           993        19.5x
+  CASP14                    42    1 vs 2  +22.5%    0.072            11         0.3x
+  LiveBench                200    1 vs 2   +9.3%    0.201           183         0.9x
+  MathArena 2025           183    1 vs 2   +0.4%    0.013         6,224        34.0x
+
+  'items needed' is for 80 % power at 5 %, two-sided, to separate the
+  leader from the first system below it, at the difficulty those two
+  already disagree at. 'x benchmark' is that number over the items the
+  benchmark already has: the factor by which it would have to grow to
+  settle its own top. A benchmark that needs more than itself to decide
+  its own first place is printing a coin flip with a rank number on it.
+
+  Where the pair is an exact tie no number of items helps, and that is
+  reported as such rather than as a large number.

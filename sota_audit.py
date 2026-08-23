@@ -147,14 +147,20 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--matrix", default="swebench_verified_matrix.csv")
     ap.add_argument("--draws", type=int, default=800)
+    ap.add_argument("--dates-csv", default=None,
+                    help="CSV index=system, column date=YYYYMMDD; else parsed from names")
     ap.add_argument("--out", default="sota_audit_results.txt")
     a = ap.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
 
-    df = pd.read_csv(a.matrix, index_col=0)
+    df = pd.read_csv(a.matrix, index_col=0).dropna(axis=0)
     x = df.to_numpy(dtype=float)
     names = list(df.index)
-    dates = parse_dates(names)
+    if a.dates_csv:
+        dd = pd.read_csv(a.dates_csv, index_col=0)["date"]
+        dates = np.array([int(dd.loc[n]) for n in names])
+    else:
+        dates = parse_dates(names)
     J, n = x.shape
     print(f"matrix {a.matrix}: {J} systems x {n} items")
 
@@ -189,6 +195,18 @@ def main(argv=None) -> int:
           f"equals frontier climb {total:.4f}")
     if not ok_sum:
         return 1
+
+    # When did the leader last have rank set [1, 1] among the field of its day?
+    order_d = np.argsort(dates, kind="stable")
+    marks = sorted(set(list(range(9, J, 8)) + [J - 1]))
+    unambiguous = []
+    for m_ in marks:
+        present = order_d[: m_ + 1]
+        r = rs.rank_sets(x[present], draws=max(300, a.draws // 2), seed=SEED + 900 + m_)
+        lead_local = int(np.argmax(x[present].mean(axis=1)))
+        unambiguous.append((int(dates[present[-1]]), len(present),
+                            int(r["best"][lead_local]), int(r["worst"][lead_local]),
+                            int((r["best"] == 1).sum()), names[present[lead_local]]))
 
     L = []
     p = L.append
@@ -275,6 +293,22 @@ def main(argv=None) -> int:
     p("  frontier curve is drawn through every advance; the evidence supports")
     p("  drawing it through a subset, and the rest is the ordering of near-")
     p("  ties by arrival date.")
+
+    p("")
+    p("DID THE LEADER OF THE DAY EVER HAVE RANK SET [1, 1]?")
+    p(f"  {'date':>10} {'field':>6} {'leader set':>11} {'could be #1':>12}  leader")
+    last_unamb = None
+    for d_, f_, b_, w_, t_, nm in unambiguous:
+        flag = "  <-- unambiguous" if (b_ == 1 and w_ == 1) else ""
+        if b_ == 1 and w_ == 1:
+            last_unamb = (d_, nm)
+        p(f"  {fmt(d_):>10} {f_:>6} [{b_},{w_}]{'':>6} {t_:>12}  {nm[:34]}{flag}")
+    p("")
+    if last_unamb:
+        p(f"  last date with an unambiguous leader: {fmt(last_unamb[0])} "
+          f"({last_unamb[1][:40]})")
+    else:
+        p("  at no sampled date did the leader have rank set [1, 1].")
 
     text = "\n".join(L)
     print("\n" + text)

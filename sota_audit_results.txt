@@ -106,3 +106,25 @@ STEPS INSIDE NOISE STILL ADD UP: THE FINAL LEADER AGAINST EVERY EARLIER ONE
   frontier curve is drawn through every advance; the evidence supports
   drawing it through a subset, and the rest is the ordering of near-
   ties by arrival date.
+
+DID THE LEADER OF THE DAY EVER HAVE RANK SET [1, 1]?
+        date  field  leader set  could be #1  leader
+  2024-06-12     10 [1,1]                  1  20240612_MASAI_gpt4o  <-- unambiguous
+  2024-08-20     18 [1,4]                  4  20240820_honeycomb
+  2024-10-02     26 [1,5]                  5  20240924_solver
+  2024-10-28     34 [1,6]                  6  20241022_tools_claude-3-5-sonnet-u
+  2024-11-08     42 [1,7]                  7  20241108_devlo
+  2024-12-08     50 [1,6]                  6  20241208_gru
+  2025-01-12     58 [1,6]                  6  20250110_blackboxai_agent_v1.1
+  2025-02-24     66 [1,8]                  8  20250117_wandb_programmer_o1_cross
+  2025-04-10     74 [1,12]                 12  20250316_augment_agent_v0
+  2025-05-19     82 [1,10]                 10  20250515_Refact_Agent
+  2025-05-28     90 [1,10]                 10  20250522_tools_claude-4-opus
+  2025-06-27     98 [1,12]                 12  20250612_trae
+  2025-07-28    106 [1,15]                 15  20250612_trae
+  2025-08-19    114 [1,17]                 17  20250804_epam-ai-run-claude-4-sonn
+  2025-09-29    122 [1,12]                 12  20250928_trae_doubao_seed_code
+  2025-11-10    130 [1,16]                 16  20250928_trae_doubao_seed_code
+  2025-12-15    134 [1,19]                 19  20251205_sonar-foundation-agent_cl
+
+  last date with an unambiguous leader: 2024-06-12 (20240612_MASAI_gpt4o)
