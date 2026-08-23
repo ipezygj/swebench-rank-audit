@@ -1,0 +1,58 @@
+HOW MANY ATTEMPTS? THE POSTERIOR, NOT MY OPINION
+==========================================================================
+top 19 observed scores, centred; prior on log10 N is uniform on [0, 6]
+
+  posterior over log10 N
+    median              2.90   (N = 794)
+      the prior median is 3.00. If the posterior
+      median sits on it, the number is the prior speaking, not the
+      data, and must not be quoted as an estimate of anything.
+    50 % interval       [1.90, 4.30]
+    90 % interval       [0.50, 5.60]
+    information gained over the prior   0.045 nats
+
+  posterior over s (ability spread and noise, confounded by algebra)
+    median              0.0683
+    90 % interval       [0.0107, 0.1143]
+
+  VERDICT: the shape of the leaderboard says almost nothing about
+  how many attempts produced it. 0.04 nats over a uniform
+  prior across six orders of magnitude is close to nothing, and
+  that is the measurement yesterday's file asserted without one.
+  The sensitivity curve in deflated_benchmark.py was the right
+  form to report, and this is why.
+
+  WHY THE MARGINAL IS FLAT - it is a ridge, not an absence
+    posterior correlation of log10 N and s   +0.888
+    Many attempts with a narrow spread produce the same shape as few
+    attempts with a wide one. The data constrains the COMBINATION and
+    neither coordinate alone, which is a sharper statement than 'no
+    information' and a different one.
+
+  WITH s PINNED BY DIRECT MEASUREMENT
+    rho and sigma are measurable from the item-level matrix without
+    this model at all: sigma = 0.0191 and rho = 0.664, so under the
+    hypothesis that the top 19 differ in no ability whatever (tau = 0)
+    the spread is pure measurement noise, s = sigma sqrt(1 - rho).
+    s = 0.0111  (nearest grid value 0.0107)
+    conditional median log10 N   0.50  (N = 3)
+    90 % interval                [0.00, 1.00]
+    information over the prior   1.669 nats
+
+    READ THIS AS A REJECTION, NOT AN ESTIMATE. N = 3
+    is impossible when 19 systems are reported: you cannot
+    show the best 19 of 3. The conditional posterior piles up
+    against the lower boundary because at this s the model
+    CANNOT produce the observed spread at any N. The top 19 are
+    further apart than pure measurement noise allows, so the
+    hypothesis that they are equally able is rejected here -
+    independently, and by a different route, from the exact
+    permutation test in deflated_benchmark.py, which put the
+    same conclusion at p = 0.019.
+
+    Two methods sharing no machinery reaching the same verdict
+    is worth more than either of them alone.
+
+  Identified jointly: only s^2 = tau^2 + sigma^2 (1 - rho). Ability
+  spread and measurement noise cannot be separated from reported
+  scores, by algebra, whatever method is used on them.
