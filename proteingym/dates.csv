@@ -1,0 +1,97 @@
+model,date,source
+AIDO Protein-RAG (16B),20241129,biorxiv
+VenusREM,20241015,arxiv
+ProSST (K=2048),20240415,biorxiv
+ProSST (K=4096),20240415,biorxiv
+S3F-MSA,20241210,neurips
+S2F-MSA,20241210,neurips
+ProSST (K=1024),20240415,biorxiv
+ESCOTT,20240203,biorxiv
+ProSST (K=512),20240415,biorxiv
+S3F,20241210,neurips
+PoET (200M),20231210,neurips
+ProSST (K=128),20240415,biorxiv
+ESM3 open (1.4B),20250116,manual:Science
+RSALOR,20250203,biorxiv
+VespaG,20240424,biorxiv
+SaProt (650M),20231001,biorxiv
+TranceptEVE L,20221207,biorxiv
+S2F,20241210,neurips
+GEMME,20190815,manual:MBE
+TranceptEVE M,20221207,biorxiv
+TranceptEVE S,20220715,icml
+ProtSSN (ensemble),20231201,biorxiv
+"ProtSSN (k=20, h=1280)",20231201,biorxiv
+"ProtSSN (k=20, h=512)",20231201,biorxiv
+EVE (ensemble),20210701,nature-year
+"ProtSSN (k=20, h=768)",20231201,biorxiv
+ProSST (K=20),20240415,biorxiv
+"ProtSSN (k=30, h=512)",20231201,biorxiv
+"ProtSSN (k=30, h=768)",20231201,biorxiv
+"ProtSSN (k=30, h=1280)",20231201,biorxiv
+VESPA,20210701,springer-year
+Tranception L,20220715,icml
+"ProtSSN (k=10, h=1280)",20231201,biorxiv
+EVE (single),20210701,nature-year
+MSA Transformer (ensemble),20210715,icml
+"ProtSSN (k=10, h=512)",20231201,biorxiv
+Tranception M,20220715,icml
+SiteRM,20241210,neurips
+ESM-IF1,20220410,biorxiv
+"ProtSSN (k=10, h=768)",20231201,biorxiv
+DeepSequence (ensemble),20180701,nature-year
+Tranception S,20220715,icml
+MSA Transformer (single),20210715,icml
+ESM2 (650M),20230316,manual:Science
+DeepSequence (single),20180701,nature-year
+ESM-1v (ensemble),20211210,neurips
+SaProt (35M),20231001,biorxiv
+ESM-C (300M),20241204,manual:blog
+ESM2 (3B),20230316,manual:Science
+ESM-C (600M),20241204,manual:blog
+ESM2 (15B),20230316,manual:Science
+MIF-ST,20220525,biorxiv
+xTrimoPGLM-3B-MLM,20250701,nature-year
+xTrimoPGLM-10B-MLM,20250701,nature-year
+EVmutation,20170116,manual:NatBiotech
+ESM-1b,20220825,biorxiv
+VESPAl,20210701,springer-year
+Progen3 3B,20250415,biorxiv
+Progen2 XL,20220615,arxiv
+Progen3 1B,20250415,biorxiv
+ESM2 (150M),20230316,manual:Science
+MIF,20220525,biorxiv
+Progen2 L,20220615,arxiv
+Progen2 M,20220615,arxiv
+xTrimoPGLM-1B-MLM,20250701,nature-year
+Progen2 Base,20220615,arxiv
+Tranception L no retrieval,20220715,icml
+ESM-1v (single),20211210,neurips
+Wavenet,20210701,nature-year
+RITA XL,20220515,arxiv
+CARP (640M),20220519,biorxiv
+RITA L,20220515,arxiv
+xTrimoPGLM-100B-int4,20250701,nature-year
+Progen3 762m,20250415,biorxiv
+Site-Independent,20170116,manual:NatBiotech
+RITA M,20220515,arxiv
+Tranception M no retrieval,20220715,icml
+Unirep evotuned,20190701,nature-year
+Progen3 339m,20250415,biorxiv
+xTrimoPGLM-1B-CLM,20250701,nature-year
+Progen2 S,20220615,arxiv
+CARP (76M),20220519,biorxiv
+ESM2 (35M),20230316,manual:Science
+Progen3 219m,20250415,biorxiv
+MULAN,20240530,biorxiv
+RITA S,20220515,arxiv
+Tranception S no retrieval,20220715,icml
+Progen3 112m,20250415,biorxiv
+CARP (38M),20220519,biorxiv
+ProteinMPNN,20220915,manual:Science
+xTrimoPGLM-3B-CLM,20250701,nature-year
+ESM2 (8M),20230316,manual:Science
+Unirep,20190701,nature-year
+ProtGPT2,20220701,nature-year
+CARP (600K),20220519,biorxiv
+xTrimoPGLM-7B-CLM,20250701,nature-year
