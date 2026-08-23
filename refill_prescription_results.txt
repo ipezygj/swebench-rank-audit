@@ -1,0 +1,52 @@
+WHAT WOULD IT TAKE TO SEPARATE THE TOP?
+==========================================================================
+leader      20251205_sonar-foundation-agent_claude-opus-4-5  0.792
+challenger  20250928_trae_doubao_seed_code  0.788   (rank 3)
+fitted ability gap on the logit scale: +0.0679
+
+POWER TO SEPARATE THEM WITH NEW INSTANCES ONLY
+  columns are how many new instances; rows are how hard, written as
+  the rate the LEADER would score on them, which is the only form a
+  benchmark builder can act on
+   leader solves     50    100    200    500   1000   2000   5000  10000
+           0.90    0.03   0.04   0.03   0.05   0.06   0.06   0.14   0.32
+           0.75    0.03   0.04   0.03   0.07   0.09   0.15   0.30   0.58
+           0.50    0.03   0.05   0.04   0.07   0.12   0.17   0.39   0.63
+           0.30    0.04   0.04   0.08   0.04   0.09   0.13   0.34   0.57
+           0.15    0.03   0.04   0.04   0.04   0.08   0.10   0.21   0.37
+
+REQUIRED SIZE FOR 80 % POWER, FROM THE RESOLUTION LAW
+   leader solves    delta  discord  instances needed
+           0.90   0.0063    0.185            36,846
+           0.75   0.0129    0.381            17,871
+           0.50   0.0170    0.500            13,635
+           0.30   0.0141    0.414            16,452
+           0.15   0.0085    0.249            27,369
+
+  THE PRESCRIPTION: about 13,635 new instances on which the
+  leader would score 50%. The current benchmark has 500 -
+  the answer is 27 times the whole thing, to settle one pair.
+
+  No cell in the table reaches 80 % power. Within the budgets
+  tried, this pair cannot be separated by adding instances.
+
+  Read across a row and then down a column. Difficulty moves the
+  answer far more than budget does: instances the leader solves nine
+  times in ten are nearly worthless however many are built, because
+  both systems solve nearly all of them and a pair that agrees
+  separates nothing.
+
+THE CONTROL, WHICH IS THE POINT OF THE WHOLE FILE
+  the same calculation with the true gap set to zero:
+        gap = 0     0.02   0.04   0.03   0.05   0.04   0.04   0.07   0.04
+
+  Flat at the false-positive rate, at every budget, forever. If the
+  3 systems at the top of this leaderboard are equally able,
+  the prescription above buys nothing at all, and no amount of data
+  collection will decide between them. A power calculation answers
+  'how many, to detect a gap of this size'. It cannot tell you the
+  gap is there.
+
+  That is not a weakness of the method. It is the thing a benchmark
+  owner most needs to be told before commissioning five thousand new
+  instances: the honest ceiling on what more data can do.
