@@ -116,6 +116,28 @@ validated against a permutation null.
 - `model_or_harness.py` - On SWE-bench, how much of a submission's score is the model and how much the harness?
 - `within_family_spread.py` - Is 'the harness is two thirds of the model' peculiar to agentic coding?
 
+### Robustness of the reading
+
+- `alpha_sensitivity.py` - Do the standard's headline numbers depend on the confidence level?
+- `method_independence.py` - Does the headline survive a different statistical method?
+- `cluster_bootstrap.py` - Are the items independent? A cluster bootstrap says how much that assumption buys
+- `sota_clustered.py` - How many SOTA claims survive when the items are admitted to be clustered?
+- `half_split_replication.py` - If the benchmark had used a different half of its items, what would change?
+- `crown_stability.py` - How often does the crown change hands if the items are resampled?
+- `missing_entries.py` - What did dropping the incomplete rows do?
+- `crowding_penalty.py` - Is a leaderboard punished for being popular?
+- `granularity.py` - What does fine-grained scoring buy? Binarise a continuous board and see
+
+### Design questions a board can be asked
+
+- `minimal_benchmark.py` - How small could this benchmark be and still say the same thing?
+- `merge_boards.py` - Does merging two benchmarks resolve what neither resolves alone?
+- `cheap_entry.py` - How many items does a NEW entrant have to run to be placed?
+- `composition_all.py` - Who could be first if the benchmark had been composed differently? All boards
+- `time_to_decide.py` - How long until this benchmark can name a winner again?
+- `item_side.py` - The same instrument, transposed: how well does a benchmark rank its own items?
+- `benchmark_health.py` - One card per benchmark: what it can and cannot decide
+
 ### Prescription
 
 - `refill_prescription.py` - What would this benchmark need, to answer the question it is asked?
@@ -134,13 +156,8 @@ validated against a permutation null.
 
 ### Unsorted (add to a group in build_readme.py)
 
-- `alpha_sensitivity.py` - Do the standard's headline numbers depend on the confidence level?
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
-- `cluster_bootstrap.py` - Are the items independent? A cluster bootstrap says how much that assumption buys
-- `merge_boards.py` - Does merging two benchmarks resolve what neither resolves alone?
-- `method_independence.py` - Does the headline survive a different statistical method?
-- `minimal_benchmark.py` - How small could this benchmark be and still say the same thing?
 
 ## How the results were produced
 

@@ -48,6 +48,15 @@ GROUPS = [
         "lineage_tree.py", "broad_or_deep.py", "decisiveness_history.py", "crown_stability.py",
         "model_or_harness.py", "within_family_spread.py",
     ]),
+    ("Robustness of the reading", [
+        "alpha_sensitivity.py", "method_independence.py", "cluster_bootstrap.py",
+        "sota_clustered.py", "half_split_replication.py", "crown_stability.py",
+        "missing_entries.py", "crowding_penalty.py", "granularity.py",
+    ]),
+    ("Design questions a board can be asked", [
+        "minimal_benchmark.py", "merge_boards.py", "cheap_entry.py", "composition_all.py",
+        "time_to_decide.py", "item_side.py", "benchmark_health.py",
+    ]),
     ("Prescription", ["refill_prescription.py", "refill_all.py"]),
     ("Matrix builders", [
         "swebench_matrix.py", "all_splits.py", "helm_matrix.py", "mteb_dates.py",

@@ -26,12 +26,12 @@ ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
 code{font-family:var(--mono);font-size:.85em}
 </style>
 <main>
-<h1>Silmukka 23.8. — neljäkymmentäseitsemän iteraatiota</h1>
-<p class="sub">Autonominen silmukka klo 16:01–18:13 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 94 committia</p>
+<h1>Silmukka 23.8. — kuusikymmentäyhdeksän iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–19:05 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 140 committia</p>
 
 <div class="grid">
-<div class="card"><b>47</b><span>iteraatiota, joista 29 tuotti uuden mittarin tai lain-testin</span></div>
-<div class="card"><b>19</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
+<div class="card"><b>69</b><span>iteraatiota, joista 45 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>27</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
 <div class="card"><b>κ 0,44–0,94</b><span>SOTA-väitteen parin erotuskyky, kun taulun keskiarvo on 1,00</span></div>
 <div class="card"><b>8/10</b><span>taulua joiden kärkiparia ei voi erottaa toisistaan</span></div>
 </div>
@@ -134,6 +134,29 @@ code{font-family:var(--mono);font-size:.85em}
 <h2>Kuka olisi ykkönen, jos tehtävät arvottaisiin uudelleen?</h2>
 <p>Tehtäväbootstrap, 2 000 uudelleenotosta. CASP14 100 %, LiveBench 99,8 %, ProteinGym 86 %, TabArena 73–87 %, HELM 66 % — ja sitten SWE-bench 32,8 % (kakkonen 31,1 %), MathArena 41,3 %, MTEB 44,8 %. Kolmella taululla kruunu on kolikonheitto. MTEB tarkistettiin 20 000 otoksella: painettu kakkonen voittaa 48,7 %, painettu ykkönen 46,1 %, pisteiden ero 0,0001. Se ei ole "väärä järjestys" vaan kolikonheitto, jonka painettu puoli sattuu olemaan epätodennäköisempi.</p>
 
+<h2>Kestääkö lukema menetelmän vaihdon?</h2>
+<p>Illan loppupuoli meni sen tarkistamiseen, riippuuko mikään sanotusta valitusta työkalusta. Neljä purkua, kaikki ennakkoon kirjattuina:</p>
+<div class="wrap"><table>
+<tr><th>Oletus jota purettiin</th><th>Mitä tehtiin</th><th class="n">Muuttuiko lukema</th></tr>
+<tr><td>Luottamustaso 95 %</td><td>α 0,01 / 0,05 / 0,10, stepdown päälle ja pois</td><td class="n">ei — tie@1 liikkuu &lt;30 %, sama yksi taulu erottaa kärkensä</td></tr>
+<tr><td>Kerroin-bootstrap estimaattorina</td><td>Bonferroni-t ja tehtäväbootstrap maksimitunnusluvulla</td><td class="n">ei — kolme menetelmää samaa mieltä 10/10</td></tr>
+<tr><td>Tehtävät riippumattomia</td><td>klusteribootstrap (repot, tehtävälajit)</td><td class="n">leveydet +46 % ja +88 %, lukema ei</td></tr>
+<tr><td>Tehtäväjoukko kiinteä</td><td>20 satunnaista puolitusta</td><td class="n">ei — 0,00 % vakiintuneista pareista kääntyy</td></tr>
+</table></div>
+<p>Sama koskee dataa: SWE-benchin matriisi luettiin uudelleen 134 alkuperäisestä tulostiedostosta (ID-unioni 500 = sarakkeet 500, ei puuttuvuutta). MTEB:llä sen sijaan löytyi rajoite, joka on nyt jokaisessa MTEB-luvussa: <code>dropna</code> pudottaa 150 mallia 331:stä, ja pudotetut ovat <em>parempia</em> (0,659 vs 0,605) niillä tehtävillä jotka ne ajoivat.</p>
+
+<h2>Mitä benchmarkin omistaja voi tehdä</h2>
+<div class="wrap"><table>
+<tr><th>Kysymys</th><th>Vastaus mittauksesta</th></tr>
+<tr><td>Kannattaako pisteyttää hienojakoisesti?</td><td>Kyllä, ja paljon. Binarisointi (ylitti tehtävän mediaanin vai ei) nostaa mahdollisten ykkösten määrän MTEB:llä 12→66 ja CASP14:llä 1→24; <b>CASP14:n kiistaton kärki katoaa, t 9,89 → 1,78</b>. SWE-benchin binäärisyys on sen oma pakko ja selittää osan sen ratkeamattomuudesta.</td></tr>
+<tr><td>Voiko uusi malli ajaa vain osan tehtävistä?</td><td>Kyllä. Neljäsosalla tehtävistä tulokkaan sijajoukko on 1,13–1,97× täydellisen levyinen (9/9 alle 2×), pienillä tauluilla 1,1–1,3×.</td></tr>
+<tr><td>Voiko tehtäviä karsia?</td><td>90 % vakiintuneista järjestyksistä säilyy 20–67 %:lla tehtävistä, ja säästö kestää ulkopuolisen tarkistuksen 9/9. Mutta karsittu setti on rakennettu nykyisille malleille.</td></tr>
+<tr><td>Auttaako toisen taulun liittäminen?</td><td>Ei. SWE Verified + Lite (+41 % tehtäviä) siirsi mediaanileveyttä 5→5 ja tie@1:tä 2→2.</td></tr>
+<tr><td>Onko vika siinä että tulokkaita on liikaa?</td><td>Kahdeksalla yhdeksästä ei: kärkipari ei erotu edes kymmenen järjestelmän kentässä. LiveBench on ainoa jolla monivertailukorjaus yksin estää voittajan nimeämisen.</td></tr>
+<tr><td>Kuinka kauan kärjen ratkeamiseen?</td><td>Kentän omalla historiallisella vauhdilla: SWE-bench 1,8 kk, MTEB 6,8 kk (ulkopuoliselle 12,8), ProteinGym 17,6 kk. LiveBench 0 — sen kärki on jo ratkeava.</td></tr>
+<tr><td>Kuinka paljon kokoonpano ratkaisee?</td><td>Vähemmän kuin kohina: kun jokainen tehtäväryhmä saa painaa 0,5–2× todellista osuuttaan, SWE-benchillä kolme järjestelmää voisi olla ykkönen — kohina sallii yhdeksäntoista.</td></tr>
+</table></div>
+
 <h2>Mitä kaatui — ja miksi se on hyvä</h2>
 <ul>
 <li><span class="dead">Kaksonen 2 (kohinaprofiili)</span> — ensin rakennusvirhe (järjestelmän hajonta = tehtävien vaikeusero, ei kohina; itsetarkistuksen kenttä ilman vaikeuseroja päästi läpi), korjattuna 6/9 = sama kuin kaksonen 1. <em>Kohinaprofiili ei selitä mitään.</em></li>
@@ -146,6 +169,10 @@ code{font-family:var(--mono);font-size:.85em}
 <li><span class="dead">Jäännöskorrelaatio erotettavuuden selittäjänä</span> — kumottu kolme kertaa peräkkäin eri rakenteilla, ennen kuin oikea muoto (parikohtainen κ) löytyi.</li>
 <li><span class="dead">Sukulinjalippu yksinkertaisella linkityksellä</span> — "läpäisi" ennakot niputtamalla 8/9 taulusta yhdeksi linjaksi. Merkityksetön läpäisy on vaarallisempi kuin kaatuminen.</li>
 <li><span class="dead">κ-trendi ajassa</span> — testi ei ollut ajettavissa: vain yksi taulu antaa kolme kelvollista vuotta. Kirjattu alivoimaiseksi, ei tulokseksi.</li>
+<li><span class="dead">Sukupuumalli</span> — kolmen jahtausmallin jälkeen neljäskin kaatui: puu jossa jokainen polveutuu viiden parhaan joukosta tuottaa 2–3× liikaa rintama-askelia, koska se ei salli huonompia tulokkaita. Mallilinja suljettiin sen sijaan että olisin sovittanut viidennen.</li>
+<li><span class="dead">Rajoittamaton uudelleenpainotus</span> — "kuka voisi olla ykkönen jollain painotuksella" antaa SWE-benchillä 122 mestaria 134:stä, koska painovektori saa mennä simplexin kulmaan. Mittari oli tyhjä; rajoitettuna (0,5–2× todellinen osuus) vastaus on kolme.</li>
+<li><span class="dead">Sukulinjalippu yksinkertaisella linkityksellä</span> — läpäisi ennakot niputtamalla 8/9 taulusta yhdeksi linjaksi.</li>
+<li><span class="dead">Kaksi commit-viestin lukuvirhettä</span> — kirjoitin luvut näytön katkelmasta ennen tulostiedoston lukemista. Molemmat korjattu omalla commitilla; sääntö kirjattu.</li>
 <li><span class="dead">SOTA-auditin McNemar jatkuvalla datalla</span> — paljastui mahdottomasta järjestyksestä (0/16 parittain, 2/16 simultaanisesti); etumerkinvaihto-permutaatio tilalle.</li>
 </ul>
 
