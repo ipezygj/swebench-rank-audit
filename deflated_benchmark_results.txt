@@ -1,0 +1,42 @@
+HOW MUCH OF THE TOP SCORE IS JUST THE MAXIMUM?
+==========================================================================
+top group: 19 systems, 500 items
+best observed score          0.7920  (20251205_sonar-foundation-agent_claude-opus-)
+group mean                   0.7582
+per-system standard error    0.0191
+mean pairwise correlation    0.664
+winner's-curse shrink factor 0.580   = sqrt(1 - rho)
+
+EXACT PERMUTATION TEST (are the top systems exchangeable?)
+  observed maximum           0.7920
+  null mean / 95th pct       0.7785 / 0.7880
+  p-value over 2000 permutations   0.0190
+  -> the leader is above what exchangeability alone would produce.
+
+MODEL CHECKED AGAINST THE EXACT NULL AT N = k
+  permutation null mean      0.7785
+  equicorrelated model       0.7787
+  gap                        0.0002  = 0.6% of the lead being explained
+
+SENSITIVITY TO UNREPORTED TRIALS (N is not identified; this is a curve)
+      N  E[max] here  if independent   lead left
+      1       0.7582          0.7582      0.0338
+      2       0.7645          0.7690      0.0275
+      5       0.7711          0.7805      0.0209
+     10       0.7753          0.7877      0.0167
+     20       0.7790          0.7940      0.0130
+     50       0.7831          0.8012      0.0089
+    100       0.7860          0.8061      0.0060
+    200       0.7887          0.8108      0.0033
+    500       0.7919          0.8163      0.0001
+   1000       0.7942          0.8202     -0.0022
+   5000       0.7990          0.8285     -0.0070
+  20000       0.8028          0.8351     -0.0108
+
+BREAKDOWN POINT: N = 1000. If at least this many comparable
+attempts stood behind the leaderboard, the best score is entirely
+explained by taking a maximum, with no ability difference at all.
+
+The 'if independent' column is what the Deflated Sharpe Ratio formula
+would charge. It over-deflates here by a factor of 1/0.580 = 1.72x,
+because leaderboard systems share items and are strongly correlated.
