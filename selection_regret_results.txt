@@ -1,0 +1,22 @@
+WHAT FOLLOWING THE LEADERBOARD COSTS
+====================================================================================
+  board                   follow the leader  random from top 10  random overall   crown
+  SWE-bench Verified                  2.00p               3.40p          27.40p     33%
+  MTEB English v2                     0.92p               1.77p          14.15p     45%
+  HELM classic                        1.85p               8.09p          50.67p     66%
+  ProteinGym DMS                      0.00p               2.91p          13.29p     86%
+  TabArena 16 models                  0.00p               2.42p           5.16p     86%
+  TabArena 45 variants                0.35p               2.10p           8.41p     73%
+  CASP14                              0.00p              26.75p          34.01p    100%
+  LiveBench                           0.00p              14.25p          34.06p    100%
+  MathArena 2025                      1.63p               1.77p           8.42p     41%
+
+  median regret below 1 point: 6/9 (pre-registered >= 6)
+  following the leader beats a random top-ten pick: 9/9 (pre-registered: all)
+  Spearman(crown stability, regret) = -0.91 (p 0.00); pre-registered below -0.4
+
+  Regret is measured on the half of the items the choice did not see, in the
+  board's own units, as the gap to the best system on that half. It is the
+  reader's version of every other number here: a board can be unable to
+  prove who is first and still be worth following, if the systems it cannot
+  separate are ones you would be equally happy with.
