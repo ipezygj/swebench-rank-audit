@@ -1,0 +1,45 @@
+THE INVARIANT CORE: WHICH COMPARISONS DO NOT DEPEND ON THE BASKET
+==========================================================================
+134 systems, 500 instances, 8911 unordered pairs
+the published ranking asserts 8875 strict pairwise claims
+
+HOW MUCH OF THE RANKING SURVIVES AS THE BASKET IS MADE FINER
+  partition                  groups  core pairs  of claims  height  viol
+  one group (the ranking)         1        8875     100.0%     106     0
+  2 difficulty halves             2        8106      91.3%      50     0
+  4 difficulty quartiles          4        6675      75.2%      28     0
+  9 repositories                  9        5535      62.4%      14     0
+  repository x difficulty        18        2878      32.4%       8     0
+  500 items (Pareto)            500         290       3.3%       3     0
+
+  'of claims' is the share of the ranking's own pairwise assertions
+  that hold under EVERY weighting of that partition. Each row can only
+  be smaller than the one above it (refinement shrinks the core - the
+  self-check enforces it), so the curve is monotone and the question
+  for any pair is how far down it survives.
+
+AT THE REPOSITORY LEVEL (9 repositories)
+  height of the core   14   (the ranking prints 134 positions; rank_sets.py resolved 10 tiers
+                             against noise; this is tiers against the basket)
+  among the 19 candidate leaders: 12 of 171 pairs are basket-free
+  today's leader robustly dominates 110 of 133 systems;
+  the highest-ranked system it dominates basket-free is rank 10
+
+THE STATISTICAL CORE (intersection-union, one-sided 5 % per group)
+  pairs where one system beats the other SIGNIFICANTLY in every
+  repository: 1072   (12.1 % of the ranking's claims)
+  height 3
+  This needs no multiplicity correction: the IUT rejects only when
+  every component rejects, and Berger (1982) showed that is level
+  alpha on its own. It is conservative, and that is the right
+  direction for a claim of basket-independence.
+
+A CLAIM THAT HOLDS WHATEVER THE BASKET (closest ranks that do)
+  rank 129 20240402_rag_claude3opus                 over rank 130 20231010_rag_claude2
+A CLAIM THAT DOES NOT (widest rank gap that still depends on it)
+  rank  10 20250612_trae                            over rank 116 20241002_lingma-agent_lingma-swe-gpt-72b
+  the lower-ranked system wins on: other
+
+  The ranking says the first of each pair is better. The core says
+  that for the surviving pair this is true in every repository, and
+  for the other it is a fact about django's share of the benchmark.
