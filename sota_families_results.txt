@@ -1,0 +1,18 @@
+DOES THE FRONTIER MOVE WITHIN FAMILIES?
+==============================================================================
+  leaderboard          advances median pct    >75    <50   u sib   u out  CONTROL
+  SWE-bench Verified         32         91    78%     0%    0.38     nan       89
+  SWE-bench Lite             17         85    59%    24%    0.95    0.70       94
+  MTEB English v2            16         94    94%     0%    0.26     nan       96
+  LiveBench                  12         89    75%     0%    0.40     nan       92
+
+  median percentile > 50: 4/4 boards (pre-registered >= 3)
+  SWE-bench boards > 70: yes (91, 85)
+
+  CONTROL = same percentile for (new leader, runner-up to the old leader at
+  that date): similar ability gap, no frontier relation. Added after the
+  first run to meet the ability confound; if CONTROL is as high as the
+  frontier median, the family reading does not stand.
+  percentile = where corr(new leader, old leader) sits among all pairwise
+  residual correlations of the board. u sib / u out = median step size in
+  resolution units for sibling (>75) and outsider (<50) advances.

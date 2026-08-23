@@ -48,15 +48,33 @@ BOARDS = {
 }
 
 
-def frontier_percentiles(x, dates):
+def frontier_percentiles(x, dates, control=False):
+    """Percentile of corr(new leader, old leader) among all pairs.
+
+    control=True (added after the first run, NOT pre-registered, to meet a
+    confound): two strong systems share positive residuals on the hard items
+    whatever their lineage, so the frontier pair could score high on ability
+    alone. The control pair is (new leader, runner-up to the old leader at
+    that date) - nearly the same ability gap, no frontier relation. If the
+    control percentiles are as high as the frontier ones, the reading is
+    ability, not family.
+    """
     _, _, resid = decompose(x)
     c = np.nan_to_num(np.corrcoef(resid))
     J = x.shape[0]
     iu = np.triu_indices(J, k=1)
     allc = np.sort(c[iu])
+    sc = x.mean(axis=1)
     out = []
     for a in advances(x, dates):
-        v = c[a["new"], a["old"]]
+        other = a["old"]
+        if control:
+            present = np.flatnonzero(dates <= a["date"])
+            present = present[(present != a["new"]) & (present != a["old"])]
+            if len(present) == 0:
+                continue
+            other = int(present[np.argmax(sc[present])])
+        v = c[a["new"], other]
         out.append(100.0 * np.searchsorted(allc, v) / len(allc))
     return np.array(out)
 
@@ -99,22 +117,27 @@ def main() -> int:
     p = L.append
     p("DOES THE FRONTIER MOVE WITHIN FAMILIES?")
     p("=" * 78)
-    p(f"  {'leaderboard':<20} {'advances':>8} {'median pct':>10} {'>75':>6} {'<50':>6} {'u sib':>7} {'u out':>7}")
+    p(f"  {'leaderboard':<20} {'advances':>8} {'median pct':>10} {'>75':>6} {'<50':>6} {'u sib':>7} {'u out':>7} {'CONTROL':>8}")
     meds = {}
     for name, (path, dc) in BOARDS.items():
         x, dates = load(path, dc)
         pc = frontier_percentiles(x, dates)
+        ctrl = frontier_percentiles(x, dates, control=True)
         u = steps_u(x, dates, sigma_p_of(x))
         sib, out = u[pc > 75], u[pc < 50]
         meds[name] = float(np.median(pc))
         p(f"  {name:<20} {len(pc):>8} {np.median(pc):>10.0f} {100 * np.mean(pc > 75):>5.0f}% {100 * np.mean(pc < 50):>5.0f}% "
-          f"{(np.median(sib) if len(sib) else float('nan')):>7.2f} {(np.median(out) if len(out) else float('nan')):>7.2f}")
+          f"{(np.median(sib) if len(sib) else float('nan')):>7.2f} {(np.median(out) if len(out) else float('nan')):>7.2f} {np.median(ctrl):>8.0f}")
     p("")
     above = sum(v > 50 for v in meds.values())
     p(f"  median percentile > 50: {above}/4 boards (pre-registered >= 3)")
     swe = [v for k, v in meds.items() if k.startswith("SWE")]
     p(f"  SWE-bench boards > 70: {'yes' if all(v > 70 for v in swe) else 'NO'} ({', '.join(f'{v:.0f}' for v in swe)})")
     p("")
+    p("  CONTROL = same percentile for (new leader, runner-up to the old leader at")
+    p("  that date): similar ability gap, no frontier relation. Added after the")
+    p("  first run to meet the ability confound; if CONTROL is as high as the")
+    p("  frontier median, the family reading does not stand.")
     p("  percentile = where corr(new leader, old leader) sits among all pairwise")
     p("  residual correlations of the board. u sib / u out = median step size in")
     p("  resolution units for sibling (>75) and outsider (<50) advances.")
