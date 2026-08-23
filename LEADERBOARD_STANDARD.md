@@ -53,6 +53,7 @@ is therefore a matter of publishing, not of effort.
 | C4 | invariant core and its height | items carry group labels | `invariant_core.py` |
 | C5 | recount margin in items, swing items | binary matrices | `recount_margin.py` |
 | C6 | pattern-fit flags | binary matrices, with the confound statement | `pattern_anomaly.py` |
+| C7 | **cluster-resampled rank sets** | whenever items come in groups (repositories, competitions, protein targets, task families) — report R2 again with the bootstrap resampling groups, and state the grouping | `cluster_bootstrap.py` |
 
 ## 3. Prohibited presentations
 
@@ -70,6 +71,11 @@ A conforming leaderboard does not:
   the pair's kappa squared TIMES the ratio of the pair's own variance to
   the board's typical one - measured at 1.0x to 45x across nine boards,
   in both directions (`prescription_pairwise.py`);
+- present item-resampled intervals as the board's uncertainty when the items
+  come in groups without also reporting the cluster-resampled ones (C7): on
+  SWE-bench Verified the rank sets widen 46 % when repositories are resampled
+  instead of instances, and on MTEB 88 % when task families are, taking the
+  number of models that could be first from 12 to 26;
 - add items to a benchmark and report the new ranking without stating the
   power calculation that motivated the number and difficulty of the items
   added (`refill_prescription.py`).

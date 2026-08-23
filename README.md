@@ -6,7 +6,7 @@ Two documents state the results:
 
 - **[LEADERBOARD_STANDARD.md](LEADERBOARD_STANDARD.md)** - what a leaderboard must
   publish beside its ranking (draft 0.2, 10 required fields and
-  5 prohibited presentations), with `leaderboard_standard.py` as the reference
+  6 prohibited presentations), with `leaderboard_standard.py` as the reference
   implementation.
 - **[LAWS.md](LAWS.md)** - two relations that predict how much ranking a benchmark
   supports and how much of a printed order is evidence, tested on ten boards from
@@ -134,8 +134,13 @@ validated against a permutation null.
 
 ### Unsorted (add to a group in build_readme.py)
 
+- `alpha_sensitivity.py` - Do the standard's headline numbers depend on the confidence level?
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
+- `cluster_bootstrap.py` - Are the items independent? A cluster bootstrap says how much that assumption buys
+- `merge_boards.py` - Does merging two benchmarks resolve what neither resolves alone?
+- `method_independence.py` - Does the headline survive a different statistical method?
+- `minimal_benchmark.py` - How small could this benchmark be and still say the same thing?
 
 ## How the results were produced
 
