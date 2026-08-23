@@ -95,6 +95,14 @@ by integrating over the pairwise sigma distribution (`law1_pairwise.py`: mean
 error 4.4 -> 4.1 points), which is the same statement from the other side - the
 heterogeneity averages out of the aggregate and matters entirely for the claim.
 
+Neither do they predict the TOP. A simulated board with SWE-bench Verified's
+shape and its own SNR of 3.1 reproduces the established share (38.3 % against
+37.9 %) and the entropy (52.7 % against 54.2 %) and misses the number of
+systems that could be first by a factor of six - 3 against 19
+(`target_board.py`). The aggregate quantities are set by four numbers; the top
+is set by the shape of the field there, and every real board has a dense
+cluster at the top that a Gaussian field does not.
+
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial
 correlations -0.03 to +0.18).
