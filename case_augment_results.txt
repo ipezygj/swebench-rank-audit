@@ -1,0 +1,47 @@
+WHAT SWE-BENCH VERIFIED COULD AND COULD NOT TELL AUGMENT CODE
+==================================================================================
+  Claim, 2025-03-31: "#1 open-source agent on SWE-Bench Verified", "a 65.4 % success rate".
+  Reason given for the model choice: "Since Anthropic's models are currently
+  state-of-the-art on code, we used Claude Sonnet 3.7 as our agent's core driver".
+  Submission in the matrix: 20250316_augment_agent_v0, 65.4 % - the same object.
+
+  Field on that date: 71 submissions. Augment ranks 1 by score.
+  Its simultaneous rank set is [1, 11], and 11 submissions have a rank set containing 1.
+
+  Every submission the board cannot rank below Augment on that date:
+    submission                                             score  kappa       t     base model
+    20241213_devlo                                         58.2%   0.91   +3.85              -
+    20241221_codestory_midwit_claude-3-5-sonnet_swe-sear   62.2%   0.85   +1.82     claude-3.5
+    20250110_blackboxai_agent_v1.1                         62.8%   0.86   +1.40              -
+    20250110_learn_by_interact_claude3.5                   60.2%   0.93   +2.40       claude-3
+    20250117_wandb_programmer_o1_crosscheck5               64.6%   0.89   +0.43              -
+    20250203_openhands_4x_scaled                           60.8%   0.87   +2.57              -
+    20250206_agentscope                                    63.4%   0.85   +1.16              -
+    20250224_tools_claude-3-7-sonnet                       63.2%   0.79   +1.31     claude-3.7
+    20250225_sweagent_claude-3-7-sonnet                    62.4%   0.79   +1.81     claude-3.7
+    20250228_epam-ai-run-claude-3-5-sonnet                 62.8%   0.87   +1.45     claude-3.5
+    20250316_augment_agent_v0                              65.4%    nan   +0.00              -  <- Augment
+
+  Against the runner-up, 20250117_wandb_programmer_o1_crosscheck5 (64.6 %):
+    46 instances only Augment solves, 42 only the runner-up, exact p = 0.75.
+    Their pair's kappa is 0.89: the comparison is sharper than the
+    board's average pair, and it still does not separate them.
+    That runner-up's core driver is not a Claude model, which is the specific
+    comparison the stated reason for the model choice rests on.
+
+  What the board CAN resolve: Augment's own next version.
+    20250610_augment_agent_v1 scores 70.4 %, 5.0 points above v0.
+    47 instances only v1 solves, 22 only v0, exact p = 0.0035, t = 3.03.
+    Their own engineering shows up on this board at conventional significance;
+    their advantage over the field on the day of the claim does not.
+
+  On the model choice itself: 2 submissions on that date name Claude 3.7
+  as their base model and they span 62.4 % to 63.2 % - a range of
+  0.8 points on one model. Across the whole board the spread WITHIN a
+  base model is 0.67 of the spread BETWEEN base models (model_or_harness.py).
+  A board on which the harness moves the score two thirds as much as the model
+  is weak evidence for a model choice, whichever model wins.
+
+  None of this says the agent is not good or the claim was made in bad faith.
+  It says the instrument cited cannot support the comparison it was cited for,
+  and can support a different one the company did not claim.
