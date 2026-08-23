@@ -6,11 +6,15 @@ for different tasks, with different scoring, is the beginning of a theory -
 and the only way to tell the two apart is to run the same instruments on
 several and look at what stays put.
 
-Three leaderboards, nothing in common but the shape systems x items:
+Four leaderboards, nothing in common but the shape systems x items:
 
     SWE-bench Verified   134 x 500   binary (patch resolves the issue or not)
     MTEB English v2      181 x  41   continuous task scores in [0, 1]
     HELM classic          91 x  10   continuous win rates in [0, 1]
+    MathArena 2025        ? x   ?    competition maths, answer-match grading,
+                                     problems written after training cutoffs;
+                                     added last, with predictions recorded in
+                                     load_all() before its matrix existed
 
 WHAT IS COMPARED
 ----------------
@@ -77,6 +81,20 @@ def load_all() -> dict:
     he = pd.read_csv("helm_winrate_matrix.csv", index_col=0)
     he = he.dropna(axis=0)
     out["HELM classic"] = he.to_numpy(dtype=float)
+    # THE FOURTH, AND THE PREDICTIONS FOR IT, WRITTEN BEFORE ITS MATRIX EXISTED
+    # (2026-08-23, while the files were still downloading):
+    #   1. its top ten will be a complete antichain: top-10 H = 21.8 / 21.8;
+    #   2. its established-pairs share will sit where its item count puts it
+    #      in the HELM < MTEB < SWE-bench ordering;
+    #   3. if it has enough items (>= ~100), H/ceiling will land near 55 %;
+    #      if it has few, it will land above, like HELM.
+    # If 1 fails, the "top is never resolved" sentence is dead. If 3 fails
+    # with enough items, the 55 % hypothesis is dead. Either way it is
+    # written here first.
+    ma = Path("matharena/matrix.csv")
+    if ma.exists():
+        m = pd.read_csv(ma, index_col=0).dropna(axis=0)
+        out["MathArena 2025"] = m.to_numpy(dtype=float)
     return out
 
 
