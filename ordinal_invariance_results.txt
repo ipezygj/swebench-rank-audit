@@ -1,0 +1,42 @@
+METRIC OR ORDINAL? THE FAILURE OF INVARIANCE, DECOMPOSED
+==========================================================================
+drift in units of between-system spread; the band is what random
+splits of the same size produce (100 of them)
+
+                               metric  ordinal  stretch     tau
+  random split (floor)          0.161    0.107    0.107   0.910
+    97.5 % / 2.5 % bound        0.202    0.131            0.898
+  difficulty (hard vs easy)     0.383    0.297    0.215   0.806
+  django vs rest                0.210    0.140    0.132   0.873
+
+  difficulty (hard vs easy):
+    metric drift  EXCEEDS the floor -> the logit scale is not invariant
+    ordinal drift EXCEEDS the floor -> the ORDER is not invariant
+    31 % of the metric drift is stretch - a monotone rescaling that reorders nothing
+  django vs rest:
+    metric drift  EXCEEDS the floor -> the logit scale is not invariant
+    ordinal drift EXCEEDS the floor -> the ORDER is not invariant
+    40 % of the metric drift is stretch - a monotone rescaling that reorders nothing
+
+IS THE REORDERING A FLOOR ARTEFACT? DROP THE WEAK SYSTEMS AND SEE
+            kept    n  ordinal   floor  ratio
+   score >= 0.00  134    0.297   0.108    2.7
+   score >= 0.30  115    0.340   0.162    2.1
+   score >= 0.50   76    0.539   0.231    2.3
+   score >= 0.60   54    0.801   0.334    2.4
+  Dropping the floor does not reduce it. Among the 54 systems above
+  sixty per cent the ordinal drift is the largest of all. The
+  reordering is a property of the benchmark, not of clipped estimates.
+
+THE OTHER HALF: IS THE ITEM DIFFICULTY ORDER INVARIANT TO WHICH
+SYSTEMS ESTIMATE IT?
+  top half of systems vs bottom half: tau 0.756
+  random halves of systems:           tau 0.899 [0.889, 0.907]
+  -> item ordering is NOT invariant across the ability range
+
+VERDICT, AND THE CORRECTION IT MAKES TO measurement_invariance.py
+  The ORDER itself moves with the item subset by more than a random
+  split explains. This is not a stretch that could be rescaled away;
+  it is a reordering, and monotone homogeneity is rejected along
+  with Rasch. The earlier verdict stands and is now sharper: not
+  merely no interval scale, but no invariant order either.
