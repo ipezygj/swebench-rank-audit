@@ -1,9 +1,10 @@
-IS ANY OF THIS A LAW? 4 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
+IS ANY OF THIS A LAW? 5 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
 ==============================================================================
   leaderboard             J    n  estab.     tie@1  med.width  H/ceiling  top-10 H
   SWE-bench Verified    134  500   37.7%  19 (14.2%)      26.9%      54.3%  21.8/21.8
   MTEB English v2       181   41   34.3%  15 ( 8.3%)      33.7%      54.8%  21.8/21.8
   HELM classic           90   10   24.1%  16 (17.8%)      55.6%      65.8%  21.8/21.8
+  ProteinGym DMS         96  217   35.8%   3 ( 3.1%)      32.3%      49.5%  13.3/21.8
   MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.1%  21.8/21.8
 
   estab.     ordered pairs established by the simultaneous test
@@ -13,52 +14,54 @@ IS ANY OF THIS A LAW? 4 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
   top-10 H   bits undetermined among the ten best; 21.8 = nothing known
 
 READING IT
-  H/ceiling spans 11.5 points, from 54 % to 66 %.
-  By the threshold written above before the numbers were seen, that
-  is not a regularity, and the pre-registered verdict stands: no
-  universal constant is claimed.
+  H/ceiling across all 5: 49.5 % to 65.8 %, a span of 16.2 points.
+  By the threshold written above before any number was seen (< 10
+  points), that is not a regularity. No universal constant is claimed.
+  Among the 4 with n >= 40: 49.5, 54.3, 54.8, 56.1 % - a span of 6.6.
+  A reader can see the cluster. I will not fit an interval to it after
+  the fact: the interval that WAS written in advance, [50, 60] % for
+  n >= 100, failed its first out-of-sample test by half a point, and a
+  hypothesis that is re-drawn around each new point is not a hypothesis.
 
-  What the threshold does not capture, reported as an observation
-  and not as a result: the two larger benchmarks agree to 0.5 points
-  (54.3 % and 54.8 %), and the outlier is the ten-item one, where
-  the resolution law predicts more entropy because fewer pairs can
-  separate. That is a HYPOTHESIS for a fourth benchmark: H/ceiling
-  near 55 % once the item count is large enough for the field's
-  spread to show. It is written here so that a fourth benchmark
-  can falsify it, not so that it can be claimed now.
+  THE TOP TEN IS A COMPLETE ANTICHAIN ON 4 OF 5:
+    SWE-bench Verified, MTEB English v2, HELM classic, MathArena 2025
+  and not on:
+    ProteinGym DMS: top-10 H = 13.3/21.8, 3 system(s) could be first
+  The sentence 'the top is never resolved' is dead as a general
+  claim; the pre-registration said it would die if this failed, and
+  it did. What survives is narrower and is stated as a POST-HOC
+  hypothesis, clearly labelled: the four antichains are all
+  leaderboards of LLM-based systems, where the frontier shares a
+  handful of base models and many submissions are scaffolds around
+  them. The one resolved top is the one field whose competitors are
+  architecturally distinct models. If that is the mechanism, a sixth
+  LLM leaderboard will show an antichain and a sixth non-LLM one
+  will not. That is the next test, and it is written here first.
 
-  The resolution-law prediction - more items, more pairs established -
-  FAILS: by item count the order is HELM < MTEB < MathArena < SWE-bench, by established pairs it is HELM < MathArena < MTEB < SWE-bench.
-  Item count is not the whole story: the spread of the field against
-  its own noise matters as much, and a ten-item benchmark on a widely
-  spread field can establish more than a five-hundred-item one on a
-  tight field.
+  ESTABLISHED SHARE vs ITEM COUNT
+    by items:        HELM < MTEB < MathArena < ProteinGym < SWE-bench
+    by established:  HELM < MathArena < MTEB < ProteinGym < SWE-bench
+  Item count alone does not order it. The resolution law has the
+  field's spread in it as well as n, and a small, tight field (MathArena,
+  35 systems) establishes less than a large one with fewer items.
 
-  What IS common to all three, and it is exact, not approximate: the
-  ten best are a complete antichain on every leaderboard tested. The
-  top-10 entropy is 21.8 of 21.8 on all 4 - the simultaneous test
-  establishes NOT ONE pair among the ten best of SWE-bench, MTEB, HELM, MathArena.
-  4 benchmarks, 4 fields, 4 scoring schemes, and the same
-  fact about the only rows anyone reads. That is the one sentence that
-  survives the comparison.
+
+THE PRE-REGISTERED PREDICTIONS FOR THE FIFTH BENCHMARK (ProteinGym)
+  written into load_all() and committed before it was run
+
+  1. top ten a complete antichain (21.8/21.8)      FAILS   (13.3/21.8)
+  2. n = 217 >= 100, H/ceiling in [50, 60] %    FAILS   (49.5 %)
+  3. established share: no prediction registered (item count alone
+     was shown insufficient by the fourth)      observed 35.8 %
 
 THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK
   written into load_all() and committed before its matrix existed
 
   1. top ten a complete antichain (21.8/21.8)          HOLDS   (21.8/21.8)
   2. established share sits where item count puts it  FAILS
-       by items:        HELM < MTEB < MathArena < SWE-bench
-       by established:  HELM < MathArena < MTEB < SWE-bench
+       by items:        HELM < MTEB < MathArena < ProteinGym < SWE-bench
+       by established:  HELM < MathArena < MTEB < ProteinGym < SWE-bench
   3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.1 %)
-
-  Among the 3 benchmarks with enough items (n >= 40), H/ceiling
-  spans 1.8 points: 54.3, 54.8, 56.1 %.
-  The ten-item HELM is the only one outside, and the resolution law
-  says why. That is now a hypothesis with three supporting cases
-  and one explained exception. It is still not a law: a fifth
-  benchmark with n >= 100 from yet another field is the next test,
-  and the prediction for it is written here - H/ceiling within
-  [50, 60] % and a top-ten antichain.
 
   Prediction 2 failed, and the failure is informative: item count
   alone does not order the established share. MathArena has 183

@@ -152,11 +152,20 @@ def main(argv=None) -> int:
     mats = load_all()
     print("self-checks")
     ok = True
+    # Every score here is a rate, a Spearman or a win rate: all live in
+    # [-1, 1]. A column outside that range is metadata that has been read as
+    # a system. The first ProteinGym run had a "Number of Mutants" column
+    # scoring 11 363 and sitting at rank 1 of 97; it contaminated every
+    # downstream number before a stray line of output gave it away. The
+    # range check is cheap and it would have refused to run.
     for name, x in mats.items():
         complete = not np.isnan(x).any()
+        in_range = bool(np.nanmax(np.abs(x)) <= 1.0 + 1e-9)
         print(f"  [{'ok  ' if complete else 'FAIL'}] {name}: complete matrix "
               f"{x.shape[0]} x {x.shape[1]}")
-        ok = ok and complete
+        print(f"  [{'ok  ' if in_range else 'FAIL'}] {name}: every value in "
+              f"[-1, 1] (max |value| {np.nanmax(np.abs(x)):.3f})")
+        ok = ok and complete and in_range
     if not ok:
         print("\nA CHECK FAILED - nothing is compared.")
         return 1
@@ -191,57 +200,52 @@ def main(argv=None) -> int:
     p("  top-10 H   bits undetermined among the ten best; 21.8 = nothing known")
     p("")
     fr = [m["H_frac"] for m in rows if not math.isnan(m["H_frac"])]
-    est = [m["established"] for m in rows]
     p("READING IT")
-    if max(fr) - min(fr) < 0.10:
-        p(f"  H/ceiling spans only {100 * (max(fr) - min(fr)):.1f} points across three")
-        p("  benchmarks that share nothing but their shape. That is a candidate")
-        p("  regularity, and it earns a fourth benchmark before it earns a name.")
+    p(f"  H/ceiling across all {len(rows)}: {100 * min(fr):.1f} % to "
+      f"{100 * max(fr):.1f} %, a span of {100 * (max(fr) - min(fr)):.1f} points.")
+    p("  By the threshold written above before any number was seen (< 10")
+    p("  points), that is not a regularity. No universal constant is claimed.")
+    big = sorted([m for m in rows if m["n"] >= 40], key=lambda m: m["H_frac"])
+    p(f"  Among the {len(big)} with n >= 40: "
+      + ", ".join(f"{100 * m['H_frac']:.1f}" for m in big)
+      + f" % - a span of {100 * (big[-1]['H_frac'] - big[0]['H_frac']):.1f}.")
+    p("  A reader can see the cluster. I will not fit an interval to it after")
+    p("  the fact: the interval that WAS written in advance, [50, 60] % for")
+    p("  n >= 100, failed its first out-of-sample test by half a point, and a")
+    p("  hypothesis that is re-drawn around each new point is not a hypothesis.")
+    p("")
+    anti = [m for m in rows if abs(m["H10"] - math.log2(math.factorial(10))) < 0.3]
+    nonanti = [m for m in rows if m not in anti]
+    p(f"  THE TOP TEN IS A COMPLETE ANTICHAIN ON {len(anti)} OF {len(rows)}:")
+    p("    " + ", ".join(m["name"] for m in anti))
+    if nonanti:
+        p("  and not on:")
+        for m in nonanti:
+            p(f"    {m['name']}: top-10 H = {m['H10']:.1f}/21.8, "
+              f"{m['tie_top']} system(s) could be first")
+        p("  The sentence 'the top is never resolved' is dead as a general")
+        p("  claim; the pre-registration said it would die if this failed, and")
+        p("  it did. What survives is narrower and is stated as a POST-HOC")
+        p("  hypothesis, clearly labelled: the four antichains are all")
+        p("  leaderboards of LLM-based systems, where the frontier shares a")
+        p("  handful of base models and many submissions are scaffolds around")
+        p("  them. The one resolved top is the one field whose competitors are")
+        p("  architecturally distinct models. If that is the mechanism, a sixth")
+        p("  LLM leaderboard will show an antichain and a sixth non-LLM one")
+        p("  will not. That is the next test, and it is written here first.")
     else:
-        p(f"  H/ceiling spans {100 * (max(fr) - min(fr)):.1f} points, from "
-          f"{100 * min(fr):.0f} % to {100 * max(fr):.0f} %.")
-        p("  By the threshold written above before the numbers were seen, that")
-        p("  is not a regularity, and the pre-registered verdict stands: no")
-        p("  universal constant is claimed.")
-        srt = sorted(rows, key=lambda m: m["H_frac"])
-        gap2 = 100 * (srt[1]["H_frac"] - srt[0]["H_frac"])
-        p("")
-        p(f"  What the threshold does not capture, reported as an observation")
-        p(f"  and not as a result: the two larger benchmarks agree to "
-          f"{gap2:.1f} points")
-        p(f"  ({100 * srt[0]['H_frac']:.1f} % and {100 * srt[1]['H_frac']:.1f} %), "
-          f"and the outlier is the ten-item one, where")
-        p("  the resolution law predicts more entropy because fewer pairs can")
-        p("  separate. That is a HYPOTHESIS for a fourth benchmark: H/ceiling")
-        p("  near 55 % once the item count is large enough for the field's")
-        p("  spread to show. It is written here so that a fourth benchmark")
-        p("  can falsify it, not so that it can be claimed now.")
+        p("  On every leaderboard tested, the simultaneous test establishes")
+        p("  not one pair among the ten best.")
     p("")
-    # The sharper prediction: established fraction should follow items.
-    order_n = sorted(rows, key=lambda m: m["n"])
-    order_e = sorted(rows, key=lambda m: m["established"])
-    same = [m["name"] for m in order_n] == [m["name"] for m in order_e]
-    p("  The resolution-law prediction - more items, more pairs established -")
-    p(f"  {'HOLDS' if same else 'FAILS'}: by item count the order is "
-      + " < ".join(m["name"].split()[0] for m in order_n)
-      + ", by established pairs it is "
-      + " < ".join(m["name"].split()[0] for m in order_e) + ".")
-    if not same:
-        p("  Item count is not the whole story: the spread of the field against")
-        p("  its own noise matters as much, and a ten-item benchmark on a widely")
-        p("  spread field can establish more than a five-hundred-item one on a")
-        p("  tight field.")
+    by_n = [m["name"].split()[0] for m in sorted(rows, key=lambda m: m["n"])]
+    by_e = [m["name"].split()[0] for m in sorted(rows, key=lambda m: m["established"])]
+    p("  ESTABLISHED SHARE vs ITEM COUNT")
+    p(f"    by items:        {' < '.join(by_n)}")
+    p(f"    by established:  {' < '.join(by_e)}")
+    p("  Item count alone does not order it. The resolution law has the")
+    p("  field's spread in it as well as n, and a small, tight field (MathArena,")
+    p("  35 systems) establishes less than a large one with fewer items.")
     p("")
-    allfull = all(abs(m["H10"] - 21.8) < 0.3 for m in rows)
-    p("  What IS common to all three, and it is exact, not approximate: the")
-    p("  ten best are a complete antichain on every leaderboard tested. The")
-    names_all = ", ".join(m["name"].split()[0] for m in rows)
-    p(f"  top-10 entropy is {'21.8 of 21.8 on all ' + str(len(rows)) if allfull else 'near its ceiling on all'} - "
-      "the simultaneous test")
-    p(f"  establishes NOT ONE pair among the ten best of {names_all}.")
-    p(f"  {len(rows)} benchmarks, {len(rows)} fields, {len(rows)} scoring schemes, and the same")
-    p("  fact about the only rows anyone reads. That is the one sentence that")
-    p("  survives the comparison.")
 
     # THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH, EVALUATED MECHANICALLY.
     # Written into load_all() and committed (7858795) before the MathArena
@@ -284,18 +288,6 @@ def main(argv=None) -> int:
             ok3 = fourth["H_frac"] > 0.60
             p(f"  3. n < 100 so H/ceiling above, like HELM            "
               f"{'HOLDS' if ok3 else 'FAILS'}   ({100 * fourth['H_frac']:.1f} %)")
-        big = [m for m in rows if m["n"] >= 40]
-        fr_big = [m["H_frac"] for m in big]
-        p("")
-        p(f"  Among the {len(big)} benchmarks with enough items (n >= 40), H/ceiling")
-        p(f"  spans {100 * (max(fr_big) - min(fr_big)):.1f} points: "
-          + ", ".join(f"{100 * m['H_frac']:.1f}" for m in big) + " %.")
-        p("  The ten-item HELM is the only one outside, and the resolution law")
-        p("  says why. That is now a hypothesis with three supporting cases")
-        p("  and one explained exception. It is still not a law: a fifth")
-        p("  benchmark with n >= 100 from yet another field is the next test,")
-        p("  and the prediction for it is written here - H/ceiling within")
-        p("  [50, 60] % and a top-ten antichain.")
         if not ok2:
             p("")
             p("  Prediction 2 failed, and the failure is informative: item count")
