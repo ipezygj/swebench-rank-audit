@@ -26,3 +26,4 @@ _*.txt
 *.out
 neurips_2026.sty
 paper_tae.tex
+matharena/*.parquet

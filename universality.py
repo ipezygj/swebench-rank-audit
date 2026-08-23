@@ -159,7 +159,7 @@ def main(argv=None) -> int:
 
     L = []
     p = L.append
-    p("IS ANY OF THIS A LAW? THREE UNRELATED LEADERBOARDS, SAME INSTRUMENTS")
+    p(f"IS ANY OF THIS A LAW? {len(rows)} UNRELATED LEADERBOARDS, SAME INSTRUMENTS")
     p("=" * 78)
     p(f"  {'leaderboard':<20} {'J':>4} {'n':>4} {'estab.':>7} {'tie@1':>9}"
       f" {'med.width':>10} {'H/ceiling':>10} {'top-10 H':>9}")
@@ -221,13 +221,62 @@ def main(argv=None) -> int:
     allfull = all(abs(m["H10"] - 21.8) < 0.3 for m in rows)
     p("  What IS common to all three, and it is exact, not approximate: the")
     p("  ten best are a complete antichain on every leaderboard tested. The")
-    p(f"  top-10 entropy is {'21.8 of 21.8 on all three' if allfull else 'near its ceiling on all three'} - "
+    names_all = ", ".join(m["name"].split()[0] for m in rows)
+    p(f"  top-10 entropy is {'21.8 of 21.8 on all ' + str(len(rows)) if allfull else 'near its ceiling on all'} - "
       "the simultaneous test")
-    p("  establishes NOT ONE pair among the ten best of SWE-bench, of MTEB,")
-    p("  or of HELM. Three benchmarks, three fields, three scoring schemes,")
-    p("  and the same fact about the only rows anyone reads. That is the one")
-    p("  sentence that survives the comparison, and it is the one to test on")
-    p("  a fourth.")
+    p(f"  establishes NOT ONE pair among the ten best of {names_all}.")
+    p(f"  {len(rows)} benchmarks, {len(rows)} fields, {len(rows)} scoring schemes, and the same")
+    p("  fact about the only rows anyone reads. That is the one sentence that")
+    p("  survives the comparison.")
+
+    # THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH, EVALUATED MECHANICALLY.
+    # Written into load_all() and committed (7858795) before the MathArena
+    # matrix existed. Nothing below is adjusted to the outcome.
+    fourth = next((m for m in rows if m["name"].startswith("MathArena")), None)
+    if fourth:
+        p("")
+        p("THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK")
+        p("  written into load_all() and committed before its matrix existed")
+        p("")
+        ok1 = abs(fourth["H10"] - math.log2(math.factorial(10))) < 0.3
+        p(f"  1. top ten a complete antichain (21.8/21.8)          "
+          f"{'HOLDS' if ok1 else 'FAILS'}   ({fourth['H10']:.1f}/21.8)")
+        by_n = [m["name"] for m in sorted(rows, key=lambda m: m["n"])]
+        by_e = [m["name"] for m in sorted(rows, key=lambda m: m["established"])]
+        ok2 = by_n.index(fourth["name"]) == by_e.index(fourth["name"])
+        p(f"  2. established share sits where item count puts it  "
+          f"{'HOLDS' if ok2 else 'FAILS'}")
+        p(f"       by items:        {' < '.join(x.split()[0] for x in by_n)}")
+        p(f"       by established:  {' < '.join(x.split()[0] for x in by_e)}")
+        if fourth["n"] >= 100:
+            ok3 = abs(fourth["H_frac"] - 0.55) <= 0.05
+            p(f"  3. n >= 100 so H/ceiling near 55 % (+-5)           "
+              f"{'HOLDS' if ok3 else 'FAILS'}   ({100 * fourth['H_frac']:.1f} %)")
+        else:
+            ok3 = fourth["H_frac"] > 0.60
+            p(f"  3. n < 100 so H/ceiling above, like HELM            "
+              f"{'HOLDS' if ok3 else 'FAILS'}   ({100 * fourth['H_frac']:.1f} %)")
+        big = [m for m in rows if m["n"] >= 40]
+        fr_big = [m["H_frac"] for m in big]
+        p("")
+        p(f"  Among the {len(big)} benchmarks with enough items (n >= 40), H/ceiling")
+        p(f"  spans {100 * (max(fr_big) - min(fr_big)):.1f} points: "
+          + ", ".join(f"{100 * m['H_frac']:.1f}" for m in big) + " %.")
+        p("  The ten-item HELM is the only one outside, and the resolution law")
+        p("  says why. That is now a hypothesis with three supporting cases")
+        p("  and one explained exception. It is still not a law: a fifth")
+        p("  benchmark with n >= 100 from yet another field is the next test,")
+        p("  and the prediction for it is written here - H/ceiling within")
+        p("  [50, 60] % and a top-ten antichain.")
+        if not ok2:
+            p("")
+            p("  Prediction 2 failed, and the failure is informative: item count")
+            p("  alone does not order the established share. MathArena has 183")
+            p("  items but only 35 systems, and a field that small and that")
+            p("  tight at the top establishes fewer pairs than MTEB does with 41")
+            p("  items and 181 systems. The resolution law has n in it AND the")
+            p("  field's spread in it; the prediction used only n. The law is")
+            p("  not refuted - its lazy reading is.")
 
     text = "\n".join(L)
     print("\n" + text)

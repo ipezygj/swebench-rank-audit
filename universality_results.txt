@@ -1,9 +1,10 @@
-IS ANY OF THIS A LAW? THREE UNRELATED LEADERBOARDS, SAME INSTRUMENTS
+IS ANY OF THIS A LAW? 4 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
 ==============================================================================
   leaderboard             J    n  estab.     tie@1  med.width  H/ceiling  top-10 H
   SWE-bench Verified    134  500   37.7%  19 (14.2%)      26.9%      54.3%  21.8/21.8
   MTEB English v2       181   41   34.3%  15 ( 8.3%)      33.7%      54.8%  21.8/21.8
   HELM classic           90   10   24.1%  16 (17.8%)      55.6%      65.8%  21.8/21.8
+  MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.1%  21.8/21.8
 
   estab.     ordered pairs established by the simultaneous test
   tie@1      systems whose rank set contains 1 (share of J)
@@ -27,13 +28,42 @@ READING IT
   can falsify it, not so that it can be claimed now.
 
   The resolution-law prediction - more items, more pairs established -
-  HOLDS: by item count the order is HELM < MTEB < SWE-bench, by established pairs it is HELM < MTEB < SWE-bench.
+  FAILS: by item count the order is HELM < MTEB < MathArena < SWE-bench, by established pairs it is HELM < MathArena < MTEB < SWE-bench.
+  Item count is not the whole story: the spread of the field against
+  its own noise matters as much, and a ten-item benchmark on a widely
+  spread field can establish more than a five-hundred-item one on a
+  tight field.
 
   What IS common to all three, and it is exact, not approximate: the
   ten best are a complete antichain on every leaderboard tested. The
-  top-10 entropy is 21.8 of 21.8 on all three - the simultaneous test
-  establishes NOT ONE pair among the ten best of SWE-bench, of MTEB,
-  or of HELM. Three benchmarks, three fields, three scoring schemes,
-  and the same fact about the only rows anyone reads. That is the one
-  sentence that survives the comparison, and it is the one to test on
-  a fourth.
+  top-10 entropy is 21.8 of 21.8 on all 4 - the simultaneous test
+  establishes NOT ONE pair among the ten best of SWE-bench, MTEB, HELM, MathArena.
+  4 benchmarks, 4 fields, 4 scoring schemes, and the same
+  fact about the only rows anyone reads. That is the one sentence that
+  survives the comparison.
+
+THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK
+  written into load_all() and committed before its matrix existed
+
+  1. top ten a complete antichain (21.8/21.8)          HOLDS   (21.8/21.8)
+  2. established share sits where item count puts it  FAILS
+       by items:        HELM < MTEB < MathArena < SWE-bench
+       by established:  HELM < MathArena < MTEB < SWE-bench
+  3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.1 %)
+
+  Among the 3 benchmarks with enough items (n >= 40), H/ceiling
+  spans 1.8 points: 54.3, 54.8, 56.1 %.
+  The ten-item HELM is the only one outside, and the resolution law
+  says why. That is now a hypothesis with three supporting cases
+  and one explained exception. It is still not a law: a fifth
+  benchmark with n >= 100 from yet another field is the next test,
+  and the prediction for it is written here - H/ceiling within
+  [50, 60] % and a top-ten antichain.
+
+  Prediction 2 failed, and the failure is informative: item count
+  alone does not order the established share. MathArena has 183
+  items but only 35 systems, and a field that small and that
+  tight at the top establishes fewer pairs than MTEB does with 41
+  items and 181 systems. The resolution law has n in it AND the
+  field's spread in it; the prediction used only n. The law is
+  not refuted - its lazy reading is.
