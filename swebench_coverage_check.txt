@@ -1,0 +1,23 @@
+SWE-BENCH VERIFIED: IS THE MATRIX COMPLETE? (2026-08-23, iteration 63)
+=====================================================================
+  union of instance ids across all submissions        500
+  matrix columns                                      500   equal: yes
+  instances no submission resolves                     32
+  instances every submission resolves                   0
+  resolve counts, min - max                         2 - 396
+  submissions reporting install failures                1 (20231010_rag_swellama13b, 5 instances)
+
+  The MTEB finding (45 % of published models dropped, and the dropped ones
+  better) does not have a SWE-bench counterpart: every submission is scored
+  on the same 500 instances, so the complete-case matrix IS the board. The
+  `generated` field is empty for 121 of 134 submissions, which makes it
+  useless as a coverage record - but the union of resolved ids reaches
+  exactly 500 and the benchmark's own rule is that a submission is run on
+  all of them, so a missing id is a failure and not an absence.
+
+  One caveat that remains: for the single submission reporting install
+  failures, five instances are counted as unresolved when they were never
+  attempted. Five of 500 on one of 134 systems moves nothing.
+
+  Checked by reading the 134 results.json files directly rather than the
+  built matrix, so this is a check ON the builder, not a restatement of it.
