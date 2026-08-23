@@ -42,8 +42,24 @@ for rank, j in enumerate(order, start=1):
         "tier": tier_of[int(j)],
     })
 
+# R10 and lineage, added when the standard went to 0.2 (iteration 65).
+from pair_sharpness import kappa_matrix
+from independence_flag import threshold, lineages
+K = kappa_matrix(x)
+iu = np.triu_indices(J, k=1)
+i1, i2 = int(order[0]), int(order[1])
+d12 = x[i1] - x[i2]
+thr = threshold(x, np.random.default_rng(20260823 + 3))
+top10 = [int(i) for i in order[:10]]
+lin_count, lin_big = lineages(K, top10, thr)
+
 out = {
     "J": J, "n": n,
+    "kappa_top": round(float(K[i1, i2]), 3),
+    "kappa_all": round(float(np.nanmedian(K[iu])), 3),
+    "top_gap": round(float(x[i1].mean() - x[i2].mean()), 4),
+    "top_se": round(float(d12.std(ddof=1) / math.sqrt(n)), 4),
+    "lineages_top10": int(lin_count), "lineage_big": int(lin_big),
     "H": round(H["bits"], 1), "ceiling": round(gammaln(J + 1) / math.log(2), 1),
     "H10": round(H10["bits"], 1),
     "established": round(float(beats.sum() / (J * (J - 1))), 4),

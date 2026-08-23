@@ -132,7 +132,10 @@ for (const a of D.advances){
   tl.appendChild(r);
 }
 const npair=D.advances.filter(a=>a.pair).length, nsim=D.advances.filter(a=>a.sim).length;
-document.getElementById('foot').innerHTML='Of '+D.advances.length+' frontier advances, '+npair+' were pairwise-separable from the leader they displaced and '+nsim+' under the simultaneous criterion. Computed from the public SWE-bench Verified matrix by the reference implementation of the Leaderboard Reporting Standard (draft 0.1), 2026-08-23. Every number here can be recomputed from the matrix.';
+document.getElementById('foot').innerHTML='Of '+D.advances.length+' frontier advances, '+npair+' were pairwise-separable from the leader they displaced and '+nsim+' under the simultaneous criterion. '+
+  '<br><br><b>R10, pair resolution.</b> The comparison this board exists to make — its printed first against its printed second — has a gap of '+fmt(100*D.top_gap,2)+' points against a standard error of '+fmt(100*D.top_se,2)+' points for that specific pair, so t = '+fmt(D.top_gap/D.top_se,2)+'. Their &kappa; is '+D.kappa_top+' against a board median of '+D.kappa_all+': the two move together instance by instance, which makes this comparison sharper than the board average, and it still cannot separate them. '+
+  (D.lineages_top10===1 ? 'The whole top ten is one lineage by item-level behaviour — ten rows, not ten independent samples.' : 'The top ten holds '+D.lineages_top10+' independent lineages, the largest covering '+D.lineage_big+' of them.')+
+  '<br><br>Computed from the public SWE-bench Verified matrix by the reference implementation of the Leaderboard Reporting Standard (draft 0.2), 2026-08-23. Every number here can be recomputed from the matrix.';
 </script>
 """
 Path("certified_swebench.html").write_text(html.replace("__DATA__", data_js), encoding="utf-8", newline="\n")
