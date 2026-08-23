@@ -1,4 +1,4 @@
-IS ANY OF THIS A LAW? 8 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
+IS ANY OF THIS A LAW? 9 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
 ==============================================================================
   leaderboard             J    n  estab.     tie@1  med.width  H/ceiling  top-10 H
   SWE-bench Verified    134  500   37.7%  19 (14.2%)      26.9%      54.3%  21.8/21.8
@@ -7,8 +7,9 @@ IS ANY OF THIS A LAW? 8 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
   ProteinGym DMS         96  217   35.8%   3 ( 3.1%)      32.3%      49.5%  13.3/21.8
   TabArena 16 models     16   51   22.1%   8 (50.0%)      53.1%      61.9%  19.1/21.8
   TabArena 45 variants   45   51   25.0%  12 (26.7%)      53.3%      59.4%  20.8/21.8
-  LiveBench             152  200   30.2%   8 ( 5.3%)      43.8%      64.6%  20.2/21.8
-  MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.2%  21.8/21.8
+  CASP14                101   42   24.6%   1 ( 1.0%)      62.4%      68.6%  17.5/21.8
+  LiveBench             152  200   30.2%   8 ( 5.3%)      43.8%      64.3%  20.2/21.8
+  MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.1%  21.8/21.8
 
   estab.     ordered pairs established by the simultaneous test
   tie@1      systems whose rank set contains 1 (share of J)
@@ -17,21 +18,22 @@ IS ANY OF THIS A LAW? 8 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
   top-10 H   bits undetermined among the ten best; 21.8 = nothing known
 
 READING IT
-  H/ceiling across all 8: 49.5 % to 65.8 %, a span of 16.2 points.
+  H/ceiling across all 9: 49.5 % to 68.6 %, a span of 19.1 points.
   By the threshold written above before any number was seen (< 10
   points), that is not a regularity. No universal constant is claimed.
-  Among the 7 with n >= 40: 49.5, 54.3, 54.8, 56.2, 59.4, 61.9, 64.6 % - a span of 15.1.
+  Among the 8 with n >= 40: 49.5, 54.3, 54.8, 56.1, 59.4, 61.9, 64.3, 68.6 % - a span of 19.1.
   A reader can see the cluster. I will not fit an interval to it after
   the fact: the interval that WAS written in advance, [50, 60] % for
   n >= 100, failed its first out-of-sample test by half a point, and a
   hypothesis that is re-drawn around each new point is not a hypothesis.
 
-  THE TOP TEN IS A COMPLETE ANTICHAIN ON 4 OF 8:
+  THE TOP TEN IS A COMPLETE ANTICHAIN ON 4 OF 9:
     SWE-bench Verified, MTEB English v2, HELM classic, MathArena 2025
   and not on:
     ProteinGym DMS: top-10 H = 13.3/21.8, 3 system(s) could be first
     TabArena 16 models: top-10 H = 19.1/21.8, 8 system(s) could be first
     TabArena 45 variants: top-10 H = 20.8/21.8, 12 system(s) could be first
+    CASP14: top-10 H = 17.5/21.8, 1 system(s) could be first
     LiveBench: top-10 H = 20.2/21.8, 8 system(s) could be first
   The sentence 'the top is never resolved' is dead as a general
   claim; the pre-registration said it would die if this failed, and
@@ -45,12 +47,22 @@ READING IT
   will not. That is the next test, and it is written here first.
 
   ESTABLISHED SHARE vs ITEM COUNT
-    by items:        HELM < MTEB < TabArena < TabArena < MathArena < LiveBench < ProteinGym < SWE-bench
-    by established:  TabArena < HELM < TabArena < LiveBench < MathArena < MTEB < ProteinGym < SWE-bench
+    by items:        HELM < MTEB < CASP14 < TabArena < TabArena < MathArena < LiveBench < ProteinGym < SWE-bench
+    by established:  TabArena < HELM < CASP14 < TabArena < LiveBench < MathArena < MTEB < ProteinGym < SWE-bench
   Item count alone does not order it. The resolution law has the
   field's spread in it as well as n, and a small, tight field (MathArena,
   35 systems) establishes less than a large one with fewer items.
 
+
+THE PRE-REGISTERED PREDICTIONS FOR THE EIGHTH (CASP14 - AlphaFold2)
+  written into load_all() and committed before it was run
+  1. exactly one system could be first           HOLDS   (1 could be first)
+  2. top-10 not an antichain (H10 <= 19.8)       HOLDS   (17.5/21.8)
+  The instrument sees the most famous resolved lead in modern
+  science as resolved: one group, rank set [1, 1]. The same
+  procedure that finds nineteen candidate leaders on SWE-bench is
+  not conservative to the point of blindness - it reports a tie
+  where there is one and a winner where there is one.
 
 THE PRE-REGISTERED PREDICTION FOR THE SEVENTH (LiveBench)
   written into load_all() and committed before it was run
@@ -89,6 +101,6 @@ THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK
 
   1. top ten a complete antichain (21.8/21.8)          HOLDS   (21.8/21.8)
   2. established share sits where item count puts it  HOLDS
-       by items:        HELM < MTEB < TabArena < TabArena < MathArena < LiveBench < ProteinGym < SWE-bench
-       by established:  TabArena < HELM < TabArena < LiveBench < MathArena < MTEB < ProteinGym < SWE-bench
-  3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.2 %)
+       by items:        HELM < MTEB < CASP14 < TabArena < TabArena < MathArena < LiveBench < ProteinGym < SWE-bench
+       by established:  TabArena < HELM < CASP14 < TabArena < LiveBench < MathArena < MTEB < ProteinGym < SWE-bench
+  3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.1 %)
