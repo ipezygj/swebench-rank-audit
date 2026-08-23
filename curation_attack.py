@@ -21,7 +21,8 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
 SELF-CHECKS
   * on a matrix where the two systems are identical up to noise, the attack
     still reaches t > 2 in-sample (that is the point of the check) and the
-    held-out t is near zero;
+    held-out t fails to support the claim (t < 2, and in fact strongly
+    negative: the complement of a favourable selection is unfavourable);
   * selecting all items reproduces the board's own t.
 
     python curation_attack.py
@@ -74,7 +75,12 @@ def _check_identical():
     chosen, t_in = greedy_items(d, 200)
     held = [i for i in range(400) if i not in set(chosen)]
     t_out = t_of(d[held])
-    return t_in > 2 and abs(t_out) < 2, f"identical systems: curated t {t_in:.2f}, held-out t {t_out:.2f}"
+    # One-sided: the held-out set must fail to SUPPORT the claim. Requiring
+    # |t| < 2 was wrong - creaming off the favourable half leaves a
+    # systematically unfavourable remainder, so the honest check returns a
+    # large NEGATIVE t (-3.99 here), which is the attack being caught
+    # harder, not the check failing.
+    return t_in > 2 and t_out < 2, f"identical systems: curated t {t_in:.2f}, held-out t {t_out:.2f} (mirror of the selection)"
 
 
 def _check_all():
