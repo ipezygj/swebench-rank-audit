@@ -1,0 +1,66 @@
+THE LEADERBOARD AT SATURATION
+==========================================================================
+134 systems, 500 instances
+today's leader: 20251205_sonar-foundation-agent_claude-opus-4-5  0.792
+instances solved by nobody: 32, by everybody: 0
+
+RANKING INSIDE THE HARDEST INSTANCES, AGAINST TWO NULLS
+  count-null: random items of the same NUMBER. This is the obvious
+    comparison and it is wrong: hard items are the least discriminating
+    (w = s(J-s) peaks at half), so they lose to it even when difficulty
+    carries no ordering at all. Shown because it is what one would
+    otherwise have reported.
+  info-null: random items carrying the same TOTAL ranking information.
+    This is the comparison the question deserves, and the band below is
+    the one to read.
+  info: the share of the whole benchmark's ranking information in the
+    stratum - a tenth of the instances is nowhere near a tenth of it.
+          stratum  items   info   agree  count-null           info-null  leader
+      hardest 5 %     25   0.0%   0.004       0.866  [0.004, 0.479]  20231010_rag_claude2
+     hardest 10 %     50   0.3%   0.230       0.913  [0.276, 0.571]  20250915_JoyCode  <-- outside
+     hardest 20 %    100   4.4%   0.712       0.944  [0.822, 0.884]  20251205_sonar-foundat  <-- outside
+     hardest 40 %    200  32.0%   0.930       0.966  [0.953, 0.966]  20251205_sonar-foundat  <-- outside
+
+WHO LEADS WHEN ONLY THE HARDEST TENTH COUNTS
+   rank now system                                        hard score    full
+         13 20250915_JoyCode                                   0.080   0.746
+        123 20250627_agentless_MCTS-Refine-7B                  0.040   0.232
+         11 20251103_sonar-foundation-agent_claude-sonne       0.040   0.748
+         75 20241028_solver                                    0.020   0.500
+         95 20241030_nfactorial                                0.020   0.416
+         48 20250110_blackboxai_agent_v1.1                     0.020   0.628
+         54 20250110_learn_by_interact_claude3.5               0.020   0.602
+         20 20250522_tools_claude-4-sonnet                     0.020   0.724
+
+  Today's leader is rank 4 on the hardest tenth.
+
+WHY THE TABLE ABOVE DOES NOT MEAN WHAT IT LOOKS LIKE
+  On the hardest tenth the best system solves 4 of 50 instances,
+  and 112 of 134 systems solve none at all. There is no ordering to
+  read there. The strata fall below their information-matched nulls
+  not because the hard edge ranks systems differently but because it
+  barely ranks them at all.
+
+THE FINDING, WHICH IS THE OPPOSITE OF WHAT THIS FILE SET OUT TO SHOW
+  share of the benchmark's ranking information by difficulty stratum:
+    hardest 5 %      0.0 %
+    hardest 10 %     0.3 %
+    hardest 20 %     4.4 %
+    hardest 40 %    32.0 %
+
+  Half of all ranking information sits in 157 instances, solved by
+  between 42 and 92 of the 134 systems - the middle of the
+  difficulty range, exactly where w = s(J-s) says it must be.
+
+  So saturation will not REWRITE this leaderboard. It will ERASE it.
+  As the bulk of instances becomes universally solved, the information
+  those instances carry goes to zero, and what remains at the hard edge
+  carries almost none to begin with. A benchmark does not fail by
+  ranking the wrong system first; it fails by running out of ability
+  to rank anyone, and the measurement above says how much is left.
+
+  What this cannot see: an ability no current instance tests. If the
+  next generation is separated by a kind of task absent from all 500,
+  nothing here will show it - and on this evidence that is exactly
+  what the next benchmark will have to contain.
+
