@@ -63,6 +63,12 @@ def years(dates: np.ndarray) -> np.ndarray:
     return ((d - d.min()).dt.days / 365.25).to_numpy()
 
 
+def synth_dates(start: str, days: np.ndarray) -> np.ndarray:
+    """Valid YYYYMMDD ints for the self-checks (20230101 + k is not a date)."""
+    d = pd.Timestamp(start) + pd.to_timedelta(np.asarray(days, dtype=int), unit="D")
+    return d.strftime("%Y%m%d").astype(int).to_numpy()
+
+
 def audit(x: np.ndarray, dates: np.ndarray, seed: int) -> dict:
     """A, P, S for one matrix with the sign-flip pairwise test throughout."""
     adv = advances(x, dates)
@@ -116,7 +122,7 @@ def sigma_p_of(x):
 def _check_no_drift():
     rng = np.random.default_rng(7)
     J, n = 80, 150
-    dates = 20230101 + np.arange(J)
+    dates = synth_dates("2023-01-01", np.arange(J))
     x = dated_twin(J, n, dates, 0.5, 0.0, 0.05, 0.4, rng)
     A = len(advances(x, dates))
     HJ = sum(1 / k for k in range(1, J + 1))
@@ -129,7 +135,7 @@ def _check_no_drift():
 def _check_twin_of_twin():
     rng = np.random.default_rng(9)
     J, n = 60, 150
-    dates = 20230101 + np.sort(rng.integers(0, 700, J))
+    dates = synth_dates("2023-01-01", np.sort(rng.integers(0, 700, J)))
     x = dated_twin(J, n, dates, 0.3, 0.15, 0.04, 0.4, rng)
     real = audit(x, dates, 100)
     sp = sigma_p_of(x)
