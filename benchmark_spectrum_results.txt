@@ -1,0 +1,51 @@
+THE BENCHMARK AS AN INSTRUMENT
+==========================================================================
+134 systems, 500 items
+
+WHOLE TABLE
+  dead items (split no pair)        32 of 500   (6.4 %)
+  effective item count n_eff        381.9 of 500   (76.4 %)
+  items carrying 50 % of the ranking information   157
+  items carrying 80 % of the ranking information   278
+  items carrying 90 % of the ranking information   337
+  items carrying 95 % of the ranking information   381
+
+CONTESTED TOP GROUP (19 systems whose rank set still contains 1)
+  items that split no pair in it    293 of 500   (58.6 %)
+  effective item count n_eff        159.4
+  items carrying 50 % of the top-group information   62
+  items carrying 90 % of the top-group information   149
+
+  -> the contest among these 19 systems lives on 207 of 500 items.
+     The other 293 are unanimous inside the group: every
+     member scores the same 252 on them, so
+     they shift the whole group and reorder nothing.
+     ordering on live items only reproduces the full ordering: True
+     dead items contribute an identical amount to every member: True
+     This is exact, not statistical. It holds for THESE systems: a new
+     system may disagree where they were unanimous, so the discarded
+     items are inert for this comparison, not inert forever.
+
+HELD-OUT TEST OF THE SUBSET CLAIM
+  items chosen on one half of the systems, ranking judged on the other
+     m   in-sample   held-out   random m
+    25       0.906      0.902      0.850
+    50       0.931      0.921      0.919
+   100       0.946      0.941      0.930
+   200       0.970      0.960      0.962
+   350       0.989      0.985      0.982
+   500       1.000      1.000      1.000
+
+  READ THE THIRD COLUMN FIRST. Choosing items by how well they
+  separate systems barely beats choosing the same number at random:
+  at m = 50 the held-out agreement is 0.921 against 0.919 for a random
+  draw. The reason is in the theorem - w_i = s(J-s) is a smooth
+  function of item difficulty, and a random subset already samples that
+  distribution. So the lever is NOT clever item selection. It is that
+  most items are silent on the question being asked.
+
+  in-sample is the number a paper would quote if it selected and
+  evaluated on the same systems. The held-out column is the claim that
+  survives, and the random column is what the same number of items
+  bought without any selection at all. The gap between the first two
+  is the size of the tautology.
