@@ -1,0 +1,104 @@
+<title>Ten Leaderboards Audited</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#EEF1F3; --panel:#FFFFFF; --ink:#101418; --mute:#5A646E; --line:#D3DAE0;
+  --teal:#0F5F63; --teal-soft:#D5E7E7; --amber:#8A5A00; --amber-soft:#F6E7C8;
+  --red:#8C2F26; --grid:#E6EAEE;
+  --disp:"Instrument Serif",Georgia,serif;
+  --ui:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1215; --panel:#161B20; --ink:#E6EAEE; --mute:#96A1AB; --line:#28313A;
+  --teal:#5FC6C0; --teal-soft:#12312F; --amber:#E0B054; --amber-soft:#33280F;
+  --red:#E0847A; --grid:#1D242A;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1215; --panel:#161B20; --ink:#E6EAEE; --mute:#96A1AB; --line:#28313A;
+  --teal:#5FC6C0; --teal-soft:#12312F; --amber:#E0B054; --amber-soft:#33280F;
+  --red:#E0847A; --grid:#1D242A;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);line-height:1.55;margin:0;padding:2.5rem 1.25rem 5rem}
+main{max-width:66rem;margin:0 auto}
+h1{font-family:var(--disp);font-size:3rem;font-weight:400;line-height:1.02;letter-spacing:-.01em;margin:0 0 .5rem;text-wrap:balance}
+h2{font-family:var(--disp);font-size:1.6rem;font-weight:400;margin:3rem 0 .5rem}
+p{max-width:64ch;margin:.6rem 0}
+.lede{font-size:1.08rem;color:var(--mute);max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:.9rem}
+.wrap{overflow-x:auto;margin:1.6rem 0 .6rem;background:var(--panel);border:1px solid var(--line);border-radius:5px}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:52rem}
+th,td{padding:.5rem .7rem;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;font-weight:500}
+thead th{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mute);font-weight:600;border-bottom:1px solid var(--line);vertical-align:bottom;line-height:1.25}
+td{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.85rem}
+tbody tr:hover{background:var(--grid)}
+.good{color:var(--teal);font-weight:500}
+.bad{color:var(--red);font-weight:500}
+.warn{color:var(--amber)}
+.dash{color:var(--mute)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.66rem;padding:.1rem .4rem;border-radius:2px;letter-spacing:.04em}
+.tag.ev{background:var(--teal-soft);color:var(--teal)}
+.tag.co{background:var(--amber-soft);color:var(--amber)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:.5rem 1.6rem;margin:1rem 0 0;font-size:.88rem;color:var(--mute);max-width:none}
+.legend b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:.8rem}
+.pull{font-family:var(--disp);font-size:1.35rem;line-height:1.35;color:var(--ink);border-left:2px solid var(--teal);padding:.2rem 0 .2rem 1.1rem;margin:1.8rem 0;max-width:52ch}
+.small{font-size:.85rem;color:var(--mute)}
+code{font-family:var(--mono);font-size:.85em}
+</style>
+<main>
+<div class="eyebrow">Measurement audit · 2026-08-23</div>
+<h1>Ten leaderboards, seven questions each</h1>
+<p class="lede">Every board below prints a ranking. This asks what each ranking can actually decide — using nothing but the score matrix the board already publishes, and the same instrument on all ten.</p>
+
+<div class="wrap"><table>
+<thead><tr>
+<th>Leaderboard</th>
+<th>Systems that<br>could be first</th>
+<th>#1 vs #2<br>t</th>
+<th>Leader keeps<br>the crown</th>
+<th>Halves name a<br>different leader</th>
+<th>Established pairs<br>a half reverses</th>
+<th>Widening under<br>clustered items</th>
+<th>Items needed<br>for 90 %</th>
+</tr></thead>
+<tbody>
+<tr><td>CASP14 <span class="tag ev">evidence</span></td><td class="good">1</td><td class="good">9.89</td><td class="good">100 %</td><td class="good">0 %</td><td>0.00 %</td><td>1.05×</td><td>43 %</td></tr>
+<tr><td>LiveBench <span class="tag ev">evidence</span></td><td>8</td><td class="good">2.99</td><td class="good">100 %</td><td class="good">0 %</td><td>0.00 %</td><td class="dash">—</td><td>60 %</td></tr>
+<tr><td>ProteinGym DMS</td><td class="good">3</td><td class="warn">1.07</td><td>86 %</td><td>25 %</td><td>0.00 %</td><td class="dash">—</td><td>48 %</td></tr>
+<tr><td>TabArena, 16 models</td><td>8</td><td class="warn">1.14</td><td>86 %</td><td>50 %</td><td>0.00 %</td><td class="dash">—</td><td>55 %</td></tr>
+<tr><td>TabArena, 45 variants</td><td>12</td><td class="warn">0.63</td><td>73 %</td><td>60 %</td><td>0.00 %</td><td class="dash">—</td><td>67 %</td></tr>
+<tr><td>HELM classic</td><td>15</td><td class="warn">0.94</td><td>66 %</td><td>75 %</td><td>0.12 %</td><td class="dash">—</td><td>20 %</td></tr>
+<tr><td>MathArena 2025 <span class="tag co">coin toss</span></td><td>11</td><td class="bad">0.48</td><td class="bad">41 %</td><td class="bad">100 %</td><td>0.00 %</td><td>1.00×</td><td>26 %</td></tr>
+<tr><td>MTEB English v2 <span class="tag co">coin toss</span></td><td>16</td><td class="bad">0.01</td><td class="bad">45 %</td><td class="bad">100 %</td><td>0.00 %</td><td class="bad">1.88×</td><td>49 %</td></tr>
+<tr><td>SWE-bench Verified <span class="tag co">coin toss</span></td><td class="bad">19</td><td class="bad">0.00</td><td class="bad">33 %</td><td class="bad">100 %</td><td>0.00 %</td><td class="bad">1.46×</td><td>36 %</td></tr>
+<tr><td>LMArena categories</td><td>4</td><td class="bad">0.14</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td></tr>
+</tbody>
+</table></div>
+
+<div class="legend">
+<div><b>could be first</b> systems whose 95 % simultaneous rank set contains rank 1</div>
+<div><b>#1 vs #2 t</b> the paired statistic of the two printed leaders, on the board's own items</div>
+<div><b>crown</b> share of item bootstraps in which the printed leader stays first</div>
+<div><b>halves</b> two random halves of the items, ranked separately: how often they name different leaders</div>
+<div><b>reverses</b> of the pairs one half establishes, the share the other half orders the opposite way</div>
+<div><b>clustered</b> how much the rank sets widen when items are resampled in their natural groups (repositories, task families)</div>
+<div><b>items for 90 %</b> the share of items that recovers 90 % of the established orderings</div>
+</div>
+<p class="small">Dashes are missing measurements, not zeros: LMArena was held out while the method was being fixed, and the cluster column needs an item grouping the board publishes.</p>
+
+<h2>What the columns say when you read them against each other</h2>
+<p><strong>The cautious ordering never contradicts itself.</strong> Across nine boards and twenty random splits of the items, the share of established pairs that the other half of the items reverses is 0.00 % — one board, HELM, reaches 0.12 %. The simultaneous test establishes only what a different sample of the same benchmark would also have found.</p>
+<p><strong>The headline contradicts itself constantly.</strong> On SWE-bench Verified, MTEB and MathArena, two halves of the same benchmark name a different first place in every one of twenty splits. Those are the same three boards whose #1 vs #2 comparison has a t below 0.5, and whose leader survives fewer than half of item resamples.</p>
+
+<div class="pull">The same data supports a partial order that is stable and a total order that is not. Leaderboards print the second one.</div>
+
+<p><strong>Two boards can name a winner.</strong> CASP14 — where AlphaFold2 beats the runner-up with t = 9.89 — and LiveBench keep their leader in every resample and every split. Whatever is wrong with leaderboards in general is not wrong with these two, which is the reason to measure rather than assume.</p>
+<p><strong>Independence is worth 46 % on SWE-bench and 88 % on MTEB.</strong> Those boards' items come in groups: twelve repositories, nineteen task families. Resampling the groups instead of the items widens the rank sets by that much, and takes MTEB's count of possible first places from 12 to 26. The narrower number is the one usually published.</p>
+<p><strong>Between a fifth and two thirds of the items would do.</strong> Ninety per cent of each board's established orderings survive on 20–67 % of its items, and the saving holds when the items are chosen on one half of the systems and tested on the other. It is a statement about redundancy at the current frontier, not a licence to delete tasks: the discarded items are the ones today's systems agree on.</p>
+
+<h2>How to read a row about your own benchmark</h2>
+<p>A board can be excellent at one thing and useless at another, and the columns are built to show that rather than average it away. SWE-bench Verified cannot tell you who is first — nineteen systems could be, and its two leaders differ by exactly zero points — while ordering its middle so reliably that a different half of its instances reverses none of it. HELM classic can pick out broad differences between models with ten scenarios, but it cannot say which of its own ten scenarios is harder than another: zero item pairs established.</p>
+<p class="small">Method: simultaneous rank sets from a multiplier bootstrap over items with a Romano-Wolf stepdown, at 95 %. The reading does not depend on that choice — a Bonferroni-corrected paired t and a nonparametric item bootstrap with a max-t critical value agree on all ten boards about whether #1 beats #2, and the numbers move by less than 30 % between α = 0.05 and α = 0.10. Everything is computed from the published score matrices; no metadata is used except where stated.</p>
+</main>
