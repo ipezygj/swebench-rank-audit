@@ -66,8 +66,10 @@ A conforming leaderboard does not:
   simultaneous rank set of either;
 - quote a single board-wide resolution as the precision of a specific
   comparison; the pair's own difference SD is the resolution of that claim
-  (R10), and it can be tighter or looser than the board's by tens of
-  per cent;
+  (R10). The board-wide number misstates the items needed for the claim by
+  the pair's kappa squared TIMES the ratio of the pair's own variance to
+  the board's typical one - measured at 1.0x to 45x across nine boards,
+  in both directions (`prescription_pairwise.py`);
 - add items to a benchmark and report the new ranking without stating the
   power calculation that motivated the number and difficulty of the items
   added (`refill_prescription.py`).
