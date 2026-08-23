@@ -1,0 +1,81 @@
+WHO COULD BE NUMBER ONE IF THE BENCHMARK WERE WEIGHTED DIFFERENTLY?
+==========================================================================
+134 systems, 12 repositories, 500 instances
+
+  the weights nobody chose
+    django            46.2 %
+    sympy             15.0 %
+    sphinx-doc         8.8 %
+    matplotlib         6.8 %
+    scikit-learn       6.4 %
+    astropy            4.4 %
+    pydata             4.4 %
+    pytest-dev         3.8 %
+    pylint-dev         2.0 %
+    psf                1.6 %
+    mwaskom            0.4 %
+    pallets            0.2 %
+
+EQUAL WEIGHT PER REPOSITORY INSTEAD OF PER INSTANCE
+  leader as published      20251205_sonar-foundation-agent_claude-opus-4-  0.792
+  leader at equal weights  20250928_trae_doubao_seed_code  0.780
+  positions changed in the top ten   10
+  pairwise order preserved           94.3 %
+
+THE PRICE OF THE CROWN (top 25 systems as published)
+  rank system                                         score   TV move
+     1 20251205_sonar-foundation-agent_claude-opus-   0.792      0.0 %
+     2 20251215_livesweagent_claude-opus-4-5          0.792      0.0 %
+     3 20250928_trae_doubao_seed_code                 0.788      1.2 %
+     4 20251127_openhands_claude-opus-4-5             0.776     93.0 %
+     5 20251120_livesweagent_gemini-3-pro-preview     0.774     17.3 %
+     6 20250804_epam-ai-run-claude-4-sonnet           0.768     26.6 %
+     7 20250902_atlassian-rovo-dev                    0.768     20.2 %
+     8 20250819_ACoder                                0.764     27.4 %
+     9 20250901_warp                                  0.756     27.1 %
+    10 20250612_trae                                  0.752     93.0 %
+    11 20250731_harness_ai                            0.748     99.8 %
+    12 20251103_sonar-foundation-agent_claude-sonne   0.748     99.8 %
+    13 20250720_Lingxi-v1.5_claude-4-sonnet-2025051   0.746     99.8 %
+    14 20250915_JoyCode                               0.746     99.8 %
+    15 20250603_Refact_Agent_claude-4-sonnet          0.744      8.0 %
+    16 20251015_Prometheus_v1.2.1_gpt5                0.744     70.9 %
+    17 20251103_SalesforceAIResearch_SAGE_OpenHands   0.738     99.8 %
+    18 20250522_tools_claude-4-opus                   0.732     99.8 %
+    19 20251021_SalesforceAIResearch_SAGE_bash_only   0.730     99.8 %
+    20 20250522_tools_claude-4-sonnet                 0.724     99.8 %
+    21 20250807_openhands_gpt5                        0.718     99.8 %
+    22 20250710_bloop                                 0.712     69.9 %
+    23 20250715_qodo_command                          0.712     99.8 %
+    24 20250929_Prometheus_v1.2_gpt5                  0.712     99.8 %
+    25 20251014_Lingxi_kimi_k2                        0.712     99.8 %
+
+  25 of the top 25 can be made leader by some weighting.
+    with a move of at most    5 %: 1 systems
+    with a move of at most   10 %: 2 systems
+    with a move of at most   25 %: 4 systems
+    A cost near 100 % means the weight has to collapse onto a single
+    repository. Technically a champion, practically not an argument.
+    Systems tied at the published top are excluded here: they lead at
+    zero cost because they already do.
+
+  The cheapest usurper is rank 3: moving 1.2 % of the
+  benchmark's weight between repositories it already contains puts
+  20250928_trae_doubao_seed_code on top.
+  weights that do it:
+    django            46.2 % ->  46.2 %
+    sympy             15.0 % ->  15.0 %
+    sphinx-doc         8.8 % ->   8.8 %
+    matplotlib         6.8 % ->   6.8 %
+    scikit-learn       6.4 % ->   6.4 %
+    astropy            4.4 % ->   5.6 %
+    pydata             4.4 % ->   4.4 %
+    pytest-dev         3.8 % ->   2.6 %
+    pylint-dev         2.0 % ->   2.0 %
+    psf                1.6 % ->   1.6 %
+
+  This is exact arithmetic, not a test. No noise, no null, no p-value:
+  these weightings exist. What it adds to the confidence sets is a
+  second reason the published order is soft. The sets say the noise
+  cannot separate 19 systems; this says the composition cannot either,
+  and the composition was never argued for in the first place.
