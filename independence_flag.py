@@ -27,7 +27,9 @@ SELF-CHECKS
   * on a permuted board the flag fires on at most 5 % of pairs (that is the
     calibration, verified rather than assumed);
   * on a board with four planted lineages of four systems each, the top
-    sixteen resolve into four lineages.
+    sixteen resolve into four lineages (this check passed for the wrong
+    reason in the first build: with only planted groups present, single
+    linkage also gives four - the real boards exposed the chaining).
 
     python independence_flag.py
 """
@@ -38,6 +40,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy.cluster.hierarchy import fcluster, linkage
+from scipy.spatial.distance import squareform
 from scipy.stats import spearmanr
 
 from entropy_law_test import MATRICES
@@ -65,27 +69,24 @@ def threshold(x, rng, reps=6):
 
 
 def lineages(K, idx, thr):
-    """Single-linkage components: same lineage if kappa below the threshold."""
+    """Groups in which EVERY pair is below the threshold (complete linkage).
+
+    The first build used single linkage - a chain of "A is close to B, B to
+    C" - and on eight of nine boards it swallowed the entire leaderboard
+    into one lineage, satisfying the pre-registered criteria in a way that
+    said nothing. Kappa varies continuously, so transitive chaining always
+    connects everything. Complete linkage states the claim that is actually
+    meant: these systems are pairwise non-independent, all of them.
+    """
     m = len(idx)
-    parent = list(range(m))
-
-    def find(a):
-        while parent[a] != a:
-            parent[a] = parent[parent[a]]
-            a = parent[a]
-        return a
-
-    for i in range(m):
-        for j in range(i + 1, m):
-            if K[idx[i], idx[j]] < thr:
-                ri, rj = find(i), find(j)
-                if ri != rj:
-                    parent[ri] = rj
-    groups = {}
-    for i in range(m):
-        groups.setdefault(find(i), []).append(i)
-    sizes = sorted((len(v) for v in groups.values()), reverse=True)
-    return len(groups), sizes[0]
+    sub = K[np.ix_(idx, idx)].copy()
+    sub = np.nan_to_num((sub + sub.T) / 2, nan=float(np.nanmax(K)))
+    np.fill_diagonal(sub, 0.0)
+    sub[sub < 0] = 0.0
+    Z = linkage(squareform(sub, checks=False), method="complete")
+    pred = fcluster(Z, t=thr, criterion="distance")
+    sizes = sorted(np.bincount(pred)[1:], reverse=True)
+    return len(sizes), int(sizes[0])
 
 
 def _check_calibration():

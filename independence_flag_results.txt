@@ -1,0 +1,22 @@
+INDEPENDENT LINEAGES IN THE TOP TEN
+================================================================================
+  leaderboard               J    thr  top-10 lineages  largest  whole board  J_eff/J
+  SWE-bench Verified      134  0.967                1       10      24 (19)     0.28
+  MTEB English v2         181  0.876                2        9      22 (30)     0.15
+  HELM classic             90  0.719                8        2      31 (11)     0.64
+  ProteinGym DMS           96  0.949                2        5      12 (16)     0.14
+  TabArena 16 models       16  0.873                4        5        8 (5)     0.59
+  TabArena 45 variants     45  0.887                2        7       12 (8)     0.31
+  CASP14                  101  0.874                3        7       24 (7)     0.37
+  LiveBench               152  0.944                2        7      32 (20)     0.33
+  MathArena 2025           35  0.953                1       10       10 (8)     0.37
+
+  top ten holds 7 or fewer lineages: 8/9 (pre-registered >= 6)
+  at least one board with a lineage of 4+ in its top ten: yes (8 boards)
+  Spearman(J_eff/J, top-10 lineages) = +0.59 (p 0.09); pre-registered > 0.4
+
+  Two systems are in the same lineage when their kappa falls below the
+  threshold, and the threshold is the 5th percentile of kappa on the same
+  board with every system's residuals shuffled - so on a board with no
+  lineages the flag fires on 5 % of pairs by construction. 'whole board'
+  gives the lineage count and the largest lineage over all J systems.
