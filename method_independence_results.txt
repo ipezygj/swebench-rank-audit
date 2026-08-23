@@ -1,0 +1,22 @@
+THREE METHODS, ONE QUESTION
+============================================================================================
+  leaderboard             tie@1 boot   Bonf  iboot |  estab boot    Bonf   iboot |        #1v#2 separates
+  SWE-bench Verified              19     21     19 |       37.7%   36.5%   37.0% |      none of the three
+  MTEB English v2                 15     25     17 |       34.3%   27.2%   33.4% |      none of the three
+  HELM classic                    16     50     16 |       24.1%    6.2%   24.2% |      none of the three
+  ProteinGym DMS                   3      4      3 |       35.8%   33.2%   34.9% |      none of the three
+  TabArena 16 models               8      8      8 |       22.1%   18.3%   21.2% |      none of the three
+  TabArena 45 variants            12     20     14 |       25.0%   19.2%   24.1% |      none of the three
+  MathArena 2025                  11     11     11 |       31.6%   28.5%   30.4% |      none of the three
+  CASP14                           1      1      1 |       24.6%   20.6%   24.1% |  boot, Bonf, item boot
+  LiveBench                        8     12      8 |       30.2%   28.0%   29.6% |      none of the three
+  LMArena categories               4      6      5 |       39.3%   35.3%   38.7% |      none of the three
+
+  Bonferroni tie@1 no smaller than the bootstrap's: 10/10 (pre-registered >= 8)
+  the three methods agree on whether #1 beats #2: 10/10 (pre-registered: all)
+  multiplier and item bootstrap established shares within 10 points: 10/10 (pre-registered >= 7)
+
+  The bootstrap is the standard's estimator because it uses the pairing and
+  controls the family-wise error with the least conservatism of the three.
+  The point of this table is not which is best: it is that the reading -
+  which boards can name a first place - does not come from the choice.
