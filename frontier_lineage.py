@@ -42,6 +42,17 @@ import pandas as pd
 
 from sota_audit import advances
 from lineage_detection import FAMILY, MIN_FAMILY
+from swebench_base_models import base_model
+
+# SWE-bench families are now the base model named anywhere in the submission
+# id (swebench_base_models.py, vocabulary fixed before any coverage number was
+# read). The first run used the last underscore token and placed 6 % of
+# advances; this places 46 % of submissions. The MTEB and ProteinGym numbers
+# are unchanged, so the pre-registered comparison there stands as it was; the
+# SWE column below is a SECOND LOOK at the same data with a better family
+# assignment, and is marked as such rather than counted as a fresh test.
+FAMILY = dict(FAMILY)
+FAMILY["SWE-bench Verified"] = base_model
 
 BOARDS = {
     "SWE-bench Verified": ("swebench_verified_matrix.csv", None),
