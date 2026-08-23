@@ -1,0 +1,32 @@
+DOES INVARIANCE DRIFT (R7) PREDICT WHETHER THE HALVES AGREE? (iteration 79)
+==========================================================================
+  Pre-registered before computing: Spearman(ordinal drift multiplier,
+  top-flip rate) above 0.4 - a board whose ordering moves with the item
+  subset should be one whose halves name different leaders.
+
+  board                   R7 ordinal drift   halves flip the leader
+  SWE-bench Verified            2.8x                100 %
+  MTEB English v2               1.9x                100 %
+  HELM classic                  1.0x                 75 %
+  ProteinGym DMS                2.3x                 25 %
+  TabArena 16 models            1.6x                 50 %
+  TabArena 45 variants          1.1x                 60 %
+  MathArena 2025                2.2x                100 %
+  CASP14                        1.2x                  0 %
+  LiveBench                     2.4x                  0 %
+
+  Spearman = +0.08 (p 0.85) on nine boards. THE PREDICTION FAILS.
+
+  The two quantities measure different things and the failure says which.
+  R7 asks whether the ability ORDERING drifts when items are split by
+  DIFFICULTY - a systematic split, testing whether the board measures one
+  construct. The half-split flip rate asks whether the top of a RANDOM
+  split changes - a question about noise at the very top, where the gap is
+  near zero on most boards.
+  LiveBench is the clearest case: its ordinal drift is 2.4x, among the
+  highest, and its leader survives every random halving, because its top
+  gap (9.29 points) is large enough that no amount of item-mix drift
+  reaches it.
+
+  Recorded as a null: R7 and the flip rate are not substitutes, and a board
+  cannot use a good R7 to argue that its headline is stable, or the reverse.
