@@ -26,7 +26,11 @@ than the board average. Reporting therefore splits into board-level fields
 A leaderboard **conforms** if it publishes the required fields below with the
 matrix they were computed from. A reference implementation
 (`leaderboard_standard.py`) computes every field from the matrix; conformance
-is therefore a matter of publishing, not of effort.
+is therefore a matter of publishing, not of effort. That last clause is
+measured, not asserted: the full card takes 0.09 to 6.6 seconds on the ten
+boards here, on one laptop core, and the cost per pair of systems is
+0.33-0.78 ms and roughly flat, so a board with five hundred entrants would
+need under a minute (`conformance_cost.py`).
 
 ## 1. Required fields
 
