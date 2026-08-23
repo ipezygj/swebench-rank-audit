@@ -1,0 +1,20 @@
+HOW LONG UNTIL THE TOP CAN BE DECIDED AGAIN?
+======================================================================================
+  board                 beta /yr  current gap  relative needs  outsider needs  wait rel  wait out
+  SWE-bench Verified       32.5p        0.00p           4.87p           5.52p      1.8m      2.0m
+  SWE-bench Lite           24.4p        0.33p           7.62p           8.09p      3.6m      3.8m
+  MTEB English v2           4.7p        0.01p           2.65p           5.00p      6.8m     12.8m
+  LiveBench                40.5p        9.29p           8.98p          10.05p      0.0m      0.2m
+  ProteinGym DMS            0.6p        0.62p           1.48p           2.33p     17.6m     35.2m
+
+  wait between 1 and 36 months for a relative: 4/5 (pre-registered: all)
+  SWE-bench Verified under 24 months: yes (1.8)
+  order by wait  : LiveBench, SWE-bench Verified, SWE-bench Lite, MTEB English v2, ProteinGym DMS
+  order by beta  : LiveBench, SWE-bench Verified, SWE-bench Lite, MTEB English v2, ProteinGym DMS
+  the two orders differ: NO (pre-registered: yes)
+
+  The wait assumes the field keeps improving at its own historical rate and
+  that the improvement lands on the pair in question. It is a lower bound on
+  when a claim could survive the standard, not a forecast of when one will
+  be made. A board with a large beta and a coarse resolution can wait longer
+  than a slow board that measures finely.
