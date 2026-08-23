@@ -1,0 +1,65 @@
+HOW LONG HAS THE TOP BEEN UNDECIDABLE?
+==============================================================================
+
+  SWE-bench Verified   Spearman(date, t) = -0.55 (p 0.16); within-1-SE count trend +0.87
+            date    J   top t      gap  within 1 SE
+      2024-04-02    8    3.86    6.60p            0
+      2024-10-02   26    0.10    0.20p            1
+      2024-11-20   44    0.65    1.20p            1
+      2025-01-22   62    0.90    1.80p            1
+      2025-05-15   80    0.26    0.40p            1
+      2025-06-27   98    0.53    0.80p            1
+      2025-09-01  117    0.27    0.40p            2
+      2025-12-15  134    0.00    0.00p            2
+
+  SWE-bench Lite   Spearman(date, t) = -0.50 (p 0.21); within-1-SE count trend +0.48
+            date    J   top t      gap  within 1 SE
+      2024-04-02    8    3.09    6.33p            0
+      2024-06-20   19    1.08    3.00p            0
+      2024-07-28   30    1.96    5.00p            0
+      2024-10-25   41    0.45    1.33p            1
+      2024-12-02   51    0.37    1.00p            1
+      2025-01-14   63    2.52    6.00p            0
+      2025-05-26   73    1.27    3.33p            0
+      2025-09-11   84    0.15    0.33p            2
+
+  MTEB English v2   Spearman(date, t) = -0.71 (p 0.05); within-1-SE count trend +0.47
+            date    J   top t      gap  within 1 SE
+      2022-03-02   11    0.92    0.76p            1
+      2023-10-19   32    2.93    0.75p            0
+      2024-02-11   55    3.92    1.34p            0
+      2024-06-10   79    1.49    0.49p            0
+      2024-09-17  104    0.94    0.90p            2
+      2025-01-22  127    0.34    0.34p            2
+      2025-11-06  150    0.73    0.75p            1
+      2026-07-20  174    0.01    0.01p            1
+
+  LiveBench   Spearman(date, t) = -0.32 (p 0.48); within-1-SE count trend +0.23
+            date    J   top t      gap  within 1 SE
+      2024-06-07   30    0.96    2.47p            1
+      2024-07-18   50    3.07    9.47p            0
+      2024-08-30   70    3.01    9.01p            0
+      2024-11-18   90    1.09    2.79p            1
+      2024-12-18  111    0.28    0.68p            3
+      2025-02-05  132    0.70    2.39p            3
+      2025-03-25  152    2.99    9.29p            0
+
+  ProteinGym DMS   Spearman(date, t) = -0.59 (p 0.12); within-1-SE count trend +0.02
+            date    J   top t      gap  within 1 SE
+      2021-07-01   12    1.93    1.12p            0
+      2022-05-15   21    1.93    1.12p            0
+      2022-07-01   33    1.93    1.12p            0
+      2023-03-16   50    0.05    0.02p            2
+      2023-12-01   62    0.05    0.02p            4
+      2024-04-24   71    1.59    1.02p            0
+      2025-02-03   83    1.07    0.62p            0
+      2025-07-01   96    1.07    0.62p            0
+
+  top-pair t declines over time: 5/5 (pre-registered >= 3)
+  was once above 2 and is now below 1.5: 3/5 (pre-registered >= 3)
+  number of systems within one SE of the leader grows: 5/5 (pre-registered >= 4)
+
+  t is the paired statistic of the two best systems present at that date,
+  computed on that board's own items. 'within 1 SE' counts systems whose
+  own paired comparison with the leader is under one standard error - the
+  crowd a claim has to be separated from, not just the runner-up.

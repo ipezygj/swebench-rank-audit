@@ -79,8 +79,16 @@ def _check_clear_leader():
     x = 0.4 + rng.normal(0, 0.05, J)[:, None] + rng.normal(0, 0.4, (J, n))
     x[0] += 0.35                                    # a permanent, clear leader
     s = series(x, dates)
-    r = spearmanr([a[0] for a in s], [a[2] for a in s]).statistic
-    return r > -0.5, f"fixed clear leader: Spearman(date, t) {r:+.2f} (must not fall sharply)"
+    ts = [a[2] for a in s]
+    r = spearmanr([a[0] for a in s], ts).statistic
+    # With a permanent leader and a permanent runner-up, t is literally
+    # constant across checkpoints and Spearman is undefined - which is the
+    # strongest possible form of "does not decline", not a failure. The first
+    # run returned nan here and the check rejected it.
+    flat = float(np.std(ts)) < 1e-9
+    ok = flat or r > -0.5
+    return ok, (f"fixed clear leader: t {'constant at ' + format(ts[0], '.2f') if flat else 'Spearman ' + format(r, '+.2f')}"
+                f" (must not fall sharply)")
 
 
 def _check_crowding():
