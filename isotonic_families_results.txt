@@ -1,0 +1,30 @@
+FAMILIES CONDITIONED ON ABILITY: ISOTONIC RESIDUALS
+==============================================================================
+  Rasch field, no families (120 x 400): F additive 0.94   F isotonic 0.94
+    pre-registered: additive < 0.9 NO; isotonic within 0.1 of 1 yes
+
+  leaderboard               J  F add  F iso J_eff add J_eff iso
+  SWE-bench Verified      134   0.28   0.81      37.4     108.5
+  MTEB English v2         181   0.15   0.33      27.5      60.0
+  HELM classic             90   0.64   0.69      57.4      62.1
+  ProteinGym DMS           96   0.14   0.16      13.2      15.0
+  TabArena 16 models       16   0.59   0.55       9.5       8.7
+  TabArena 45 variants     45   0.31   0.35      14.1      16.0
+  CASP14                  101   0.37   0.53      37.0      53.3
+  LiveBench               152   0.33   0.60      49.7      91.7
+  MathArena 2025           35   0.37   0.61      12.8      21.3
+
+  F rises under isotonic residual: 8/9 (pre-registered >= 7)
+  TabArena calibration (iso): J_eff(45) 16.0 < 1.5 x J_eff(16) 13.1 -> NO
+
+  dated board          advances frontier pct control pct   diff
+  SWE-bench Verified         32           28          58    -30
+  SWE-bench Lite             17           21          63    -42
+  MTEB English v2            16           61          84    -22
+  LiveBench                  12           58          77    -19
+
+  frontier - control >= 10 points: 0/4  -> family reading stays dead
+
+  isotonic residual = item score minus a monotone fit on the systems' mean
+  scores; absorbs any monotone item x ability interaction. F add / F iso =
+  share of independent entrants under the additive / isotonic residual.
