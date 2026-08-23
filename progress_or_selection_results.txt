@@ -1,0 +1,51 @@
+PROGRESS, OR JUST MORE ATTEMPTS?
+==========================================================================
+134 systems, 2023-10-10 to 2025-12-15
+first score 0.044, best 0.792
+
+date-vs-score rank correlation   +0.773   permutation p = 0.0000
+
+WHEN THE FRONTIER PASSED EACH LEVEL, AND WHEN IT WOULD HAVE IN
+RANDOM ORDER (same 134 systems, dates shuffled)
+   level       actual   random order, median        gap
+    0.20   2024-04-02             2023-10-10      +7 systems
+    0.40   2024-08-20             2023-10-10     +17 systems
+    0.50   2024-10-28             2023-10-10     +34 systems
+    0.60   2024-12-21             2023-10-10     +52 systems
+    0.70   2025-04-30             2023-10-10     +73 systems
+    0.75   2025-06-12             2024-05-09     +85 systems
+
+  The gap is in submissions, not days, and it is the number to read:
+  several systems share a date (four RAG baselines are all 2023-10-10),
+  so a median crossing at submission 0, 1 or 2 prints the same date.
+
+  A positive gap means the level was reached LATER than a random
+  ordering of the same systems would have reached it. That is what
+  progress looks like here: the good systems arrived last, so the
+  frontier had to wait for them instead of stumbling on them early.
+
+  observed frontier inside the 95 % band   2.2 % of the record
+  observed frontier BELOW the band         97.8 %
+
+THE FRONTIER AGAINST ITS OWN SHUFFLED SELF
+   after         date   actual  random median    2.5%   97.5%
+      10   2024-06-12    0.326          0.751   0.654   0.792
+      20   2024-09-18    0.452          0.771   0.712   0.792
+      40   2024-11-06    0.530          0.783   0.752   0.792
+      60   2025-01-18    0.646          0.788   0.768   0.792
+      80   2025-05-15    0.704          0.791   0.776   0.792
+     100   2025-06-29    0.752          0.792   0.788   0.792
+     120   2025-09-24    0.768          0.792   0.792   0.792
+     134   2025-12-15    0.792          0.792   0.792   0.792
+
+  The permutation fixes the endpoint: after all 134 systems every
+  ordering has the same maximum, so the last row carries no test and
+  the evidence is entirely in the interior. This measures whether the
+  good systems came in date order, not whether the field improved -
+  those are different questions and only the first one is decidable
+  from a leaderboard that reports no confidence in its own ordering.
+
+  And it cannot say WHY the good ones came late. A stronger base model,
+  a better scaffold and a benchmark leaking into training data all
+  produce the same curve. This separates chronology from accumulation,
+  which is one question, and leaves the causal one open.
