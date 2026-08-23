@@ -15,7 +15,7 @@ Ground truth from names, defined before looking at any kappa:
                       retrieval" -> Tranception
 
 Score: adjusted Rand index between the kappa clustering (average linkage on
-1 - kappa, cut at the number of name families) and the name families,
+kappa as the distance, cut at the number of name families) and the name families,
 against a permutation null (labels shuffled, 200 draws).
 
 PRE-REGISTERED EXPECTATION (2026-08-23, before running)
@@ -28,7 +28,8 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
     different scaffolds.
 
 SELF-CHECKS
-  * planted families with known labels must give ARI > 0.8;
+  * planted families with known labels must give ARI > 0.8 (this check
+    caught a wrong distance definition before any board was clustered);
   * shuffled labels must give ARI near 0 (|ARI| < 0.05 on average).
 
     python lineage_detection.py
@@ -86,8 +87,16 @@ def labels_of(names, fn):
 
 
 def cluster_ari(K, idx, lab, k):
-    D = 1.0 - K[np.ix_(idx, idx)]
-    D = np.nan_to_num((D + D.T) / 2)
+    """Distance IS kappa: smaller kappa means the pair moves together.
+
+    The first build used 1 - kappa and clipped negatives to zero. Kappa
+    exceeds 1 for pairs that move apart more than independence, so every
+    such pair got distance 0 - the most dissimilar pairs were recorded as
+    identical, and the planted-family check returned ARI -0.03 although
+    kappa itself separated the families cleanly (0.58 within, 1.11 across).
+    """
+    D = K[np.ix_(idx, idx)].copy()
+    D = np.nan_to_num((D + D.T) / 2, nan=float(np.nanmax(K)))
     np.fill_diagonal(D, 0.0)
     D[D < 0] = 0.0
     Z = linkage(squareform(D, checks=False), method="average")

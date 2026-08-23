@@ -1,0 +1,14 @@
+DOES PAIR SHARPNESS RECOVER LINEAGE THAT ONLY THE NAMES KNOW?
+====================================================================================
+  board                   systems  families  in families    ARI  null 95th      p  kappa in  kappa across
+  SWE-bench Verified          134         3           10   0.35       0.25  0.050      0.84          1.09
+  MTEB English v2             181        25          123   0.42       0.02  0.005      0.43          1.01
+  ProteinGym DMS               96         8           51   0.56       0.05  0.005      0.59          1.07
+
+  ARI above the permutation 95th percentile: 3/3 (pre-registered >= 2)
+  ARI at least 0.20: 3/3 (pre-registered >= 2)
+
+  Families come from the names only: the base model in a SWE-bench
+  submission id, the HuggingFace organisation for MTEB, the method family
+  for ProteinGym. kappa never sees them. 'kappa in' and 'kappa across'
+  are the median pair sharpness within and between name families.
