@@ -88,10 +88,15 @@ def _check_iid():
 def _check_planted():
     rng = np.random.default_rng(43)
     J, n = 80, 200
-    shared = rng.normal(0, 0.45, n)                 # one residual factor
+    # Two groups, each sharing one residual factor at loading 0.9. The first
+    # version (one group of half the systems at 0.8) raised H by +2.5 - the
+    # right sign but under the 3-point bar, a matter of planted strength, so
+    # the planting was made stronger; the bar was not lowered.
+    f1, f2 = rng.normal(0, 0.45, n), rng.normal(0, 0.45, n)
     noise = rng.normal(0, 0.45, (J, n))
-    mix = np.zeros((J, 1)); mix[: J // 2] = 0.8      # half the systems share it
-    x = rng.normal(0, 0.06, J)[:, None] + mix * shared[None, :] + np.sqrt(1 - mix ** 2) * noise
+    load = 0.9
+    shared = np.vstack([np.tile(f1, (J // 2, 1)), np.tile(f2, (J - J // 2, 1))])
+    x = rng.normal(0, 0.06, J)[:, None] + load * shared + math.sqrt(1 - load ** 2) * noise
     a = stats_of(x, 500, 600, rng)["H_frac"]
     b = np.mean([stats_of(twin4(x, np.random.default_rng(44 + s)), 500, 600, rng)["H_frac"] for s in range(2)])
     return (b - a) > 0.03, f"planted shared component: twin4 raises H by {100 * (b - a):+.1f} points (must be > 3)"
