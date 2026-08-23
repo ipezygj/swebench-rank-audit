@@ -1,4 +1,4 @@
-# Leaderboard Reporting Standard — draft 0.1 (2026-08-23)
+# Leaderboard Reporting Standard — draft 0.2 (2026-08-23)
 
 *What a leaderboard must publish beside its ranking, so that a reader can tell
 evidence from typography. Modelled on the GUM (JCGM 100:2008) for physical
@@ -12,6 +12,16 @@ matrix supports a partial order; the difference is a choice the reader is not
 shown. This standard requires that difference to be reported, in quantities
 that are computable from the matrix alone, with no model beyond what the
 leaderboard itself already assumes.
+
+Two empirical facts from nine leaderboards in seven fields shape what is
+required. First, the aggregate quantities (established share, entropy) are
+well predicted by four numbers — J, n, the spread of scores τ, and the
+median pairwise σ — so a board's overall resolving power is not a mystery
+and can be computed before any run. Second, the resolution of an INDIVIDUAL
+comparison is not that median: systems that share a base model, a scaffold
+or a method move together item by item, and their comparison is sharper
+than the board average. Reporting therefore splits into board-level fields
+(R2–R8) and claim-level fields (R10).
 
 A leaderboard **conforms** if it publishes the required fields below with the
 matrix they were computed from. A reference implementation
@@ -30,6 +40,7 @@ is therefore a matter of publishing, not of effort.
 | R6 | **tiers resolved** | height of the partial order of established pairs; largest antichain | how many levels the instrument distinguishes versus how many positions it prints | `leaderboard_geometry.py` |
 | R7 | **invariance drift** | ability drift across the item halves split by difficulty, metric and ordinal, each against its random-split floor | whether the instrument measures one thing; if the order moves with the subset, the table is an index | `measurement_invariance.py`, `ordinal_invariance.py` |
 | R8 | **discordance D** | expected number of items on which two random systems disagree, on the top decile and on the whole field | the resource every test consumes; zero D means no method can separate anything | `information_depletion.py` |
+| R10 | **pair resolution of every claim** | for each comparison the leaderboard asserts (a "new SOTA", a "beats", a highlighted row), the pair's own difference SD, its ratio κ to what independence gives, and the paired test on that pair | the board's global σ is not the resolution of the claim: on five dated boards the frontier pairs have κ 0.53–0.94 while all pairs average 1.00, so quoting one number for the board understates the evidence for exactly the comparisons people read | `pair_sharpness.py`, `sota_audit.py` |
 | R9 | **provenance** | software version, seed, date, and the exact command | reproducibility of every number above | — |
 
 ## 2. Conditional fields
@@ -53,6 +64,10 @@ A conforming leaderboard does not:
 - print positions beyond the number of tiers resolved without marking ties;
 - report a "new state of the art" whose gap to the previous is inside the
   simultaneous rank set of either;
+- quote a single board-wide resolution as the precision of a specific
+  comparison; the pair's own difference SD is the resolution of that claim
+  (R10), and it can be tighter or looser than the board's by tens of
+  per cent;
 - add items to a benchmark and report the new ranking without stating the
   power calculation that motivated the number and difficulty of the items
   added (`refill_prescription.py`).

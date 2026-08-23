@@ -31,7 +31,7 @@ import leaderboard_geometry as lg
 import ordinal_invariance as oi
 import information_depletion as idp
 
-VERSION = "0.1"
+VERSION = "0.2"
 SEED = 20260823
 
 MATRICES = {
@@ -111,6 +111,23 @@ def card(name: str, path: str, draws: int, samples: int) -> dict:
     D_all = disc(x)
     D_top = disc(x[top])
 
+    # R10 pair resolution. The claim a leaderboard always makes is "row 1 beats
+    # row 2", so the card reports that pair's own difference SD and its kappa
+    # against independence, next to the board's median kappa. Item difficulty
+    # is removed first: it is common to both systems and cancels in every
+    # difference (pair_sharpness.py).
+    xc = x - x.mean(axis=0, keepdims=True)
+    sd_row = xc.std(axis=1, ddof=1)
+    i1, i2 = int(order[0]), int(order[1])
+    d12 = xc[i1] - xc[i2]
+    indep12 = math.sqrt(sd_row[i1] ** 2 + sd_row[i2] ** 2)
+    kappa12 = float(d12.std(ddof=1) / indep12) if indep12 > 0 else float("nan")
+    iu_all = np.triu_indices(J, k=1)
+    dd = xc[iu_all[0]] - xc[iu_all[1]]
+    indep_all = np.sqrt(sd_row[iu_all[0]] ** 2 + sd_row[iu_all[1]] ** 2)
+    kappa_all = float(np.median(np.where(indep_all > 0, dd.std(axis=1, ddof=1) / indep_all, np.nan)))
+    sd_pair12 = float(d12.std(ddof=1) / math.sqrt(n))
+
     return {
         "name": name, "J": J, "n": n, "binary": binary, "hash": h,
         "inside": inside, "viol": viol,
@@ -122,7 +139,9 @@ def card(name: str, path: str, draws: int, samples: int) -> dict:
         "drift_m": d["metric"], "floor_m": fm,
         "drift_o": d["ordinal"], "floor_o": fo,
         "D_all": D_all, "D_top": D_top,
-        "leader": names[int(order[0])],
+        "leader": names[int(order[0])], "runner": names[i2],
+        "kappa12": kappa12, "kappa_all": kappa_all, "se12": sd_pair12,
+        "gap12": float(x[i1].mean() - x[i2].mean()),
     }
 
 
@@ -152,6 +171,9 @@ def render(c: dict) -> str:
       f"{c['floor_o']:.3f} ({flag_o})")
     p(f"R8 discordance D  whole field {c['D_all']:.1f}, top decile "
       f"{c['D_top']:.1f} items-equivalent")
+    p(f"R10 pair resolution  #1 vs #2: gap {c['gap12']:.4f}, that pair's SE "
+      f"{c['se12']:.4f} (t {c['gap12'] / c['se12'] if c['se12'] else float('nan'):.2f}); "
+      f"kappa {c['kappa12']:.2f} vs board median {c['kappa_all']:.2f}")
     p(f"R9 provenance     leaderboard_standard {VERSION}, git {git_rev()}, "
       f"seed {SEED}, {date.today().isoformat()}")
     p(f"   leader as printed: {c['leader'][:60]}")
