@@ -1,0 +1,19 @@
+SOTA CLAIMS UNDER A CLUSTER BOOTSTRAP
+====================================================================================
+
+  SWE-bench Verified: 32 frontier advances, 12 clusters
+    separable at the item level: 8
+    separable under the cluster bootstrap: 7
+    median interval width: item 7.40p, cluster 8.47p
+    claims that lose separability (2):
+      2024-12-21  20241221_codestory_midwit_claude-3-5-sonnet_swe-search
+      2025-04-30  20250430_zencoder_ai
+  MathArena 2025: no dates available, skipped
+
+  separable count falls on both boards: 1/2 (pre-registered: both)
+  every clustered survivor also survived at the item level: 0/2 (pre-registered: both)
+
+  A cluster bootstrap resamples whole repositories or competitions. It is
+  the interval that admits a benchmark is not a bag of independent tasks.
+  Claims that lose separability here were never separable from a field
+  that happened to draw different repositories.
