@@ -1,0 +1,28 @@
+CHASE MODEL, EACH NOISE MODEL WITH ITS OWN FIT
+============================================================================================
+  board                model     q   lambda  climb hit   u hit | A real  A sim P real  P sim  sigma_p
+  SWE-bench Verified   iid    0.43   0.0078         NO     yes |     32   28.0    25%     6%    0.480
+  SWE-bench Verified   ctrl   0.24   0.0168        yes      NO |     32   34.0    25%     9%    0.471
+  SWE-bench Verified   boot   0.24   0.0168        yes      NO |     32   34.0    25%    10%    0.482
+  SWE-bench Lite       iid    0.14   0.0365        yes      NO |     17   11.2    24%    42%    0.464
+  SWE-bench Lite       ctrl   0.14   0.0365        yes      NO |     17   13.5    24%    34%    0.456
+  SWE-bench Lite       boot   0.14   0.0365        yes      NO |     17   13.5    24%    35%    0.466
+  MTEB English v2      iid    0.24   0.0005         NO     yes |     16   11.5    38%    16%    0.090
+  MTEB English v2      ctrl   0.05   0.0023         NO      NO |     16   12.1    38%    18%    0.097
+  MTEB English v2      boot   0.05   0.0023         NO      NO |     16   12.1    38%    18%    0.093
+  LiveBench            iid    0.24   0.0122        yes     yes |     12   19.8    33%    14%    0.445
+  LiveBench            ctrl   0.14   0.0244        yes     yes |     12   25.1    33%    13%    0.435
+  LiveBench            boot   0.14   0.0244        yes     yes |     12   25.1    33%    16%    0.445
+  ProteinGym DMS       iid    0.14   0.0085         NO     yes |     11   13.6    55%    27%    0.158
+  ProteinGym DMS       ctrl   0.05   0.0239        yes      NO |     11    7.5    55%    36%    0.154
+  ProteinGym DMS       boot   0.05   0.0239        yes      NO |     11    7.5    55%    38%    0.156
+
+  fits that hit their own targets: 3/15
+  A within 30 %: iid 3/5  ctrl 3/5  boot 3/5   (pre-registered: ctrl >= 4)
+  P within 15 points: iid 0/5  ctrl 1/5  boot 1/5   (pre-registered: none above 3)
+  |P(boot) - P(ctrl)| < 8 points: 5/5 (pre-registered >= 4)
+
+  Each noise model gets its own (q, lambda), fitted to total climb and
+  median step. A and P are predictions. iid = one Gaussian level for all;
+  ctrl = the board's own row noise levels, permuted (no correlation);
+  boot = the board's own rows unchanged (levels and correlation).
