@@ -1,0 +1,37 @@
+IS THE FRONTIER GETTING SHARPER? PAIR SHARPNESS BY YEAR
+============================================================================
+
+  SWE-bench Verified   Spearman(year, frontier/all ratio) = n/a (fewer than 3 usable years)
+      year  adv  kappa frontier  all pairs   ratio
+      2024   19           0.884      0.962   0.919
+      2025   13           0.865      1.010   0.857
+
+  SWE-bench Lite   Spearman(year, frontier/all ratio) = n/a (fewer than 3 usable years)
+      year  adv  kappa frontier  all pairs   ratio
+      2024   14           0.959      1.003   0.957
+      2025    3           0.839      1.011   0.829
+
+  MTEB English v2   Spearman(year, frontier/all ratio) = -0.40 (p 0.60)
+      year  adv  kappa frontier  all pairs   ratio
+      2022    2           0.669      0.898   0.745
+      2023    6           0.526      1.000   0.526
+      2024    5           0.518      0.990   0.523
+      2025    2           0.628      0.994   0.632
+
+  LiveBench   Spearman(year, frontier/all ratio) = n/a (fewer than 3 usable years)
+      year  adv  kappa frontier  all pairs   ratio
+      2024    7           0.902      1.002   0.900
+      2025    5           0.867      1.011   0.858
+
+  ProteinGym DMS   Spearman(year, frontier/all ratio) = n/a (fewer than 3 usable years)
+      year  adv  kappa frontier  all pairs   ratio
+      2018    2           0.467      0.709   0.659
+      2024    5           0.645      1.022   0.631
+
+  ratio falls over time (negative Spearman): 1/5 (pre-registered >= 3)
+  all-pair kappa within 0.05 of 1.0 in every year: NO
+  SWE-bench Verified: +nan
+
+  kappa below 1 means two systems move together item by item. A falling
+  frontier ratio means each new record-holder resembles the one it
+  passed more than earlier record-holders resembled theirs.

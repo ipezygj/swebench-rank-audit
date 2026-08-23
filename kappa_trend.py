@@ -79,7 +79,7 @@ def trend(rows):
     return r.statistic, r.pvalue
 
 
-def sim_board(growing, rng, J=90, n=250, years=5):
+def sim_board(growing, rng, J=240, n=250, years=6):
     """Entrants over `years`; if growing, the share sharing a lineage rises."""
     per = J // years
     dates, resid, ability = [], [], []
@@ -88,7 +88,10 @@ def sim_board(growing, rng, J=90, n=250, years=5):
         share = (0.15 + 0.18 * y) if growing else 0.3
         for k in range(per):
             dates.append(int(f"{2021 + y}0601"))
-            ability.append(0.4 + 0.03 * y + rng.normal(0, 0.05))
+            # drift large enough that records keep arriving in every year;
+            # the first build (J=90, drift 0.03/yr) produced fewer than three
+            # usable years and the self-checks had nothing to measure.
+            ability.append(0.4 + 0.10 * y + rng.normal(0, 0.05))
             if rng.random() < share:
                 rho = 0.75
                 resid.append(rho * base + math.sqrt(1 - rho ** 2) * rng.normal(0, 0.45, n))
