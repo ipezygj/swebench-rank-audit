@@ -90,6 +90,36 @@ def mcnemar_exact(a: np.ndarray, b: np.ndarray) -> tuple[int, int, float]:
     return only_a, only_b, min(1.0, p)
 
 
+
+def paired_test(a: np.ndarray, b: np.ndarray, rng=None) -> tuple[int, int, float]:
+    """Pairwise test that respects the data type.
+
+    Binary items: McNemar's exact test on the discordant items. Continuous
+    items (MTEB task scores, LiveBench judged scores): a sign-flip
+    permutation test on the paired differences, distribution-free, 20 000
+    flips. The first version applied McNemar to everything; on a continuous
+    matrix "a solved, b did not" is never literally true, so every p was 1
+    and MTEB showed 0 of 16 pairwise-separable advances next to 2 of 16
+    simultaneous ones - an impossible ordering that gave the bug away.
+
+    Returns (margin numerator, discordant-or-n, p). For continuous data the
+    first two are the count of items a beats b on and the count they differ
+    on, so the table columns keep their meaning.
+    """
+    binary = bool(np.isin(a, [0.0, 1.0]).all() and np.isin(b, [0.0, 1.0]).all())
+    if binary:
+        return mcnemar_exact(a, b)
+    d = a - b
+    d = d[d != 0]
+    if len(d) == 0:
+        return 0, 0, 1.0
+    rng = rng or np.random.default_rng(SEED)
+    obs = abs(d.mean())
+    flips = rng.choice([-1.0, 1.0], size=(20000, len(d)))
+    null = np.abs((flips * d[None, :]).mean(axis=1))
+    pval = float((np.sum(null >= obs - 1e-15) + 1) / (len(null) + 1))
+    return int(np.sum(d > 0)), int(len(d)), min(1.0, pval)
+
 def advances(x: np.ndarray, dates: np.ndarray):
     """Every (date, new leader, previous leader) at which the running max rose."""
     scores = x.mean(axis=1)
@@ -174,7 +204,7 @@ def main(argv=None) -> int:
     rows = []
     for k, ad in enumerate(adv):
         new, old, d = ad["new"], ad["old"], ad["date"]
-        oa, ob, p = mcnemar_exact(x[new], x[old])
+        oa, ob, p = paired_test(x[new], x[old])
         # Simultaneous test among the systems that existed at that date.
         present = np.flatnonzero(dates <= d)
         r = rs.rank_sets(x[present], draws=a.draws, seed=SEED + k)
@@ -182,7 +212,8 @@ def main(argv=None) -> int:
         sim = bool(r["beats"][pi[new], pi[old]])
         rows.append({"date": d, "new": names[new], "old": names[old],
                      "gain": float(scores[new] - scores[old]),
-                     "margin": oa - ob, "discordant": oa + ob, "p": p,
+                     "margin": (oa - ob) if (oa + ob) and np.isin(x[new], [0.0, 1.0]).all() else oa,
+                     "discordant": (oa + ob) if np.isin(x[new], [0.0, 1.0]).all() else ob, "p": p,
                      "pairwise": p < 0.05, "simultaneous": sim,
                      "present": len(present)})
 
@@ -248,8 +279,8 @@ def main(argv=None) -> int:
     unbeaten = []
     for i, r in enumerate(rows):
         later = rows[i + 1:]
-        beaten = any(mcnemar_exact(x[names.index(s["new"])],
-                                   x[names.index(r["new"])])[2] < 0.05 for s in later)
+        beaten = any(paired_test(x[names.index(s["new"])],
+                                 x[names.index(r["new"])])[2] < 0.05 for s in later)
         if not beaten:
             unbeaten.append(r)
     p("REIGNS")
@@ -270,7 +301,7 @@ def main(argv=None) -> int:
     first_sep_from = None
     for r in rows[:-1]:
         oi_ = names.index(r["new"])
-        oa, ob, pv = mcnemar_exact(x[li], x[oi_])
+        oa, ob, pv = paired_test(x[li], x[oi_])
         p(f"  {r['new'][:44]:<44} {100 * (scores[li] - scores[oi_]):>+5.1f}%"
           f" {oa - ob:>+7d} {pv:>7.3f}")
         if pv < 0.05:

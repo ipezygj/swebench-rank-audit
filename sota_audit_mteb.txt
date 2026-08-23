@@ -1,0 +1,102 @@
+EVERY TIME THE FRONTIER MOVED: WAS IT SEPARABLE FROM THE PREVIOUS LEADER?
+==============================================================================
+174 systems, 41 items, 2022-03-02 to 2026-07-20
+frontier advances: 16
+
+        date   gain  margin  discord   exact p  pairwise  simult.  field  new leader
+  2022-12-07  +1.4%     +23       41     0.209        no       no     15  intfloat/e5-small
+  2022-12-26  +2.7%     +39       41     0.000       yes      yes     17  intfloat/e5-large
+  2023-07-27  +1.6%     +29       41     0.015       yes       no     27  thenlper/gte-large
+  2023-09-11  +0.4%     +22       41     0.453        no       no     28  BAAI/bge-base-en-v1.5
+  2023-09-12  +0.8%     +28       41     0.005       yes       no     30  BAAI/bge-large-en-v1.5
+  2023-11-02  +0.3%     +21       41     0.638        no       no     36  Cohere/Cohere-embed-english-v3.0
+  2023-12-04  +0.2%     +22       41     0.769        no       no     42  WhereIsAI/UAE-Large-V1
+  2023-12-20  +1.6%     +27       41     0.024       yes       no     44  intfloat/e5-mistral-7b-instruct
+  2024-01-24  +1.3%     +31       41     0.000       yes      yes     47  Salesforce/SFR-Embedding-Mistral
+  2024-05-29  +0.5%     +18       41     0.138        no       no     77  Linq-AI-Research/Linq-Embed-Mistra
+  2024-06-14  +0.0%     +22       41     0.986        no       no     81  Salesforce/SFR-Embedding-2_R
+  2024-06-15  +0.9%     +22       41     0.366        no       no     83  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-12-11  +0.7%     +29       41     0.372        no       no    126  NovaSearch/jasper_en_vision_langua
+  2025-06-03  +3.8%     +28       41     0.000       yes       no    136  Qwen/Qwen3-Embedding-8B
+  2025-08-01  +0.7%     +25       41     0.478        no       no    141  Kingsoft-LLM/QZhou-Embedding
+  2026-05-19  +0.0%     +17       41     0.994        no       no    171  jcorners/ingot-8b-r3
+
+HOW MANY 'NEW STATE OF THE ART' CLAIMS WERE SEPARABLE WHEN MADE
+  numerically higher          16 of 16   (by construction)
+  pairwise exact, 5 %         6 of 16
+  simultaneous, field at date 2 of 16
+
+THE CLIMB EVERYONE DRAWS, SPLIT BY WHAT SUPPORTS IT
+  total frontier climb           16.9 points
+  from pairwise-separable steps  11.8 points (70 %)
+  from simultaneous-separable    4.1 points (24 %)
+  from steps inside noise        5.1 points (30 %) at the pairwise standard
+
+REIGNS
+  longest reign by calendar: Kingsoft-LLM/QZhou-Embedding, 2025-08-01 to 2026-05-19
+  leaders never pairwise-beaten by any later leader: 2 of 16
+    2025-08-01  Kingsoft-LLM/QZhou-Embedding
+    2026-05-19  jcorners/ingot-8b-r3
+
+
+STEPS INSIDE NOISE STILL ADD UP: THE FINAL LEADER AGAINST EVERY EARLIER ONE
+  earlier leader                                  gap  margin       p
+  intfloat/e5-small                            +15.6%      +0   0.000
+  intfloat/e5-large                            +12.9%      +0   0.000
+  thenlper/gte-large                           +11.2%      -1   0.000
+  BAAI/bge-base-en-v1.5                        +10.8%      +0   0.000
+  BAAI/bge-large-en-v1.5                       +10.1%      -1   0.000
+  Cohere/Cohere-embed-english-v3.0              +9.8%      +0   0.000
+  WhereIsAI/UAE-Large-V1                        +9.6%      -1   0.000
+  intfloat/e5-mistral-7b-instruct               +8.0%      +0   0.000
+  Salesforce/SFR-Embedding-Mistral              +6.7%      -2   0.000
+  Linq-AI-Research/Linq-Embed-Mistral           +6.2%      -2   0.000
+  Salesforce/SFR-Embedding-2_R                  +6.2%      -9   0.000
+  Alibaba-NLP/gte-Qwen2-7B-instruct             +5.3%     -10   0.000
+  NovaSearch/jasper_en_vision_language_v1       +4.6%     -11   0.000
+  Qwen/Qwen3-Embedding-8B                       +0.8%     -24   0.024
+  Kingsoft-LLM/QZhou-Embedding                  +0.0%     -24   0.994
+
+  The current leader is separable from every leader up to and
+  including 2025-06-03 (Qwen/Qwen3-Embedding-8B),
+  and from none of the leaders after it. Individual advances were
+  inside noise; their sum is not. That is the honest shape of the
+  record: progress is real over quarters and unreadable over weeks.
+
+  Multiplicity, stated rather than hidden: 16 pairwise tests at
+  5 % expect about 0.8 false separations under no effect, and
+  several of the 6 'yes' rows sit at p = 0.04. The simultaneous
+  column (2 of 16) is the one that pays for this.
+
+  A leader that was never separably beaten has not been shown to be
+  worse than anything that came after it. On this benchmark the
+  frontier curve is drawn through every advance; the evidence supports
+  drawing it through a subset, and the rest is the ordering of near-
+  ties by arrival date.
+
+DID THE LEADER OF THE DAY EVER HAVE RANK SET [1, 1]?
+        date  field  leader set  could be #1  leader
+  2022-03-02     10 [1,2]                  2  sentence-transformers/all-MiniLM-L
+  2023-02-07     18 [1,1]                  1  intfloat/e5-large  <-- unambiguous
+  2023-07-27     26 [1,2]                  2  thenlper/gte-large
+  2023-11-02     34 [1,5]                  5  Cohere/Cohere-embed-english-v3.0
+  2023-12-04     42 [1,9]                  8  WhereIsAI/UAE-Large-V1
+  2024-02-03     50 [1,1]                  1  Salesforce/SFR-Embedding-Mistral  <-- unambiguous
+  2024-03-15     58 [1,1]                  1  Salesforce/SFR-Embedding-Mistral  <-- unambiguous
+  2024-04-12     66 [1,2]                  2  Salesforce/SFR-Embedding-Mistral
+  2024-04-30     74 [1,1]                  1  Salesforce/SFR-Embedding-Mistral  <-- unambiguous
+  2024-06-15     82 [1,7]                  5  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-06-26     90 [1,7]                  5  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-07-12     98 [1,11]                  8  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-09-19    106 [1,11]                  9  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-10-25    114 [1,10]                  9  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2024-12-04    122 [1,13]                  9  Alibaba-NLP/gte-Qwen2-7B-instruct
+  2025-02-07    130 [1,13]                 11  NovaSearch/jasper_en_vision_langua
+  2025-07-17    138 [1,5]                  5  Qwen/Qwen3-Embedding-8B
+  2025-09-29    146 [1,8]                  8  Kingsoft-LLM/QZhou-Embedding
+  2026-01-06    154 [1,10]                 10  Kingsoft-LLM/QZhou-Embedding
+  2026-03-09    162 [1,13]                 12  Kingsoft-LLM/QZhou-Embedding
+  2026-04-30    170 [1,16]                 13  Kingsoft-LLM/QZhou-Embedding
+  2026-07-20    174 [1,13]                 12  jcorners/ingot-8b-r3
+
+  last date with an unambiguous leader: 2024-04-30 (Salesforce/SFR-Embedding-Mistral)

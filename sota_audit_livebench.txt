@@ -4,50 +4,49 @@ EVERY TIME THE FRONTIER MOVED: WAS IT SEPARABLE FROM THE PREVIOUS LEADER?
 frontier advances: 12
 
         date   gain  margin  discord   exact p  pairwise  simult.  field  new leader
-  2024-06-07 +22.6%     +37       41     0.000       yes      yes     30  Meta-Llama-3-70B-Instruct
-  2024-06-07  +0.5%      +4       34     0.608        no       no     30  claude-3-haiku-20240307
-  2024-06-07 +17.8%     +25       33     0.000       yes      yes     30  claude-3-opus-20240229
-  2024-06-07  +2.6%      +7       31     0.281        no       no     30  gpt-4-1106-preview
-  2024-06-07  +2.5%      +6       26     0.327        no       no     30  gpt-4o-2024-05-13
-  2024-06-20  +9.5%     +14       38     0.034       yes       no     39  claude-3-5-sonnet-20240620
-  2024-10-22  +2.8%      +6       26     0.327        no       no     85  claude-3-5-sonnet-20241022
-  2025-01-31  +2.4%     +15       43     0.032       yes       no    126  o3-mini-2025-01-31-high
-  2025-02-24  +0.2%     -10       30     0.099        no       no    136  claude-3-7-sonnet-20250219-thinkin
-  2025-02-24  +1.3%      +2       26     0.845        no       no    136  claude-3-7-sonnet-20250219-thinkin
-  2025-02-27  +1.0%      +3       37     0.743        no       no    139  gpt-4.5-preview-2025-02-27
-  2025-03-25  +9.3%     +14       38     0.034       yes       no    152  gemini-2.5-pro-exp-03-25
+  2024-06-07 +22.6%     +77       79     0.000       yes      yes     30  Meta-Llama-3-70B-Instruct
+  2024-06-07  +0.5%     +26       69     0.864        no       no     30  claude-3-haiku-20240307
+  2024-06-07 +17.8%     +68       73     0.000       yes      yes     30  claude-3-opus-20240229
+  2024-06-07  +2.6%     +32       64     0.367        no       no     30  gpt-4-1106-preview
+  2024-06-07  +2.5%     +26       58     0.340        no       no     30  gpt-4o-2024-05-13
+  2024-06-20  +9.5%     +53       71     0.002       yes       no     39  claude-3-5-sonnet-20240620
+  2024-10-22  +2.8%     +29       57     0.281        no       no     85  claude-3-5-sonnet-20241022
+  2025-01-31  +2.4%     +30       81     0.491        no       no    126  o3-mini-2025-01-31-high
+  2025-02-24  +0.2%     +47       68     0.936        no       no    136  claude-3-7-sonnet-20250219-thinkin
+  2025-02-24  +1.3%     +30       58     0.607        no       no    136  claude-3-7-sonnet-20250219-thinkin
+  2025-02-27  +1.0%     +33       69     0.739        no       no    139  gpt-4.5-preview-2025-02-27
+  2025-03-25  +9.3%     +56       73     0.003       yes       no    152  gemini-2.5-pro-exp-03-25
 
 HOW MANY 'NEW STATE OF THE ART' CLAIMS WERE SEPARABLE WHEN MADE
   numerically higher          12 of 12   (by construction)
-  pairwise exact, 5 %         5 of 12
+  pairwise exact, 5 %         4 of 12
   simultaneous, field at date 2 of 12
 
 THE CLIMB EVERYONE DRAWS, SPLIT BY WHAT SUPPORTS IT
   total frontier climb           72.5 points
-  from pairwise-separable steps  61.5 points (85 %)
+  from pairwise-separable steps  59.2 points (82 %)
   from simultaneous-separable    40.4 points (56 %)
-  from steps inside noise        11.0 points (15 %) at the pairwise standard
+  from steps inside noise        13.3 points (18 %) at the pairwise standard
 
 REIGNS
   longest reign by calendar: claude-3-5-sonnet-20241022, 2024-10-22 to 2025-01-31
-  leaders never pairwise-beaten by any later leader: 2 of 12
-    2025-01-31  o3-mini-2025-01-31-high
+  leaders never pairwise-beaten by any later leader: 1 of 12
     2025-03-25  gemini-2.5-pro-exp-03-25
 
 
 STEPS INSIDE NOISE STILL ADD UP: THE FINAL LEADER AGAINST EVERY EARLIER ONE
   earlier leader                                  gap  margin       p
-  Meta-Llama-3-70B-Instruct                    +49.9%     +86   0.000
-  claude-3-haiku-20240307                      +49.4%     +82   0.000
-  claude-3-opus-20240229                       +31.6%     +57   0.000
-  gpt-4-1106-preview                           +29.0%     +50   0.000
-  gpt-4o-2024-05-13                            +26.6%     +44   0.000
-  claude-3-5-sonnet-20240620                   +17.1%     +30   0.000
-  claude-3-5-sonnet-20241022                   +14.3%     +24   0.001
-  o3-mini-2025-01-31-high                      +11.9%      +9   0.136
-  claude-3-7-sonnet-20250219-thinking-25k      +11.7%     +19   0.003
-  claude-3-7-sonnet-20250219-thinking-64k      +10.3%     +17   0.003
-  gpt-4.5-preview-2025-02-27                    +9.3%     +14   0.034
+  Meta-Llama-3-70B-Instruct                    +49.9%      -8   0.000
+  claude-3-haiku-20240307                      +49.4%      -7   0.000
+  claude-3-opus-20240229                       +31.6%     -18   0.000
+  gpt-4-1106-preview                           +29.0%     -13   0.000
+  gpt-4o-2024-05-13                            +26.6%     -13   0.000
+  claude-3-5-sonnet-20240620                   +17.1%     -21   0.000
+  claude-3-5-sonnet-20241022                   +14.3%     -19   0.000
+  o3-mini-2025-01-31-high                      +11.9%     -12   0.000
+  claude-3-7-sonnet-20250219-thinking-25k      +11.7%     -16   0.000
+  claude-3-7-sonnet-20250219-thinking-64k      +10.3%     -15   0.000
+  gpt-4.5-preview-2025-02-27                    +9.3%     -17   0.003
 
   The current leader is separable from every leader up to and
   including 2025-02-27 (gpt-4.5-preview-2025-02-27),
@@ -57,7 +56,7 @@ STEPS INSIDE NOISE STILL ADD UP: THE FINAL LEADER AGAINST EVERY EARLIER ONE
 
   Multiplicity, stated rather than hidden: 12 pairwise tests at
   5 % expect about 0.6 false separations under no effect, and
-  several of the 5 'yes' rows sit at p = 0.04. The simultaneous
+  several of the 4 'yes' rows sit at p = 0.04. The simultaneous
   column (2 of 12) is the one that pays for this.
 
   A leader that was never separably beaten has not been shown to be
