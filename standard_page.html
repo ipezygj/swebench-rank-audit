@@ -1,0 +1,142 @@
+<title>Leaderboard Reporting Standard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FCFCFA; --ink:#16181A; --mute:#63696F; --line:#DFE2E0; --rule:#C9CEC9;
+  --req:#123C5C; --req-soft:#E3EDF5; --cond:#4A4030; --cond-soft:#F2ECE0;
+  --no:#7C2B22; --no-soft:#F6E5E2; --ev:#2B5F3F;
+  --serif:"Newsreader",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111314; --ink:#E8EAEA; --mute:#98A0A6; --line:#2A2E30; --rule:#3A403F;
+  --req:#8FC4E8; --req-soft:#132633; --cond:#D8C69C; --cond-soft:#2A2418;
+  --no:#E39187; --no-soft:#2E1A17; --ev:#89C4A2;
+}}
+:root[data-theme="dark"]{
+  --bg:#111314; --ink:#E8EAEA; --mute:#98A0A6; --line:#2A2E30; --rule:#3A403F;
+  --req:#8FC4E8; --req-soft:#132633; --cond:#D8C69C; --cond-soft:#2A2418;
+  --no:#E39187; --no-soft:#2E1A17; --ev:#89C4A2;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:1.02rem;line-height:1.6;margin:0;padding:3rem 1.25rem 6rem}
+main{max-width:52rem;margin:0 auto}
+h1{font-size:2.4rem;font-weight:600;line-height:1.1;margin:0 0 .3rem;letter-spacing:-.015em;text-wrap:balance}
+.draft{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+h2{font-size:1.35rem;font-weight:600;margin:3rem 0 .4rem;padding-top:1rem;border-top:1px solid var(--rule)}
+h3{font-size:1.05rem;font-weight:600;margin:1.8rem 0 .3rem}
+p{margin:.7rem 0}
+.lede{font-size:1.1rem;color:var(--mute);font-style:italic;margin-bottom:2rem}
+.field{border-left:3px solid var(--req);padding:.15rem 0 .15rem 1rem;margin:1.4rem 0}
+.field.cond{border-left-color:var(--cond)}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:.1rem .4rem;border-radius:2px;background:var(--req-soft);color:var(--req);margin-right:.5rem}
+.tag.c{background:var(--cond-soft);color:var(--cond)}
+.field h4{display:inline;font-size:1.02rem;font-weight:600;margin:0}
+.field .why{color:var(--mute);font-size:.95rem;margin:.3rem 0 0}
+.field .src{font-family:var(--mono);font-size:.75rem;color:var(--mute)}
+ul{padding-left:1.15rem}li{margin:.45rem 0}
+.no li::marker{color:var(--no)}
+.ev{background:var(--no-soft);border-radius:3px;padding:1rem 1.1rem;margin:1.2rem 0}
+.ev b{color:var(--no)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.95em}
+code{font-family:var(--mono);font-size:.85em;color:var(--mute)}
+.foot{color:var(--mute);font-size:.9rem;margin-top:2.5rem;border-top:1px solid var(--line);padding-top:1rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:1rem 0}
+th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);font-weight:600}
+td.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.85rem}
+.wrap{overflow-x:auto}
+</style>
+<main>
+<div class="draft">Draft 0.2 · 23 August 2026</div>
+<h1>Leaderboard Reporting Standard</h1>
+<p class="lede">What a leaderboard must publish beside its ranking, so a reader can tell evidence from typography.</p>
+
+<p>A leaderboard is a total order printed from a systems × items matrix. The matrix supports a partial order; the difference between the two is a choice the reader is never shown. This standard requires that difference to be reported, in quantities computable from the matrix alone, with no model beyond what the leaderboard already assumes.</p>
+<p>It is modelled on the GUM for physical measurement, the AERA/APA/NCME Standards for tests, and CONSORT for trials — none of which has an equivalent for machine-learning benchmarks. A reference implementation computes every field from the matrix, so conformance is a matter of publishing, not of effort.</p>
+
+<div class="ev">
+<p><b>Why this is not a style guide.</b> Ten leaderboards from five fields were measured with one instrument. On eight of them the printed first place cannot be distinguished from the printed second: the paired statistic runs from <span class="num">0.00</span> (SWE-bench Verified, whose two leaders differ by exactly zero points) to <span class="num">1.14</span>. The two that can name a winner are CASP14 (<span class="num">t = 9.89</span>) and LiveBench (<span class="num">2.99</span>). Meanwhile the cautious partial order those same boards support is stable: across twenty random halvings of the items, the share of established pairs that the other half reverses is <span class="num">0.00 %</span>. The same data carries a partial order that holds and a total order that does not. Leaderboards print the second one.</p>
+</div>
+
+<h2>Required fields</h2>
+
+<div class="field"><span class="tag">R1</span><h4>Shape</h4>
+<p class="why">J systems, n items, data type, and a hash of the matrix. Nothing below is interpretable without it.</p></div>
+
+<div class="field"><span class="tag">R2</span><h4>Simultaneous rank sets</h4>
+<p class="why">For every system, the [best, worst] rank compatible with the data at 95 % simultaneous coverage; summary: median width over J, and how many systems could be first. A per-system error bar computed from one system's own items understates the width of a comparison by up to eight times, because it throws away the pairing.</p>
+<p class="src">rank_sets.py · two_way_bootstrap.py</p></div>
+
+<div class="field"><span class="tag">R3</span><h4>Leaderboard entropy</h4>
+<p class="why">H = log₂ of the number of total orders consistent with every established pair, and H / log₂(J!). One number for how much of the printed order is unsupported: the published table is one of 2^H equally defensible ones.</p>
+<p class="src">leaderboard_entropy.py</p></div>
+
+<div class="field"><span class="tag">R4</span><h4>Top-k resolution</h4>
+<p class="why">Bits undetermined among the ten best, against the 21.8 bits of a complete tie. On five of the boards tested this is the full 21.8: every order of the top ten is equally supported.</p>
+<p class="src">leaderboard_entropy.py</p></div>
+
+<div class="field"><span class="tag">R5</span><h4>Established share</h4>
+<p class="why">The fraction of ordered pairs the simultaneous test separates — the raw material the ranking is made from.</p>
+<p class="src">rank_sets.py</p></div>
+
+<div class="field"><span class="tag">R6</span><h4>Tiers resolved</h4>
+<p class="why">Height of the partial order of established pairs, and the largest antichain: how many levels the instrument distinguishes against how many positions the table prints.</p>
+<p class="src">leaderboard_geometry.py</p></div>
+
+<div class="field"><span class="tag">R7</span><h4>Invariance drift</h4>
+<p class="why">Ability drift across item halves split by difficulty, metric and ordinal, each against its own random-split floor. If the order moves with the subset, the table is an index, not a measurement.</p>
+<p class="src">measurement_invariance.py · ordinal_invariance.py</p></div>
+
+<div class="field"><span class="tag">R8</span><h4>Discordance</h4>
+<p class="why">The expected number of items on which two random systems disagree, for the top decile and for the whole field. This is the resource every test consumes; when it reaches zero no method can separate anything.</p>
+<p class="src">information_depletion.py</p></div>
+
+<div class="field"><span class="tag">R9</span><h4>Provenance</h4>
+<p class="why">Software version, seed, date, and the exact command.</p></div>
+
+<div class="field"><span class="tag">R10</span><h4>Pair resolution of every claim</h4>
+<p class="why">For each comparison the leaderboard asserts — a "new state of the art", a "beats", a highlighted row — that pair's own difference SD, its ratio κ to what independence would give, and the paired test on that pair, with the split-half reliability of κ. The board's global σ is not the resolution of the claim: on five dated boards the pairs behind frontier claims have κ between 0.53 and 0.94 while all pairs average 1.00. Below roughly forty items κ is not measurable (HELM, with ten, gives a split-half r of 0.15).</p>
+<p class="src">pair_sharpness.py · kappa_reliability.py · sota_audit.py</p></div>
+
+<h2>Conditional fields</h2>
+<div class="wrap"><table>
+<tr><th>#</th><th>Field</th><th>When</th></tr>
+<tr><td class="n">C1</td><td>Effective item count, dead items, live items for the top group</td><td>binary matrices</td></tr>
+<tr><td class="n">C2</td><td>Depletion history and half-life</td><td>submission dates available</td></tr>
+<tr><td class="n">C3</td><td>Composition sensitivity: who could lead under a defensible reweighting</td><td>items carry group labels</td></tr>
+<tr><td class="n">C4</td><td>Invariant core and its height</td><td>items carry group labels</td></tr>
+<tr><td class="n">C5</td><td>Recount margin in items, and the swing items</td><td>binary matrices</td></tr>
+<tr><td class="n">C6</td><td>Pattern-fit flags, with the confound statement</td><td>binary matrices</td></tr>
+<tr><td class="n">C7</td><td>Cluster-resampled rank sets, and the grouping used</td><td>items come in groups</td></tr>
+</table></div>
+<p>C7 is not decoration. Resampling repositories instead of instances widens SWE-bench Verified's rank sets by <span class="num">46 %</span>; resampling MTEB's task families instead of its tasks widens its by <span class="num">88 %</span> and takes the number of models that could be first from <span class="num">12</span> to <span class="num">26</span>.</p>
+
+<h2>Prohibited presentations</h2>
+<ul class="no">
+<li>A per-system error bar presented as if it were a comparison.</li>
+<li>Positions printed beyond the number of tiers resolved, without marking ties.</li>
+<li>A "new state of the art" whose gap to the previous leader lies inside the simultaneous rank set of either.</li>
+<li>A single board-wide resolution quoted as the precision of a specific comparison. The error runs from <span class="num">1.0×</span> to <span class="num">45×</span>, in both directions, across nine boards.</li>
+<li>Item-resampled intervals presented as the board's uncertainty when the items come in groups, without the cluster-resampled ones beside them.</li>
+<li>Items added to a benchmark and a new ranking reported, with no power calculation for how many items and at what difficulty.</li>
+</ul>
+
+<h2>R10 needs a pre-registered item set, or it is an attack surface</h2>
+<p>Asking for the statistic behind a claim invites the claimant to choose the items it is computed on, and the attack is neither hypothetical nor subtle. Greedily picking the most favourable items raises the top pair's t above 2 on all nine boards tested — on SWE-bench Verified, whose leaders differ by exactly zero points, nineteen of five hundred instances reach <span class="num">t = 18.0</span>.</p>
+<p>The defence is as simple as the attack: score the claim on the items the claimant did <em>not</em> choose. On eight of nine boards the curated claim collapses there, with held-out t from <span class="num">−4.3</span> to <span class="num">0.4</span>. On CASP14, where the difference is real, it survives at <span class="num">10.7</span>. LiveBench is the instructive middle case: an honest t of 2.99, and a held-out t of <span class="num">−2.13</span> after curation.</p>
+<p>A conforming leaderboard therefore computes R10 on a pre-registered item set, and treats any claimant-selected subset as requiring its complement beside it.</p>
+
+<h2>A consequence, stated rather than discovered later</h2>
+<p>Reporting a pair's own resolution makes a claim by a <em>relative</em> of the current leader easier to establish than the same improvement by an unrelated entrant, because relatives' difference vectors are tighter. The saving is exactly the ratio of the two κ's: <span class="num">1 %</span> on HELM, where every entrant is a stranger, and <span class="num">47 %</span> on MTEB. On MTEB an unrelated entrant would need 4.90 points to separate from the leader, and the largest frontier step in that board's entire history is 3.81 — a stranger has never been able to make a separable claim there, while a variant of the leader can.</p>
+<p>This asymmetry is not created by the standard. It is present in every paired test anyone runs; R10 makes it visible, which is the point.</p>
+
+<h2>Validation required of the implementation</h2>
+<p>Every field's implementation ships self-checks that can fail, run before any number is printed, <strong>at the shape of the matrix being reported</strong>. In one day of development three separate nulls passed at 60 × 400 and failed at 134 × 500. A conforming implementation refuses to print when a check fails.</p>
+
+<h2>Appendix — two design findings</h2>
+<p>Not requirements: what the same instrument says about choices made before there is anything to report.</p>
+<p><strong>Score on more than two levels.</strong> Binarising a continuous board costs more resolution than any other single choice measured. CASP14's decisive top pair falls from <span class="num">t = 9.89</span> to <span class="num">1.78</span>; the number of models that could be first goes from 1 to 24 there, and from 12 to 66 on MTEB. The recovery is quick — three levels restore CASP14 to a single possible winner, eight are indistinguishable from continuous. The rule is not "use a continuous metric" but "do not score pass/fail if a three-point rubric is possible". SWE-bench cannot avoid it, and that is one reason its top is unresolvable.</p>
+<p><strong>Cheap entry costs little.</strong> A newcomer that runs a quarter of the items gets a rank set 1.1× to 2.0× the width it would get from running all of them, on nine boards of nine. A submission policy can offer a cheap tier without losing the ability to place its entrants.</p>
+
+<p class="foot">Draft 0.2. Measured on SWE-bench Verified, Lite and test, MTEB English v2, HELM classic, ProteinGym DMS, TabArena, CASP14, LiveBench, MathArena 2025 and LMArena categories. Every threshold in the tools that produced these numbers was committed to version control before the run that tested it, and the failures are recorded next to the successes.</p>
+</main>
