@@ -1,0 +1,26 @@
+SOTA STEP SIZES IN UNITS OF THE BENCHMARK'S PAIRWISE RESOLUTION
+====================================================================================
+  leaderboard           steps  median u    u<1    q25    q75    max   twin med twin u<1 twin steps
+  SWE-bench Verified       32      0.40    84%   0.19   0.78   2.08       1.15      44%        136
+  MTEB English v2          16      0.27    94%   0.13   0.51   1.35       1.42      40%         85
+  LiveBench                12      0.41    67%   0.20   1.51   3.65       0.96      58%         85
+
+  pre-registered: real median u < 1 on all three; twin median u > 1 on all three;
+  >= 60 % of real steps below 1 on each board.
+    SWE-bench Verified   real median<1 yes   twin median>1 yes   real share<1 >= 60 % yes
+    MTEB English v2      real median<1 yes   twin median>1 yes   real share<1 >= 60 % yes
+    LiveBench            real median<1 yes   twin median>1 NO   real share<1 >= 60 % yes
+
+  twin consistency (share of twin steps with u > 1 vs sota_twin's twin pairwise share 55/60/50 %):
+    SWE-bench Verified   u>1 share 56 %
+    MTEB English v2      u>1 share 60 %
+    LiveBench            u>1 share 42 %
+
+  exploratory: are the three real u-distributions alike? (two-sample KS p, not judged)
+    SWE-bench  vs MTEB       KS p = 0.50
+    SWE-bench  vs LiveBench  KS p = 0.62
+    MTEB       vs LiveBench  KS p = 0.36
+
+  u = (new leader - old leader) / (1.96 sigma_p / sqrt(n)). A step with
+  u < 1 cannot be told from zero by a pairwise test on that benchmark.
+  The twin is the linear-drift Gaussian field of sota_twin.py.
