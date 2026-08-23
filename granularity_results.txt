@@ -1,0 +1,15 @@
+WHAT FINE-GRAINED SCORING BUYS
+============================================================================================
+  board                 tie@1 cont  median   mean |  estab cont  median |  t cont  median    mean
+  MTEB English v2               12      66     81 |       33.8%   25.6% |    0.01     nan     nan
+  ProteinGym DMS                 3       4      4 |       36.2%   31.4% |    1.07    0.00    1.13
+  CASP14                         1      24     50 |       24.7%   21.7% |    9.89    1.78    1.00
+  LiveBench                      8      12     12 |       30.3%   28.0% |    2.99    2.36    2.10
+
+  tie@1 rises by at least 30 %: 4/4 (pre-registered >= 3)
+  the #1 vs #2 t falls: 3/4 (pre-registered: all)
+  the established share falls: 4/4 (pre-registered: all)
+
+  Binarising throws away how much a system beat an item by and keeps only
+  whether it did. The cost is the difference between the columns; a
+  benchmark designer paying for finer scoring is buying exactly that.
