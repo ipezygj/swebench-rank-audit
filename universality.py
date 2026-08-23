@@ -91,6 +91,20 @@ def load_all() -> dict:
     # If 1 fails, the "top is never resolved" sentence is dead. If 3 fails
     # with enough items, the 55 % hypothesis is dead. Either way it is
     # written here first.
+    # THE FIFTH, PREDICTIONS WRITTEN BEFORE IT IS RUN (2026-08-23, later the
+    # same day). ProteinGym DMS substitutions: protein fitness models scored by
+    # Spearman on 217 deep-mutational-scanning assays. Biology - nothing in
+    # common with code, embeddings, QA or competition maths.
+    #   1. top ten a complete antichain (21.8 / 21.8);
+    #   2. n = 217 >= 100, so H/ceiling within [50, 60] %;
+    #   3. established share: NO prediction from item count alone - the fourth
+    #      showed that was a lazy reading; the field's spread matters too.
+    # If 1 fails the antichain sentence dies at five. If 2 fails the 55 %
+    # hypothesis dies at its first out-of-sample test.
+    pg = Path("proteingym/matrix.csv")
+    if pg.exists():
+        g = pd.read_csv(pg, index_col=0).dropna(axis=0)
+        out["ProteinGym DMS"] = g.to_numpy(dtype=float)
     ma = Path("matharena/matrix.csv")
     if ma.exists():
         m = pd.read_csv(ma, index_col=0).dropna(axis=0)
@@ -233,6 +247,20 @@ def main(argv=None) -> int:
     # Written into load_all() and committed (7858795) before the MathArena
     # matrix existed. Nothing below is adjusted to the outcome.
     fourth = next((m for m in rows if m["name"].startswith("MathArena")), None)
+    fifth = next((m for m in rows if m["name"].startswith("ProteinGym")), None)
+    if fifth:
+        p("")
+        p("THE PRE-REGISTERED PREDICTIONS FOR THE FIFTH BENCHMARK (ProteinGym)")
+        p("  written into load_all() and committed before it was run")
+        p("")
+        ok1 = abs(fifth["H10"] - math.log2(math.factorial(10))) < 0.3
+        p(f"  1. top ten a complete antichain (21.8/21.8)      "
+          f"{'HOLDS' if ok1 else 'FAILS'}   ({fifth['H10']:.1f}/21.8)")
+        ok2 = 0.50 <= fifth["H_frac"] <= 0.60
+        p(f"  2. n = {fifth['n']} >= 100, H/ceiling in [50, 60] %    "
+          f"{'HOLDS' if ok2 else 'FAILS'}   ({100 * fifth['H_frac']:.1f} %)")
+        p("  3. established share: no prediction registered (item count alone")
+        p(f"     was shown insufficient by the fourth)      observed {100 * fifth['established']:.1f} %")
     if fourth:
         p("")
         p("THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK")
