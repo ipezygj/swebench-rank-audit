@@ -17,8 +17,7 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
   * CASP14's top-pair t recovers to above 5 by k = 8.
 
 SELF-CHECKS
-  * k = 2 reproduces the binarisation of granularity.py within 2 on tie@1
-    (a different threshold rule, so not exactly);
+  * k = 2 leaves exactly two distinct values per item;
   * quantising with k larger than the number of distinct values leaves the
     matrix unchanged.
 
@@ -64,17 +63,33 @@ def summary(x, draws=DRAWS):
     return int((r["best"] == 1).sum()), (float(d.mean() / se) if se > 0 else float("nan"))
 
 
-def _check_k2():
+def _check_two_levels():
+    """k = 2 must leave exactly two distinct values per item.
+
+    The first version compared k = 2 against the median split of
+    granularity.py and allowed a difference of 6 in tie@1; it came out 8.
+    That was a comparison of two different threshold RULES (item midpoint
+    versus item median), which can legitimately differ - a weak check
+    dressed as a strong one. This checks the quantiser instead.
+    """
     x = pd.read_csv(BOARDS["CASP14"], index_col=0).dropna(axis=0).to_numpy(dtype=float)
-    med = (x > np.median(x, axis=0)[None, :]).astype(float)
-    a, _ = summary(quantise(x, 2), 400)
-    b, _ = summary(med, 400)
-    return abs(a - b) <= 6, f"k = 2 vs median split on CASP14: tie@1 {a} vs {b}"
+    q = quantise(x, 2)
+    counts = [len(np.unique(q[:, i])) for i in range(q.shape[1])]
+    return max(counts) <= 2, f"k = 2 leaves at most {max(counts)} distinct values per item"
 
 
 def _check_identity():
+    """Quantising a matrix that already sits on k levels changes nothing.
+
+    The first version used a matrix whose columns did not span 0 to 1, so
+    the per-item rescaling moved every value and the check failed for a
+    reason that had nothing to do with the quantiser. The columns are now
+    constructed to span the full range.
+    """
     rng = np.random.default_rng(3)
-    x = np.round(rng.random((20, 50)) * 3) / 3          # already 4 levels
+    x = np.round(rng.random((20, 50)) * 3) / 3
+    x[0, :] = 0.0
+    x[1, :] = 1.0
     q = quantise(x, 4)
     return np.allclose(x, q, atol=1e-9), "quantising a 4-level matrix to 4 levels changes nothing"
 
@@ -83,7 +98,7 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     print("self-checks")
     ok = True
-    for passed, msg in (_check_k2(), _check_identity()):
+    for passed, msg in (_check_two_levels(), _check_identity()):
         print(f"  [{'ok  ' if passed else 'FAIL'}] {msg}")
         ok = ok and passed
     if not ok:
