@@ -1,0 +1,13 @@
+WHOSE FAMILY DOES A NEW LEADER BELONG TO?
+==============================================================================
+  board                   advances  has family  same as passed  same as runner-up  same as anyone
+  SWE-bench Verified            32          6%              0%                 3%              3%
+  MTEB English v2               16         56%             12%                25%             44%
+  ProteinGym DMS                11         27%              9%                27%             27%
+
+  new leader matches the system it passed more often than the runner-up: 0/3 (pre-registered >= 2)
+  at least a third of advances share a family with someone present: 1/3
+
+  Families are the name-derived ones of lineage_detection.py, independent
+  of the score matrix. 'same as passed' is the question the residual
+  reversal put on the table; the names answer it without the residual.
