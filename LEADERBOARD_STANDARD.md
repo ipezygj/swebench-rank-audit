@@ -81,6 +81,24 @@ any number is printed, **at the shape of the matrix being reported**. Three
 times in one day a null passed at 60 × 400 and failed at 134 × 500. A
 conforming implementation refuses to print when a check fails.
 
+## 4b. A consequence of R10, stated rather than discovered later
+
+Reporting the pair's own resolution makes a claim by a RELATIVE of the
+current leader easier to establish than the same improvement by an unrelated
+entrant, because the relative's difference vector has the smaller SD. The
+saving is exactly the ratio of the two kappas, measured at 1 % (HELM, where
+every entrant is a stranger) to 47 % (MTEB) across nine boards
+(`incentive_asymmetry.py`). On MTEB an unrelated entrant would need 4.90
+points of improvement to separate from the leader, and the largest frontier
+step in the board's whole history is 3.81 - a stranger has never been able to
+make a separable claim there, while a variant of the leader can.
+
+This asymmetry is not created by the standard. It is present in every paired
+test anyone runs, including the ones leaderboards already use informally; R10
+makes it visible. A conforming leaderboard therefore reports kappa next to the
+claim, so a reader can see whether a claim was cheap because the systems are
+relatives.
+
 ## 5. What this standard does not cover
 
 It does not say whether a benchmark measures anything worth measuring, whether
