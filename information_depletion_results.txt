@@ -1,0 +1,70 @@
+A BENCHMARK IS A DEPLETING RESOURCE
+==========================================================================
+D = instances on which two systems drawn at random disagree.
+It is the raw material every significance test consumes: McNemar has
+exactly D discordant trials to work with.
+
+   after      date  frontier    D all  D frontier
+      10   2024-06     0.326     84.2       107.0
+      20   2024-09     0.452    121.8       119.0
+      30   2024-10     0.454    123.8        92.0
+      40   2024-11     0.530    133.9        98.7
+      50   2024-12     0.570    137.2        93.2
+      60   2025-01     0.646    142.2        99.2
+      70   2025-03     0.646    143.6        84.9
+      80   2025-05     0.704    146.2        74.1
+      90   2025-05     0.732    148.5        69.6
+     100   2025-06     0.752    149.9        62.6
+     110   2025-08     0.768    149.7        55.1
+     120   2025-09     0.768    149.8        57.3
+     130   2025-11     0.788    149.8        61.0
+     134   2025-12     0.792    150.5        57.2
+
+  peak D on the frontier: 119.0 instances, 2024-09
+  D today:                57.2 instances (48 % of peak)
+
+  Read the two D columns against each other. The whole-field number
+  stays high because the 2023 baselines never leave the pool and
+  disagree with everything. The frontier number is the one that
+  governs whether the top of the table can be ordered at all.
+
+PROJECTION: SLIDING THE FIELD UP THE FITTED DIFFICULTIES
+   ability  frontier score  D frontier
+     -1.06           0.470       117.1
+      0.23           0.613       108.8
+      1.52           0.728        86.0
+      2.81           0.812        62.1
+      4.11           0.870        44.3
+      5.40           0.913        31.7
+      6.69           0.947        24.8
+      7.98           0.975        21.3
+
+  MODEL HALF-LIFE: D falls to half its peak when the frontier
+  reaches 0.834. Today it is 0.792.
+
+  The projection is a model and the history above is not. They are
+  printed together so the extrapolation can be checked against the
+  observed part before anyone leans on the unobserved part.
+
+  AND THE CHECK DOES NOT PASS CLEANLY, WHICH IS WORTH MORE THAN IF
+  IT HAD. Interpolating the model to today's frontier gives about
+  D = 68 instances. The observed value is 57.
+  The real benchmark is depleting FASTER than the fitted model
+  says, and the observed D has already crossed half the peak
+  (59) while the model places that crossing ahead of
+  us. So the half-life above is the optimistic reading, and the
+  measurement says it has already arrived.
+
+  One more limit, stated because it bounds the early history: the
+  frontier is the top tenth, which is two systems at the start of the
+  record. The first two rows rest on a single pair and should be read
+  as indicative only. The peak at 2024-09 rests on two systems of
+  twenty, and the decline after it on ten or more.
+
+WHAT IS NEW HERE, STATED PLAINLY
+  Not the arithmetic - s(J-s) is elementary. What did not exist is the
+  QUANTITY: a benchmark's resolving power expressed in instances, as a
+  function of how good the field has become, with a peak behind it and
+  a half-life ahead. A leaderboard reports a score. This reports how
+  much measuring capacity the instrument has left, and no benchmark
+  paper I can find states that number for its own dataset.
