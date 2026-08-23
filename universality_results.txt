@@ -1,11 +1,13 @@
-IS ANY OF THIS A LAW? 5 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
+IS ANY OF THIS A LAW? 7 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
 ==============================================================================
   leaderboard             J    n  estab.     tie@1  med.width  H/ceiling  top-10 H
   SWE-bench Verified    134  500   37.7%  19 (14.2%)      26.9%      54.3%  21.8/21.8
   MTEB English v2       181   41   34.3%  15 ( 8.3%)      33.7%      54.8%  21.8/21.8
   HELM classic           90   10   24.1%  16 (17.8%)      55.6%      65.8%  21.8/21.8
   ProteinGym DMS         96  217   35.8%   3 ( 3.1%)      32.3%      49.5%  13.3/21.8
-  MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.1%  21.8/21.8
+  TabArena 16 models     16   51   22.1%   8 (50.0%)      53.1%      61.9%  19.1/21.8
+  TabArena 45 variants   45   51   25.0%  12 (26.7%)      53.3%      59.4%  20.8/21.8
+  MathArena 2025         35  183   31.6%  11 (31.4%)      37.1%      56.3%  21.8/21.8
 
   estab.     ordered pairs established by the simultaneous test
   tie@1      systems whose rank set contains 1 (share of J)
@@ -14,19 +16,21 @@ IS ANY OF THIS A LAW? 5 UNRELATED LEADERBOARDS, SAME INSTRUMENTS
   top-10 H   bits undetermined among the ten best; 21.8 = nothing known
 
 READING IT
-  H/ceiling across all 5: 49.5 % to 65.8 %, a span of 16.2 points.
+  H/ceiling across all 7: 49.5 % to 65.8 %, a span of 16.2 points.
   By the threshold written above before any number was seen (< 10
   points), that is not a regularity. No universal constant is claimed.
-  Among the 4 with n >= 40: 49.5, 54.3, 54.8, 56.1 % - a span of 6.6.
+  Among the 6 with n >= 40: 49.5, 54.3, 54.8, 56.3, 59.4, 61.9 % - a span of 12.4.
   A reader can see the cluster. I will not fit an interval to it after
   the fact: the interval that WAS written in advance, [50, 60] % for
   n >= 100, failed its first out-of-sample test by half a point, and a
   hypothesis that is re-drawn around each new point is not a hypothesis.
 
-  THE TOP TEN IS A COMPLETE ANTICHAIN ON 4 OF 5:
+  THE TOP TEN IS A COMPLETE ANTICHAIN ON 4 OF 7:
     SWE-bench Verified, MTEB English v2, HELM classic, MathArena 2025
   and not on:
     ProteinGym DMS: top-10 H = 13.3/21.8, 3 system(s) could be first
+    TabArena 16 models: top-10 H = 19.1/21.8, 8 system(s) could be first
+    TabArena 45 variants: top-10 H = 20.8/21.8, 12 system(s) could be first
   The sentence 'the top is never resolved' is dead as a general
   claim; the pre-registration said it would die if this failed, and
   it did. What survives is narrower and is stated as a POST-HOC
@@ -39,12 +43,29 @@ READING IT
   will not. That is the next test, and it is written here first.
 
   ESTABLISHED SHARE vs ITEM COUNT
-    by items:        HELM < MTEB < MathArena < ProteinGym < SWE-bench
-    by established:  HELM < MathArena < MTEB < ProteinGym < SWE-bench
+    by items:        HELM < MTEB < TabArena < TabArena < MathArena < ProteinGym < SWE-bench
+    by established:  TabArena < HELM < TabArena < MathArena < MTEB < ProteinGym < SWE-bench
   Item count alone does not order it. The resolution law has the
   field's spread in it as well as n, and a small, tight field (MathArena,
   35 systems) establishes less than a large one with fewer items.
 
+
+THE PRE-REGISTERED PREDICTIONS FOR THE SIXTH (TabArena), THE
+DISCRIMINATING TEST OF THE POST-HOC MECHANISM HYPOTHESIS
+  written into load_all() and committed before it was run
+
+  A. 16 distinct architectures: top-10 NOT an antichain   HOLDS   (19.1/21.8, 8 could be first)
+  B. 45 variants: top-10 H higher than 16-model's        HOLDS   (20.8 vs 19.1)
+  C. H/ceiling: no prediction                observed 61.9 % / 59.4 %
+
+  Both hold, and the honest wording is narrower than 'resolved':
+  with 16 distinct architectures, 8 of 16 could still be
+  first - the top is PARTLY resolved, not settled. What the data
+  shows is the direction: a few pairs separate among distinct
+  architectures, and re-introducing near-duplicate variants of the
+  same models erases most of them. That is what the mechanism
+  predicts. It is the first test the mechanism has passed, by a
+  modest margin, and it is ONE test.
 
 THE PRE-REGISTERED PREDICTIONS FOR THE FIFTH BENCHMARK (ProteinGym)
   written into load_all() and committed before it was run
@@ -59,9 +80,9 @@ THE PRE-REGISTERED PREDICTIONS FOR THE FOURTH BENCHMARK
 
   1. top ten a complete antichain (21.8/21.8)          HOLDS   (21.8/21.8)
   2. established share sits where item count puts it  FAILS
-       by items:        HELM < MTEB < MathArena < ProteinGym < SWE-bench
-       by established:  HELM < MathArena < MTEB < ProteinGym < SWE-bench
-  3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.1 %)
+       by items:        HELM < MTEB < TabArena < TabArena < MathArena < ProteinGym < SWE-bench
+       by established:  TabArena < HELM < TabArena < MathArena < MTEB < ProteinGym < SWE-bench
+  3. n >= 100 so H/ceiling near 55 % (+-5)           HOLDS   (56.3 %)
 
   Prediction 2 failed, and the failure is informative: item count
   alone does not order the established share. MathArena has 183

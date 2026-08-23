@@ -295,10 +295,14 @@ def main(argv=None) -> int:
         p(f"  C. H/ceiling: no prediction                observed {100 * one['H_frac']:.1f} % / {100 * allv['H_frac']:.1f} %")
         p("")
         if okA and okB:
-            p("  Both hold. A field of distinct architectures resolves its top;")
-            p("  re-introducing near-duplicate variants of the same models makes")
-            p("  the top less resolved. That is what the mechanism predicts, and")
-            p("  it is the first test the mechanism has passed. It is ONE test.")
+            p("  Both hold, and the honest wording is narrower than 'resolved':")
+            p(f"  with 16 distinct architectures, {one['tie_top']} of 16 could still be")
+            p("  first - the top is PARTLY resolved, not settled. What the data")
+            p("  shows is the direction: a few pairs separate among distinct")
+            p("  architectures, and re-introducing near-duplicate variants of the")
+            p("  same models erases most of them. That is what the mechanism")
+            p("  predicts. It is the first test the mechanism has passed, by a")
+            p("  modest margin, and it is ONE test.")
         elif not okA:
             p("  A fails: sixteen distinct architectures still give a complete")
             p("  antichain. The mechanism hypothesis - shared base systems make")
