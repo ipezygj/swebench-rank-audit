@@ -1,0 +1,29 @@
+IS PAIR SHARPNESS RELIABLE? SPLIT-HALF OVER ITEMS
+========================================================================
+  leaderboard               J    n  split-half r  Spearman-Brown   (Spearman)
+  SWE-bench Verified      134  500          0.84            0.91         0.83
+  MTEB English v2         181   41          0.70            0.82         0.68
+  HELM classic             90   10          0.15            0.27         0.13
+  ProteinGym DMS           96  217          0.91            0.95         0.86
+  TabArena 16 models       16   51          0.56            0.72         0.40
+  TabArena 45 variants     45   51          0.59            0.75         0.37
+  CASP14                  101   42          0.45            0.62         0.39
+  LiveBench               152  200          0.64            0.78         0.57
+  MathArena 2025           35  183          0.70            0.83         0.69
+
+  split-half r above 0.5: 7/9 (pre-registered >= 7)
+  fewest items: HELM classic (n 10, r 0.15), MTEB English v2 (n 41, r 0.70), CASP14 (n 42, r 0.45)
+
+  dated board             deficit half A  deficit half B  both positive
+  SWE-bench Verified               0.132           0.113            yes
+  SWE-bench Lite                   0.054           0.087            yes
+  MTEB English v2                  0.398           0.527            yes
+  LiveBench                        0.106           0.148            yes
+  ProteinGym DMS                   0.445           0.460            yes
+
+  frontier deficit positive in both halves: 5/5 (pre-registered >= 4)
+
+  Kappa is estimated from the items, so a pair can look sharp by chance.
+  A property of the pair shows up in an independent half of the items; an
+  estimation artefact does not. Spearman-Brown projects the half-length
+  correlation back to the full item set.

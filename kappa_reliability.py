@@ -37,7 +37,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import pearsonr, spearmanr
 
 from entropy_law_test import MATRICES
 from evidence_trajectory import load
@@ -52,7 +52,7 @@ SPLITS = 20
 def split_half_r(x, rng, splits=SPLITS):
     J, n = x.shape
     iu = np.triu_indices(J, k=1)
-    rs = []
+    rs, rs_s = [], []
     for _ in range(splits):
         perm = rng.permutation(n)
         A, B = perm[: n // 2], perm[n // 2:]
@@ -60,10 +60,18 @@ def split_half_r(x, rng, splits=SPLITS):
         kb = kappa_matrix(x[:, B])[iu]
         m = np.isfinite(ka) & np.isfinite(kb)
         if m.sum() > 10:
-            rs.append(spearmanr(ka[m], kb[m]).statistic)
+            # Pearson, not Spearman. On a board with lineages the kappa
+            # distribution is bimodal (relatives near 0.6, strangers near
+            # 1.0) and the ranks INSIDE each mode are noise, so Spearman
+            # reads 0.40 where Pearson reads 0.97 on planted data - the
+            # planted self-check caught it. The quantity is continuous and
+            # linear agreement is what reliability means here; Spearman is
+            # still printed alongside.
+            rs.append(pearsonr(ka[m], kb[m])[0])
+            rs_s.append(spearmanr(ka[m], kb[m]).statistic)
     r = float(np.mean(rs))
     sb = 2 * r / (1 + r) if r > -1 else float("nan")     # Spearman-Brown
-    return r, sb
+    return r, sb, float(np.mean(rs_s)) if rs_s else float("nan")
 
 
 def frontier_deficit(x, dates, items):
@@ -78,8 +86,8 @@ def frontier_deficit(x, dates, items):
 def _check_iid():
     rng = np.random.default_rng(SEED)
     x = 0.4 + rng.normal(0, 0.05, 50)[:, None] + rng.normal(0, 0.3, 400)[None, :] + rng.normal(0, 0.45, (50, 400))
-    r, _ = split_half_r(x, rng, splits=8)
-    return abs(r) < 0.15, f"iid field: split-half r {r:+.3f} (must be near zero)"
+    r, _, rho = split_half_r(x, rng, splits=8)
+    return abs(r) < 0.15, f"iid field: split-half r {r:+.3f} (Spearman {rho:+.3f}); must be near zero"
 
 
 def _check_planted():
@@ -88,8 +96,8 @@ def _check_planted():
     lab = np.repeat(np.arange(G), per)
     base = rng.normal(0, 0.45, (G, n))
     x = rng.normal(0.4, 0.05, G * per)[:, None] + 0.8 * base[lab] + np.sqrt(1 - 0.8 ** 2) * rng.normal(0, 0.45, (G * per, n))
-    r, _ = split_half_r(x, rng, splits=8)
-    return r > 0.8, f"planted lineages: split-half r {r:+.3f}"
+    r, _, rho = split_half_r(x, rng, splits=8)
+    return r > 0.8, f"planted lineages: split-half r {r:+.3f} (Spearman {rho:+.3f})"
 
 
 def main() -> int:
@@ -107,16 +115,16 @@ def main() -> int:
     p = L.append
     p("IS PAIR SHARPNESS RELIABLE? SPLIT-HALF OVER ITEMS")
     p("=" * 72)
-    p(f"  {'leaderboard':<22} {'J':>4} {'n':>4} {'split-half r':>13} {'Spearman-Brown':>15}")
+    p(f"  {'leaderboard':<22} {'J':>4} {'n':>4} {'split-half r':>13} {'Spearman-Brown':>15} {'(Spearman)':>12}")
     good, rows = 0, []
     for name, path in MATRICES.items():
         if not Path(path).exists():
             continue
         x = pd.read_csv(path, index_col=0).dropna(axis=0).to_numpy(dtype=float)
-        r, sb = split_half_r(x, np.random.default_rng(SEED + 1))
+        r, sb, rho = split_half_r(x, np.random.default_rng(SEED + 1))
         good += r > 0.5
         rows.append((name, x.shape[1], r))
-        p(f"  {name:<22} {x.shape[0]:>4} {x.shape[1]:>4} {r:>13.2f} {sb:>15.2f}")
+        p(f"  {name:<22} {x.shape[0]:>4} {x.shape[1]:>4} {r:>13.2f} {sb:>15.2f} {rho:>12.2f}")
     N = len(rows)
     p("")
     p(f"  split-half r above 0.5: {good}/{N} (pre-registered >= 7)")
