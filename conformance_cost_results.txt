@@ -1,0 +1,21 @@
+WHAT CONFORMANCE COSTS
+==============================================================================
+  board                     J     n  rank sets   entropy    kappa    total   per pair
+  SWE-bench Verified      134   500      0.22s     2.73s    0.02s    2.97s      0.33ms
+  MTEB English v2         181    41      0.37s     6.27s    0.01s    6.64s      0.41ms
+  HELM classic             90    10      0.11s     1.51s    0.00s    1.62s      0.41ms
+  ProteinGym DMS           96   217      0.11s     1.41s    0.01s    1.52s      0.33ms
+  TabArena 16 models       16    51      0.00s     0.09s    0.00s    0.09s      0.78ms
+  TabArena 45 variants     45    51      0.04s     0.37s    0.00s    0.41s      0.41ms
+  CASP14                  101    42      0.12s     1.57s    0.00s    1.69s      0.33ms
+  LiveBench               152   200      0.29s     4.37s    0.01s    4.68s      0.41ms
+  MathArena 2025           35   183      0.02s     0.26s    0.00s    0.28s      0.48ms
+
+  full card under 30 seconds: 9/9 (pre-registered: all)
+  entropy dominates on boards with J >= 100: 4 of 4
+  largest boards: MTEB English v2 (J 181, 6.6s), LiveBench (J 152, 4.7s), SWE-bench Verified (J 134, 3.0s)
+
+  Timed on one laptop core with the settings the reference implementation
+  uses (1500 bootstrap draws, 2000 entropy samples). The per-pair column is
+  the number that scales: a board with ten times the systems has a hundred
+  times the pairs, and the bootstrap and the kappa matrix both live there.
