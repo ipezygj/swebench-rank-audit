@@ -1,25 +1,25 @@
 ENTROPY LAW, TWIN 2: SAME J, n, tau AND PER-SYSTEM NOISE PROFILE
 ======================================================================================
   leaderboard               J    n  sig CV    real   twin1   dev1  twin2a  dev2a  twin2b  dev2b
-  SWE-bench Verified      134  500    0.11   54.5%   52.9%  +1.6   59.4%  -4.9   58.8%  -4.4
-  MTEB English v2         181   41    0.47   54.2%   57.6%  -3.4   81.9% -27.7   81.3% -27.1
-  HELM classic             90   10    0.36   64.6%   64.1%  +0.4   64.4%  +0.2   64.5%  +0.0
-  ProteinGym DMS           96  217    0.27   50.3%   52.5%  -2.2   62.6% -12.3   62.2% -12.0
-  TabArena 16 models       16   51    0.53   61.4%   32.2% +29.2   40.6% +20.8   42.5% +18.9
-  TabArena 45 variants     45   51    0.53   59.2%   42.1% +17.1   54.6%  +4.6   51.8%  +7.4
-  CASP14                  101   42    0.25   68.5%   62.2%  +6.3   73.8%  -5.3   72.9%  -4.4
-  LiveBench               152  200    0.13   63.3%   63.8%  -0.6   69.0%  -5.7   68.2%  -5.0
-  MathArena 2025           35  183    0.24   56.2%   52.8%  +3.3   69.9% -13.7   65.0%  -8.8
+  SWE-bench Verified      134  500    0.11   54.5%   52.9%  +1.6   52.4%  +2.0   52.1%  +2.4
+  MTEB English v2         181   41    0.47   54.4%   58.0%  -3.7   58.8%  -4.4   59.1%  -4.8
+  HELM classic             90   10    0.36   64.3%   63.9%  +0.4   64.9%  -0.6   64.3%  -0.0
+  ProteinGym DMS           96  217    0.27   50.2%   52.6%  -2.4   52.1%  -1.8   52.1%  -1.8
+  TabArena 16 models       16   51    0.53   61.5%   32.1% +29.4   31.9% +29.6   36.2% +25.3
+  TabArena 45 variants     45   51    0.53   58.4%   42.2% +16.3   47.1% +11.4   43.7% +14.8
+  CASP14                  101   42    0.25   68.5%   60.8%  +7.7   61.8%  +6.6   60.4%  +8.1
+  LiveBench               152  200    0.13   64.0%   63.8%  +0.2   64.1%  -0.1   63.2%  +0.9
+  MathArena 2025           35  183    0.24   56.2%   52.7%  +3.5   57.6%  -1.4   52.0%  +4.2
 
-  within 5 points: twin1 6/9   twin2a 3/9   twin2b 4/9
+  within 5 points: twin1 6/9   twin2a 6/9   twin2b 6/9
   pre-registered for twin 2a: >= 8 of 9; MTEB within 5; TabArena |dev| at least halved;
   SWE-bench, LiveBench, HELM moved by <= 2 points.
-    MTEB within 5: NO (-27.7)
-    TabArena 16 models halved: NO (+29.2 -> +20.8)
-    TabArena 45 variants halved: yes (+17.1 -> +4.6)
-    SWE-bench moved <= 2: NO (-6.5)
-    LiveBench moved <= 2: NO (-5.2)
-    HELM moved <= 2: yes (-0.2)
+    MTEB within 5: yes (-4.4)
+    TabArena 16 models halved: NO (+29.4 -> +29.6)
+    TabArena 45 variants halved: NO (+16.3 -> +11.4)
+    SWE-bench moved <= 2: yes (+0.4)
+    LiveBench moved <= 2: yes (-0.3)
+    HELM moved <= 2: yes (-1.0)
 
   twin1 = same J, n, tau, one noise level for all. twin2a = same J, n,
   tau and each system's own item-noise level, assigned at random. twin2b
