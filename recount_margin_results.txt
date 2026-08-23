@@ -1,0 +1,64 @@
+THE MARGIN, COUNTED IN TEST CASES
+==========================================================================
+134 systems, 500 instances
+leader: 20251205_sonar-foundation-agent_claude-opus-4-5  0.792 (396 of 500 solved)
+
+HOW FAR BEHIND THE LEADER, IN TEST CASES
+  rank system                                    score  re-grades  swaps  they disagree on
+     1 20251205_sonar-foundation-agent_claude-o  0.792          -      -                 -
+     2 20251215_livesweagent_claude-opus-4-5     0.792          0      0                36
+     3 20250928_trae_doubao_seed_code            0.788          2      1                64
+     4 20251127_openhands_claude-opus-4-5        0.776          8      4                36
+     5 20251120_livesweagent_gemini-3-pro-previ  0.774          9      5                49
+     6 20250804_epam-ai-run-claude-4-sonnet      0.768         12      6                60
+     7 20250902_atlassian-rovo-dev               0.768         12      6                54
+     8 20250819_ACoder                           0.764         14      7                68
+     9 20250901_warp                             0.756         18      9                58
+    10 20250612_trae                             0.752         20     10                62
+    11 20250731_harness_ai                       0.748         22     11                60
+    12 20251103_sonar-foundation-agent_claude-s  0.748         22     11                46
+
+  The lead over rank 2 is 0 test case(s) out of 36 on which
+  the two disagree. Over rank 3 it is 2 out of 64.
+
+  Ranks 1 and 2 solve the SAME NUMBER of instances (396 each) and
+  disagree on 36 of them, split 18 to 18. Identical scores,
+  different competence. The leaderboard prints one above the other
+  and there is nothing in the data that puts it that way round.
+
+  Nothing statistical has been done here. These are counts. A reader
+  who distrusts every p-value in the other files can still check these
+  by hand from the published matrix.
+
+HOW CROWDED IS THE CROWN
+  systems within  1 re-grade(s) of the lead: 2
+  systems within  2 re-grade(s) of the lead: 3
+  systems within  5 re-grade(s) of the lead: 3
+  systems within 10 re-grade(s) of the lead: 5
+  systems within 20 re-grade(s) of the lead: 10
+
+SWING INSTANCES - solved by the leader, missed by a close rival
+  instances that decide at least one of the 11 closest pairs: 116
+  the ones that appear in the most pairs, with how rare they are:
+    pairs  solved by   instance
+       11      2/134   sympy__sympy-17630
+       11      6/134   sympy__sympy-20916
+       10      2/134   pytest-dev__pytest-10356
+        9      3/134   matplotlib__matplotlib-24870
+        9      4/134   django__django-13344
+        8     17/134   django__django-12273
+        8      6/134   django__django-15973
+        8     31/134   django__django-11790
+        8      7/134   psf__requests-6028
+        8      8/134   sympy__sympy-21612
+
+  Read the middle column. The two instances that decide every one of
+  the closest pairs are solved by 2 and 6 systems out of 134. The
+  leader's edge over the whole top twelve rests partly on instances
+  almost nothing solves - which is exactly where a grading error, a
+  flaky test or a lucky guess is hardest to tell from a capability.
+
+  These are nameable, and that is the point. If the top of this
+  benchmark turns on a specific handful of instances, their grading
+  deserves more scrutiny than the other four hundred, and anyone can
+  go and read them.
