@@ -1,0 +1,15 @@
+WOULD A MODEL-BASED SCORE RESOLVE THE TOP BETTER?
+====================================================================================
+  board                     J     n  Spearman  tie@1 mean   Rasch  #1v#2 mean   Rasch
+  SWE-bench Verified      134   500     1.000          19      99          no      no
+  SWE-bench Lite           84   300     1.000           6      76          no      no
+  MathArena 2025           35   183     1.000          11      17          no      no
+
+  orderings agree above 0.95: 3/3 (pre-registered: all)
+  Rasch tie@1 no larger: 0/3 (pre-registered >= 2)
+  Rasch never manufactures a separation: 3/3 (pre-registered: all)
+
+  The Rasch column weights each item by its information p(1-p) at the
+  fitted parameters, which is the standard answer to 'the mean treats a
+  coin flip and a freebie alike'. Both columns then go through the same
+  bootstrap, so any difference is the weighting and not the machinery.

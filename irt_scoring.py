@@ -18,6 +18,20 @@ The rank sets for the Rasch scoring are computed by the same bootstrap over
 items, using each system's Rasch residual instead of its raw outcome, so
 the two columns differ only in what is being averaged.
 
+WHAT THE RUN SHOWED, AND THE THEORY THAT EXPLAINS IT (added after)
+  Rasch tie@1 came out far LARGER than the mean's - 99 against 19 on
+  SWE-bench Verified - and the reason is a textbook result I should have
+  recalled before writing the expectation: in the Rasch model the raw
+  number correct is a SUFFICIENT statistic for ability. Nothing that
+  reweights items can extract more information about theta than the plain
+  sum already carries; a weighting can only add variance. The column below
+  is therefore a demonstration of sufficiency, not a failure of the
+  implementation, and the honest conclusion for the standard is that
+  item weighting is not a route to a sharper top on a Rasch-like board.
+  A 2PL model, where items differ in discrimination, would not have this
+  property - but fitting discriminations on J systems x n items with no
+  replication is a different project.
+
 PRE-REGISTERED EXPECTATION (2026-08-23, before running)
   * the two orderings agree at Spearman above 0.95 on every binary board;
   * tie@1 under Rasch is no larger than under the mean on >= 2 of 3 boards;
