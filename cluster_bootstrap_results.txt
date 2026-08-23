@@ -1,0 +1,16 @@
+ARE THE ITEMS INDEPENDENT? ITEM BOOTSTRAP VS CLUSTER BOOTSTRAP
+============================================================================================
+  board                      n  clusters  width item  cluster  ratio  tie@1 item  cluster              #1v#2
+  SWE-bench Verified       500        12          36       52   1.46          19       25              no/no
+  MathArena 2025           183         5          14       14   1.00          11        6              no/no
+  CASP14                    42        33          64       67   1.05           1        1            yes/yes
+  MTEB English v2           41        19          59      111   1.88          12       26              no/no
+
+  clustered width at least 15 % wider: 2/4 (pre-registered >= 3)
+  tie@1 rises: 2/4 (pre-registered >= 3)
+  the #1 vs #2 reading is unchanged: 4/4 (pre-registered: all)
+
+  A cluster bootstrap resamples whole repositories, competitions, targets or
+  task kinds. It is the honest interval when items inside a cluster share
+  difficulty, and the gap between the two columns is what the independence
+  assumption was buying.

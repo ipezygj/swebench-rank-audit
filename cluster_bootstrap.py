@@ -128,13 +128,24 @@ def _check_singleton():
 
 
 def _check_planted():
+    """Plant a cluster effect that survives differencing.
+
+    The first version gave every item in a cluster the same difficulty shift.
+    A shift common to all systems CANCELS in every pairwise difference, so it
+    is invisible to a method built on differences - the clustered widths came
+    out narrower (10 vs 6) and the check failed for the right reason. What
+    has to be planted is a system x cluster interaction: some systems are
+    better on some clusters. Then the difference between two systems really
+    does vary by cluster, and resampling clusters is the honest interval.
+    """
     rng = np.random.default_rng(13)
     J, nk, k = 25, 30, 5
     lab, cols = [], []
     ability = rng.normal(0, 0.06, J)
     for g in range(k):
-        shared = rng.normal(0, 0.5, 1)                  # one difficulty per cluster
-        block = ability[:, None] + shared + rng.normal(0, 0.1, (J, nk))
+        # each system has its own strength on this cluster, shared by all its items
+        per_system = rng.normal(0, 0.25, J)
+        block = (ability + per_system)[:, None] + rng.normal(0, 0.1, (J, nk))
         cols.append(block)
         lab += [f"g{g}"] * nk
     x = np.hstack(cols)
@@ -142,7 +153,7 @@ def _check_planted():
     c = cluster_rank_sets(x, lab, draws=600)
     w1 = np.median(r["worst"] - r["best"] + 1)
     w2 = np.median(c["worst"] - c["best"] + 1)
-    return w2 >= w1, f"planted cluster effect: width {w1:.0f} -> {w2:.0f}"
+    return w2 > w1, f"planted system x cluster interaction: width {w1:.0f} -> {w2:.0f}"
 
 
 def main() -> int:
