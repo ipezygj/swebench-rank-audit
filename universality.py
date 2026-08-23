@@ -129,6 +129,21 @@ def load_all() -> dict:
         q = Path(fn)
         if q.exists():
             out[label] = pd.read_csv(q, index_col=0).dropna(axis=0).to_numpy(dtype=float)
+    # THE SEVENTH, PREDICTION WRITTEN BEFORE IT IS RUN (2026-08-23, night).
+    # LiveBench: 195 LLMs x 494 fresh questions (language, coding, instruction
+    # following), per-question judged scores. A frontier of many labs, NOT at
+    # ceiling (top near 0.7). This tests what is left of the mechanism story
+    # after MathArena's seven-lab antichain killed "shared base":
+    #   the surviving hypothesis says leaderboards of LLM-derived systems have
+    #   a top-10 spread below one pair's simultaneous half-width (ratio < 1)
+    #   and hence a complete antichain.
+    # PREDICTION: LiveBench top-10 is a complete antichain (H10 >= 21.5), ratio < 1.
+    # If it comes out resolved, "LLM-ness" is not the factor either and only
+    # crowding remains - which the ratio measures directly and the story adds
+    # nothing to.
+    lb = Path("livebench/matrix.csv")
+    if lb.exists():
+        out["LiveBench"] = pd.read_csv(lb, index_col=0).dropna(axis=0).to_numpy(dtype=float)
     ma = Path("matharena/matrix.csv")
     if ma.exists():
         m = pd.read_csv(ma, index_col=0).dropna(axis=0)
@@ -276,6 +291,23 @@ def main(argv=None) -> int:
     # matrix existed. Nothing below is adjusted to the outcome.
     fourth = next((m for m in rows if m["name"].startswith("MathArena")), None)
     fifth = next((m for m in rows if m["name"].startswith("ProteinGym")), None)
+    seventh = next((m for m in rows if m["name"] == "LiveBench"), None)
+    if seventh:
+        p("")
+        p("THE PRE-REGISTERED PREDICTION FOR THE SEVENTH (LiveBench)")
+        p("  written into load_all() and committed before it was run")
+        okS = seventh["H10"] >= 21.5
+        p(f"  top-10 a complete antichain (H10 >= 21.5)          "
+          f"{'HOLDS' if okS else 'FAILS'}   ({seventh['H10']:.1f}/21.8, "
+          f"{seventh['tie_top']} could be first)")
+        if okS:
+            p("  The surviving hypothesis - LLM-derived leaderboards carry a top")
+            p("  spread below one pair's resolution - holds on a sixth LLM table,")
+            p("  this one far from ceiling and spanning many labs. Six of six.")
+        else:
+            p("  An LLM leaderboard with a resolved top. 'LLM-ness' is not the")
+            p("  factor; what remains is the ratio itself, which is not a mechanism")
+            p("  but a measurement, and the story should be dropped.")
     one = next((m for m in rows if m["name"] == "TabArena 16 models"), None)
     allv = next((m for m in rows if m["name"] == "TabArena 45 variants"), None)
     if one and allv:
