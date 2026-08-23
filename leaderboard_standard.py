@@ -198,9 +198,12 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
 
-    targets = MATRICES if a.all else {a.name or Path(a.matrix).stem: a.matrix}
+    # The guard has to come BEFORE the dict is built: with no arguments the
+    # old order evaluated Path(None) and died with a TypeError instead of the
+    # message. Found by run_all.py, which runs every tool with no arguments.
     if not a.all and not a.matrix:
         raise SystemExit("give --matrix or --all")
+    targets = MATRICES if a.all else {a.name or Path(a.matrix).stem: a.matrix}
 
     # Run the defining modules' self-checks once, at the shapes they test.
     print("self-checks of the defining modules")
