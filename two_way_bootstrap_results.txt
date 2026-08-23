@@ -1,0 +1,28 @@
+WHICH BOOTSTRAP, AND WHAT IT COSTS TO PICK THE WRONG ONE
+==========================================================================
+simulated coverage, nominal 0.95, 250 replications x 400 bootstrap draws
+
+SYSTEMS FIXED (these systems, a fresh draw of items)
+  scheme               estimand              coverage     width
+  per-system items     grand mean               0.628    0.0266
+  shared items         grand mean               0.932    0.0532
+  two-way              grand mean               1.000    0.1623
+  per-system items     between-system sd        0.896    0.0259
+  shared items         between-system sd        0.904    0.0250
+  two-way              between-system sd        1.000    0.0778
+
+SYSTEMS RANDOM (a fresh set of systems could have been built)
+  scheme               estimand              coverage     width
+  per-system items     grand mean               0.212    0.0263
+  shared items         grand mean               0.408    0.0521
+  two-way              grand mean               0.920    0.1726
+  per-system items     between-system sd        0.336    0.0246
+  shared items         between-system sd        0.332    0.0238
+  two-way              between-system sd        0.856    0.1020
+
+ON THE REAL MATRIX (134 systems x 500 items)
+  scheme               between-system sd 95% interval        width
+  per-system items     [0.1936, 0.1995]                 0.0058
+  shared items         [0.1852, 0.2063]                 0.0211
+  two-way              [0.1707, 0.2195]                 0.0487
+  point estimate 0.1957
