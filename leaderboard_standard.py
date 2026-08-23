@@ -42,6 +42,13 @@ MATRICES = {
     "TabArena 16 models": "tabarena/matrix_one_per_model.csv",
     "TabArena 45 variants": "tabarena/matrix_all45.csv",
     "MathArena 2025": "matharena/matrix.csv",
+    # CASP14 and LiveBench were added to the repo after this list was written
+    # and were simply never appended - the reference implementation had been
+    # reporting on 7 of the 9 boards every other tool used. Found while
+    # checking why CASP14 has no R10 line. LMArena is the tenth board.
+    "CASP14": "casp/matrix.csv",
+    "LiveBench": "livebench/matrix.csv",
+    "LMArena categories": "lmarena_matrix.csv",
 }
 
 
