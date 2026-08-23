@@ -26,11 +26,11 @@ ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
 code{font-family:var(--mono);font-size:.85em}
 </style>
 <main>
-<h1>Silmukka 23.8. — kahdeksankymmentäyksi iteraatiota</h1>
-<p class="sub">Autonominen silmukka klo 16:01–19:31 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 168 committia</p>
+<h1>Silmukka 23.8. — kahdeksankymmentäkolme iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–19:55 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 168 committia</p>
 
 <div class="grid">
-<div class="card"><b>81</b><span>iteraatiota, joista 54 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>83</b><span>iteraatiota, joista 55 tuotti uuden mittarin tai lain-testin</span></div>
 <div class="card"><b>33</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
 <div class="card"><b>κ 0,44–0,94</b><span>SOTA-väitteen parin erotuskyky, kun taulun keskiarvo on 1,00</span></div>
 <div class="card"><b>8/10</b><span>taulua joiden kärkiparia ei voi erottaa toisistaan</span></div>
@@ -187,6 +187,10 @@ code{font-family:var(--mono);font-size:.85em}
 <li><span class="open">u-invariantti</span>: mediaaniaskel 0,27–0,57 viidellä avoimella taululla kolmelta alalta, mutta 1,93 esivalitulla — onko invariantti erotuskyvyssä vai valikoitumisessa?</li>
 <li><span class="open">κ ajassa</span>: tarvitaan taulu jolla on ≥ 4 vuotta ja ≥ 2 askelta vuodessa.</li>
 </ul>
+
+<h2>Lukijan puoli</h2>
+<p>Kaikki edellä on sitä, mitä tulostaulu ei pysty todistamaan. Lukija kysyy kapeamman kysymyksen: jos otan sen mikä on ylimpänä, kuinka paljon häviän parhaalle? Mitattuna sillä puolikkaalla tehtävistä jota valinta ei nähnyt, ykkösen seuraaminen maksaa <strong>0,00–2,00 pistettä</strong>; satunnainen poiminta kärkikympistä maksaa 1,8–27 ja satunnainen koko taulusta 5–51. Neljällä taululla yhdeksästä katumus on tasan nolla.</p>
+<p>Taulu voi siis olla kykenemätön todistamaan kuka on paras ja silti hyödyllinen — koska ne joita se ei erota ovat käytännössä yhtä hyviä. Se ei kumoa mitään edellä sanottua; se kertoo mihin mittarit ovat vastaus. Ne erottavat sen, mitä taulu <em>tietää</em>, siitä mitä se <em>painaa</em>, eivätkä lopeta järjestämistä.</p>
 
 <div class="note">Illan vakiolöydös ei ole yksikään luku vaan se, että kolmestatoista kaatumisesta yksitoista nappasi oma itsetarkistus tai oma kontrolli ennen kuin mitään väitettiin — ja kaksi jäljelle jäänyttä paljastuivat vasta oikeilla tauluilla, mikä on syy ajaa ne aina. Kaksi lakia seisoo, kolmas on havainto viidellä taululla, ja standardi sai vaatimuksen jota sillä ei aamulla ollut.</div>
 
