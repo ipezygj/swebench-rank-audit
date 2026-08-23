@@ -114,6 +114,32 @@ the leaderboard prints is supported by the **matrix** it was printed from, and
 by how much. That is the part that has had no standard, and it is the part
 that can be checked by anyone with the matrix.
 
+## Appendix A. Two design findings, measured while testing the standard
+
+These are not requirements. They are what the same instrument says about
+choices a benchmark makes before it has anything to report, and they are
+here because a standard that only tells owners what to print is less useful
+than one that also tells them what the printing will be worth.
+
+**Score on more than two levels.** Binarising a continuous board - scoring
+each item above or below its median across systems - costs more resolution
+than any other single choice measured here. CASP14's decisive top pair
+(t = 9.89) falls to t = 1.78; the number of models that could be first goes
+from 1 to 24 on CASP14, 12 to 66 on MTEB, 3 to 4 on ProteinGym, 8 to 12 on
+LiveBench (`granularity.py`). The recovery curve is short: three levels
+restore CASP14 to a single possible first place and eight levels are
+indistinguishable from continuous on three of four boards
+(`quantisation_curve.py`). The practical rule is not "use a continuous
+metric" but "do not score an item pass/fail if a three-point rubric is
+possible". SWE-bench cannot avoid it - a patch passes the tests or does not -
+and that is one reason its top is unresolvable.
+
+**Cheap entry costs little.** A new system that runs a quarter of the items
+gets a rank set 1.13x to 1.97x the width it would get from running all of
+them, on nine boards of nine; on the smaller boards the factor is 1.1 to 1.3
+(`cheap_entry.py`). A submission policy can therefore offer a cheap tier
+without giving up the ability to place its entrants.
+
 ## 6. Status
 
 Draft. Validated on seven matrices from five fields (code, embeddings, QA,

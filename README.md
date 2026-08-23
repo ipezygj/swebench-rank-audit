@@ -158,6 +158,7 @@ validated against a permutation null.
 
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
+- `quantisation_curve.py` - How many score levels does an item need?
 
 ## How the results were produced
 
