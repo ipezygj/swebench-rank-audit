@@ -26,6 +26,14 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
     resemble the field they entered are overtaken by more later entrants;
   * the effect survives conditioning on score - within the top half of the
     board at the cut-off, the sign is the same on >= 3 of 5;
+    (ADDED AFTER THE FIRST RUN, before any conclusion was written: the raw
+    correlations came out at -0.97, -0.89, -0.87 on the three LLM boards,
+    which is too strong to be about lineage. It is score: kappa with the
+    incumbents correlates 0.90-0.97 with a system's own score there, and
+    score correlates -0.97 to -0.99 with being overtaken. The partial
+    correlation holding score fixed is what the question actually asks, and
+    it is reported as the primary number below. Halving the board is too
+    coarse a control when the confound is this strong.)
   * if the sign is negative instead, the reading reverses and is reported
     as such: distinctive systems are the ones that get buried.
 
@@ -115,8 +123,8 @@ def main() -> int:
     p = L.append
     p("DOES KAPPA AT ENTRY PREDICT BEING OVERTAKEN LATER?")
     p("=" * 80)
-    p(f"  {'board':<20} {'at cutoff':>10} {'later':>6} {'n used':>7} {'Spearman':>9} {'p':>7} "
-      f"{'top half':>9} {'p':>7}")
+    p(f"  {'board':<20} {'at cutoff':>10} {'later':>6} {'n used':>7} {'raw r':>9} {'r(k,sc)':>8} "
+      f"{'r(sc,y)':>8} {'PARTIAL':>9} {'top half':>9}")
     pos, pos_top = 0, 0
     for name, (path, dc) in BOARDS.items():
         x, dates = load(path, dc)
@@ -126,20 +134,27 @@ def main() -> int:
             continue
         xs, ys, ss, npres, nlate = out
         r = spearmanr(xs, ys)
+        rxs = spearmanr(xs, ss).statistic
+        rsy = spearmanr(ss, ys).statistic
+        denom = np.sqrt(max((1 - rxs ** 2) * (1 - rsy ** 2), 1e-12))
+        part = (r.statistic - rxs * rsy) / denom
         half = ss >= np.median(ss)
         rt = spearmanr(xs[half], ys[half]) if half.sum() > 5 else None
-        pos += r.statistic > 0
+        pos += part > 0
         pos_top += bool(rt and rt.statistic > 0)
-        p(f"  {name:<20} {npres:>10} {nlate:>6} {len(xs):>7} {r.statistic:>+9.2f} {r.pvalue:>7.3f} "
-          f"{(f'{rt.statistic:+.2f}' if rt else 'n/a'):>9} {(f'{rt.pvalue:.3f}' if rt else ''):>7}")
+        p(f"  {name:<20} {npres:>10} {nlate:>6} {len(xs):>7} {r.statistic:>+9.2f} {rxs:>+8.2f} {rsy:>+8.2f} "
+          f"{part:>+9.2f} {(f'{rt.statistic:+.2f}' if rt else 'n/a'):>9}")
     p("")
-    p(f"  positive on the whole field: {pos}/5 (pre-registered >= 3)")
+    p(f"  PARTIAL correlation positive (score held fixed): {pos}/5 (pre-registered >= 3)")
     p(f"  positive within the top half: {pos_top}/5 (pre-registered >= 3)")
     p("")
     p("  x = a system's mean kappa with the systems that were already on the")
     p("  board when it arrived; y = how many later arrivals ended up above it.")
     p("  Low kappa means it behaves unlike the incumbents. A positive")
-    p("  correlation says derivative systems get passed by more newcomers.")
+    p("  correlation says derivative systems get passed by more newcomers. The raw")
+    p("  correlation is dominated by score - a weak system is both similar to its")
+    p("  weak incumbents and overtaken by everyone - so the partial correlation")
+    p("  holding score fixed is the number that answers the question.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("kappa_predicts_future_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))

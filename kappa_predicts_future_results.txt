@@ -1,0 +1,19 @@
+DOES KAPPA AT ENTRY PREDICT BEING OVERTAKEN LATER?
+================================================================================
+  board                 at cutoff  later  n used     raw r  r(k,sc)  r(sc,y)   PARTIAL  top half
+  SWE-bench Verified           89     45      85     -0.97    +0.97    -0.99     -0.01     -0.85
+  SWE-bench Lite               56     28      52     -0.89    +0.92    -0.98     +0.10     -0.71
+  MTEB English v2             117     57     106     +0.18    -0.16    -0.99     +0.18     +0.08
+  LiveBench                   107     45      77     -0.87    +0.90    -0.97     -0.03     -0.73
+  ProteinGym DMS               64     32      60     +0.19    -0.18    -0.99     +0.09     +0.23
+
+  PARTIAL correlation positive (score held fixed): 3/5 (pre-registered >= 3)
+  positive within the top half: 2/5 (pre-registered >= 3)
+
+  x = a system's mean kappa with the systems that were already on the
+  board when it arrived; y = how many later arrivals ended up above it.
+  Low kappa means it behaves unlike the incumbents. A positive
+  correlation says derivative systems get passed by more newcomers. The raw
+  correlation is dominated by score - a weak system is both similar to its
+  weak incumbents and overtaken by everyone - so the partial correlation
+  holding score fixed is the number that answers the question.
