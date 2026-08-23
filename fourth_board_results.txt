@@ -1,0 +1,19 @@
+FOURTH DATED BOARD: THE PRE-REGISTERED STEP-SIZE CHECKS (commit c9ff2df)
+================================================================================
+
+  SWE-bench Lite (primary): 84 systems x 300 items, 17 frontier advances, beta +0.244/yr
+    median u        0.57    pre-registered [0.20, 0.60]   yes
+    share u < 1     76 %   pre-registered >= 60 %       yes
+    A real vs twin  17 vs 11.3   pre-registered A_real > A_twin   yes
+    P real vs twin  24 % vs 41 %   pre-registered P_real < P_twin   yes
+    (S real 12 %; q25 0.25 q75 0.95 max 1.39)
+
+  SWE-bench test (secondary, J=24): 24 systems x 2294 items, 15 frontier advances, beta +0.238/yr
+    median u        1.93    pre-registered [0.20, 0.60]   NO
+    share u < 1     27 %   pre-registered >= 60 %       NO
+    A real vs twin  15 vs 11.5   pre-registered A_real > A_twin   yes
+    P real vs twin  73 % vs 77 %   pre-registered P_real < P_twin   yes
+    (S real 67 %; q25 0.97 q75 2.90 max 5.09)
+
+  Lite shares scaffolds and 93 instances with Verified: a pass is evidence
+  about the dynamics of a second board, not about a second field.
