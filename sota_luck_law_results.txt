@@ -1,0 +1,14 @@
+SOTA STEPS BETWEEN LUCK AMONG EQUALS AND STEADY PROGRESS
+==========================================================================================
+  board                              steps real med flat med drift med     pf  genuine KS vs flat
+  SWE-bench Verified                    32     0.40     0.18      1.15   0.23      23%      0.043
+  SWE-bench Lite                        17     0.57     0.16      0.76   0.69      42%      0.005
+  MTEB English v2                       16     0.27     0.16      1.42   0.09      26%      0.107
+  LiveBench                             12     0.41     0.12      0.96   0.34      28%      0.012
+  SWE-bench test (J=24, pre-selected)    15     1.93     0.15      2.32   0.82      75%      0.000
+
+  flat = same J, n, sigma_p, entry dates, every entrant equal; drift = the
+  linear-rise twin. pf = where the real median step sits between them.
+  genuine = share of real steps above the flat twin's 95th percentile,
+  minus the 5 % luck gives. KS vs flat: p small = real steps are not
+  luck among equals. First version's half-normal null was wrong (see head).
