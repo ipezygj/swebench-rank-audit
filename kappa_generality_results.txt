@@ -1,0 +1,19 @@
+IS THE SHARPNESS AT THE TOP, OR EVERYWHERE? ADJACENT-PAIR KAPPA BY RANK
+====================================================================================
+  leaderboard               J  Spearman      p  top decile  bottom decile  rank at 0.95
+  SWE-bench Verified      134     +0.15  0.076       0.783          0.686            52
+  MTEB English v2         181     -0.02  0.781       0.534          0.443         never
+  HELM classic             90     -0.18  0.083       0.935          0.659             7
+  ProteinGym DMS           96     +0.14  0.165       0.758          0.838            43
+  TabArena 16 models       16     +0.91  0.000       0.718          1.047            10
+  TabArena 45 variants     45     +0.67  0.000       0.503          0.936         never
+  CASP14                  101     +0.17  0.091       0.713          0.726            68
+  LiveBench               152     -0.36  0.000       0.884          0.598            23
+  MathArena 2025           35     +0.38  0.024       0.649          0.817            17
+
+  adjacent kappa rises with rank: 6/9 (pre-registered >= 6)
+  top decile sharper than bottom decile: 5/9 (pre-registered >= 7)
+
+  'rank at 0.95' is the first rank where a five-pair running mean of
+  adjacent kappa reaches 0.95 - below it the board behaves like a field
+  of independent entrants, above it neighbours share item behaviour.

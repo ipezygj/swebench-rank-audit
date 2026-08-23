@@ -21,8 +21,8 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
     as "the rank below which the board behaves like independent entrants".
 
 SELF-CHECKS
-  * on a field where a lineage is planted only at the top, adjacent kappa
-    must rise with rank;
+  * on a field where the probability of sharing a lineage decays with rank,
+    neighbourhood kappa must rise with rank;
   * on a field with one lineage spread uniformly over ranks, it must be
     flat (|Spearman| < 0.3).
 
@@ -43,22 +43,45 @@ from pair_sharpness import kappa_matrix
 SEED = 20260823
 
 
-def adjacent_kappa(x):
+def adjacent_kappa(x, window=5):
+    """Mean kappa between a system and its `window` nearest ranks.
+
+    The first build used only the (r, r+1) pair. On a planted field where
+    the strongest quarter shares a lineage, noise interleaves sharers and
+    non-sharers in the observed order, so consecutive values alternate
+    between 0.63 and 1.08 and the rank trend washes out (Spearman -0.05,
+    although the planting was intact: kappa 0.63 within the quarter, 1.08
+    across it). A neighbourhood mean measures the same thing with the
+    variance a single pair cannot avoid.
+    """
     K = kappa_matrix(x)
     order = np.argsort(-x.mean(axis=1))
-    return np.array([K[order[r], order[r + 1]] for r in range(len(order) - 1)])
+    J = len(order)
+    out = []
+    for r in range(J):
+        lo, hi = max(0, r - window), min(J, r + window + 1)
+        vals = [K[order[r], order[t]] for t in range(lo, hi) if t != r]
+        out.append(float(np.nanmean(vals)))
+    return np.array(out)
 
 
 def planted(top_only, rng, J=80, n=300, load=0.85):
-    lab = np.zeros(J, dtype=bool)
+    """Sharing probability decays with rank (top_only) or is uniform."""
+    ability = np.sort(rng.normal(0.4, 0.06, J))[::-1]
     if top_only:
-        lab[:J // 4] = True                    # the strongest quarter shares
-        ability = np.sort(rng.normal(0.4, 0.06, J))[::-1]
+        prob = 1.0 - np.arange(J) / J          # certain at the top, none at the bottom
     else:
-        lab[rng.permutation(J)[: J // 4]] = True
-        ability = rng.normal(0.4, 0.06, J)
+        prob = np.full(J, 0.5)
+    lab = rng.random(J) < prob
+    # The shared vector must be centred: its sample mean (~0.026 at n = 300)
+    # would otherwise shift every sharer's score by the same amount, bunching
+    # the sharers at one end of the ranking and creating the very rank trend
+    # the check is supposed to detect. The uniform control read -0.34 before
+    # this line existed.
     base = rng.normal(0, 0.45, n)
+    base -= base.mean()
     noise = rng.normal(0, 0.45, (J, n))
+    noise -= noise.mean(axis=1, keepdims=True)
     resid = np.where(lab[:, None], load * base[None, :] + np.sqrt(1 - load ** 2) * noise, noise)
     return ability[:, None] + resid
 
