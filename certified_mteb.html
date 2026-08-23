@@ -75,6 +75,7 @@ code{font-family:var(--mono);font-size:.86em}
 
 <h2>What conformance means here</h2>
 <p>The standard does not ask a leaderboard to stop ranking. It asks it to print, beside the ranking, the quantities that say how much of the ranking is evidence: simultaneous rank sets, the entropy of the orders the data allows, the resolved tiers, and — new in 0.2 — the resolution of the specific pair behind every claim, together with the split-half reliability of that resolution. On this board κ replicates at r = 0.70 across random halves of the tasks, so the pair-level numbers are measured, not estimated hopefully.</p>
+<p class="small"><strong>What this page leaves out.</strong> MTEB publishes 331 models on this benchmark; 181 have a score on all 41 tasks, and 174 of those have a public repository to date them. The 150 dropped models are not a weak tail — on the tasks they did run they average 0.659 against the kept models' 0.605, because newer entrants are evaluated on a subset. Every number here therefore describes the complete-case board, which excludes some of the strongest recent models. A paired comparison needs the same tasks for both sides, so there is no way to include them without dropping tasks instead; on this board no task is complete either, so that route does not exist.</p>
 <p class="small">Reference implementation <code>leaderboard_standard.py</code> 0.2 · matrix: 174 models × 41 tasks, dated from HuggingFace repo creation · seed 20260823.</p>
 </main>
 <script>
