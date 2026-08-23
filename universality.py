@@ -141,6 +141,21 @@ def load_all() -> dict:
     # If it comes out resolved, "LLM-ness" is not the factor either and only
     # crowding remains - which the ratio measures directly and the story adds
     # nothing to.
+    # THE EIGHTH, PREDICTIONS WRITTEN BEFORE IT IS RUN (2026-08-23, late).
+    # CASP14 (2020): 101 groups x 42 protein domains, GDT_TS/100 of model 1.
+    # Group 427 is AlphaFold2. This is the calibration point at the RESOLVED
+    # end of the scale: the most famous separated lead in modern science. The
+    # instrument is worthless if it cannot see it.
+    #   1. exactly ONE system could be first (tie@1 = 1) - the leader's rank
+    #      set is [1, 1];
+    #   2. top-10 is not an antichain, H10 <= 19.8;
+    #   3. ratio (top-10 spread / pairwise half-width) > 2;
+    #   4. H/ceiling: no prediction.
+    # If 1 fails, the simultaneous procedure is too conservative to be useful
+    # at the top, and that would be a finding against rank_sets.py itself.
+    cp = Path("casp/matrix.csv")
+    if cp.exists():
+        out["CASP14"] = pd.read_csv(cp, index_col=0).dropna(axis=0).to_numpy(dtype=float)
     lb = Path("livebench/matrix.csv")
     if lb.exists():
         out["LiveBench"] = pd.read_csv(lb, index_col=0).dropna(axis=0).to_numpy(dtype=float)
@@ -291,6 +306,28 @@ def main(argv=None) -> int:
     # matrix existed. Nothing below is adjusted to the outcome.
     fourth = next((m for m in rows if m["name"].startswith("MathArena")), None)
     fifth = next((m for m in rows if m["name"].startswith("ProteinGym")), None)
+    eighth = next((m for m in rows if m["name"] == "CASP14"), None)
+    if eighth:
+        p("")
+        p("THE PRE-REGISTERED PREDICTIONS FOR THE EIGHTH (CASP14 - AlphaFold2)")
+        p("  written into load_all() and committed before it was run")
+        ok1 = eighth["tie_top"] == 1
+        p(f"  1. exactly one system could be first           "
+          f"{'HOLDS' if ok1 else 'FAILS'}   ({eighth['tie_top']} could be first)")
+        ok2 = eighth["H10"] <= 19.8
+        p(f"  2. top-10 not an antichain (H10 <= 19.8)       "
+          f"{'HOLDS' if ok2 else 'FAILS'}   ({eighth['H10']:.1f}/21.8)")
+        if ok1:
+            p("  The instrument sees the most famous resolved lead in modern")
+            p("  science as resolved: one group, rank set [1, 1]. The same")
+            p("  procedure that finds nineteen candidate leaders on SWE-bench is")
+            p("  not conservative to the point of blindness - it reports a tie")
+            p("  where there is one and a winner where there is one.")
+        else:
+            p("  The simultaneous procedure cannot separate AlphaFold2 from the")
+            p("  field at the 95 % level. That is a finding AGAINST rank_sets.py:")
+            p("  too conservative to be useful at the top, and every earlier")
+            p("  'cannot be separated' result must be read in that light.")
     seventh = next((m for m in rows if m["name"] == "LiveBench"), None)
     if seventh:
         p("")

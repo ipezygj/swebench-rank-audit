@@ -29,3 +29,5 @@ paper_tae.tex
 matharena/*.parquet
 tabarena/*.parquet
 livebench/*.parquet
+casp/*.tar.gz
+casp/tables/
