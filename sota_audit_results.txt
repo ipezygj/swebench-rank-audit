@@ -1,0 +1,108 @@
+EVERY TIME THE FRONTIER MOVED: WAS IT SEPARABLE FROM THE PREVIOUS LEADER?
+==============================================================================
+134 systems, 500 items, 2023-10-10 to 2025-12-15
+frontier advances: 32
+
+        date   gain  margin  discord   exact p  pairwise  simult.  field  new leader
+  2024-04-02  +2.6%     +13       35     0.041       yes       no      8  20240402_rag_claude3opus
+  2024-04-02  +8.8%     +44       72     0.000       yes      yes      8  20240402_sweagent_claude3opus
+  2024-04-02  +6.6%     +33       75     0.000       yes      yes      8  20240402_sweagent_gpt4
+  2024-05-09  +3.2%     +16      106     0.145        no       no      9  20240509_amazon-q-developer-agent-
+  2024-06-12  +7.0%     +35      107     0.001       yes      yes     10  20240612_MASAI_gpt4o
+  2024-06-17  +4.4%     +22      108     0.043       yes       no     12  20240617_factory_code_droid
+  2024-06-28  +1.4%      +7      105     0.558        no       no     14  20240628_autocoderover-v20240620
+  2024-07-21  +0.4%      +2      108     0.923        no       no     15  20240721_amazon-q-developer-agent-
+  2024-08-20  +1.8%      +9      105     0.435        no       no     18  20240820_honeycomb
+  2024-08-24  +4.6%     +23      119     0.043       yes       no     19  20240824_gru
+  2024-09-24  +0.2%      +1       91     1.000        no       no     23  20240924_solver
+  2024-10-22  +3.6%     +18       98     0.085        no       no     31  20241022_tools_claude-3-5-sonnet-u
+  2024-10-28  +1.0%      +5      109     0.702        no       no     35  20241028_solver
+  2024-10-29  +3.0%     +15       95     0.151        no       no     37  20241029_OpenHands-CodeAct-2.1-son
+  2024-11-08  +1.2%      +6       84     0.586        no       no     42  20241108_devlo
+  2024-12-02  +0.8%      +4       84     0.744        no       no     49  20241202_amazon-q-developer-agent-
+  2024-12-08  +2.0%     +10       98     0.363        no       no     50  20241208_gru
+  2024-12-13  +1.2%      +6       84     0.586        no       no     53  20241213_devlo
+  2024-12-21  +4.0%     +20       90     0.045       yes       no     54  20241221_codestory_midwit_claude-3
+  2025-01-10  +0.6%      +3       95     0.838        no       no     57  20250110_blackboxai_agent_v1.1
+  2025-01-17  +1.8%      +9       99     0.422        no       no     59  20250117_wandb_programmer_o1_cross
+  2025-03-16  +0.8%      +4       88     0.749        no       no     71  20250316_augment_agent_v0
+  2025-04-15  +0.4%      +2       76     0.909        no       no     75  20250415_openhands
+  2025-04-30  +4.2%     +21       79     0.024       yes       no     76  20250430_zencoder_ai
+  2025-05-15  +0.4%      +2       60     0.897        no       no     80  20250515_Refact_Agent
+  2025-05-19  +0.2%      +1       61     1.000        no       no     83  20250519_trae
+  2025-05-22  +2.6%     +13       75     0.165        no       no     87  20250522_tools_claude-4-opus
+  2025-06-03  +1.2%      +6       70     0.550        no       no     91  20250603_Refact_Agent_claude-4-son
+  2025-06-12  +0.8%      +4       56     0.689        no       no     94  20250612_trae
+  2025-08-04  +1.6%      +8       50     0.322        no       no    109  20250804_epam-ai-run-claude-4-sonn
+  2025-09-28  +2.0%     +10       64     0.260        no       no    121  20250928_trae_doubao_seed_code
+  2025-12-05  +0.4%      +2       64     0.901        no       no    133  20251205_sonar-foundation-agent_cl
+
+HOW MANY 'NEW STATE OF THE ART' CLAIMS WERE SEPARABLE WHEN MADE
+  numerically higher          32 of 32   (by construction)
+  pairwise exact, 5 %         8 of 32
+  simultaneous, field at date 3 of 32
+
+THE CLIMB EVERYONE DRAWS, SPLIT BY WHAT SUPPORTS IT
+  total frontier climb           74.8 points
+  from pairwise-separable steps  42.2 points (56 %)
+  from simultaneous-separable    22.4 points (30 %)
+  from steps inside noise        32.6 points (44 %) at the pairwise standard
+
+REIGNS
+  longest reign by calendar: 20241221_codestory_midwit_claude-3-5-son, 2024-12-21 to 2025-01-10
+  leaders never pairwise-beaten by any later leader: 3 of 32
+    2025-08-04  20250804_epam-ai-run-claude-4-sonnet
+    2025-09-28  20250928_trae_doubao_seed_code
+    2025-12-05  20251205_sonar-foundation-agent_claude-opus-4-5
+
+
+STEPS INSIDE NOISE STILL ADD UP: THE FINAL LEADER AGAINST EVERY EARLIER ONE
+  earlier leader                                  gap  margin       p
+  20240402_rag_claude3opus                     +72.2%    +361   0.000
+  20240402_sweagent_claude3opus                +63.4%    +317   0.000
+  20240402_sweagent_gpt4                       +56.8%    +284   0.000
+  20240509_amazon-q-developer-agent-20240430-d +53.6%    +268   0.000
+  20240612_MASAI_gpt4o                         +46.6%    +233   0.000
+  20240617_factory_code_droid                  +42.2%    +211   0.000
+  20240628_autocoderover-v20240620             +40.8%    +204   0.000
+  20240721_amazon-q-developer-agent-20240719-d +40.4%    +202   0.000
+  20240820_honeycomb                           +38.6%    +193   0.000
+  20240824_gru                                 +34.0%    +170   0.000
+  20240924_solver                              +33.8%    +169   0.000
+  20241022_tools_claude-3-5-sonnet-updated     +30.2%    +151   0.000
+  20241028_solver                              +29.2%    +146   0.000
+  20241029_OpenHands-CodeAct-2.1-sonnet-202410 +26.2%    +131   0.000
+  20241108_devlo                               +25.0%    +125   0.000
+  20241202_amazon-q-developer-agent-20241202-d +24.2%    +121   0.000
+  20241208_gru                                 +22.2%    +111   0.000
+  20241213_devlo                               +21.0%    +105   0.000
+  20241221_codestory_midwit_claude-3-5-sonnet_ +17.0%     +85   0.000
+  20250110_blackboxai_agent_v1.1               +16.4%     +82   0.000
+  20250117_wandb_programmer_o1_crosscheck5     +14.6%     +73   0.000
+  20250316_augment_agent_v0                    +13.8%     +69   0.000
+  20250415_openhands                           +13.4%     +67   0.000
+  20250430_zencoder_ai                          +9.2%     +46   0.000
+  20250515_Refact_Agent                         +8.8%     +44   0.000
+  20250519_trae                                 +8.6%     +43   0.000
+  20250522_tools_claude-4-opus                  +6.0%     +30   0.000
+  20250603_Refact_Agent_claude-4-sonnet         +4.8%     +24   0.006
+  20250612_trae                                 +4.0%     +20   0.015
+  20250804_epam-ai-run-claude-4-sonnet          +2.4%     +12   0.155
+  20250928_trae_doubao_seed_code                +0.4%      +2   0.901
+
+  The current leader is separable from every leader up to and
+  including 2025-06-12 (20250612_trae),
+  and from none of the leaders after it. Individual advances were
+  inside noise; their sum is not. That is the honest shape of the
+  record: progress is real over quarters and unreadable over weeks.
+
+  Multiplicity, stated rather than hidden: 32 pairwise tests at
+  5 % expect about 1.6 false separations under no effect, and
+  several of the 8 'yes' rows sit at p = 0.04. The simultaneous
+  column (3 of 32) is the one that pays for this.
+
+  A leader that was never separably beaten has not been shown to be
+  worse than anything that came after it. On this benchmark the
+  frontier curve is drawn through every advance; the evidence supports
+  drawing it through a subset, and the rest is the ordering of near-
+  ties by arrival date.
