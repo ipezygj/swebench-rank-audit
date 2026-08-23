@@ -158,6 +158,9 @@ validated against a permutation null.
 
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
+- `ceiling_effect.py` - Is the top unresolvable because the items are too easy for it?
+- `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
+- `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?
 
 ## How the results were produced

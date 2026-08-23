@@ -87,6 +87,27 @@ any number is printed, **at the shape of the matrix being reported**. Three
 times in one day a null passed at 60 × 400 and failed at 134 × 500. A
 conforming implementation refuses to print when a check fails.
 
+## 4a. R10 needs a pre-registered item set, or it is an attack surface
+
+Asking for the pair statistic behind a claim invites the claimant to choose
+the items it is computed on. The attack is not hypothetical and it is not
+subtle: greedily picking the most favourable items raises the top pair's t
+above 2 on all nine boards tested, including SWE-bench Verified, whose two
+leaders differ by exactly zero points - nineteen of its five hundred
+instances suffice to reach t = 18.0 (`curation_attack.py`).
+
+The defence is equally simple. Score the claim on the items the claimant did
+NOT choose. On eight of the nine boards the curated claim collapses there
+(held-out t from -4.3 to 0.4); on CASP14, where the difference is real, it
+survives at t = 10.7. A conforming leaderboard therefore computes R10 on a
+pre-registered item set - the whole benchmark, or a split fixed before the
+submission - and treats any claimant-selected subset as requiring its
+complement to be reported beside it.
+
+LiveBench is the instructive middle case: its honest t is 2.99, but after
+curation its held-out t is -2.13, so its top difference is not of the same
+kind as CASP14's.
+
 ## 4b. A consequence of R10, stated rather than discovered later
 
 Reporting the pair's own resolution makes a claim by a RELATIVE of the
