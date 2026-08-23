@@ -1,0 +1,18 @@
+THE WINNER'S CURSE IN THE RESIDUALS: DOES THE FIELD CORRELATE LESS WITH #1 THAN #2?
+======================================================================================
+  iid fields (100): gap < 0 in 42 % (pre-registered >= 80 %), mean gap +0.0015
+  split-half on the same fields: mean gap +0.0033 (pre-registered within +-0.01)
+
+  dated board          checkpoints median gap gap<0 share
+  SWE-bench Verified            10     +0.001         40%
+  SWE-bench Lite                10     +0.004         20%
+  MTEB English v2               10     +0.012         40%
+  LiveBench                      9     +0.007         33%
+
+  median gap < 0 on 0/4 dated boards (pre-registered >= 3)
+
+  gap = median corr(system, #1) - median corr(system, #2) over the other
+  systems present, isotonic residuals. Negative = the field resembles the
+  leader less than the runner-up. On an iid field that can only be the
+  selection: the leader is the system whose luck was largest, and luck is
+  orthogonal to everyone. Split-half removes the selection and the gap.
