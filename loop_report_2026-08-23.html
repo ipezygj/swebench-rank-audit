@@ -26,15 +26,33 @@ ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
 code{font-family:var(--mono);font-size:.85em}
 </style>
 <main>
-<h1>Silmukka 23.8. — seitsemäntoista iteraatiota</h1>
-<p class="sub">Autonominen silmukka klo 16:01–16:52 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 34 committia</p>
+<h1>Silmukka 23.8. — kolmekymmentäkaksi iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–17:39 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 63 committia</p>
 
 <div class="grid">
-<div class="card"><b>17</b><span>iteraatiota, joista 8 tuotti uuden mittarin tai lain-testin</span></div>
-<div class="card"><b>7</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
-<div class="card"><b>5/5</b><span>päivättyä taulua: enemmän ja pienempiä SOTA-askelia kuin ajelehtiva kenttä</span></div>
-<div class="card"><b>9/9</b><span>taulua järjestyneempiä kuin mikään riippumattoman kohinan malli</span></div>
+<div class="card"><b>32</b><span>iteraatiota, joista 20 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>13</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
+<div class="card"><b>κ 0,44–0,94</b><span>SOTA-väitteen parin erotuskyky, kun taulun keskiarvo on 1,00</span></div>
+<div class="card"><b>1</b><span>itsenäinen sukulinja SWE-benchin ja MathArenan koko kärkikympissä</span></div>
 </div>
+
+<h2>Illan päälöydös: erotuskyky on parin ominaisuus</h2>
+<p>Benchmarkin "tarkkuus" raportoidaan yhtenä lukuna. Se ei ole yksi luku. Määrittele parille <span class="k">κ = sd(x<sub>j</sub> − x<sub>k</sub>) / √(sd<sub>j</sub>² + sd<sub>k</sub>²)</span> — havaittu erotushajonta jaettuna sillä, minkä riippumattomuus antaisi (tehtävien vaikeuserot poistettuna, koska ne kumoutuvat erotuksessa). κ = 1 on riippumattomuus.</p>
+<div class="wrap"><table>
+<tr><th>Taulu</th><th class="n">κ rintamapareille</th><th class="n">kaikki parit</th><th class="n">kykyerosovitetut</th><th class="n">κ(#1,#2)</th><th class="n">split-half r</th></tr>
+<tr><td>SWE-bench Verified</td><td class="n">0,882</td><td class="n">1,010</td><td class="n">0,914</td><td class="n">0,61</td><td class="n">0,84</td></tr>
+<tr><td>SWE-bench Lite</td><td class="n">0,942</td><td class="n">1,011</td><td class="n">0,979</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>MTEB English v2</td><td class="n">0,530</td><td class="n">0,993</td><td class="n">0,780</td><td class="n">0,58</td><td class="n">0,70</td></tr>
+<tr><td>LiveBench</td><td class="n">0,894</td><td class="n">1,011</td><td class="n">0,944</td><td class="n">0,87</td><td class="n">0,64</td></tr>
+<tr><td>ProteinGym DMS</td><td class="n">0,633</td><td class="n">1,024</td><td class="n">0,960</td><td class="n">0,69</td><td class="n">0,91</td></tr>
+<tr><td>HELM / TabArena / CASP / MathArena</td><td class="n">—</td><td class="n">1,01–1,03</td><td class="n">—</td><td class="n">0,44–0,79</td><td class="n">0,15–0,59</td></tr>
+</table></div>
+<p>Kaikki parit keskimäärin: riippumattomuus pitää. Juuri ne parit joista väite tehdään: 6–56 % tarkempia. Ilmiö <em>toistuu</em> — split-half tehtävien yli antaa r = 0,45–0,91 (poikkeus HELM, jolla on 10 tehtävää), ja rintaman vaje on positiivinen molemmissa puolikkaissa viidellä taululla viidestä.</p>
+<p>Seuraukset, kaikki mitattuja: taulukohtaisella erotuskyvyllä mitoitettu lisäys rakentaa MTEB:lle nelinkertaisen ja ProteinGymille kahdeksankertaisen määrän tehtäviä siihen nähden mitä väitteen todentaminen vaatii. κ:n klusterointi löytää sukulinjat jotka vain <em>nimet</em> tietävät (ARI 0,35–0,56, p 0,005–0,050) — matriisi yksin kertoo ketkä tulokkaat eivät ole itsenäisiä. Ja kärkikymppi on useimmilla tauluilla yksi tai kaksi sukulinjaa, ei kymmenen näytettä.</p>
+
+<h2>Standardi 0.2 — uusi vaatimus</h2>
+<p><strong>R10, parikohtainen erotuskyky:</strong> jokaisesta vertailusta jonka tulostaulu väittää, sen parin oma erotus-SD, κ ja paritettu testi — sekä κ:n split-half-toistettavuus. Uusi kielletty esitys: taulukohtaisen erotuskyvyn esittäminen yksittäisen vertailun tarkkuutena; virhe on mitattu 1,0×–45× molempiin suuntiin. Viitetoteutus laskee kentän, ja se on ajettu seitsemälle matriisille: yksikään ykköspari ei erotu (t 0,00–1,14) edes tällä tarkemmalla mittarilla.</p>
+
 
 <h2>Mitä piti</h2>
 <div class="wrap"><table>
@@ -44,6 +62,9 @@ code{font-family:var(--mono);font-size:.85em}
 <tr><td>Todelliset taulut tuottavat <em>enemmän</em> rintama-askelia kuin lineaarisesti nouseva gaussinen kenttä, ja ne ovat pienempiä</td><td>päivätty kaksonen (<code>sota_twin</code>, <code>fourth_board</code>)</td><td class="n">A: 32/13,6 · 17/11,3 · 15/11,5 · 16/8,5 · 12/8,5 — 5/5</td><td class="held">PITI</td></tr>
 <tr><td>Mediaani-SOTA-askel erotuskyvyn yksiköissä u ∈ [0,2, 0,6]</td><td>ennuste kirjattu ennen 4. taulun etsintää (<code>step_sizes</code>, <code>fourth_board</code>)</td><td class="n">0,40 · 0,27 · 0,41 · 0,57 — test-split 1,93</td><td class="held">4/5</td></tr>
 <tr><td>Lain 2 jäännös on tulokkaiden jäännöskorrelaatio</td><td>kaksonen 4: omat jäännökset permutoitu per järjestelmä (<code>residual_correlation</code>)</td><td class="n">H nousee 9/9; osuu iid-tasolle 8/9; vastaa −jäännöstä piste pisteeltä</td><td class="held">PITI</td></tr>
+<tr><td>Askelkoko-ennuste neljännelle ja viidennelle taululle, kirjattu ennen kuin niitä edes etsittiin</td><td><code>fourth_board</code> (SWE Lite), <code>fifth_board</code> (ProteinGym, toinen ala)</td><td class="n">Lite 4/4 · ProteinGym 6/6</td><td class="held">PITI</td></tr>
+<tr><td>κ on parin ominaisuus, ei estimointiartefakti</td><td>split-half tehtävien yli, 20 jakoa (<code>kappa_reliability</code>)</td><td class="n">r 0,45–0,91 (7/9); rintaman vaje + molemmissa puolikkaissa 5/5</td><td class="held">PITI</td></tr>
+<tr><td>κ tunnistaa sukulinjat jotka vain nimet tietävät</td><td>klusterointi vs nimiperheet, permutaationolla (<code>lineage_detection</code>)</td><td class="n">ARI 0,35 / 0,42 / 0,56; p 0,050 / 0,005 / 0,005</td><td class="held">3/3</td></tr>
 <tr><td>Kalibrointi tunnetulla rakenteella: 45 TabArena-varianttia kantaa 16 mallin informaation</td><td><code>effective_entrants</code>, <code>isotonic_families</code></td><td class="n">J_eff(45) 14,2 vs raja 14,2 (additiivinen); isotonisella J_eff(45) = 16,0</td><td class="held">niukasti / kriteerillä ohi, luvulla osuma</td></tr>
 </table></div>
 
@@ -85,6 +106,10 @@ code{font-family:var(--mono);font-size:.85em}
 <tr><td>ProteinGym DMS</td><td class="n">96</td><td class="n">13–15</td><td>MathArena 2025</td><td class="n">35</td><td class="n">13–21</td></tr>
 </table></div>
 
+<h2>Miksi rintama liikkuu niin kuin liikkuu</h2>
+<p>Viisi päivättyä taulua kolmelta alalta tuottaa 1,4–2,6× enemmän rintama-askelia kuin samalla vauhdilla ajelehtiva gaussinen kenttä, ja ne ovat pienempiä. <strong>Jahtausmalli</strong> — tulokas ei ole poiminta kentästä vaan poiminta suhteessa nykyiseen ennätykseen — selittää määrän ja koon paremmin kuin lineaarinen nousu neljällä taululla viidestä. Se ei selitä sitä, että todelliset askeleet ovat useammin tilastollisesti erotettavia kuin samankokoiset simuloidut; sen selittää κ, ja kun jahtaaja perii ennätyksen haltijan käyttäytymisen, vaje kapenee mutta ei sulkeudu. Perintö tulee sukulinjasta, ei nykyisestä ennätyksestä — sukupuumalli on illan suurin avoin rakennuspalikka.</p>
+<p>Yksi ennakko kaatui hyödyllisesti: oletin ProteinGymin, joka ei ole kilpa vaan julkaistujen menetelmien kokoelma, näyttävän <em>vähiten</em> jahtausta. Sen suhde on 2,62 — korkein viidestä. Rintaman jahtaus ei vaadi tulostaulukilpaa.</p>
+
 <h2>Mitä kaatui — ja miksi se on hyvä</h2>
 <ul>
 <li><span class="dead">Kaksonen 2 (kohinaprofiili)</span> — ensin rakennusvirhe (järjestelmän hajonta = tehtävien vaikeusero, ei kohina; itsetarkistuksen kenttä ilman vaikeuseroja päästi läpi), korjattuna 6/9 = sama kuin kaksonen 1. <em>Kohinaprofiili ei selitä mitään.</em></li>
@@ -93,19 +118,23 @@ code{font-family:var(--mono);font-size:.85em}
 <li><span class="dead">Voittajan kirous jäännöksissä</span> — iid 42 %, todelliset 0/4, split-half ei muuta. Ei selitä edellistä.</li>
 <li><span class="dead">Puolinormaali SOTA-askel, "parametriton laki"</span> — yhtä hyvien kentässä mediaani oli 0,17 eikä 0,34: vanha johtaja on k:n maksimi. Väärä nolla; korvattu tasakaksosella.</li>
 <li><span class="dead">Muoto-itsetarkistus</span> — vino häntä ei liikuta H:ta; ulkopuoliset liikuttavat. Tarkistus korjattiin vastaamaan sitä mitä rakenne oikeasti selittää.</li>
+<li><span class="dead">Puolinormaali askel-laki</span> — "parametriton mediaani 0,344" kaatui omaan itsetarkistukseensa: vanha johtaja on <em>maksimi</em>, ei satunnainen vertailukohta. Korvattu simuloidulla tasakaksosella.</li>
+<li><span class="dead">Jäännöskorrelaatio erotettavuuden selittäjänä</span> — kumottu kolme kertaa peräkkäin eri rakenteilla, ennen kuin oikea muoto (parikohtainen κ) löytyi.</li>
+<li><span class="dead">Sukulinjalippu yksinkertaisella linkityksellä</span> — "läpäisi" ennakot niputtamalla 8/9 taulusta yhdeksi linjaksi. Merkityksetön läpäisy on vaarallisempi kuin kaatuminen.</li>
+<li><span class="dead">κ-trendi ajassa</span> — testi ei ollut ajettavissa: vain yksi taulu antaa kolme kelvollista vuotta. Kirjattu alivoimaiseksi, ei tulokseksi.</li>
 <li><span class="dead">SOTA-auditin McNemar jatkuvalla datalla</span> — paljastui mahdottomasta järjestyksestä (0/16 parittain, 2/16 simultaanisesti); etumerkinvaihto-permutaatio tilalle.</li>
 </ul>
 
 <h2>Avoinna</h2>
 <ul>
-<li><span class="open">u-invariantti</span>: erotuskyvyn yksiköissä 4/5, pisteissä ei; viisi taulua ei ratkaise. Tarvitaan päivätty taulu <em>toiselta alalta</em> (ei SWE-johdannainen).</li>
-<li><span class="open">Käänteinen korrelaatio</span>: uusi johtaja korreloi vanhan kakkosen kanssa enemmän kuin vanhan ykkösen; johtajan onni ei selitä.</li>
-<li><span class="open">Perheet Rasch-nollalla</span>: J_eff:n väli kapenee vain paremmalla nollalla.</li>
-<li><span class="open">Laki 2 MTEB:llä ajan yli</span>: korrelaatiotermi kasvaa J:n mukana (−3 → −8 p); onko se lakiin lisättävä termi J_eff:stä?</li>
+<li><span class="open">Sukupuu</span>: jahtaaja perii sukulinjansa, ei nykyisen ennätyksen, käyttäytymisen. Malli puuttuu.</li>
+<li><span class="open">Käänteinen korrelaatio</span>: uusi johtaja muistuttaa vanhan kakkosta enemmän kuin vanhaa ykköstä; johtajan onni ei selitä (kumottu).</li>
+<li><span class="open">u-invariantti</span>: mediaaniaskel 0,27–0,57 viidellä avoimella taululla kolmelta alalta, mutta 1,93 esivalitulla — onko invariantti erotuskyvyssä vai valikoitumisessa?</li>
+<li><span class="open">κ ajassa</span>: tarvitaan taulu jolla on ≥ 4 vuotta ja ≥ 2 askelta vuodessa.</li>
 </ul>
 
-<div class="note">Illan vakiolöydös ei ole yksikään yksittäinen luku vaan se, että seitsemästä kaatumisesta kuusi nappasi oma itsetarkistus tai oma kontrolli ennen kuin mitään väitettiin. Kaksi lakia seisovat: toinen ajan yli, toinen täydellä tilinpidolla. Kolmas (askelkoko) on havainto neljällä taululla ja odottaa kenttää toiselta alalta.</div>
+<div class="note">Illan vakiolöydös ei ole yksikään luku vaan se, että kolmestatoista kaatumisesta yksitoista nappasi oma itsetarkistus tai oma kontrolli ennen kuin mitään väitettiin — ja kaksi jäljelle jäänyttä paljastuivat vasta oikeilla tauluilla, mikä on syy ajaa ne aina. Kaksi lakia seisoo, kolmas on havainto viidellä taululla, ja standardi sai vaatimuksen jota sillä ei aamulla ollut.</div>
 
 <h2>Tiedostot</h2>
-<p class="k">evidence_trajectory · entropy_law_twin2 · sota_twin · step_sizes · fourth_board · entropy_decomposition · residual_correlation · effective_entrants · sota_families · isotonic_families · leader_luck · sota_luck_law — kukin *_results.txt:n kanssa; matriisit swebench_lite_matrix.csv, swebench_test_matrix.csv, mteb_dated_matrix.csv + mteb_dates.csv</p>
+<p class="k">evidence_trajectory · entropy_law_twin2 · entropy_decomposition · residual_correlation · effective_entrants · isotonic_families · leader_luck · sota_twin · step_sizes · fourth_board · fifth_board · sota_luck_law · sota_families · chase_model · chase_correlated · chase_refit · sibling_chase · broad_or_deep · pair_sharpness · kappa_trend · kappa_reliability · law1_pairwise · prescription_pairwise · lineage_detection · independence_flag — kukin *_results.txt:n kanssa · LEADERBOARD_STANDARD.md 0.2 + leaderboard_standard.py · matriisit swebench_lite / swebench_test / mteb_dated (+ mteb_dates) / proteingym/dates</p>
 </main>
