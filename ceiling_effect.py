@@ -10,9 +10,10 @@ For each board: take the top ten systems, and classify every item by how
 many of them get it right (binary boards) or by the spread of their scores
 on it (continuous boards):
 
-  dead      no top system scores above the item's field median
-  saturated every top system does
-  live      the rest - the only items that can separate the top
+  live      the top systems disagree on it (their range exceeds 5 % of the
+            field's range on that item) - the only items that can separate them
+  saturated they agree, at or above the field median
+  dead      they agree, below it
 
 PRE-REGISTERED EXPECTATION (2026-08-23, before running)
   * on every board the live share for the top ten is below 60 %;
@@ -42,14 +43,31 @@ SEED = 20260823
 TOP = 10
 
 
-def classify(x, top_idx):
-    """dead / saturated / live counts among the items, for the top group."""
+def classify(x, top_idx, flat_frac=0.05):
+    """dead / saturated / live counts for the top group.
+
+    The first version called an item dead when no top system scored above
+    the item's field MEDIAN. On binary data that is wrong: a column whose
+    median is 1 can never be exceeded, so 79 of 200 coin-flip columns were
+    recorded as dead and the self-check caught it (live share 60 % where
+    the right answer is nearly 100 %).
+
+    The definition that works on both kinds of data looks only at the top
+    group's own spread. An item is LIVE when the top systems disagree on
+    it - their range exceeds a small fraction of the field's range on that
+    item. When they agree, it is SATURATED if they agree above the field
+    median and DEAD if below. Binary data reduces to the obvious thing:
+    all top systems solve it, or none does.
+    """
+    sub = x[top_idx]
+    rng_field = x.max(axis=0) - x.min(axis=0)
+    rng_top = sub.max(axis=0) - sub.min(axis=0)
+    live_mask = rng_top > flat_frac * np.where(rng_field > 0, rng_field, 1.0)
     med = np.median(x, axis=0)
-    hits = (x[top_idx] > med[None, :]).sum(axis=0)
-    k = len(top_idx)
-    dead = int((hits == 0).sum())
-    sat = int((hits == k).sum())
-    live = x.shape[1] - dead - sat
+    above = sub.mean(axis=0) >= med
+    live = int(live_mask.sum())
+    sat = int((~live_mask & above).sum())
+    dead = int((~live_mask & ~above).sum())
     return dead, sat, live
 
 
@@ -104,10 +122,13 @@ def main() -> int:
       f"({100 * binary_lowest[1]:.0f} %)" if binary_lowest else "")
     p(f"  Spearman(live count, tie@1) = {r.statistic:+.2f} (p {r.pvalue:.2f}); pre-registered negative")
     p("")
-    p("  An item is dead for the top group when none of the top ten beats the")
-    p("  field median on it, and saturated when all of them do. Only the live")
-    p("  items carry information about which of the ten is best - and the")
-    p("  benchmark pays to run all of them.")
+    p("  An item is live for the top group when the top ten disagree on it by")
+    p("  more than 5 % of the field's range; otherwise they agree, above the")
+    p("  field median (saturated) or below it (dead). Only live items carry")
+    p("  information about which of the ten is best - and the benchmark pays to")
+    p("  run all of them. A high live share is not automatically good: on a")
+    p("  continuous board almost every item is technically live because exact")
+    p("  ties are rare, which is why the binary boards are the informative rows.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("ceiling_effect_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
