@@ -1,0 +1,39 @@
+IS ANY OF THIS A LAW? THREE UNRELATED LEADERBOARDS, SAME INSTRUMENTS
+==============================================================================
+  leaderboard             J    n  estab.     tie@1  med.width  H/ceiling  top-10 H
+  SWE-bench Verified    134  500   37.7%  19 (14.2%)      26.9%      54.3%  21.8/21.8
+  MTEB English v2       181   41   34.3%  15 ( 8.3%)      33.7%      54.8%  21.8/21.8
+  HELM classic           90   10   24.1%  16 (17.8%)      55.6%      65.8%  21.8/21.8
+
+  estab.     ordered pairs established by the simultaneous test
+  tie@1      systems whose rank set contains 1 (share of J)
+  med.width  median rank-set width as a share of J
+  H/ceiling  share of the printed order the data does not determine
+  top-10 H   bits undetermined among the ten best; 21.8 = nothing known
+
+READING IT
+  H/ceiling spans 11.5 points, from 54 % to 66 %.
+  By the threshold written above before the numbers were seen, that
+  is not a regularity, and the pre-registered verdict stands: no
+  universal constant is claimed.
+
+  What the threshold does not capture, reported as an observation
+  and not as a result: the two larger benchmarks agree to 0.5 points
+  (54.3 % and 54.8 %), and the outlier is the ten-item one, where
+  the resolution law predicts more entropy because fewer pairs can
+  separate. That is a HYPOTHESIS for a fourth benchmark: H/ceiling
+  near 55 % once the item count is large enough for the field's
+  spread to show. It is written here so that a fourth benchmark
+  can falsify it, not so that it can be claimed now.
+
+  The resolution-law prediction - more items, more pairs established -
+  HOLDS: by item count the order is HELM < MTEB < SWE-bench, by established pairs it is HELM < MTEB < SWE-bench.
+
+  What IS common to all three, and it is exact, not approximate: the
+  ten best are a complete antichain on every leaderboard tested. The
+  top-10 entropy is 21.8 of 21.8 on all three - the simultaneous test
+  establishes NOT ONE pair among the ten best of SWE-bench, of MTEB,
+  or of HELM. Three benchmarks, three fields, three scoring schemes,
+  and the same fact about the only rows anyone reads. That is the one
+  sentence that survives the comparison, and it is the one to test on
+  a fourth.
