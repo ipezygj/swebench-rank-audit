@@ -1,0 +1,39 @@
+LEADERBOARD ENTROPY: BITS OF ORDER THE DATA DOES NOT DETERMINE
+==========================================================================
+134 systems; a total order with no evidence at all carries log2(134!) = 758 bits
+
+  evidential order            pairs  viol   H bits     ±  of ceiling  equally good tables
+  noise (rank_sets)            6719     0    413.5   0.2       54.5%                2^413
+  basket (invariant core)      5535     0    417.6   0.3       55.1%                2^418
+  both (IUT core)              1072     0    661.3   0.3       87.2%                2^661
+
+  H is log2 of the number of total orders consistent with every
+  established pair. The published leaderboard is one of them. The
+  last column is how many others the evidence supports exactly as
+  well - not approximately, not 'within noise': EXACTLY as well,
+  under the criterion in the first column.
+
+THE SAME QUESTION FOR THE TOP OF THE TABLE
+  evidential order            top k   H bits  ceiling  equally good orderings of the top
+  noise (rank_sets)              10     21.8     21.8                             2^21.8
+  basket (invariant core)        10     20.8     21.8                             2^20.8
+  both (IUT core)                10     21.8     21.8                             2^21.8
+
+  noise (rank_sets)              19     56.8     56.8                             2^56.8
+  basket (invariant core)        19     49.6     56.8                             2^49.6
+  both (IUT core)                19     56.8     56.8                             2^56.8
+
+  noise (rank_sets)              30     97.9    107.7                             2^97.9
+  basket (invariant core)        30     87.6    107.7                             2^87.6
+  both (IUT core)                30    107.7    107.7                            2^107.7
+
+  For the nineteen candidate leaders the noise order establishes
+  almost nothing among them, so nearly every one of their 19! orderings
+  is equally supported. The table prints one.
+
+WHAT THIS UNIFIES
+  rank_sets.py gave confidence sets per system; leaderboard_geometry.py
+  gave the height of the poset; invariant_core.py gave the pairs that
+  survive every basket. Those are three views of one object. H is
+  that object's size, in bits, and it is the quantity a leaderboard
+  would print beside its ranking if it reported what it knew.
