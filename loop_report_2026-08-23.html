@@ -1,0 +1,111 @@
+<title>Silmukka 23.8.</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#f7f4ee;--ink:#1d1a16;--mute:#6b6256;--rule:#d9d2c4;--card:#ffffff;--held:#2f6b3a;--dead:#9a3b2e;--open:#8a6a12;--acc:#1f4f7a;--mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;--serif:"Source Serif 4",Georgia,"Times New Roman",serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17150f;--ink:#ece6da;--mute:#a59b8a;--rule:#3a342a;--card:#1f1c15;--held:#7fc48b;--dead:#e0826f;--open:#d9b24a;--acc:#7fb2e0}}
+:root[data-theme="dark"]{--bg:#17150f;--ink:#ece6da;--mute:#a59b8a;--rule:#3a342a;--card:#1f1c15;--held:#7fc48b;--dead:#e0826f;--open:#d9b24a;--acc:#7fb2e0}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);line-height:1.5;margin:0;padding:2.5rem 1.25rem 4rem}
+main{max-width:62rem;margin:0 auto}
+h1{font-size:2rem;font-weight:600;margin:0 0 .25rem;text-wrap:balance}
+h2{font-size:1.2rem;font-weight:600;margin:2.5rem 0 .75rem;padding-top:.75rem;border-top:1px solid var(--rule)}
+p{max-width:65ch;margin:.5rem 0}
+.sub{color:var(--mute);font-size:.95rem;margin-bottom:1.5rem}
+.k{font-family:var(--mono);font-size:.82rem;letter-spacing:.02em}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:.75rem 0 1rem}
+.wrap{overflow-x:auto}
+th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--mute);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:.85rem}
+.held{color:var(--held);font-weight:600}.dead{color:var(--dead);font-weight:600}.open{color:var(--open);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem;margin:1rem 0}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:.85rem 1rem}
+.card b{display:block;font-size:1.6rem;font-family:var(--mono);font-weight:500}
+.card span{color:var(--mute);font-size:.85rem}
+ul{padding-left:1.2rem;max-width:70ch}li{margin:.3rem 0}
+.note{border-left:3px solid var(--acc);padding:.4rem .9rem;color:var(--mute);max-width:65ch;margin:1rem 0}
+code{font-family:var(--mono);font-size:.85em}
+</style>
+<main>
+<h1>Silmukka 23.8. — seitsemäntoista iteraatiota</h1>
+<p class="sub">Autonominen silmukka klo 16:01–16:52 · jokainen iteraatio: ennuste committiin ennen ajoa → itsetarkistukset → tulos committiin sellaisenaan · <span class="k">~/swebench-rank-audit</span>, 34 committia</p>
+
+<div class="grid">
+<div class="card"><b>17</b><span>iteraatiota, joista 8 tuotti uuden mittarin tai lain-testin</span></div>
+<div class="card"><b>7</b><span>kaatumista tai kumoamista — jokainen kirjattu, syy nimetty</span></div>
+<div class="card"><b>5/5</b><span>päivättyä taulua: enemmän ja pienempiä SOTA-askelia kuin ajelehtiva kenttä</span></div>
+<div class="card"><b>9/9</b><span>taulua järjestyneempiä kuin mikään riippumattoman kohinan malli</span></div>
+</div>
+
+<h2>Mitä piti</h2>
+<div class="wrap"><table>
+<tr><th>Väite</th><th>Testi</th><th class="n">Tulos</th><th>Tila</th></tr>
+<tr><td>Laki 1 — vakiintuneiden parien osuus = Φ̄(1/SNR) — pitää <em>ajan yli</em> yhden taulun sisällä</td><td>SWE / MTEB / LiveBench toistettu 7–8 tarkistuspisteessä (<code>evidence_trajectory</code>)</td><td class="n">3/3, |err| ≤ 2,8 p kun J ≥ 15</td><td class="held">PITI</td></tr>
+<tr><td>Laki 2 — entropia H/katto = gaussinen kaksonen(J, n, τ, σ_p) — ajan yli</td><td>sama</td><td class="n">SWE, LiveBench 100 %; MTEB ohitti (real 7 p alle)</td><td class="held">2/3</td></tr>
+<tr><td>Todelliset taulut tuottavat <em>enemmän</em> rintama-askelia kuin lineaarisesti nouseva gaussinen kenttä, ja ne ovat pienempiä</td><td>päivätty kaksonen (<code>sota_twin</code>, <code>fourth_board</code>)</td><td class="n">A: 32/13,6 · 17/11,3 · 15/11,5 · 16/8,5 · 12/8,5 — 5/5</td><td class="held">PITI</td></tr>
+<tr><td>Mediaani-SOTA-askel erotuskyvyn yksiköissä u ∈ [0,2, 0,6]</td><td>ennuste kirjattu ennen 4. taulun etsintää (<code>step_sizes</code>, <code>fourth_board</code>)</td><td class="n">0,40 · 0,27 · 0,41 · 0,57 — test-split 1,93</td><td class="held">4/5</td></tr>
+<tr><td>Lain 2 jäännös on tulokkaiden jäännöskorrelaatio</td><td>kaksonen 4: omat jäännökset permutoitu per järjestelmä (<code>residual_correlation</code>)</td><td class="n">H nousee 9/9; osuu iid-tasolle 8/9; vastaa −jäännöstä piste pisteeltä</td><td class="held">PITI</td></tr>
+<tr><td>Kalibrointi tunnetulla rakenteella: 45 TabArena-varianttia kantaa 16 mallin informaation</td><td><code>effective_entrants</code>, <code>isotonic_families</code></td><td class="n">J_eff(45) 14,2 vs raja 14,2 (additiivinen); isotonisella J_eff(45) = 16,0</td><td class="held">niukasti / kriteerillä ohi, luvulla osuma</td></tr>
+</table></div>
+
+<h2>Lain 2 täysi tilinpito</h2>
+<p>Kuudella taululla "hyvin sopinut" gaussinen ennuste oli osin kumoutumista. Hajotelma (<code>entropy_decomposition</code>) näyttää sen:</p>
+<p class="k">H_real − H_gauss = MUOTO (ulkopuoliset ja klusterit, aina +) + KORRELAATIO (jaetut pohjamallit / skaffoldit / menetelmät, aina −)</p>
+<div class="wrap"><table>
+<tr><th>Taulu</th><th class="n">real</th><th class="n">gauss</th><th class="n">muoto</th><th class="n">jäännös</th><th class="n">kaksonen 4 nostaa</th></tr>
+<tr><td>SWE-bench Verified</td><td class="n">54,5</td><td class="n">52,9</td><td class="n">+3,9</td><td class="n">−2,3</td><td class="n">+2,0</td></tr>
+<tr><td>MTEB English v2</td><td class="n">55,0</td><td class="n">58,3</td><td class="n">+5,0</td><td class="n">−8,3</td><td class="n">+9,8</td></tr>
+<tr><td>HELM classic</td><td class="n">64,1</td><td class="n">64,6</td><td class="n">+1,4</td><td class="n">−1,9</td><td class="n">+3,4</td></tr>
+<tr><td>ProteinGym DMS</td><td class="n">49,2</td><td class="n">52,6</td><td class="n">+5,4</td><td class="n">−8,8</td><td class="n">+8,3</td></tr>
+<tr><td>TabArena 16</td><td class="n">61,6</td><td class="n">32,2</td><td class="n">+40,0</td><td class="n">−10,6</td><td class="n">+3,6</td></tr>
+<tr><td>TabArena 45</td><td class="n">60,2</td><td class="n">42,1</td><td class="n">+23,6</td><td class="n">−5,5</td><td class="n">+5,1</td></tr>
+<tr><td>CASP14</td><td class="n">67,8</td><td class="n">61,0</td><td class="n">+8,7</td><td class="n">−2,0</td><td class="n">+2,4</td></tr>
+<tr><td>LiveBench</td><td class="n">63,3</td><td class="n">63,5</td><td class="n">+1,5</td><td class="n">−1,7</td><td class="n">+1,8</td></tr>
+<tr><td>MathArena 2025</td><td class="n">56,5</td><td class="n">52,5</td><td class="n">+7,3</td><td class="n">−3,3</td><td class="n">+2,4</td></tr>
+</table></div>
+<p>Sileä vinous <em>ei</em> liikuta entropiaa (+0,3); ulkopuoliset (+13,5) ja klusterit (+4,2) liikuttavat — tämän opetti itsetarkistus joka kaatui ensin. Instrumentti (<code>rank_sets</code>, paritettu bootstrap tehtävien yli) näkee korrelaation oikein; lain nelinumeroinen tiivistys on se joka sen hukkaa.</p>
+
+<h2>SOTA-askeleet: onnen ja etenemisen välissä</h2>
+<p>Tasakaksonen = sama J, n, σ_p ja tulopäivät, kaikki tulokkaat yhtä hyviä; nousukaksonen = lineaarinen nousu. Etenemisosuus pf kertoo mihin todellinen mediaaniaskel asettuu niiden väliin.</p>
+<div class="wrap"><table>
+<tr><th>Taulu</th><th class="n">askelia</th><th class="n">real</th><th class="n">tasa</th><th class="n">nousu</th><th class="n">pf</th><th class="n">aito osuus</th><th class="n">KS vs tasa</th></tr>
+<tr><td>SWE-bench Verified</td><td class="n">32</td><td class="n">0,40</td><td class="n">0,18</td><td class="n">1,15</td><td class="n">0,23</td><td class="n">23 %</td><td class="n">0,043</td></tr>
+<tr><td>SWE-bench Lite</td><td class="n">17</td><td class="n">0,57</td><td class="n">0,16</td><td class="n">0,76</td><td class="n">0,69</td><td class="n">42 %</td><td class="n">0,005</td></tr>
+<tr><td>MTEB English v2</td><td class="n">16</td><td class="n">0,27</td><td class="n">0,16</td><td class="n">1,42</td><td class="n">0,09</td><td class="n">26 %</td><td class="n">0,107</td></tr>
+<tr><td>LiveBench</td><td class="n">12</td><td class="n">0,41</td><td class="n">0,12</td><td class="n">0,96</td><td class="n">0,34</td><td class="n">28 %</td><td class="n">0,012</td></tr>
+<tr><td>SWE-bench test (24 esivalittua)</td><td class="n">15</td><td class="n">1,93</td><td class="n">0,15</td><td class="n">2,32</td><td class="n">0,82</td><td class="n">75 %</td><td class="n">0,000</td></tr>
+</table></div>
+<p>MTEB:n kuusitoista "uutta SOTAa" eivät erotu siitä mitä 174 yhtä hyvää mallia ja onni tuottaisivat. Yhdelläkään avoimella taululla pf ei ylitä 0,7. Kolmella alalla 60 SOTA-väitteestä 7 kesti standardin simultaanisen kriteerin, eikä yhdelläkään ole ollut yksiselitteistä johtajaa yli vuoteen (SWE 2024-06-12, MTEB 2024-04-30, LiveBench ei koskaan).</p>
+
+<h2>Itsenäisiä tulokkaita J_eff — väli</h2>
+<p>Alaraja additiivisesta jäännöksestä (perheet + mallin misfit), yläraja isotonisesta (misfit poistettu, osa heikoista perheistä voi imeytyä).</p>
+<div class="wrap"><table>
+<tr><th>Taulu</th><th class="n">J</th><th class="n">J_eff</th><th>Taulu</th><th class="n">J</th><th class="n">J_eff</th></tr>
+<tr><td>SWE-bench Verified</td><td class="n">134</td><td class="n">37–108</td><td>CASP14</td><td class="n">101</td><td class="n">37–53</td></tr>
+<tr><td>MTEB English v2</td><td class="n">181</td><td class="n">28–60</td><td>LiveBench</td><td class="n">152</td><td class="n">50–92</td></tr>
+<tr><td>ProteinGym DMS</td><td class="n">96</td><td class="n">13–15</td><td>MathArena 2025</td><td class="n">35</td><td class="n">13–21</td></tr>
+</table></div>
+
+<h2>Mitä kaatui — ja miksi se on hyvä</h2>
+<ul>
+<li><span class="dead">Kaksonen 2 (kohinaprofiili)</span> — ensin rakennusvirhe (järjestelmän hajonta = tehtävien vaikeusero, ei kohina; itsetarkistuksen kenttä ilman vaikeuseroja päästi läpi), korjattuna 6/9 = sama kuin kaksonen 1. <em>Kohinaprofiili ei selitä mitään.</em></li>
+<li><span class="dead">Lineaarisen nousun kaksonen</span> — ennusti SWE:lle liikaa askelia; todellisuus antoi 2,4× enemmän. Kaatuminen oli löydös.</li>
+<li><span class="dead">"Rintama liikkuu perheissä"</span> — ennakkotesti meni läpi 4/4; jälkikäteen lisätty kyky-kontrolli oli yhtä korkea (89–96). Mittari mittasi kykyä. Isotonisella jäännöksellä ero kääntyi negatiiviseksi (−19…−42 p). Tulkinta kuollut, ilmiö selittämättä.</li>
+<li><span class="dead">Voittajan kirous jäännöksissä</span> — iid 42 %, todelliset 0/4, split-half ei muuta. Ei selitä edellistä.</li>
+<li><span class="dead">Puolinormaali SOTA-askel, "parametriton laki"</span> — yhtä hyvien kentässä mediaani oli 0,17 eikä 0,34: vanha johtaja on k:n maksimi. Väärä nolla; korvattu tasakaksosella.</li>
+<li><span class="dead">Muoto-itsetarkistus</span> — vino häntä ei liikuta H:ta; ulkopuoliset liikuttavat. Tarkistus korjattiin vastaamaan sitä mitä rakenne oikeasti selittää.</li>
+<li><span class="dead">SOTA-auditin McNemar jatkuvalla datalla</span> — paljastui mahdottomasta järjestyksestä (0/16 parittain, 2/16 simultaanisesti); etumerkinvaihto-permutaatio tilalle.</li>
+</ul>
+
+<h2>Avoinna</h2>
+<ul>
+<li><span class="open">u-invariantti</span>: erotuskyvyn yksiköissä 4/5, pisteissä ei; viisi taulua ei ratkaise. Tarvitaan päivätty taulu <em>toiselta alalta</em> (ei SWE-johdannainen).</li>
+<li><span class="open">Käänteinen korrelaatio</span>: uusi johtaja korreloi vanhan kakkosen kanssa enemmän kuin vanhan ykkösen; johtajan onni ei selitä.</li>
+<li><span class="open">Perheet Rasch-nollalla</span>: J_eff:n väli kapenee vain paremmalla nollalla.</li>
+<li><span class="open">Laki 2 MTEB:llä ajan yli</span>: korrelaatiotermi kasvaa J:n mukana (−3 → −8 p); onko se lakiin lisättävä termi J_eff:stä?</li>
+</ul>
+
+<div class="note">Illan vakiolöydös ei ole yksikään yksittäinen luku vaan se, että seitsemästä kaatumisesta kuusi nappasi oma itsetarkistus tai oma kontrolli ennen kuin mitään väitettiin. Kaksi lakia seisovat: toinen ajan yli, toinen täydellä tilinpidolla. Kolmas (askelkoko) on havainto neljällä taululla ja odottaa kenttää toiselta alalta.</div>
+
+<h2>Tiedostot</h2>
+<p class="k">evidence_trajectory · entropy_law_twin2 · sota_twin · step_sizes · fourth_board · entropy_decomposition · residual_correlation · effective_entrants · sota_families · isotonic_families · leader_luck · sota_luck_law — kukin *_results.txt:n kanssa; matriisit swebench_lite_matrix.csv, swebench_test_matrix.csv, mteb_dated_matrix.csv + mteb_dates.csv</p>
+</main>
