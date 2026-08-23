@@ -1,0 +1,16 @@
+SIBLING CHASE: THE CHASER INHERITS THE RECORD-HOLDER'S ITEM BEHAVIOUR
+============================================================================================
+  board                kap real   rho     q  lambda | A real  A sim | P real  P sib  P iid | kap sim
+  SWE-bench Verified       0.88  0.22  0.35  0.0107 |     32   30.0 |    25%    16%    16% |    0.91
+  SWE-bench Lite           0.94  0.11  0.25  0.0220 |     17   16.9 |    24%    22%    24% |    0.97
+  MTEB English v2          0.53  0.72  0.35  0.0002 |     16   11.6 |    38%    17%    14% |    0.88
+  LiveBench                0.89  0.20  0.20  0.0178 |     12   21.2 |    33%    20%    15% |    0.94
+  ProteinGym DMS           0.63  0.60  0.15  0.0099 |     11   11.9 |    55%    34%    30% |    0.66
+
+  P within 15 points: 3/5 (pre-registered >= 4; iid 2/5, bootstrap 1/5)
+  simulated frontier kappa within 0.10 of real: 4/5 (pre-registered >= 4)
+  A within 30 %: 4/5 (pre-registered >= 3)
+
+  rho is set from the board's own frontier kappa through kappa^2 = 1 - rho,
+  not fitted to P. q and lambda are the same climb / median-step fits as
+  chase_model.py. P iid repeats the same fit with independent noise.

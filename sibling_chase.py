@@ -78,8 +78,11 @@ def frontier_kappa(x, dates):
 
 
 def _check_identity():
+    # n raised from 4 000 to 200 000: the first run deviated 0.023 against a
+    # 0.02 bar, which is sampling noise in the check, not in the identity.
+    # The bar was not moved.
     rng = np.random.default_rng(31)
-    n = 4000
+    n = 200_000
     out = []
     for rho in (0.0, 0.3, 0.6, 0.9):
         a = rng.normal(0, 1, n)
@@ -94,8 +97,10 @@ def _check_rho_zero():
     J, n = 70, 200
     dates = synth_dates("2023-01-01", np.sort(rng.integers(0, 700, J)))
     pool = rng.normal(0.4, 0.06, 200)
-    Pa = np.nanmean([audit(sibling_field(J, n, dates, 0.3, 0.02, 0.45, pool, 0.0, np.random.default_rng(40 + s)), dates, 50 + s)["P"] for s in range(4)])
-    Pb = np.nanmean([audit(chase_field(J, n, dates, 0.3, 0.02, 0.45, pool, np.random.default_rng(60 + s)), dates, 70 + s)["P"] for s in range(4)])
+    # 16 fields each: with ~8 advances per field, 4 fields put the Monte Carlo
+    # error on P near 7 points, which is what the first run showed (10 vs 3).
+    Pa = np.nanmean([audit(sibling_field(J, n, dates, 0.3, 0.02, 0.45, pool, 0.0, np.random.default_rng(40 + s)), dates, 50 + s)["P"] for s in range(16)])
+    Pb = np.nanmean([audit(chase_field(J, n, dates, 0.3, 0.02, 0.45, pool, np.random.default_rng(60 + s)), dates, 70 + s)["P"] for s in range(16)])
     return abs(Pa - Pb) < 0.05, f"rho = 0 reproduces the iid chase model: P {100 * Pa:.0f} % vs {100 * Pb:.0f} %"
 
 
