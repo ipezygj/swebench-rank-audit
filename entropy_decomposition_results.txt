@@ -1,0 +1,27 @@
+ENTROPY LAW RESIDUAL: SHAPE TERM + RESIDUAL TERM
+==============================================================================
+  leaderboard               J    n    real   gauss   shape   SHAPE   RESID
+  SWE-bench Verified      134  500   54.5%   52.9%   56.8%   +3.9   -2.3
+  MTEB English v2         181   41   55.0%   58.3%   63.3%   +5.0   -8.3
+  HELM classic             90   10   64.1%   64.6%   66.0%   +1.4   -1.9
+  ProteinGym DMS           96  217   49.2%   52.6%   57.9%   +5.4   -8.8
+  TabArena 16 models       16   51   61.6%   32.2%   72.2%  +40.0  -10.6
+  TabArena 45 variants     45   51   60.2%   42.1%   65.7%  +23.6   -5.5
+  CASP14                  101   42   67.8%   61.0%   69.8%   +8.7   -2.0
+  LiveBench               152  200   63.3%   63.5%   65.0%   +1.5   -1.7
+  MathArena 2025           35  183   56.5%   52.5%   59.8%   +7.3   -3.3
+
+  pre-registered:
+    TabArena 16 models     residual within 5: NO (-10.6; shape +40.0)
+    TabArena 45 variants   residual within 5: NO (-5.5; shape +23.6)
+    CASP14                 residual within 5: yes (-2.0; shape +8.7)
+    MTEB English v2        residual stays below -3: yes (-8.3; shape +5.0)
+    SWE-bench Verified     both terms within 3: NO (shape +3.9, resid -2.3)
+    LiveBench              both terms within 3: yes (shape +1.5, resid -1.7)
+    HELM classic           both terms within 3: yes (shape +1.4, resid -1.9)
+    ProteinGym DMS         both terms within 3: NO (shape +5.4, resid -8.8)
+    MathArena 2025         both terms within 3: NO (shape +7.3, resid -3.3)
+
+  SHAPE = H(shape twin) - H(Gaussian twin): what the ability distribution's
+  form adds beyond (J, n, tau, sigma_p). RESID = H(real) - H(shape twin):
+  what 'ability + iid item noise' cannot produce at all - item structure.

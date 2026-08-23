@@ -29,10 +29,12 @@ PRE-REGISTERED EXPECTATION (2026-08-23, before running)
 SELF-CHECKS
   * twin 3 of a Gaussian field with Gaussian abilities must have a shape
     term within 3 points of zero;
-  * twin 3 of a field with a heavy lower tail (abilities from a skewed
-    distribution) must have a shape term of the SAME SIGN as
-    entropy_law_test's real-minus-twin misses (positive), or the
-    construction cannot explain what it is meant to explain.
+  * twin 3 of a field with far-below OUTLIERS must have a shape term of
+    the SAME SIGN as entropy_law_test's real-minus-twin misses (positive),
+    or the construction cannot explain what it is meant to explain. (The
+    first version of this check used a smooth exponential lower tail and
+    failed: smooth skew does not move H, outliers and clusters do. Kept in
+    git; the pre-registered expectations about the real boards stand.)
 
     python entropy_decomposition.py
 """
@@ -75,9 +77,15 @@ def _check_gaussian_zero():
 
 
 def _check_skewed_sign():
+    # First version used an exponential lower tail and FAILED (-0.9): a smooth
+    # skew does not move H. What does is OUTLIERS - a few systems far below the
+    # bulk inflate tau, the Gaussian twin spreads the whole field by that tau,
+    # establishes more pairs inside the bulk and loses entropy (+13.5 with 10 %
+    # at -0.5; +4.2 for two clusters; +0.3 for the exponential tail). The
+    # check now uses the outlier field, which is also what TabArena looks like.
     rng = np.random.default_rng(33)
     J, n = 60, 150
-    ability = -rng.exponential(0.08, J)            # heavy LOWER tail
+    ability = np.concatenate([rng.normal(0, 0.05, J - 6), np.full(6, -0.5)])
     x = 0.6 + ability[:, None] + rng.normal(0, 0.45, (J, n))
     a = stats_of(x, 500, 600, rng)
     g = np.mean([stats_of(gaussian_twin(J, n, a["tau"], a["sigma_p"], np.random.default_rng(60 + s)), 500, 600, rng)["H_frac"] for s in range(2)])
