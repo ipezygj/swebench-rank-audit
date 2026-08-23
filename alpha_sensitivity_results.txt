@@ -1,0 +1,24 @@
+SENSITIVITY OF THE STANDARD'S NUMBERS TO ALPHA AND STEPDOWN
+================================================================================================
+  leaderboard            tie@1 a=0.01 tie@1 a=0.05  tie@1 a=0.1  no stepdown   #1v#2 sep at
+  SWE-bench Verified               21           19           19           19          never
+  MTEB English v2                  18           15           15           17          never
+  HELM classic                     18           16           14           16          never
+  ProteinGym DMS                    3            3            3            3          never
+  TabArena 16 models                8            8            7            8          never
+  TabArena 45 variants             16           12           11           12          never
+  MathArena 2025                   11           11           11           11          never
+  CASP14                            1            1            1            1 0.01, 0.05, 0.1
+  LiveBench                        10            8            6            8          never
+  LMArena categories                5            4            4            5          never
+
+  tie@1 changes by <= 30 % between alpha 0.05 and 0.10: 10/10 (pre-registered >= 7)
+  stepdown off gives tie@1 no smaller: 10/10 (pre-registered: all)
+  #1 vs #2 separates at 0.05 on: CASP14
+  at 0.10 on: CASP14
+
+  A standard that only holds at one confidence level is a convention. The
+  numbers move with alpha, as they must, but the reading does not: the
+  boards whose top pair cannot be separated at 5 % cannot be separated at
+  10 % either, and the stepdown - which is a genuine power gain - does not
+  change which boards those are.
