@@ -126,6 +126,19 @@ compressed at the front and stretched in the middle. Top-specific compression
 was pre-registered for at least 6 of 9 boards and holds on 3; the prediction is
 recorded as a miss in `top_compression_results.txt`.
 
+Where the shape itself comes from is answerable on the one board that names
+base models. On SWE-bench Verified, 62 of 134 submissions name theirs, and
+two submissions sharing a base model sit 0.1337 apart against 0.2656 for two that
+do not, with a pair sharpness of 0.9011 against 1.0098 - closer together AND
+more correlated in their errors. Families are also calendar cohorts, so the
+null permutes family labels only WITHIN a quarter, keeping each submission's
+date and score: the gap effect survives it at p = 0.011 and the sharpness
+effect at p = 0.001 (`family_clustering.py`). Among the top twenty, 29 % of
+labelled pairs share a base model against 11 % for that null (p = 0.002).
+The crowded top is a base-model cluster and not a crowded calendar, which is
+why no quantity of items resolves it: the systems at the top are the same
+model wearing different harnesses.
+
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial
 correlations -0.03 to +0.18).

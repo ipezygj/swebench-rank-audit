@@ -163,6 +163,7 @@ validated against a permutation null.
 - `conformance_cost.py` - What does conformance cost in compute?
 - `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
 - `effective_items.py` - How many of a benchmark's items actually separate the two systems at its top
+- `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
 - `headline_fragility.py` - How many items decide the headline?
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?

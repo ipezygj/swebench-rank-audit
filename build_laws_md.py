@@ -54,6 +54,17 @@ def top_rows():
     return rows
 
 
+def family_row(label):
+    """A row of the family_clustering table: same, different, null, p (both nulls)."""
+    for line in read("family_clustering_results.txt").splitlines():
+        m = re.match(r"\s{2}" + label + r"\s{2,}([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+"
+                     r"([\d.]+)\s+([\d.]+)\s+([\d.]+)", line)
+        if m:
+            return {"same": m.group(1), "diff": m.group(2), "free_p": m.group(4),
+                    "date_med": m.group(5), "date_p": m.group(6)}
+    return {}
+
+
 def grab(name, pattern, group=1):
     m = re.search(pattern, read(name))
     return m.group(group) if m else "MISSING"
@@ -187,6 +198,26 @@ p(f"clean case of a crowded top: {_sw.get('q_top', '?')} at the top against {_sw
 p("compressed at the front and stretched in the middle. Top-specific compression")
 p(f"was pre-registered for at least 6 of 9 boards and holds on {_spc.split()[0] if _spc != 'MISSING' else 'MISSING'}; the prediction is")
 p("recorded as a miss in `top_compression_results.txt`.")
+p("")
+_gap = family_row("score gap")
+_kap = family_row(r"kappa \(pair sharpness\)")
+_share = grab("family_clustering_results.txt",
+              r"same-family share of their pairs\s+(\d+) %")
+_shnull = grab("family_clustering_results.txt", r"by-date null median of (\d+) %")
+_shp = grab("family_clustering_results.txt", r"sd [\d.]+ points, p = ([\d.]+)")
+p("Where the shape itself comes from is answerable on the one board that names")
+p("base models. On SWE-bench Verified, 62 of 134 submissions name theirs, and")
+p(f"two submissions sharing a base model sit {_gap.get('same', 'MISSING')} apart against "
+  f"{_gap.get('diff', 'MISSING')} for two that")
+p(f"do not, with a pair sharpness of {_kap.get('same', 'MISSING')} against {_kap.get('diff', 'MISSING')} - closer together AND")
+p("more correlated in their errors. Families are also calendar cohorts, so the")
+p("null permutes family labels only WITHIN a quarter, keeping each submission's")
+p(f"date and score: the gap effect survives it at p = {_gap.get('date_p', 'MISSING')} and the sharpness")
+p(f"effect at p = {_kap.get('date_p', 'MISSING')} (`family_clustering.py`). Among the top twenty, {_share} % of")
+p(f"labelled pairs share a base model against {_shnull} % for that null (p = {_shp}).")
+p("The crowded top is a base-model cluster and not a crowded calendar, which is")
+p("why no quantity of items resolves it: the systems at the top are the same")
+p("model wearing different harnesses.")
 p("")
 p("Neither law predicts the future. Pair sharpness at entry does not predict being")
 p("overtaken later once score is held fixed (`kappa_predicts_future.py`, partial")
