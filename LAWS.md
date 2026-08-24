@@ -153,6 +153,23 @@ an enriched top, not a top made of duplicates, and the other 71 % of top pairs
 are different families that the board still cannot separate. The cluster
 explains why the top is crowded; removing it does not uncrowd the top.
 
+Nor are they redundant, which was the last explanation left and the one I
+predicted. Fitting each binary board a Rasch model - system ability, item
+difficulty, nothing else - and simulating from it gives a field with the same
+scores and the same item solve rates in which systems are independent. The
+real top ten covers as much as that null does (0.060 on SWE-bench Verified,
+0.055 on Lite), while the MIDDLE of the board covers significantly less
+(0.025 and 2 of 3 boards): mid-ranked systems fail the same instances, and the
+systems crowding the top divide the items about as an independent field
+would (`top_redundancy.py`).
+
+So the crowded top is not an artefact of one family, not an artefact of
+correlated errors, and not fixable by ranking families. It is the plain
+reading: the systems are close, their difference is carried by a small and
+evenly split set of items, and the benchmark is being asked a question its
+item set cannot answer. That is a statement about the field as much as about
+the instrument, and it is the one a leaderboard is least equipped to make.
+
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial
 correlations -0.03 to +0.18).

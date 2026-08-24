@@ -172,6 +172,7 @@ validated against a permutation null.
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `target_board.py` - What would a benchmark that can name a winner look like?
 - `top_compression.py` - Why the laws reproduce a board and still miss its top by a factor of six
+- `top_redundancy.py` - Are the systems crowding the top doing the same work, or different work?
 
 ## How the results were produced
 
