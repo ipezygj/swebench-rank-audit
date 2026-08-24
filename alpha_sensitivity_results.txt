@@ -1,24 +1,31 @@
-SENSITIVITY OF THE STANDARD'S NUMBERS TO ALPHA AND STEPDOWN
+SENSITIVITY OF THE STANDARD'S NUMBERS TO ALPHA AND TO THE CORRECTION
 ================================================================================================
-  leaderboard            tie@1 a=0.01 tie@1 a=0.05  tie@1 a=0.1  no stepdown   #1v#2 sep at
-  SWE-bench Verified               21           19           19           19          never
-  MTEB English v2                  28           24           22           24          never
+  leaderboard            tie@1 a=0.01 tie@1 a=0.05  tie@1 a=0.1  single-step   #1v#2 sep at
+  SWE-bench Verified               21           19           19           21          never
+  MTEB English v2                  28           24           22           25          never
   HELM classic                     58           50           47           50          never
-  ProteinGym DMS                    4            3            3            3          never
+  ProteinGym DMS                    4            3            3            4          never
   TabArena 16 models                9            8            8            8          never
-  TabArena 45 variants             22           18           16           18          never
+  TabArena 45 variants             22           18           16           20          never
   MathArena 2025                   12           11           11           11          never
   CASP14                            1            1            1            1 0.01, 0.05, 0.1
-  LiveBench                        14           10            8           10          never
-  LMArena categories                6            5            5            5          never
+  LiveBench                        14           10            8           12          never
+  LMArena categories                6            5            5            6          never
 
   tie@1 changes by <= 30 % between alpha 0.05 and 0.10: 10/10 (pre-registered >= 7)
-  stepdown off gives tie@1 no smaller: 10/10 (pre-registered: all)
+  single-step gives tie@1 no smaller than the step-down: 10/10 (pre-registered: all)
   #1 vs #2 separates at 0.05 on: CASP14
   at 0.10 on: CASP14
 
   A standard that only holds at one confidence level is a convention. The
   numbers move with alpha, as they must, but the reading does not: the
   boards whose top pair cannot be separated at 5 % cannot be separated at
-  10 % either, and the stepdown - which is a genuine power gain - does not
-  change which boards those are.
+  10 % either, and the step-down - which is a genuine power gain - does
+  not change which boards those are.
+
+  The last column was a no-op until 2026-08-25. It was produced by passing
+  stepdown=False, a switch that belongs to the bootstrap path and that the
+  Holm path accepted and ignored, so it reprinted the alpha 0.05 column and
+  the prediction below it read 10/10 while comparing a column with itself.
+  rank_sets now refuses the argument rather than ignoring it, and the
+  column is the single-step (Bonferroni) set, which is a real second arm.

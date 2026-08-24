@@ -118,9 +118,18 @@ def _holm(theta, sigma_safe, n, J, alpha):
     whose difference series is identically zero have sigma = inf here and can
     never be rejected, which is the same convention the bootstrap path uses.
 
-    Returns the beats matrix, the realised critical value (the z of the largest
-    p-value actually rejected), the Bonferroni single-step value, and how far
-    down the sorted p-values the procedure reached.
+    Returns the step-down beats matrix, the SINGLE-STEP (Bonferroni) beats
+    matrix, the realised critical value (the z of the largest p-value actually
+    rejected), the Bonferroni value, and how far down the sorted p-values the
+    procedure reached.
+
+    The single-step matrix is computed here rather than aliased to the
+    step-down one. It used to be aliased: rank_sets returned single_best as a
+    second name for best, so every "step-down against single-step" column
+    downstream compared a column with itself and every prediction about the
+    difference passed on all ten boards. Found 2026-08-25 by
+    degenerate_comparison.py, which was written to catch exactly that shape
+    after tie_coverage.py was caught printing one construction twice.
     """
     from scipy.stats import norm, t as tdist
 
@@ -153,16 +162,24 @@ def _holm(theta, sigma_safe, n, J, alpha):
     rej = np.zeros(m, dtype=bool)
     rej[order] = rej_sorted
 
-    beats = np.zeros((J, J), dtype=bool)
     a, b = iu
-    pos = rej & (delta[iu] > 0)
-    neg = rej & (delta[iu] < 0)
-    beats[a[pos], b[pos]] = True
-    beats[b[neg], a[neg]] = True
+
+    def _beats(mask):
+        out = np.zeros((J, J), dtype=bool)
+        pos = mask & (delta[iu] > 0)
+        neg = mask & (delta[iu] < 0)
+        out[a[pos], b[pos]] = True
+        out[b[neg], a[neg]] = True
+        return out
+
+    beats = _beats(rej)
+    # Single-step: every pair against the same Bonferroni threshold, no
+    # step-down. Holm rejects a superset of this, so its sets are never wider.
+    beats_single = _beats(p <= alpha / m)
 
     bonf = float(tdist.isf(alpha / (2.0 * m), df=n - 1))
     crit = float(tdist.isf(p[rej].max() / 2.0, df=n - 1)) if rej.any() else bonf
-    return beats, crit, bonf, steps
+    return beats, beats_single, crit, bonf, steps
 
 
 def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
@@ -196,18 +213,31 @@ def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
     method = (method or METHOD)
     if method not in ("bootstrap", "holm", "union"):
         raise ValueError(f"unknown method {method!r}")
+    if not stepdown and method != "bootstrap":
+        # stepdown selects Romano-Wolf over single-step on the BOOTSTRAP path.
+        # _holm has no such switch: its step-down is Holm, which is what the
+        # construction is. Accepting the argument and ignoring it is how
+        # alpha_sensitivity.py came to print a "no stepdown" column that was
+        # its alpha=0.05 column again, and to score a pre-registered
+        # prediction as passing on all ten boards because the two arms were
+        # the same arm. Refuse it instead. The single-step comparison under
+        # Holm is Bonferroni, and it is returned as single_best/single_worst.
+        raise ValueError(
+            f"stepdown=False is meaningless for method={method!r}: the step-down "
+            "is the construction. Use single_best/single_worst for the "
+            "single-step (Bonferroni) sets, or method='bootstrap'.")
 
     order0 = np.argsort(-theta, kind="stable")
     observed0 = np.empty(J, dtype=int)
     observed0[order0] = np.arange(1, J + 1)
 
     if method in ("holm", "union"):
-        hb, hcrit, hbonf, hsteps = _holm(theta, sigma_safe, n, J, alpha)
+        hb, hs, hcrit, hbonf, hsteps = _holm(theta, sigma_safe, n, J, alpha)
         holm_out = {"theta": theta, "crit": hcrit, "beats": hb,
                     "best": 1 + hb.sum(axis=0), "worst": J - hb.sum(axis=1),
                     "observed": observed0, "sigma": sigma, "J": J, "n": n,
-                    "single_best": 1 + hb.sum(axis=0),
-                    "single_worst": J - hb.sum(axis=1),
+                    "single_best": 1 + hs.sum(axis=0),
+                    "single_worst": J - hs.sum(axis=1),
                     "single_crit": hbonf, "steps": hsteps,
                     "crit_path": [hbonf, hcrit], "method": "holm"}
         if method == "holm":

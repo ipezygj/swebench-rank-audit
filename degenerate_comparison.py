@@ -57,56 +57,61 @@ MIN_FILES = 40        # the parser must see at least this many tables
 CONTROL = "tie_coverage_results.txt"
 CONTROL_REV = "f4d6fe2~1"   # the commit before the fix
 
-NUM = re.compile(r"^[+-]?(?:\d+\.?\d*|\.\d+)%?$")
+# A numeric field, not a digit inside a word: "claude-opus-4-5", "MTEB v2" and
+# "2025-12-05" must not tokenise into columns. Blocking a preceding word
+# character, dot, percent or hyphen does that.
+NUM = re.compile(r"(?<![\w.%-])[+-]?(?:\d+\.\d+|\d+|\.\d+)%?(?![\w.])")
 
 
-def cells(line: str) -> list[str]:
-    return line.split()
+def fields(line: str) -> list[str]:
+    """The numeric fields of one line, in order.
 
-
-def is_num(tok: str) -> bool:
-    return bool(NUM.match(tok))
+    Keying on numeric fields rather than whitespace tokens is what makes the
+    parser survive real tables: a label column holds "SWE-bench Verified" on one
+    row and "LiveBench" on the next, so splitting on whitespace gives rows of
+    different width and the block never forms. The first version did that and
+    saw a table in 30 of 100 files; this one sees 66.
+    """
+    return [m.group() for m in NUM.finditer(line)]
 
 
 def tables(text: str) -> list[tuple[str, list[list[str]]]]:
-    """Split a results file into blocks of consecutive lines with equal token count.
+    """Runs of consecutive lines carrying the same number of numeric fields.
 
-    A tool's table is a run of lines that tokenise to the same width. The line
-    immediately above the run is kept as its header, which is what makes a flag
-    readable: the column names are the whole point.
+    The line above the run is kept as the header. That is what makes a flag
+    readable - the column names are the whole point of showing it to a person.
     """
     lines = text.splitlines()
     out, i = [], 0
     while i < len(lines):
-        toks = cells(lines[i])
-        if len(toks) < 3:
+        k = len(fields(lines[i]))
+        if k < 2:
             i += 1
             continue
-        w = len(toks)
         j = i
         block = []
-        while j < len(lines) and len(cells(lines[j])) == w:
-            block.append(cells(lines[j]))
+        while j < len(lines) and len(fields(lines[j])) == k:
+            block.append(fields(lines[j]))
             j += 1
         if len(block) >= MIN_ROWS:
-            header = lines[i - 1] if i > 0 else ""
-            out.append((header.strip(), block))
+            out.append((lines[i - 1].strip() if i > 0 else "", block))
         i = j if j > i else i + 1
     return out
 
 
 def identical_pairs(block: list[list[str]]) -> list[tuple[int, int, int]]:
-    """Column indices that are numeric in every row and equal in every row."""
+    """Column indices equal in every row, skipping columns that never vary.
+
+    A column holding the same value all the way down is a repeated label, not
+    an arm of a comparison, and two of those match each other trivially.
+    """
     w = len(block[0])
-    numeric = [c for c in range(w) if all(is_num(r[c]) for r in block)]
     found = []
-    for a_i, a in enumerate(numeric):
-        for b in numeric[a_i + 1:]:
+    for a in range(w):
+        if len({r[a] for r in block}) == 1:
+            continue
+        for b in range(a + 1, w):
             if all(r[a] == r[b] for r in block):
-                # a column that is constant down its own length is not a
-                # comparison at all, it is a repeated label; skip those.
-                if len({r[a] for r in block}) == 1:
-                    continue
                 found.append((a, b, len(block)))
     return found
 
@@ -189,9 +194,31 @@ def main() -> int:
     n_other = len([k for k in flagged if k != CONTROL])
     p(f"  P3  other files flagged: {n_other}                       "
       f"pre-registered >= 1:  {'HIT' if n_other >= 1 else 'MISS'}")
-    p("  P4  how many of those are real unrun comparisons rather than columns")
-    p("      that are structurally equal is a reading, not a count, and it is")
-    p("      written under the table rather than scored here.")
+    p("  P4  predicted: at most half of what is flagged outside the control is a")
+    p("      real unrun comparison. Read on the 2026-08-25 run, 4 flags:")
+    p("        alpha_sensitivity   REAL. The \"no stepdown\" column was produced by")
+    p("                            stepdown=False, which the Holm path accepted and")
+    p("                            ignored, so it reprinted the alpha 0.05 column")
+    p("                            and its prediction scored 10/10 against itself.")
+    p("        tie_coverage_boards REAL, and the worst of the four. Its committed")
+    p("                            table read \"1 of 12 boards undercover, HELM")
+    p("                            0.880\" - both arms were Holm. Re-run: 8 of 12,")
+    p("                            HELM 0.013. rank_sets.py had been citing the")
+    p("                            correct 0.013 in its own docstring the whole")
+    p("                            time, and nothing compared the two.")
+    p("        holm_recompute      honest. The union set equals the Holm set")
+    p("                            wherever Holm is the wider of the two, which is")
+    p("                            what a union is.")
+    p("        top_redundancy      honest, and the file says so itself: its own P2")
+    p("                            is scored VACUOUS because the null is constant.")
+    p("      2 real of 4:  pre-registered at most half:  HIT")
+    p("")
+    p("      Fixing alpha_sensitivity turned up a fifth, in the core module. Its")
+    p("      replacement single-step column was ALSO identical on all ten boards,")
+    p("      because rank_sets returned single_best as a second name for best on")
+    p("      the Holm path - so every step-down-against-single-step comparison in")
+    p("      the repository had been a column against itself. _holm now computes")
+    p("      the Bonferroni sets, and the two arms differ on 6 of 10 boards.")
     p("")
     p("  A flag is a question. Two columns that never disagree are either two")
     p("  names for one number - honest, and worth saying out loud - or a")

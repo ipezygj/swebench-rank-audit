@@ -1,0 +1,53 @@
+A COMPARISON WHOSE ARMS NEVER DIFFER HAS NOT BEEN RUN
+========================================================================================
+  101 results files, 66 of them carrying a numeric table of 4+ rows.
+
+  CONTROL: tie_coverage_results.txt, the file this check was built from
+    before the fix: 2 identical column pair(s)
+      cols 2 and 4, equal in all 12 rows   under: J     n truth        bootstrap cov   width   Holm cov   
+      cols 3 and 5, equal in all 12 rows   under: J     n truth        bootstrap cov   width   Holm cov   
+    after the fix:  0 identical column pair(s)
+
+  ELSEWHERE: 2 other results file(s) carry an identical numeric column pair over 4+ rows.
+
+  holm_recompute_results.txt
+      cols 3 and 4, equal in all 4 rows
+      header: leaderboard               J     n  cover | tie@1 boot  holm  union | estab b
+  top_redundancy_results.txt
+      cols 8 and 9, equal in all 5 rows
+      header: SWE-bench Verified      134    500    top    89.8%   90.4%  0.060      15   
+
+  P1  fires on the pre-fix control: 2 pair(s)         pre-registered > 0:   HIT
+  P2  silent on the fixed control:  0 pair(s)         pre-registered = 0:   HIT
+  P3  other files flagged: 2                       pre-registered >= 1:  HIT
+  P4  predicted: at most half of what is flagged outside the control is a
+      real unrun comparison. Read on the 2026-08-25 run, 4 flags:
+        alpha_sensitivity   REAL. The "no stepdown" column was produced by
+                            stepdown=False, which the Holm path accepted and
+                            ignored, so it reprinted the alpha 0.05 column
+                            and its prediction scored 10/10 against itself.
+        tie_coverage_boards REAL, and the worst of the four. Its committed
+                            table read "1 of 12 boards undercover, HELM
+                            0.880" - both arms were Holm. Re-run: 8 of 12,
+                            HELM 0.013. rank_sets.py had been citing the
+                            correct 0.013 in its own docstring the whole
+                            time, and nothing compared the two.
+        holm_recompute      honest. The union set equals the Holm set
+                            wherever Holm is the wider of the two, which is
+                            what a union is.
+        top_redundancy      honest, and the file says so itself: its own P2
+                            is scored VACUOUS because the null is constant.
+      2 real of 4:  pre-registered at most half:  HIT
+
+      Fixing alpha_sensitivity turned up a fifth, in the core module. Its
+      replacement single-step column was ALSO identical on all ten boards,
+      because rank_sets returned single_best as a second name for best on
+      the Holm path - so every step-down-against-single-step comparison in
+      the repository had been a column against itself. _holm now computes
+      the Bonferroni sets, and the two arms differ on 6 of 10 boards.
+
+  A flag is a question. Two columns that never disagree are either two
+  names for one number - honest, and worth saying out loud - or a
+  comparison that was never run. The output cannot tell those apart, so
+  it prints the header line and lets a reader decide. What it removes is
+  the third case: nobody looking at all.
