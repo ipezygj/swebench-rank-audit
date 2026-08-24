@@ -47,8 +47,9 @@ PRE-REGISTERED (2026-08-24, committed before the run)
 
 SELF-CHECKS (no table if any fails)
   * r must be 1.00 within 0.03 on Gaussian samples of the same sizes as the
-    real fields, or the statistic is biased at these J and the comparison is
-    between an artefact and a field;
+    real fields. The raw ratio is not: it reads 0.953 at J = 16, which is the
+    size of the board with the most extreme value, so it is divided by its own
+    Gaussian expectation at each J before anything is read from it;
   * the leave-one-out harness must be able to fail: fed a residual that is pure
     noise, it must not beat the uncorrected law on more than 6 of 9;
   * every board's residual must reproduce the committed figure in
@@ -93,13 +94,39 @@ def load(path):
     return pd.read_csv(path, index_col=0).dropna(axis=0).to_numpy(dtype=float)
 
 
-def shape_ratio(sc: np.ndarray) -> float:
-    """IQR over 1.349 SD: 1.0 for a Gaussian field."""
+_GAUSS_R = {}
+
+
+def _raw_ratio(sc: np.ndarray) -> float:
     sd = float(sc.std(ddof=1))
     if sd <= 0:
         return float("nan")
     q1, q3 = np.percentile(sc, [25, 75])
     return float((q3 - q1) / (1.349 * sd))
+
+
+def gauss_expectation(J: int, reps: int = 4000) -> float:
+    """What r averages on a Gaussian field of exactly this many systems.
+
+    The ratio is biased low in small samples - 0.953 at J = 16 - and the boards
+    here run from 16 systems to 181, so an uncorrected r would rank them partly
+    by size. Cached because it depends only on J.
+    """
+    if J not in _GAUSS_R:
+        rng = np.random.default_rng(1000 + J)
+        _GAUSS_R[J] = float(np.mean([_raw_ratio(rng.normal(0, 1, J)) for _ in range(reps)]))
+    return _GAUSS_R[J]
+
+
+def shape_ratio(sc: np.ndarray) -> float:
+    """IQR over 1.349 SD, divided by its Gaussian expectation at this J.
+
+    1.0 for a Gaussian field of any size; below 1 when a tail inflates the SD
+    while the bulk stays close; above 1 for a light-tailed or gapped field.
+    """
+    raw = _raw_ratio(sc)
+    e = gauss_expectation(len(sc))
+    return raw / e if e > 0 else float("nan")
 
 
 def law1(tau, sigma_p, n, c):
@@ -133,7 +160,7 @@ def measure():
         obs = float(r["beats"].sum() / (J * (J - 1)))
         pred = law1(tau, sigma_p, n, r["crit"])
         rows[name] = {"J": J, "n": n, "tau": tau, "sigma_p": sigma_p, "c": r["crit"],
-                      "obs": obs, "pred": pred, "resid": 100 * (obs - pred),
+                      "obs": obs, "pred": pred, "resid": 100 * (pred - obs),
                       "r": shape_ratio(sc)}
     return rows
 

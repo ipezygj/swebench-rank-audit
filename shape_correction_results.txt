@@ -1,0 +1,35 @@
+THE FIFTH NUMBER: IS LAW 1'S RESIDUAL A FUNCTION OF THE FIELD'S SHAPE?
+============================================================================================
+  leaderboard               J     n  r = IQR/1.349SD  observed   law 1  residual
+  TabArena 16 models       16    51            0.283     19.6%   37.4%     +17.8
+  TabArena 45 variants     45    51            0.287     19.7%   36.9%     +17.2
+  ProteinGym DMS           96   217            0.714     34.4%   35.5%      +1.1
+  MTEB English v2         181    41            0.765     28.5%   30.5%      +1.9
+  CASP14                  101    42            0.802     21.0%   25.4%      +4.4
+  MathArena 2025           35   183            0.977     30.3%   30.3%      +0.0
+  SWE-bench Verified      134   500            1.096     37.4%   36.9%      -0.4
+  LiveBench               152   200            1.149     28.8%   27.7%      -1.2
+  HELM classic             90    10            1.219      6.6%    4.3%      -2.2
+
+  P1  Spearman(r, residual) = -0.93 (p 0.000)        pre-registered |rho| >= 0.6:  HIT
+  P2  the two smallest r are TabArena 16 models, TabArena 45 variants
+      pre-registered: both TabArena boards:  HIT
+  P3  leave-one-out correction beats the plain law on 3 of 9   pre-registered >= 6:  MISS
+  P4  with r shuffled, the median is 3 of 9 and 74 % of shuffles reach 3
+      pre-registered median <= 4:  HIT
+
+  r is the interquartile range over 1.349 standard deviations: 1.0 for a
+  Gaussian field, below 1 when a tail inflates the SD while the bulk stays
+  close, above 1 for a light-tailed or gapped field.
+
+  The paper calls this failure skew. It cannot be: law 1 concerns the
+  difference of two draws from the same field, and that difference is
+  symmetric whatever the field looks like - skew cancels exactly. What
+  survives is the shape of the bulk against the tail, which is what r
+  measures and what the wording should say.
+
+  P4 is the load-bearing check. Nine boards and one fitted parameter is a
+  regime where a correction will look like it helps whatever it is fitted
+  to, so the same leave-one-out is run with the shape statistic shuffled
+  between boards. If the shuffled version wins about as often, the fifth
+  number is a fitted curve and not a fifth number.
