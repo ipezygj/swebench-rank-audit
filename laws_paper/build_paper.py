@@ -75,6 +75,31 @@ def pair_integral():
     return (m.group(1), m.group(2)) if m else ("MISSING", "MISSING")
 
 
+def halving_multipliers():
+    """Item multiplier needed to halve each board's undecided share, from law 1.
+
+    established (ordered) = Phibar(1/SNR) and SNR grows as sqrt(n), so the
+    multiplier is (SNR_target / SNR_now)^2 where SNR_target is what makes the
+    undecided ordered share half its present value. Undecided ordered share is
+    0.5 - established, because a separated unordered pair contributes one of
+    the two ordered entries.
+    """
+    from scipy.stats import norm
+    out = []
+    for b, J, n, snr, obs, psd, piqr, esd, eiqr in law1_rows():
+        snr = float(snr)
+        est = norm.sf(1.0 / snr)
+        und = 0.5 - est
+        if und <= 0:
+            continue
+        target = 0.5 - und / 2.0
+        z = norm.isf(target)
+        if z <= 0:
+            continue
+        out.append((b, ((1.0 / z) / snr) ** 2))
+    return out
+
+
 def tex_escape(s):
     for a, b in (("\\", r"\textbackslash{}"), ("&", r"\&"), ("%", r"\%"),
                  ("#", r"\#"), ("_", r"\_"), ("$", r"\$")):
@@ -113,8 +138,8 @@ p(r"\begin{abstract}")
 p(r"A leaderboard reports an ordering, but how much of that ordering the")
 p(r"evidence actually supports is a property of the measuring instrument")
 p(r"rather than of the systems on it. We show that two such properties are")
-p(r"predictable in closed form from four numbers available before any system")
-p(r"is run: the number of entrants $J$, the number of items $n$, the spread of")
+p(r"predictable in closed form from four numbers fixed before the field of")
+p(r"entrants exists: the number of entrants $J$, the number of items $n$, the spread of")
 p(r"scores $\tau$, and the paired difference SD $\sigma_p$.")
 p(r"The share of pairs the evidence establishes follows")
 p(r"$\bar\Phi(1/\mathrm{SNR})$ with $\mathrm{SNR}=\tau\sqrt{2n}/(c\,\sigma_p)$,")
@@ -123,6 +148,8 @@ p(f"five fields ({mean_err_iqr} points using a robust estimate of $\\tau$), and"
 p(r"the entropy of the orderings the evidence permits is reproduced by a")
 p(r"Gaussian field with the same four numbers and nothing else of the real")
 p(f"board, within five points on {law2_within} boards.")
+p(r"Three are design choices; the fourth needs a two-system pilot on the item")
+p(r"set, not the field. ")
 p(r"A tenth board was held out until the thresholds were committed and passes")
 p(r"both. Neither law is fitted: the only constant is the critical value the")
 p(r"multiplicity procedure itself uses, and when that procedure was replaced")
@@ -496,6 +523,102 @@ p(r"Of the 95 results files in the repository, 41 changed and 53 were")
 p(r"identical -- the ones whose measurements never touch rank sets.")
 p("")
 
+p(r"\section{Discussion}")
+p("")
+p(r"\paragraph{The laws invert.} The practical use is not to audit a published")
+p(r"table but to size an unpublished one. Solving \eqref{eq:law1} for the item")
+p(r"count gives the design formula")
+p(r"\begin{equation}")
+p(r"n \;=\; \frac{1}{2}\left(\frac{c\,\sigma_p}"
+  r"{\tau\,\bar\Phi^{-1}(\text{target})}\right)^{\!2},")
+p(r"\end{equation}")
+p(r"which answers ``how many items do I need so that a given share of my field")
+p(r"is orderable'' from a target, an expected spread, and a pilot measurement of")
+_mult = halving_multipliers()
+_mlo, _mhi = min(m for _, m in _mult), max(m for _, m in _mult)
+p(r"$\sigma_p$ on two systems. The $\sqrt{n}$ scaling is unforgiving. Halving a")
+p(f"board's undecided share costs between {_mlo:.1f} and {_mhi:.0f} times its items")
+p(r"across the nine here -- about fourfold near the middle of the curve and")
+p(r"worse for a board already far out on the tail, since the same step in")
+p(r"probability needs a larger step in $\mathrm{SNR}$ there. The price of")
+p(r"comparing many systems at once enters separately, through $c$, which grows")
+p(r"with the number of pairs and therefore with $J^2$.")
+p("")
+p(r"\paragraph{A benchmark can be well designed and still not name a winner.}")
+p(r"The laws govern aggregates and miss the frontier by a factor of six on one")
+p(r"board. A designer can therefore size an item set so that most of the field")
+p(r"is orderable and still find that the top two are not separable, because the")
+p(r"systems at the top are close in a way the field-wide spread does not")
+p(r"predict. These are different questions and the formula answers only one.")
+p("")
+p(r"\paragraph{What the estimator episode says about method.} Midway through")
+p(r"this work the multiplicity procedure underneath every number was found to")
+p(r"undercover badly at small item counts. The laws survived, and the way they")
+p(r"survived is the informative part: the realised critical value moved by more")
+p(r"than a factor of two, the observed shares moved with it, and the")
+p(r"predictions tracked both. A relation that only held for one estimator would")
+p(r"have broken. The episode also has a plain lesson: a coverage claim is a")
+p(r"claim about a shape, and ours was checked at six systems and used at")
+p(r"a hundred and eighty-one.")
+p("")
+p(r"\paragraph{Relation to the prior work.} \citet{card2020} answer the power")
+p(r"question for one comparison; \eqref{eq:law1} answers it for a field at once,")
+p(r"and the two agree where they overlap. \citet{mogstad2024} and the")
+p(r"leaderboard papers that follow it \citep{rankintervals} give the")
+p(r"measurement; this gives the prediction. \citet{saturation} define an index")
+p(r"of when a top has stopped discriminating; that index needs the leaderboard,")
+p(r"and it substitutes an exponent $n^{\alpha}$ for an effective sample size")
+p(r"where $\sigma_p$ is the measurable quantity.")
+p("")
+
+p(r"\section{Limitations}")
+p("")
+p(r"\begin{enumerate}")
+p(r"\item \textbf{The Gaussian assumption fails on skewed fields, and we have no")
+p(r"  theory for that case.} Two of nine boards miss both laws, in the")
+p(r"  pre-registered direction. Substituting an IQR-based $\tau$ repairs the")
+p(r"  numbers but is a patch, not an account: the honest fix is a $\bar\Phi$")
+p(r"  that carries the field's skew, and we do not have one.")
+p(r"\item \textbf{The frontier is not predicted.} Aggregates are reproduced;")
+p(r"  the number of systems that could be first is not, by a factor of six on")
+p(r"  the board we know best.")
+p(r"\item \textbf{The law is conditional on a multiplicity procedure.} $c$ is")
+p(r"  measured from the procedure, so \eqref{eq:law1} predicts resolution")
+p(r"  \emph{given} a way of controlling error over many pairs, not in the")
+p(r"  abstract.")
+p(r"\item \textbf{$\sigma_p$ is not free.} It requires per-item outcomes from at")
+p(r"  least two systems on the item set. The claim is that the four numbers are")
+p(r"  fixed before the \emph{field} exists, not before anything has been run.")
+p(r"\item \textbf{The sample of boards is opportunistic.} These are the")
+p(r"  leaderboards whose per-item outcomes are public, which is not a random")
+p(r"  sample of benchmarks and may well be a better-run one. Nine boards is")
+p(r"  also few enough that one more failure would change the summary")
+p(r"  materially.")
+p(r"\item \textbf{Law 2 is a twin match, not a formula.} It says a")
+p(r"  four-parameter Gaussian field reproduces the entropy, which is weaker")
+p(r"  than an expression for it, and the entropy itself is estimated rather")
+p(r"  than counted, since counting linear extensions is \#P-complete.")
+p(r"\item \textbf{Single implementation, single author.} Every number here comes")
+p(r"  from one codebase, and that codebase has already been wrong once in a way")
+p(r"  that mattered. Independent reimplementation is the check this work has")
+p(r"  not had.")
+p(r"\end{enumerate}")
+p("")
+
+p(r"\section*{Reproducibility statement}")
+p("")
+p(r"All per-item outcome matrices are public and cited at their sources; the")
+p(r"code that produces every table is in the repository named on the first")
+p(r"page. Each figure in this paper is parsed by the build script out of the")
+p(r"results file written by the tool that computed it, and any figure the parser")
+p(r"cannot find is emitted as \texttt{MISSING} rather than filled in, so the")
+p(r"paper cannot drift from the measurements. Every threshold in the")
+p(r"pre-registered tests was committed to version control before the run it")
+p(r"tested, including the ones the tests then failed. The two constructions")
+p(r"compared in \S\ref{sec:robust} are selectable by an environment variable, so")
+p(r"the entire pipeline can be rerun either way from one command.")
+p("")
+
 p(r"\bibliographystyle{plainnat}")
 p(r"\begin{thebibliography}{9}")
 p(r"\bibitem[Card et al.(2020)]{card2020} D.~Card, P.~Henderson, U.~Khandelwal, "
@@ -518,6 +641,7 @@ p(r"\end{document}")
 text = "\n".join(L)
 out = Path("paper.tex")
 out.write_text(text + "\n", encoding="utf-8", newline="\n")
-missing = text.count("MISSING")
+# the reproducibility statement mentions the sentinel by name, so exclude it
+missing = text.count("MISSING") - text.count("texttt{MISSING}")
 print(f"wrote paper.tex: {len(L)} lines, law1 rows {len(law1_rows())}, "
       f"law2 rows {len(law2_rows())}, tenth rows {len(tenth_rows())}, MISSING {missing}")

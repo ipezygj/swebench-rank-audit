@@ -13,8 +13,8 @@
 A leaderboard reports an ordering, but how much of that ordering the
 evidence actually supports is a property of the measuring instrument
 rather than of the systems on it. We show that two such properties are
-predictable in closed form from four numbers available before any system
-is run: the number of entrants $J$, the number of items $n$, the spread of
+predictable in closed form from four numbers fixed before the field of
+entrants exists: the number of entrants $J$, the number of items $n$, the spread of
 scores $\tau$, and the paired difference SD $\sigma_p$.
 The share of pairs the evidence establishes follows
 $\bar\Phi(1/\mathrm{SNR})$ with $\mathrm{SNR}=\tau\sqrt{2n}/(c\,\sigma_p)$,
@@ -23,6 +23,8 @@ five fields (3.3 points using a robust estimate of $\tau$), and
 the entropy of the orderings the evidence permits is reproduced by a
 Gaussian field with the same four numbers and nothing else of the real
 board, within five points on 6 of 9 boards.
+Three are design choices; the fourth needs a two-system pilot on the item
+set, not the field. 
 A tenth board was held out until the thresholds were committed and passes
 both. Neither law is fitted: the only constant is the critical value the
 multiplicity procedure itself uses, and when that procedure was replaced
@@ -363,6 +365,96 @@ predictions followed: law 1's robust mean absolute error went from 3.4 to
 3.3 points, and law 2 stayed within five points on the same six boards.
 Of the 95 results files in the repository, 41 changed and 53 were
 identical -- the ones whose measurements never touch rank sets.
+
+\section{Discussion}
+
+\paragraph{The laws invert.} The practical use is not to audit a published
+table but to size an unpublished one. Solving \eqref{eq:law1} for the item
+count gives the design formula
+\begin{equation}
+n \;=\; \frac{1}{2}\left(\frac{c\,\sigma_p}{\tau\,\bar\Phi^{-1}(\text{target})}\right)^{\!2},
+\end{equation}
+which answers ``how many items do I need so that a given share of my field
+is orderable'' from a target, an expected spread, and a pilot measurement of
+$\sigma_p$ on two systems. The $\sqrt{n}$ scaling is unforgiving. Halving a
+board's undecided share costs between 4.1 and 8 times its items
+across the nine here -- about fourfold near the middle of the curve and
+worse for a board already far out on the tail, since the same step in
+probability needs a larger step in $\mathrm{SNR}$ there. The price of
+comparing many systems at once enters separately, through $c$, which grows
+with the number of pairs and therefore with $J^2$.
+
+\paragraph{A benchmark can be well designed and still not name a winner.}
+The laws govern aggregates and miss the frontier by a factor of six on one
+board. A designer can therefore size an item set so that most of the field
+is orderable and still find that the top two are not separable, because the
+systems at the top are close in a way the field-wide spread does not
+predict. These are different questions and the formula answers only one.
+
+\paragraph{What the estimator episode says about method.} Midway through
+this work the multiplicity procedure underneath every number was found to
+undercover badly at small item counts. The laws survived, and the way they
+survived is the informative part: the realised critical value moved by more
+than a factor of two, the observed shares moved with it, and the
+predictions tracked both. A relation that only held for one estimator would
+have broken. The episode also has a plain lesson: a coverage claim is a
+claim about a shape, and ours was checked at six systems and used at
+a hundred and eighty-one.
+
+\paragraph{Relation to the prior work.} \citet{card2020} answer the power
+question for one comparison; \eqref{eq:law1} answers it for a field at once,
+and the two agree where they overlap. \citet{mogstad2024} and the
+leaderboard papers that follow it \citep{rankintervals} give the
+measurement; this gives the prediction. \citet{saturation} define an index
+of when a top has stopped discriminating; that index needs the leaderboard,
+and it substitutes an exponent $n^{\alpha}$ for an effective sample size
+where $\sigma_p$ is the measurable quantity.
+
+\section{Limitations}
+
+\begin{enumerate}
+\item \textbf{The Gaussian assumption fails on skewed fields, and we have no
+  theory for that case.} Two of nine boards miss both laws, in the
+  pre-registered direction. Substituting an IQR-based $\tau$ repairs the
+  numbers but is a patch, not an account: the honest fix is a $\bar\Phi$
+  that carries the field's skew, and we do not have one.
+\item \textbf{The frontier is not predicted.} Aggregates are reproduced;
+  the number of systems that could be first is not, by a factor of six on
+  the board we know best.
+\item \textbf{The law is conditional on a multiplicity procedure.} $c$ is
+  measured from the procedure, so \eqref{eq:law1} predicts resolution
+  \emph{given} a way of controlling error over many pairs, not in the
+  abstract.
+\item \textbf{$\sigma_p$ is not free.} It requires per-item outcomes from at
+  least two systems on the item set. The claim is that the four numbers are
+  fixed before the \emph{field} exists, not before anything has been run.
+\item \textbf{The sample of boards is opportunistic.} These are the
+  leaderboards whose per-item outcomes are public, which is not a random
+  sample of benchmarks and may well be a better-run one. Nine boards is
+  also few enough that one more failure would change the summary
+  materially.
+\item \textbf{Law 2 is a twin match, not a formula.} It says a
+  four-parameter Gaussian field reproduces the entropy, which is weaker
+  than an expression for it, and the entropy itself is estimated rather
+  than counted, since counting linear extensions is \#P-complete.
+\item \textbf{Single implementation, single author.} Every number here comes
+  from one codebase, and that codebase has already been wrong once in a way
+  that mattered. Independent reimplementation is the check this work has
+  not had.
+\end{enumerate}
+
+\section*{Reproducibility statement}
+
+All per-item outcome matrices are public and cited at their sources; the
+code that produces every table is in the repository named on the first
+page. Each figure in this paper is parsed by the build script out of the
+results file written by the tool that computed it, and any figure the parser
+cannot find is emitted as \texttt{MISSING} rather than filled in, so the
+paper cannot drift from the measurements. Every threshold in the
+pre-registered tests was committed to version control before the run it
+tested, including the ones the tests then failed. The two constructions
+compared in \S\ref{sec:robust} are selectable by an environment variable, so
+the entire pipeline can be rerun either way from one command.
 
 \bibliographystyle{plainnat}
 \begin{thebibliography}{9}
