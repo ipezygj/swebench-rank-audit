@@ -13,10 +13,23 @@ and the conditions under which they fail.*
 > 0.95; SWE-bench Verified 0.900, Lite 0.940, Test 0.947 and MathArena
 > 0.933 are the sound ones. Holm on directional t-tests holds coverage on
 > all of them (`tie_coverage_boards.py`). The bias narrows rank sets, so
-> counts of possible first places are too LOW on the eight affected boards
-> and the claims below understate rather than overstate how unresolvable
-> those boards are. The numbers still need recomputing before any of them
-> is quoted. Found by reading arXiv:2606.08679, not by the checks here.
+> counts of possible first places are too LOW on the eight affected boards.
+> Found by reading arXiv:2606.08679, not by the checks here.
+>
+> **Recomputed** (`holm_recompute.py`). Under Holm the established share
+> falls on all eight affected boards and tie@1 rises on four of them - HELM
+> classic from 15 possible first places to 21, MTEB from 16 to 18,
+> TabArena's 45 variants from 12 to 16. The realised critical value is
+> larger under Holm on every board (HELM 3.54 to 4.26), which is the
+> diagnosis confirmed directly. On the four sound boards the two
+> constructions agree exactly - 19, 11, 6 and 1 - so the differences are
+> the construction and not the data.
+>
+> **Law 1 survives the correction**: mean absolute error 4.4 points under
+> the bootstrap, 4.6 under Holm, a change of +0.2. It was not an artefact
+> of the biased construction. The law-1 table below still shows the
+> bootstrap column; the corrected one is in `holm_recompute_results.txt`,
+> along with 28 other results files that have not been rerun.
 
 ## Law 1 — the established share
 

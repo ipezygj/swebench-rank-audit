@@ -167,12 +167,15 @@ validated against a permutation null.
 - `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
 - `family_generalises.py` - Does the base-model cluster hold off SWE-bench, and would collapsing it help?
 - `headline_fragility.py` - How many items decide the headline?
+- `holm_recompute.py` - Recompute every board under a construction that holds its coverage
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?
 - `redundancy_power.py` - Was yesterday's result a finding, or a statistic running out of room?
 - `run_all.py` - Run every tool and record whether it still works
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `target_board.py` - What would a benchmark that can name a winner look like?
+- `tie_coverage.py` - Does the prior art's criticism of this repo's machinery hold at the size I use it?
+- `tie_coverage_boards.py` - Which of this repo's ten boards sit in the regime where the bootstrap fails?
 - `top_compression.py` - Why the laws reproduce a board and still miss its top by a factor of six
 - `top_redundancy.py` - Are the systems crowding the top doing the same work, or different work?
 
