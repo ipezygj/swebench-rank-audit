@@ -1,0 +1,30 @@
+WHICH BOARDS SIT WHERE THE BOOTSTRAP FAILS
+============================================================================================
+  leaderboard               J      n    J/n  bootstrap    Holm  verdict
+  HELM classic             90     10   9.00      0.013   0.880  BOOTSTRAP UNDERCOVERS
+  MTEB English v2         181     41   4.41      0.540   0.940  BOOTSTRAP UNDERCOVERS
+  CASP14                  101     42   2.40      0.633   0.960  BOOTSTRAP UNDERCOVERS
+  LMArena categories       35     28   1.25      0.727   0.973  BOOTSTRAP UNDERCOVERS
+  TabArena 45 variants     45     51   0.88      0.833   0.967  BOOTSTRAP UNDERCOVERS
+  LiveBench               152    200   0.76      0.867   0.933  BOOTSTRAP UNDERCOVERS
+  ProteinGym DMS           96    217   0.44      0.840   0.947  BOOTSTRAP UNDERCOVERS
+  TabArena 16 models       16     51   0.31      0.873   0.953  BOOTSTRAP UNDERCOVERS
+  SWE-bench Lite           84    300   0.28      0.940   0.973  ok
+  SWE-bench Verified      134    500   0.27      0.900   0.967  marginal
+  MathArena 2025           35    183   0.19      0.933   0.973  ok
+  SWE-bench Test           24   2294   0.01      0.947   0.960  ok
+
+  8 of 12 boards undercover under exact ties at nominal 0.95.
+  Affected: HELM classic (J/n = 9.0, coverage 0.013), MTEB English v2 (J/n = 4.4, coverage 0.540), CASP14 (J/n = 2.4, coverage 0.633), LMArena categories (J/n = 1.2, coverage 0.727), TabArena 45 variants (J/n = 0.9, coverage 0.833), LiveBench (J/n = 0.8, coverage 0.867), ProteinGym DMS (J/n = 0.4, coverage 0.840), TabArena 16 models (J/n = 0.3, coverage 0.873)
+
+  Simultaneous coverage is a statement about all J(J-1)/2 pairs at once,
+  and the multiplier bootstrap estimates the critical value for all of
+  them from n items. When J/n is large there are more statistics than
+  observations to estimate their joint distribution from, and the
+  critical value comes out too small: the rank sets are too NARROW, so
+  every count of systems that could be first on those boards is too LOW.
+
+  Direction matters for reading the repo. Undercoverage does not
+  manufacture ties, it hides them - so the finding that these boards
+  cannot resolve their tops is, if anything, understated on exactly the
+  boards affected.

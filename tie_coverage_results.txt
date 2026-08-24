@@ -1,0 +1,30 @@
+SIMULTANEOUS COVERAGE UNDER TIES: MULTIPLIER BOOTSTRAP AGAINST HOLM
+================================================================================================
+     J     n truth        bootstrap cov   width   Holm cov   width  narrower by
+     6   250 exact ties           0.940     5.0      0.945     5.0           0%
+     6   250 near ties            0.990     5.0      0.990     5.0           0%
+     6   250 separated            1.000     1.0      1.000     1.0           0%
+    30   250 exact ties           0.950    29.0      0.975    29.0           0%
+    30   250 near ties            0.995    29.0      1.000    29.0           0%
+    30   250 separated            1.000    15.0      1.000    15.5           3%
+   134   500 exact ties           0.915   133.0      0.965   133.0           0%
+   134   500 near ties            0.995   133.0      0.995   133.0           0%
+   134   500 separated            1.000    65.0      1.000    66.5           2%
+   181    41 exact ties           0.515   180.0      0.935   180.0           0%
+   181    41 near ties            0.985   180.0      1.000   180.0           0%
+   181    41 separated            1.000   176.0      1.000   180.0           2%
+
+  P1  bootstrap coverage under exact ties at J=134: 0.915   pre-registered >= 0.90:  HIT
+  P2  that against J=6 (0.940), gap 0.025      pre-registered <= 0.03:  HIT
+  P3  Holm coverage at the same shape: 0.965          pre-registered >= 0.90:  HIT
+  P4  bootstrap narrower on separated fields by 2 %        pre-registered >= 20 %:  MISS
+
+  The criticism this answers is from arXiv:2606.08679, which builds rank
+  intervals from directional t-tests with Holm's correction and reports
+  that bootstrap methods fail under ties. Both constructions are run here
+  on identical simulated boards, at the shapes this repo actually uses,
+  with the simultaneous criterion: a replicate counts as covered only if
+  EVERY system's true rank falls inside its own set.
+
+  The harness is shown to be able to detect undercoverage: an uncorrected
+  pointwise construction is run through the same code and fails.
