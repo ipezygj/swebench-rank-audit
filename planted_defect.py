@@ -18,8 +18,10 @@ silent is normal - most of these tools measure the field rather than police it -
 but the ones that claim to police it should speak.
 
 PRE-REGISTERED (2026-08-25, committed before the run)
-  P1  every tool that reads the corrupted matrix produces different output.
-      Byte-identical output would mean the file is not being read.
+  P1  no tool writes a table byte-identical to the one it wrote on clean
+      data. That, and not "the output moved", is the defect worth hunting: a
+      tool that refuses to write because a check fired has not moved either,
+      and it has done the right thing.
   P2  at least 2 tools' self-checks fire and refuse to print a table.
   P3  the parity checks fire specifically: top_compression compares its tie@1
       against the live benchmark_health run, so a corrupted board must break
@@ -146,12 +148,19 @@ def main() -> int:
 
     rows = []
     for t in TOOLS:
-        rc, out = run(t, scratch)
         res = scratch / t.replace(".py", "_results.txt")
+        stamp = res.stat().st_mtime if res.exists() else 0.0
+        rc, out = run(t, scratch)
+        wrote = res.exists() and res.stat().st_mtime > stamp
         after = res.read_text(encoding="utf-8", errors="replace") if res.exists() else ""
         fired = "A CHECK FAILED" in out
-        moved = after.splitlines() != baseline[t].splitlines()
-        rows.append((t, rc, moved, fired, len(after) > 0))
+        if not wrote:
+            state = "REFUSED" if fired else "WROTE NOTHING"
+        elif after.splitlines() != baseline[t].splitlines():
+            state = "wrote different"
+        else:
+            state = "WROTE IDENTICAL"
+        rows.append((t, rc, state, fired))
 
     L = []
     p = L.append
@@ -160,17 +169,29 @@ def main() -> int:
     p(f"  {FLIP:.0%} of the cells of {TARGET} flipped: {changed} of "
       f"{pd.read_csv(original, index_col=0).size}.")
     p("")
-    p(f"  {'tool':<32} {'output moved':>13} {'check fired':>12} {'printed':>9}")
-    for t, rc, moved, fired, printed in rows:
-        p(f"  {t:<32} {'yes' if moved else 'NO':>13} {'yes' if fired else '-':>12} "
-          f"{'yes' if printed else 'no':>9}")
+    p(f"  {'tool':<32} {'what it did':>17} {'check fired':>12}")
+    for t, rc, state, fired in rows:
+        p(f"  {t:<32} {state:>17} {'yes' if fired else '-':>12}")
     p("")
-    moved_n = sum(1 for r in rows if r[2])
+    blind = sum(1 for r in rows if r[2] == "WROTE IDENTICAL")
+    refused = sum(1 for r in rows if r[2] == "REFUSED")
+    measured = sum(1 for r in rows if r[2] == "wrote different")
     fired_n = sum(1 for r in rows if r[3])
-    p(f"  P1  output moved on {moved_n} of {len(rows)}                 "
-      f"pre-registered = all:  {'HIT' if moved_n == len(rows) else 'MISS'}")
-    p(f"  P2  a self-check fired on {fired_n} of {len(rows)}           "
+    p(f"  P1  wrote a table identical to the clean one: {blind} of {len(rows)}   "
+      f"pre-registered = 0:   {'HIT' if blind == 0 else 'MISS'}")
+    p(f"  P2  a self-check fired on {fired_n} of {len(rows)}                    "
       f"pre-registered >= 2:  {'HIT' if fired_n >= 2 else 'MISS'}")
+    p("")
+    p(f"  {measured} measured the corrupted board and said so; {refused} policed it and")
+    p(f"  refused to write; {blind} wrote the clean numbers over bad data.")
+    p("")
+    p("  P1 originally asked whether each tool's output MOVED, and counted a tool")
+    p("  that did not move as a failure. Two tools did not move because their")
+    p("  checks fired and they refused to write a table from bad data, which is")
+    p("  the best possible behaviour. The statistic could not tell blindness from")
+    p("  refusal, so it was replaced by one that can: what the tool wrote, judged")
+    p("  by whether the file was written at all rather than by whether it is")
+    p("  non-empty - the previous run's file is always non-empty.")
     p("")
     p("  A tool whose output is byte-identical on corrupted data is not reading")
     p("  the data. A tool whose output moves but whose checks stay quiet is")

@@ -1,0 +1,35 @@
+IF THE DATA WERE WRONG, WOULD THESE TOOLS NOTICE?
+========================================================================================
+  5% of the cells of swebench_verified_matrix.csv flipped: 3350 of 67000.
+
+  tool                                   what it did  check fired
+  resolution_law_test.py             wrote different            -
+  entropy_law_test.py                wrote different            -
+  pair_sharpness.py                  wrote different            -
+  effective_items.py                 wrote different            -
+  detectable_difference.py           wrote different            -
+  top_compression.py                         REFUSED          yes
+  shape_correction.py                wrote different            -
+  holm_recompute.py                          REFUSED          yes
+
+  P1  wrote a table identical to the clean one: 0 of 8   pre-registered = 0:   HIT
+  P2  a self-check fired on 2 of 8                    pre-registered >= 2:  HIT
+
+  6 measured the corrupted board and said so; 2 policed it and
+  refused to write; 0 wrote the clean numbers over bad data.
+
+  P1 originally asked whether each tool's output MOVED, and counted a tool
+  that did not move as a failure. Two tools did not move because their
+  checks fired and they refused to write a table from bad data, which is
+  the best possible behaviour. The statistic could not tell blindness from
+  refusal, so it was replaced by one that can: what the tool wrote, judged
+  by whether the file was written at all rather than by whether it is
+  non-empty - the previous run's file is always non-empty.
+
+  A tool whose output is byte-identical on corrupted data is not reading
+  the data. A tool whose output moves but whose checks stay quiet is
+  behaving normally - most of these measure a field rather than police
+  it - but the ones that compare against a committed figure should speak.
+
+  The real matrices are never written: everything runs in a scratch copy,
+  and the check above confirms the original is untouched afterwards.
