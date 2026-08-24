@@ -124,3 +124,31 @@ record (a former employer with an end year is enough) plus a homepage showing
 name, affiliation and email. That is an administrative task with a moderation
 queue of up to two weeks, and it has to be finished before the paper can be
 submitted at all.
+
+### Visibility: the submission goes public, not just the acceptance
+
+Checked 2026-08-24 against the editorial policies, because the assumption in
+the other direction would have changed the plan.
+
+- An action editor is assigned **within a week**. Once they assign at least
+  three reviewers, "**the paper will become public**". Public visibility
+  therefore arrives in weeks, not at acceptance.
+- **Reviews** are the part held back: visible to the authors as they arrive,
+  but "not visible to the public nor to the other reviewers until all the
+  reviews are submitted".
+- Final recommendations come no earlier than two weeks after all three reviews
+  are public, so a decision is months away even though visibility is not.
+- A rejected paper may be revised and resubmitted, but "it will need to be
+  entered as a new submission and a link provided to the previously rejected
+  submission" — not a dead end, but it stays on the record.
+- Certifications exist (Outstanding, Featured, Reproducibility, Survey) and are
+  awarded on acceptance, not requested.
+
+**Why this changes the order of work.** The route gives a public, timestamped
+version of the work within weeks and without an endorsement gate, which is
+precisely what arXiv moderation denied this project. But the public version is
+the *anonymous* one, so it builds no name until acceptance, and the
+anonymisation is not a formality — it is what the world sees. It also means the
+OpenReview profile is not merely an administrative box: for as long as it is
+incomplete, nothing is public at all. Profile first, then submit; everything
+else in this directory is already done.
