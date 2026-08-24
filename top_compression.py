@@ -40,16 +40,42 @@ The measurement is worth keeping for its own sake: "we beat second place by X
 points" is one draw from a distribution whose standard deviation equals its
 mean, before any question of item noise is asked.
 
-PRE-REGISTERED (2026-08-24)
-  Written and committed before the run. P1-P3 are unchanged from the first
-  commit of this file; P4-P5 replace two predictions about the ratio
-  estimator that its own self-check retired before any board was read.
+PRE-REGISTERED (2026-08-24, third and final registration)
 
-  P1  T_shape recovers at least 60 % of the tie@1 miss, median over the boards
-      where the plain twin misses by at least 2 systems.
-  P2  T_corr recovers at most 40 %, same boards, same median.
-  P3  T_shape lands closer to the real tie@1 than T_corr on at least 6 of
-      those boards.
+  Written and committed before any board was read with these statistics. Two
+  earlier registrations in this file were retired by its own self-checks,
+  both for the same defect and both before any board was read:
+
+    first   the gap statistic was one observation over a twin MEDIAN. In a
+            Gaussian field of 100 the top gap has sd/mean 0.91 and p90/p50
+            2.93 - very nearly exponential - so that ratio is noise with a
+            skew. Replaced by the gap's percentile inside the twin's own
+            distribution, which is uniform under the null and therefore has
+            a null check that can fail. It now passes at 9 of 20 below 0.50.
+
+    second  tie@1 had the same defect one level up. The shape twin holds ONE
+            ability configuration and redraws only noise; the Gaussian twin
+            redrew ability too, so their medians were not comparable. And
+            tie@1 turns out to be wildly configuration-dependent: on one
+            field spec, 60 Gaussian ability draws gave tie@1 sd 16.4 and a
+            5-95 range of 26 to 79. Every twin quantity is therefore reported
+            as an INTERVAL here, and the question becomes containment rather
+            than distance.
+
+  That second failure has a consequence beyond this file. LAWS.md and
+  target_board.py state the top-of-board miss as "3 against 19" - two point
+  values. If 19 falls inside the twin's own 5-95 interval, that sentence is
+  not supported by its own measurement and has to be corrected. P1 tests
+  exactly that, and I have not looked.
+
+  P1  the real tie@1 lies OUTSIDE the Gaussian twin's central 90 % interval
+      on at least 6 of the 9 boards. A miss here refutes the claim that the
+      laws miss the top, and LAWS.md gets rewritten rather than defended.
+  P2  the real tie@1 lies INSIDE the shape twin's central 90 % interval on at
+      least 6 of the 9 boards.
+  P3  the shape twin's median is closer to the real tie@1 than the
+      correlation twin's, on at least 6 of the boards where the Gaussian
+      twin's median is at least 2 systems away.
   P4  the real top gap sits below the twin median - percentile < 0.50 - on at
       least 7 of the 9 boards. (Under the null each board is uniform, so 7 of
       9 one-sided has p = 0.09; 8 or 9 would be p = 0.02 or 0.004.)
@@ -64,18 +90,18 @@ PRE-REGISTERED (2026-08-24)
   Note against my own interest: T_shape is built from OBSERVED scores, whose
   spread already contains measurement noise. Rescaling to the latent spread
   removes the excess spread but not the noise in the ordering, and a noisy
-  ordering has LARGER top gaps than the truth. P1 is therefore tested against
+  ordering has LARGER top gaps than the truth. P2 is therefore tested against
   a twin biased towards separating, not towards tying.
 
 SELF-CHECKS (the table is not printed if any fails)
   * real tie@1 must reproduce the committed benchmark_health figure on all
     nine boards, exactly;
-  * calibration: on 20 synthetic Gaussian boards the top-gap percentile must
-    be below 0.50 on 5 to 15 of them and average between 0.30 and 0.70 - if
-    the statistic is not uniform under the null, every board's number is a
-    reading of the estimator;
-  * on a synthetic Gaussian board the shape and Gaussian twins must agree on
-    tie@1 within 3 systems;
+  * gap calibration: on 20 synthetic Gaussian boards the top-gap percentile
+    must be below 0.50 on 5 to 15 of them and average between 0.30 and 0.70;
+  * containment calibration: on 5 synthetic Gaussian boards, the board's own
+    tie@1 must fall inside its Gaussian twin's central 90 % interval on at
+    least 4 - if a Gaussian field falls outside its own twin, P1 is measuring
+    the machinery and not the field;
   * T_shape's realised score spread must be within 10 % of T_gauss's on every
     board, or the comparison is a spread comparison wearing a shape label.
 
@@ -94,7 +120,7 @@ import rank_sets as rs
 
 SEED = 20260824
 DRAWS = 800          # the setting the standard's report cards use
-REPS_TIE = 25        # twin replicates for tie@1 (each needs a bootstrap)
+REPS_TIE = 99        # twin replicates for tie@1 (each needs a bootstrap)
 REPS_GAP = 999       # twin replicates for the gap null (means only, cheap)
 KTOP = 5
 
@@ -182,17 +208,26 @@ def gap_percentiles(f: dict, seed: int, reps: int = REPS_GAP) -> dict:
 
 
 def tie_twins(f: dict, seed: int) -> dict:
+    """Full tie@1 distribution for each twin, not a point.
+
+    gauss redraws ability AND noise, so its spread is the spread of fields of
+    this spec. shape holds the real ability shape and redraws only noise, so
+    its spread is the spread of one field re-measured. corr redraws ability
+    and keeps the real residual matrix.
+    """
     offset = {"gauss": 1, "shape": 2, "corr": 3}
-    out, taus = {}, {}
+    out = {}
     for kind, maker in (("gauss", twin_gauss), ("shape", twin_shape), ("corr", twin_corr)):
         ties, tt = [], []
         for s in range(REPS_TIE):
-            y = maker(f, np.random.default_rng(seed + 100 * s + offset[kind]))
+            y = maker(f, np.random.default_rng(seed + 1000 * s + offset[kind]))
             ties.append(int((rs.rank_sets(y, draws=DRAWS)["best"] == 1).sum()))
             tt.append(float(y.mean(axis=1).std(ddof=1)))
-        out[kind] = float(np.median(ties))
-        taus[kind] = float(np.median(tt))
-    out["tau_gauss"], out["tau_shape"] = taus["gauss"], taus["shape"]
+        v = np.array(ties, dtype=float)
+        out[kind] = float(np.median(v))
+        out[kind + "_lo"] = float(np.percentile(v, 5))
+        out[kind + "_hi"] = float(np.percentile(v, 95))
+        out["tau_" + kind] = float(np.median(tt))
     return out
 
 
@@ -210,21 +245,26 @@ def _check_calibration() -> tuple[bool, str]:
     return ok, f"null calibration: {below} of 20 below 0.50, mean percentile {mean:.2f}"
 
 
-def _check_gaussian_twins() -> tuple[bool, str]:
-    rng = np.random.default_rng(11)
-    x = rng.normal(0.0, 0.05, 100)[:, None] + rng.normal(0.0, 0.4, (100, 300))
-    t = tie_twins(field(x), seed=7)
-    ok = abs(t["shape"] - t["gauss"]) <= 3
-    return ok, f"Gaussian board: tie@1 gauss {t['gauss']:.0f}, shape {t['shape']:.0f}"
+def _check_containment() -> tuple[bool, str]:
+    """A Gaussian field must fall inside its own Gaussian twin's interval."""
+    inside = 0
+    for b in range(5):
+        rng = np.random.default_rng(700 + b)
+        x = rng.normal(0.0, 0.05, 100)[:, None] + rng.normal(0.0, 0.4, (100, 300))
+        f = field(x)
+        t = tie_twins(f, seed=1300 + b)
+        if t["gauss_lo"] <= f["tie1"] <= t["gauss_hi"]:
+            inside += 1
+    return inside >= 4, f"containment calibration: {inside} of 5 Gaussian boards inside their own twin"
 
 
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
-    print("self-checks 1 and 2 (null calibration, Gaussian twins) ...")
+    print("self-checks on synthetic fields ...")
     ok_cal, msg_cal = _check_calibration()
     print(f"  [{'ok  ' if ok_cal else 'FAIL'}] {msg_cal}")
-    ok_gt, msg_gt = _check_gaussian_twins()
-    print(f"  [{'ok  ' if ok_gt else 'FAIL'}] {msg_gt}")
+    ok_ct, msg_ct = _check_containment()
+    print(f"  [{'ok  ' if ok_ct else 'FAIL'}] {msg_ct}")
 
     rows = {}
     for name, path in MATRICES.items():
@@ -251,65 +291,66 @@ def main() -> int:
           f"Gaussian twin's on {len(rows) - len(bad_tau)} of {len(rows)}"
           + ("" if ok_tau else "  off: " + ", ".join(bad_tau)))
 
-    if not (ok_cal and ok_gt and ok_parity and ok_tau):
-        print("\nA CHECK FAILED - no table is printed.")
+    if not (ok_cal and ok_ct and ok_parity and ok_tau):
+        print(chr(10) + "A CHECK FAILED - no table is printed.")
         return 1
 
     L = []
     p = L.append
-    p("WHY THE LAWS MISS THE TOP: SHAPE OR CORRELATION")
-    p("=" * 104)
-    p(f"  {'leaderboard':<22} {'J':>4} {'real':>5} {'gauss':>6} {'shape':>6} {'corr':>6} "
-      f"{'rec.shape':>10} {'rec.corr':>9} {'q top':>7} {'q 1-5':>7} {'q bulk':>7}")
-    rec_s, rec_c, closer, qual = [], [], 0, []
+    p("WHY THE LAWS MISS THE TOP - AND WHETHER THEY MISS IT AT ALL")
+    p("=" * 108)
+    p(f"  {'leaderboard':<22} {'J':>4} {'real':>5} {'gaussian twin':>17} {'shape twin':>17} "
+      f"{'corr twin':>16} {'q top':>7} {'q bulk':>7}")
+    outside_g, inside_s, closer, qual = 0, 0, 0, []
     q1_below, top_below_bulk = 0, 0
     for name, v in rows.items():
-        miss = v["real"] - v["gauss"]
-        if abs(miss) >= 2:
+        og = not (v["gauss_lo"] <= v["real"] <= v["gauss_hi"])
+        isx = v["shape_lo"] <= v["real"] <= v["shape_hi"]
+        outside_g += og
+        inside_s += isx
+        if abs(v["real"] - v["gauss"]) >= 2:
             qual.append(name)
-            a = (v["shape"] - v["gauss"]) / miss
-            b = (v["corr"] - v["gauss"]) / miss
-            rec_s.append(a)
-            rec_c.append(b)
             if abs(v["shape"] - v["real"]) < abs(v["corr"] - v["real"]):
                 closer += 1
-            rec_txt = f"{100 * a:>9.0f}% {100 * b:>8.0f}%"
-        else:
-            rec_txt = f"{'-':>10} {'-':>9}"
         if v["q1"] < 0.50:
             q1_below += 1
         if v["q1"] <= v["q_bulk"] - 0.25:
             top_below_bulk += 1
-        p(f"  {name:<22} {v['J']:>4} {v['real']:>5.0f} {v['gauss']:>6.0f} {v['shape']:>6.0f} "
-          f"{v['corr']:>6.0f} {rec_txt} {v['q1']:>7.3f} {v['q_top']:>7.3f} {v['q_bulk']:>7.3f}")
+        g = f"{v['gauss']:.0f} [{v['gauss_lo']:.0f}-{v['gauss_hi']:.0f}]" + ("*" if og else "")
+        sh = f"{v['shape']:.0f} [{v['shape_lo']:.0f}-{v['shape_hi']:.0f}]" + ("" if isx else "*")
+        c = f"{v['corr']:.0f} [{v['corr_lo']:.0f}-{v['corr_hi']:.0f}]"
+        p(f"  {name:<22} {v['J']:>4} {v['real']:>5.0f} {g:>17} {sh:>17} {c:>16} "
+          f"{v['q1']:>7.3f} {v['q_bulk']:>7.3f}")
     p("")
-    p(f"  boards where the plain twin misses by >= 2 systems: {len(qual)}")
-    med_s = float(np.median(rec_s)) if rec_s else float("nan")
-    med_c = float(np.median(rec_c)) if rec_c else float("nan")
-    p(f"  P1  shape twin recovers {100 * med_s:.0f} % of the miss (median)    "
-      f"pre-registered >= 60 %:  {'HIT' if med_s >= 0.60 else 'MISS'}")
-    p(f"  P2  corr twin recovers {100 * med_c:.0f} % of the miss (median)     "
-      f"pre-registered <= 40 %:  {'HIT' if med_c <= 0.40 else 'MISS'}")
-    p(f"  P3  shape closer than corr on {closer} of {len(qual)}              "
-      f"pre-registered >= 6:     {'HIT' if closer >= 6 else 'MISS'}")
-    p(f"  P4  top gap below the twin median on {q1_below} of {len(rows)}       "
-      f"pre-registered >= 7:     {'HIT' if q1_below >= 7 else 'MISS'}")
-    p(f"  P5  top percentile >= 0.25 below bulk on {top_below_bulk} of {len(rows)}   "
-      f"pre-registered >= 6:     {'HIT' if top_below_bulk >= 6 else 'MISS'}")
+    p("  Intervals are the twin's central 90 % over 99 replicates. A star on the")
+    p("  Gaussian column means the real board falls outside it; a star on the")
+    p("  shape column means it falls outside that one too.")
+    p("")
+    p(f"  P1  real outside the Gaussian twin's interval on {outside_g} of {len(rows)}      "
+      f"pre-registered >= 6:  {'HIT' if outside_g >= 6 else 'MISS'}")
+    p(f"  P2  real inside the shape twin's interval on {inside_s} of {len(rows)}          "
+      f"pre-registered >= 6:  {'HIT' if inside_s >= 6 else 'MISS'}")
+    p(f"  P3  shape median closer than corr on {closer} of {len(qual)}                 "
+      f"pre-registered >= 6:  {'HIT' if closer >= 6 else 'MISS'}")
+    p(f"  P4  top gap below the twin median on {q1_below} of {len(rows)}               "
+      f"pre-registered >= 7:  {'HIT' if q1_below >= 7 else 'MISS'}")
+    p(f"  P5  top percentile >= 0.25 below bulk on {top_below_bulk} of {len(rows)}         "
+      f"pre-registered >= 6:  {'HIT' if top_below_bulk >= 6 else 'MISS'}")
     p("")
     p("  q top is where the real gap between the printed first and second falls")
     p("  inside the distribution of that gap in 999 Gaussian fields of the same")
     p("  spread: 0.02 means only 2 % of Gaussian fields put their top two that")
-    p("  close together. q 1-5 averages the first five gaps, q bulk is the same")
-    p("  reading for the median gap in the middle third of the board.")
+    p("  close together. q bulk is the same reading for the median gap in the")
+    p("  middle third of the board.")
     p("")
-    p("  rec.shape and rec.corr are the share of the twin's tie@1 miss closed by")
-    p("  keeping the real score shape, and by keeping the real residual matrix,")
-    p("  each with everything else Gaussian and the same latent spread.")
-    text = "\n".join(L)
-    print("\n" + text)
-    Path("top_compression_results.txt").write_text(text + "\n", encoding="utf-8", newline="\n")
-    print("\nwrote top_compression_results.txt")
+    p("  The Gaussian interval is the correction this file owes its own repo:")
+    p("  target_board.py prints the twin's tie@1 as a single number and LAWS.md")
+    p("  quotes it as one. Whether a board's top departs from a Gaussian field")
+    p("  is a containment question, and only the interval can answer it.")
+    text = chr(10).join(L)
+    print(chr(10) + text)
+    Path("top_compression_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
+    print(chr(10) + "wrote top_compression_results.txt")
     return 0
 
 
