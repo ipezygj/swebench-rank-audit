@@ -100,36 +100,21 @@ def load(path):
 
 
 def holm_full(x, alpha=0.05):
-    """Holm rank sets plus the beats matrix and the realised critical value."""
-    J, n = x.shape
-    theta = x.mean(axis=1)
-    d = x[:, None, :] - x[None, :, :]
-    sd = d.std(axis=2, ddof=1)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        z = np.where(sd > 0, (theta[:, None] - theta[None, :]) / (sd / np.sqrt(n)), 0.0)
-    iu = np.triu_indices(J, k=1)
-    p = 2 * norm.sf(np.abs(z[iu]))
-    m = len(p)
-    order = np.argsort(p)
-    thresh = alpha / (m - np.arange(m))
-    rej_sorted = np.zeros(m, dtype=bool)
-    for i in range(m):
-        if p[order[i]] <= thresh[i]:
-            rej_sorted[i] = True
-        else:
-            break
-    rej = np.zeros(m, dtype=bool)
-    rej[order] = rej_sorted
-    beats = np.zeros((J, J), dtype=bool)
-    a, b = iu
-    for k in np.flatnonzero(rej):
-        if theta[a[k]] > theta[b[k]]:
-            beats[a[k], b[k]] = True
-        else:
-            beats[b[k], a[k]] = True
-    crit = float(norm.isf(p[rej].max() / 2)) if rej.any() else float(norm.isf(alpha / (2 * m)))
-    return {"beats": beats, "best": 1 + beats.sum(axis=0), "worst": J - beats.sum(axis=1),
-            "crit": crit, "theta": theta}
+    """Holm rank sets from the single implementation in rank_sets.py.
+
+    An earlier version of this file carried its own copy, and the two
+    disagreed: on HELM classic, 10 items and 4 005 pairs, the local copy used
+    the normal reference and reported 21 possible first places where the shared
+    one, using t with n-1 degrees of freedom, reports 50. At a Bonferroni-level
+    threshold the t with 9 degrees of freedom needs |t| about 8.5, which ten
+    items essentially cannot reach - so the normal version was claiming a
+    precision the sample size does not support. Two implementations of the same
+    procedure that disagree by 29 systems is a defect in itself, so there is now
+    one.
+    """
+    r = rs.rank_sets(x, method="holm", alpha=alpha)
+    return {"beats": r["beats"], "best": r["best"], "worst": r["worst"],
+            "crit": r["crit"], "theta": r["theta"]}
 
 
 def union_of(a, b):

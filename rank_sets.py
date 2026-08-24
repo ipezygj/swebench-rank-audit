@@ -88,6 +88,8 @@ import argparse
 import sys
 from pathlib import Path
 
+import os
+
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -95,9 +97,70 @@ from scipy import stats
 ALPHA = 0.05
 SEED = 20260823
 
+# Which construction to use. Set RANK_SETS_METHOD=holm (or =union) to rerun
+# the whole pipeline under a construction that holds its coverage on the
+# small-n boards; see tie_coverage_boards.py for which those are.
+METHOD = os.environ.get("RANK_SETS_METHOD", "bootstrap").strip().lower()
+
+
+
+def _holm(theta, sigma_safe, n, J, alpha):
+    """Directional paired tests with Holm's step-down FWER control.
+
+    Uses the same pairwise SD the bootstrap path builds from the covariance of
+    the centred rows, so there is no J x J x n array and no resampling. Pairs
+    whose difference series is identically zero have sigma = inf here and can
+    never be rejected, which is the same convention the bootstrap path uses.
+
+    Returns the beats matrix, the realised critical value (the z of the largest
+    p-value actually rejected), the Bonferroni single-step value, and how far
+    down the sorted p-values the procedure reached.
+    """
+    from scipy.stats import norm, t as tdist
+
+    iu = np.triu_indices(J, k=1)
+    delta = theta[:, None] - theta[None, :]
+    # The covariance path builds sigma with ddof = 0. A normal-theory test needs
+    # the unbiased SD, and unlike the bootstrap - whose critical value is
+    # calibrated with the same sigma, so the choice largely cancels - here it
+    # goes straight into the p-value. At n = 10 it is a 5 % shift in sigma and
+    # moves HELM's count of possible first places by two.
+    sd = sigma_safe[iu] * np.sqrt(n / (n - 1.0))
+    with np.errstate(invalid="ignore", divide="ignore"):
+        z = delta[iu] / (sd / np.sqrt(n))
+    z = np.nan_to_num(z, nan=0.0, posinf=0.0, neginf=0.0)
+    # t with n-1 df, which is the reference the coverage measurement in
+    # tie_coverage.py validated; on the small-n boards it differs from the
+    # normal materially.
+    p = 2.0 * tdist.sf(np.abs(z), df=n - 1)
+    m = len(p)
+    order = np.argsort(p)
+    thresh = alpha / (m - np.arange(m))
+    rej_sorted = np.zeros(m, dtype=bool)
+    steps = 0
+    for i in range(m):
+        if p[order[i]] <= thresh[i]:
+            rej_sorted[i] = True
+            steps = i + 1
+        else:
+            break
+    rej = np.zeros(m, dtype=bool)
+    rej[order] = rej_sorted
+
+    beats = np.zeros((J, J), dtype=bool)
+    a, b = iu
+    pos = rej & (delta[iu] > 0)
+    neg = rej & (delta[iu] < 0)
+    beats[a[pos], b[pos]] = True
+    beats[b[neg], a[neg]] = True
+
+    bonf = float(tdist.isf(alpha / (2.0 * m), df=n - 1))
+    crit = float(tdist.isf(p[rej].max() / 2.0, df=n - 1)) if rej.any() else bonf
+    return beats, crit, bonf, steps
+
 
 def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
-              seed: int = SEED, stepdown: bool = True) -> dict:
+              seed: int = SEED, stepdown: bool = True, method: str = None) -> dict:
     """Simultaneous rank confidence sets for the rows of `x` (systems x items).
 
     Returns point scores, the simultaneous critical value, and for each system
@@ -123,6 +186,26 @@ def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
     # genuinely indistinguishable; keep them finite so they never separate.
     tiny = sigma <= 0
     sigma_safe = np.where(tiny, np.inf, sigma)
+
+    method = (method or METHOD)
+    if method not in ("bootstrap", "holm", "union"):
+        raise ValueError(f"unknown method {method!r}")
+
+    order0 = np.argsort(-theta, kind="stable")
+    observed0 = np.empty(J, dtype=int)
+    observed0[order0] = np.arange(1, J + 1)
+
+    if method in ("holm", "union"):
+        hb, hcrit, hbonf, hsteps = _holm(theta, sigma_safe, n, J, alpha)
+        holm_out = {"theta": theta, "crit": hcrit, "beats": hb,
+                    "best": 1 + hb.sum(axis=0), "worst": J - hb.sum(axis=1),
+                    "observed": observed0, "sigma": sigma, "J": J, "n": n,
+                    "single_best": 1 + hb.sum(axis=0),
+                    "single_worst": J - hb.sum(axis=1),
+                    "single_crit": hbonf, "steps": hsteps,
+                    "crit_path": [hbonf, hcrit], "method": "holm"}
+        if method == "holm":
+            return holm_out
 
     # Multiplier bootstrap over instances, all pairs from one product per draw.
     rng = np.random.default_rng(seed)
@@ -173,6 +256,17 @@ def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
         out["steps"] = len(crits)
         out["crit"] = crits[-1] if crits else crit
         out["crit_path"] = crits
+    out["method"] = "bootstrap"
+
+    if method == "union":
+        # Per system the wider of the two sets. If either construction contains
+        # every true rank, so does this, so its simultaneous coverage is at
+        # least the better of the two.
+        out["best"] = np.minimum(out["best"], holm_out["best"])
+        out["worst"] = np.maximum(out["worst"], holm_out["worst"])
+        out["beats"] = out["beats"] & holm_out["beats"]
+        out["crit"] = max(out["crit"], holm_out["crit"])
+        out["method"] = "union"
     return out
 
 
