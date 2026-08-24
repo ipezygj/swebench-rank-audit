@@ -110,6 +110,7 @@ SELF-CHECKS (the table is not printed if any fails)
 from __future__ import annotations
 
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -136,12 +137,35 @@ MATRICES = {
     "MathArena 2025": "matharena/matrix.csv",
 }
 
-# From benchmark_health_results.txt, committed 2026-08-23. Parity, not input.
-COMMITTED_TIE1 = {
+# Frozen from a bootstrap run, 2026-08-23. Used only when the live file is
+# absent; see _committed_tie1 below.
+BOOTSTRAP_TIE1 = {
     "SWE-bench Verified": 19, "MTEB English v2": 16, "HELM classic": 15,
     "ProteinGym DMS": 3, "TabArena 16 models": 8, "TabArena 45 variants": 12,
     "CASP14": 1, "LiveBench": 8, "MathArena 2025": 11,
 }
+
+
+def _committed_tie1():
+    """tie@1 per board from the CURRENT run, falling back to the frozen table.
+
+    The point of this check is to catch a changed input, not a changed
+    construction, so it must compare against figures computed the same way as
+    the ones being checked. Reading the live benchmark_health results does
+    that; the frozen bootstrap table is the fallback, and which one was used is
+    printed.
+    """
+    p = Path("benchmark_health_results.txt")
+    if not p.exists():
+        return dict(BOOTSTRAP_TIE1), "frozen bootstrap table"
+    out = {}
+    for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
+        m = re.match(r"\s{2}(\S.*?)\s{2,}(\d+)\s+[\d.-]+\s+", line)
+        if m and m.group(1).strip() in BOOTSTRAP_TIE1:
+            out[m.group(1).strip()] = int(m.group(2))
+    if len(out) < 5:
+        return dict(BOOTSTRAP_TIE1), "frozen bootstrap table (live file unreadable)"
+    return out, "the current benchmark_health run"
 
 
 def load(path: str) -> np.ndarray:
@@ -277,10 +301,11 @@ def main() -> int:
         v.update(tie_twins(f, seed=SEED))
         rows[name] = v
 
-    parity = [(k, v["real"], COMMITTED_TIE1[k]) for k, v in rows.items() if k in COMMITTED_TIE1]
+    committed, source = _committed_tie1()
+    parity = [(k, v["real"], committed[k]) for k, v in rows.items() if k in committed]
     bad_parity = [t for t in parity if t[1] != t[2]]
     ok_parity = not bad_parity
-    print(f"  [{'ok  ' if ok_parity else 'FAIL'}] parity with benchmark_health: "
+    print(f"  [{'ok  ' if ok_parity else 'FAIL'}] parity against {source}: "
           f"{len(parity) - len(bad_parity)} of {len(parity)} exact"
           + ("" if ok_parity else "  " + "; ".join(f"{k} {a} vs {b}" for k, a, b in bad_parity)))
 

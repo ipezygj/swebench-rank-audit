@@ -148,7 +148,9 @@ def main() -> int:
         print(f"  {name} ...")
         x = load(path)
         J, n = x.shape
-        rb = rs.rank_sets(x, draws=DRAWS)
+        # explicit: this column is the bootstrap even when the pipeline is
+        # being run with RANK_SETS_METHOD=holm.
+        rb = rs.rank_sets(x, draws=DRAWS, method="bootstrap")
         rh = holm_full(x)
         ru = union_of(rb, rh)
         if np.any(ru["best"] > rb["best"]) or np.any(ru["worst"] < rb["worst"]) \
