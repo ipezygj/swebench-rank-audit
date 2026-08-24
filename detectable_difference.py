@@ -8,7 +8,7 @@ evidence of independence.
 
 That failure is not mine alone. It is what a leaderboard does every time it
 prints a first place: a comparison is run, it does not separate, and the
-ordering is published as though it had. The quantity nobody reports is the
+ordering is published as though it had. The quantity that answers it is the
 minimum detectable effect - the smallest difference the comparison could have
 caught four times in five:
 
@@ -22,6 +22,14 @@ items needed by up to 45x.
 Read against the gap the board actually prints, MDE says whether a headline was
 ever decidable. A board whose MDE exceeds its own top gap published a
 comparison it could not make, whatever the ordering turned out to be.
+
+NOT A NEW IDEA. Card, Henderson, Khandelwal, Jia, Mahowald and Jurafsky, "With
+Little Power Comes Great Responsibility" (EMNLP 2020, arXiv:2010.06595), did
+this for NLP six years ago: most attempted comparisons to state of the art on
+GLUE tasks are underpowered, and a 2000-sentence MT test set has about 75 %
+power for one BLEU point. What is added here is the pair-specific difference SD
+instead of a benchmark-wide figure, and ten boards across five fields instead of
+one field. See PRIOR_ART.md.
 
 PRE-REGISTERED (2026-08-24, committed before the run)
   P1  the MDE exceeds the printed gap between first and second on at least 7

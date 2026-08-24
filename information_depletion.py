@@ -9,7 +9,7 @@ nothing. So an instance is not a permanent asset. It has a LIFETIME, and the
 field's own progress spends it.
 
 That makes a benchmark a stock rather than a fixture, and gives it a quantity
-nobody reports:
+none of the boards measured here reports:
 
     D(t) = the expected number of instances on which two systems drawn at
            random from the field at time t disagree.

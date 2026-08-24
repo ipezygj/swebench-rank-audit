@@ -200,7 +200,9 @@ tested by prediction and holds within 12 % on four boards and fails by 161 %
 on one, whose top pair sits in 13 of 51 items.
 
 **R12 (proposed): report the smallest difference the board could have
-detected.** For the pair the headline is about, report the minimum detectable
+detected.** *Source: Card et al., "With Little Power Comes Great
+Responsibility" (EMNLP 2020), which established this for NLP experiments; R12
+carries it to leaderboards. See PRIOR_ART.md.* For the pair the headline is about, report the minimum detectable
 effect at 80 % power and the 5 % level, using that pair's own difference SD and
 the board's item count (`detectable_difference.py`). It costs one line and is
 computable before a single system is run, because it is a property of the

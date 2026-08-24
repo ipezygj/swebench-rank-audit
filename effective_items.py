@@ -26,7 +26,8 @@ reaching t = 2 needs
 DISCORDANT items - not items. A benchmark whose top pair splits 52/48 needs
 2 500 of them, and adding instances that both systems already solve adds none.
 That is the number a benchmark owner needs before deciding to grow an item set,
-and no board publishes it.
+and none of the nine boards measured here publishes it. Whether some board
+elsewhere does, I have not checked; the claim is about these nine.
 
 PRE-REGISTERED (2026-08-24, committed before the run)
   P1  the top pair's effective item count is below half the nominal n on at

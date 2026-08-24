@@ -31,7 +31,7 @@ alpha = 0.05, power 0.8. Two consequences worth stating separately:
     differ in style rather than strength are the expensive case.
 
 `d` is not a modelling choice. It is measured from the published per-instance
-outcomes, and nobody reports it.
+outcomes, and none of the boards measured here reports it.
 
 This script checks (*) against four SWE-bench splits that were measured before
 the formula existed. The formula is derived, not fitted: no constant in it was
