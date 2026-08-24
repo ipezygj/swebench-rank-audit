@@ -13,8 +13,9 @@
 A leaderboard reports an ordering, but how much of that ordering the
 evidence actually supports is a property of the measuring instrument
 rather than of the systems on it. We show that two such properties are
-predictable in closed form from four numbers fixed before the field of
-entrants exists: the number of entrants $J$, the number of items $n$, the spread of
+predictable from four numbers fixed before the field of entrants exists --
+the first in closed form, the second by a surrogate field built from the
+same four: the number of entrants $J$, the number of items $n$, the spread of
 scores $\tau$, and the paired difference SD $\sigma_p$.
 The share of pairs the evidence establishes follows
 $\bar\Phi(1/\mathrm{SNR})$ with $\mathrm{SNR}=\tau\sqrt{2n}/(c\,\sigma_p)$,
@@ -48,21 +49,23 @@ are underpowered, and that a 2\,000-sentence machine-translation test set
 has about 75\,\% power for a one-point BLEU difference. \citet{mogstad2024}
 give simultaneous confidence sets for ranks, and two 2026 papers carry that
 construction to model leaderboards \citep{rankintervals}.
-\citet{uncertaintyranking} quantify rank uncertainty by counting the linear
-extensions of the order induced by interval estimates.
-\citet{saturation} define an uncertainty-aware saturation index from
-leaderboard data and observe that discriminative power is lost once the top
-models sit within a couple of points.
+Rank uncertainty has also been quantified by counting the linear extensions
+of the order induced by interval estimates \citep{uncertaintyranking}.
+An uncertainty-aware saturation index built from leaderboard data records
+when discriminative power has been lost, once the top models sit within a
+couple of points \citep{saturation}.
 
 Every one of these measures a leaderboard that already exists. Power
 analysis needs the observed variance; rank intervals need the observed
 scores; the saturation index takes the highest observed score as its
 ceiling. That is the right thing to do when auditing a published table, and
 it leaves one question unanswered: \emph{how much ranking will a benchmark
-be able to support}, asked by someone deciding how many items to write
-before any system has been run on any of them.
+be able to support}, asked by someone sizing an item set before the field
+of entrants exists.
 
-This paper answers that question with two closed forms in four quantities:
+This paper answers that question with two relations in the same four
+quantities -- a closed form for the first, and for the second a
+four-parameter surrogate that reproduces it:
 the number of entrants $J$, the number of items $n$, the spread of the
 field's scores $\tau$, and the difference SD of a typical pair $\sigma_p$.
 Three of the four are design choices or planning estimates; the fourth,
@@ -111,10 +114,10 @@ is what a reader is entitled to read off the printed order.
 \paragraph{The ordering entropy.} $\log_2$ of the number of total orders
 consistent with the established partial order, normalised by $\log_2 J!$.
 Zero means the evidence fixes the ranking; one means it fixes nothing.
-This quantity is not new -- \citet{uncertaintyranking} measure rank
-uncertainty by counting linear extensions of the order induced by interval
-estimates -- and counting them exactly is \#P-complete, so we use Knuth's
-estimator.
+This quantity is not new -- it has been used to quantify rank uncertainty by
+counting linear extensions of the order induced by interval estimates
+\citep{uncertaintyranking} -- and counting them exactly is \#P-complete, so
+we use Knuth's estimator.
 
 Neither summary is the contribution. The contribution is that both are
 predictable from $(J, n, \tau, \sigma_p)$ before the board exists.
@@ -190,7 +193,7 @@ indistinguishable from an independent one on these aggregates.
 \begin{table}[t]\centering\small
 \begin{tabular}{l rr r rr rr}
 \toprule
- & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\\\
+ & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\
 \midrule
 SWE-bench Verified & 134 & 500 & 3.00 & 37.4\,\% & 36.9\,\% & $-0.4$ & $+0.6$ \\
 MTEB English v2 & 181 & 41 & 1.96 & 28.5\,\% & 30.5\,\% & $+1.9$ & $-3.5$ \\
@@ -259,18 +262,19 @@ MathArena 2025 & 35 & 183 & 57.7\,\% & 54.3\,\% & $+3.4$ \\
 absolute error is 5.1 points, or 3.3 using a robust estimate of
 $\tau$, against a quantity that ranges over the table from
 37.4\,\% down to 6.6\,\%.
-6 of the 9 sit within 2.5 points. The prediction is not a fit:
+Six of the nine sit within 2.5 points. The
+prediction is not a fit:
 there is no free parameter in \eqref{eq:law1} to have absorbed the error.
 
 \paragraph{Law 2.} Table~\ref{tab:law2} gives the same boards. The twin is
 within five points on 6 of 9. Where it matches, a leaderboard's evidential
 entropy is a function of four numbers and nothing else about the field --
-which means a benchmark designer can compute it from a planned size and an
-expected spread before a single system is run.
+which means a benchmark designer can compute it from a planned size, an
+expected spread and a pilot, before the field of entrants exists.
 
 \paragraph{Both failures are the same failure.} The two TabArena boards
-miss law 1 by about seventeen points and law 2 by twenty-three and
-twenty-eight, and the direction was pre-registered before the run: the twin
+miss law 1 by about seventeen points and law 2 by twenty-eight and
+twenty-three, and the direction was pre-registered before the run: the twin
 has a symmetric field and spreads established pairs evenly, while the real
 field concentrates them, and concentrated relations constrain fewer
 orderings, so the \emph{real} entropy should come out higher. It does.
@@ -328,31 +332,12 @@ $\times$ & kappa & split-half above 0.5 (expected to FAIL at n=28) r 0.41 \\
 \label{tab:tenth}
 \end{table}
 
-\section{Where the laws fail, and why that is informative}
-
-\paragraph{Skewed fields.} Both TabArena boards miss law 1 by about
-seventeen points and law 2 by twenty-three to twenty-eight, in the
-direction pre-registered before the run: the Gaussian twin has a symmetric
-field and spreads established pairs evenly, while the real field
-concentrates them, and concentrated pairs constrain fewer orderings, so the
-real entropy is higher. Two of nine.
-
-\paragraph{The top.} The laws reproduce aggregates and miss the top. A
-simulated board with SWE-bench Verified's shape reproduces its established
-share and its entropy and then says three systems could be first where
-nineteen can. Whatever governs the frontier is not in these four numbers.
-
-\paragraph{$c$ is not free.} The law predicts resolution \emph{given} a
-multiplicity procedure. That is a restriction, not a hidden parameter: $c$
-is measured from the procedure, and \S\ref{sec:robust} is what happens when
-the procedure changes.
-
 \section{The laws survive replacing the estimator}
 \label{sec:robust}
 
 The rank sets underneath these numbers were originally built with a
-multiplier bootstrap. Prompted by \citet{rankintervals}, who report that
-bootstrap rank intervals fail under ties, we measured its simultaneous
+multiplier bootstrap. Prompted by a report that bootstrap rank intervals
+fail under ties \citep{rankintervals}, we measured its simultaneous
 coverage at the shapes actually used and found it failing on eight of
 twelve boards -- 0.013 on the board with 90 systems and 10 items, 0.540 on
 the one with 181 systems and 41 items, against a nominal 0.95 -- while Holm
@@ -361,8 +346,11 @@ was replaced and the whole pipeline rerun.
 
 This is the strongest test the laws have been put to, because the realised
 critical value moved from 3.14 to 8.45 across boards and constructions. The
-predictions followed: law 1's robust mean absolute error went from 3.4 to
-3.3 points, and law 2 stayed within five points on the same six boards.
+predictions followed. Measured on the same nine boards under both
+constructions, law 1's mean absolute error is 4.4 points under the bootstrap
+and 5.1 under Holm; on the robust estimate of $\tau$ it is 3.3 points
+under the construction now in use, slightly better than before the change.
+Law 2 stayed within five points on the same six boards.
 Of the 95 results files in the repository, 41 changed and 53 were
 identical -- the ones whose measurements never touch rank sets.
 
@@ -405,8 +393,9 @@ a hundred and eighty-one.
 question for one comparison; \eqref{eq:law1} answers it for a field at once,
 and the two agree where they overlap. \citet{mogstad2024} and the
 leaderboard papers that follow it \citep{rankintervals} give the
-measurement; this gives the prediction. \citet{saturation} define an index
-of when a top has stopped discriminating; that index needs the leaderboard,
+measurement; this gives the prediction. The saturation index
+\citep{saturation} records when a top has stopped discriminating; it needs
+the leaderboard,
 and it substitutes an exponent $n^{\alpha}$ for an effective sample size
 where $\sigma_p$ is the measurable quantity.
 
