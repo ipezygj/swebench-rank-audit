@@ -1,0 +1,35 @@
+WAS THE TOP-VERSUS-MIDDLE RESULT A FINDING OR A CEILING?
+====================================================================================================
+  leaderboard             group   union      p   resid r     null      p  lambda for 80 % power
+  SWE-bench Verified        top   89.8%  0.074    0.1209  -0.0147  1.000                  never
+  SWE-bench Verified        mid   77.8%  0.013    0.0056  -0.0107  0.977                  never
+  SWE-bench Lite            top   78.0%  0.070    0.0414  -0.0226  1.000                  never
+  SWE-bench Lite            mid   60.7%  0.080    0.0297  -0.0151  1.000                  never
+  SWE-bench Test            top   61.1%  1.000   -0.0499  -0.0706  1.000                   1.09
+  SWE-bench Test            mid   40.0%  0.000   -0.0318  -0.0571  1.000                   1.38
+
+  power curves (rejection rate of the union test against injected lambda)
+  leaderboard             group   0.00   0.15   0.30   0.50   0.75   1.10   1.60
+  SWE-bench Verified        top   0.03   0.04   0.03   0.03   0.06   0.10   0.24
+  SWE-bench Verified        mid   0.07   0.05   0.10   0.09   0.10   0.18   0.26
+  SWE-bench Lite            top   0.05   0.04   0.05   0.07   0.07   0.16   0.40
+  SWE-bench Lite            mid   0.04   0.04   0.04   0.04   0.04   0.04   0.06
+  SWE-bench Test            top   0.03   0.05   0.05   0.16   0.38   0.81   1.00
+  SWE-bench Test            mid   0.03   0.03   0.05   0.08   0.24   0.58   0.98
+
+  P1  lambda for 80 % power larger at the top on 0 of 3    pre-registered >= 2:  MISS
+  P2  that ratio above 1.5 on 0 of 3                     pre-registered >= 2:  MISS
+  P3  top power below 50 % at the middle's own lambda on 0 of 3  pre-registered >= 2:  MISS
+  P4  residual correlation: significant mid on 3 of 3, not at top on 0 of 3   MISS
+
+  lambda is the size of a latent item factor shared by the group, in
+  logits. The power column is the smallest one the union test would
+  catch four times in five; 'never' means it does not reach 80 % even at
+  the largest lambda tried.
+
+  The residual correlation is the same question asked without a coverage
+  ceiling: correlate each system's Rasch residuals with each other's
+  inside the group and average over pairs. Every simulated board is
+  refitted so that its residuals carry the same constraint the data's do;
+  without that, a board with few systems shows complementarity that is
+  only the estimator (-1/(J-1), which is -0.04 at J = 24).

@@ -45,9 +45,12 @@ SELF-CHECKS (no table if any fails)
   * calibration: at lambda = 0 the rejection rate must sit between 1 % and
     12 % for every board and both groups, or the power curve is measured off a
     broken test;
-  * monotonicity: the rejection rate must not fall as lambda grows, allowing
-    one reversal per curve for simulation noise;
-  * the residual-correlation null must have spread on every board and group.
+  * monotonicity: the rejection rate must not fall as lambda grows by more
+    than two simulation standard errors, allowing one such reversal per curve;
+  * the residual-correlation null must have spread on every board and group;
+  * the null must be refitted, so that both sides carry the constraint fitting
+    imposes on residuals - about -1/(J-1) of mean pairwise correlation, which
+    on a 24-system board is the size of the effect being tested.
 
     python redundancy_power.py
 """
@@ -61,9 +64,11 @@ import numpy as np
 from top_redundancy import (BOARDS, TOPK, fit_rasch, group_indices, load,
                             sigmoid, simulate, stats)
 
+REFIT_NULLS = 299    # each null board is refitted, so this is the slow loop
+
 SEED = 20260824
-NULLS = 299
-POWER_SIMS = 120
+NULLS = 599
+POWER_SIMS = 400
 LAMBDAS = [0.0, 0.15, 0.30, 0.50, 0.75, 1.10, 1.60]
 ALPHA = 0.05
 
@@ -81,35 +86,67 @@ def resid_corr(x, theta, b, idx, topk=TOPK):
     return float(c[iu].mean())
 
 
+def _score_preserving_shift(th_j, b, lam, z, target, iters=25):
+    """Newton for the delta that restores this system's expected score."""
+    d = 0.0
+    for _ in range(iters):
+        p = sigmoid(th_j + d - b + lam * z)
+        f = p.mean() - target
+        if abs(f) < 1e-10:
+            break
+        d -= f / max((p * (1 - p)).mean(), 1e-9)
+    return d
+
+
 def simulate_dep(theta, b, idx, lam, rng, topk=TOPK):
-    """A board whose GROUP members share a latent item factor of size lam."""
+    """A board whose group shares a latent item factor of size lam.
+
+    The factor is added to every system in the group's WINDOW, and each of them
+    is then shifted so its expected score is unchanged. Without that shift the
+    factor pulls scores toward 0.5, the injected systems drop out of the top,
+    and the test measures whoever replaced them - which is why the first
+    version of this file had flat power curves.
+    """
     p = sigmoid(theta[:, None] - b[None, :])
     if lam > 0:
         z = rng.normal(0.0, 1.0, b.shape[0])
-        g = idx[:topk]
         p = p.copy()
-        p[g] = sigmoid(theta[g][:, None] - b[None, :] + lam * z[None, :])
+        for j in idx:
+            target = float(sigmoid(theta[j] - b).mean())
+            d = _score_preserving_shift(float(theta[j]), b, lam, z, target)
+            p[j] = sigmoid(theta[j] + d - b + lam * z)
     return (rng.random(p.shape) < p).astype(float)
 
 
-def null_draws(x, theta, b, kind, rng, sims=NULLS):
-    u, rc = [], []
+def null_draws_both(theta, b, rng, sims=REFIT_NULLS):
+    """Null distributions for both groups, off the same simulated boards.
+
+    Each board is REFITTED and its residuals taken against its own fit, so the
+    null carries the same constraint the data does: fitting forces each item's
+    residual sum across systems to zero, which by itself produces a mean
+    pairwise correlation near -1/(J-1). Measuring the null against the true
+    parameters instead left that constraint out of one side of the comparison,
+    and on a 24-system board it was the whole of the effect.
+    """
+    out = {"top": {"u": [], "rc": []}, "mid": {"u": [], "rc": []}}
     for _ in range(sims):
         y = simulate(theta, b, rng)
-        idx = group_indices(y, kind)
-        u.append(stats(y, idx)["union"])
-        rc.append(resid_corr(y, theta, b, idx))
-    return np.array(u), np.array(rc)
+        th2, b2 = fit_rasch(y)
+        for kind in ("top", "mid"):
+            idx = group_indices(y, kind)
+            out[kind]["u"].append(stats(y, idx)["union"])
+            out[kind]["rc"].append(resid_corr(y, th2, b2, idx))
+    return {k: (np.array(v["u"]), np.array(v["rc"])) for k, v in out.items()}
 
 
 def power_at(theta, b, kind, lam, u_null, rc_null, rng, x_shape, sims=POWER_SIMS):
     """Share of dependent boards the union test rejects at alpha."""
     lo = float(np.quantile(u_null, ALPHA))
+    order = np.argsort(-sigmoid(theta[:, None] - b[None, :]).mean(axis=1))
+    idx0 = (order[:max(TOPK, 30)] if kind == "top"
+            else order[max(0, len(order) // 2 - TOPK // 2):][:max(TOPK, 30)])
     hits = 0
     for _ in range(sims):
-        idx0 = np.argsort(-sigmoid(theta[:, None] - b[None, :]).mean(axis=1))
-        idx0 = idx0[:max(TOPK, 30)] if kind == "top" else idx0[
-            max(0, len(idx0) // 2 - TOPK // 2):][:max(TOPK, 30)]
         y = simulate_dep(theta, b, idx0, lam, rng)
         idx = group_indices(y, kind)
         if stats(y, idx)["union"] < lo:
@@ -136,9 +173,11 @@ def main() -> int:
         x = load(path)
         theta, b = fit_rasch(x)
         rows[name] = {"x": x, "theta": theta, "b": b, "groups": {}}
+        print("    null (refitting every simulated board) ...")
+        nulls = null_draws_both(theta, b, rng)
         for kind in ("top", "mid"):
-            print(f"    {kind}: null, statistic, power curve ...")
-            u_null, rc_null = null_draws(x, theta, b, kind, rng)
+            print(f"    {kind}: statistic, power curve ...")
+            u_null, rc_null = nulls[kind]
             idx = group_indices(x, kind)
             obs_u = stats(x, idx)["union"]
             obs_rc = resid_corr(x, theta, b, idx)
@@ -158,7 +197,8 @@ def main() -> int:
             if not (0.01 <= r0 <= 0.12):
                 bad_cal.append(f"{name}/{kind} {r0:.3f}")
             ps = [p for _, p in g["curve"]]
-            drops = sum(1 for a, c in zip(ps, ps[1:]) if c < a - 1e-9)
+            se2 = 2.0 * (0.25 / POWER_SIMS) ** 0.5      # two standard errors
+            drops = sum(1 for a, c in zip(ps, ps[1:]) if c < a - se2)
             if drops > 1:
                 bad_mono.append(f"{name}/{kind} {drops}")
             if g["rc_sd"] <= 1e-12:
@@ -226,8 +266,10 @@ def main() -> int:
     p("")
     p("  The residual correlation is the same question asked without a coverage")
     p("  ceiling: correlate each system's Rasch residuals with each other's")
-    p("  inside the group and average over pairs. If it agrees with union(10),")
-    p("  the ceiling did not make yesterday's result; if it disagrees, it did.")
+    p("  inside the group and average over pairs. Every simulated board is")
+    p("  refitted so that its residuals carry the same constraint the data's do;")
+    p("  without that, a board with few systems shows complementarity that is")
+    p("  only the estimator (-1/(J-1), which is -0.04 at J = 24).")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("redundancy_power_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
