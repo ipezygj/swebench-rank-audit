@@ -98,10 +98,33 @@ heterogeneity averages out of the aggregate and matters entirely for the claim.
 Neither do they predict the TOP. A simulated board with SWE-bench Verified's
 shape and its own SNR of 3.1 reproduces the established share (38.3 % against
 37.9 %) and the entropy (52.7 % against 54.2 %) and misses the number of
-systems that could be first by a factor of six - 3 against 19
-(`target_board.py`). The aggregate quantities are set by four numbers; the top
-is set by the shape of the field there, and every real board has a dense
-cluster at the top that a Gaussian field does not.
+systems that could be first by a factor of six (`target_board.py`). That miss
+survives being stated properly, which at first it was not: tie@1 moves from one
+ability draw of a field spec to the next, so the twin's prediction is an
+interval and not the single number `target_board.py` prints. Over 99 draws
+SWE-bench Verified's twin gives 2 [1-7] against a real 19, and the real value falls outside
+the twin's central 90 % on 6 of 9 boards (`top_compression.py`).
+
+What causes it is the SHAPE of the field, not the correlation between systems.
+Two twins with the same J, n and latent spread separate the two: one keeps the
+real score shape and gives it synthetic independent item noise, the other keeps
+the real residual matrix and hangs it on a Gaussian ability vector. The shape
+twin contains the real tie@1 on 7 of 9 boards and is closer to it than the
+correlation twin on 8 of 8 boards where the two differ, while the correlation
+twin is indistinguishable from the plain Gaussian one on every row. The
+item-level dependence that makes paired comparison powerful does not change how
+many systems can be first; the spacing of the field does.
+
+The spacing is not always a cluster at the top, and the earlier wording here -
+"every real board has a dense cluster at the top" - was wrong twice over. The
+real gap between first and second sits below the twin's median on 7 of 9 boards,
+but CASP14 and LiveBench go the other way, and where compression appears it is
+often board-wide: MTEB (0.002 at the top, 0.001 in the bulk) and TabArena's 45
+variants (0.070, 0.002) are compressed everywhere. SWE-bench Verified is the
+clean case of a crowded top: 0.000 at the top against 0.992 in the bulk,
+compressed at the front and stretched in the middle. Top-specific compression
+was pre-registered for at least 6 of 9 boards and holds on 3; the prediction is
+recorded as a miss in `top_compression_results.txt`.
 
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial

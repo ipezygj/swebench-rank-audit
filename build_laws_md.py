@@ -41,6 +41,19 @@ def law2_rows():
     return rows
 
 
+def top_rows():
+    """(board, real, gauss interval, shape interval, q top, q bulk) from top_compression."""
+    rows = {}
+    for line in read("top_compression_results.txt").splitlines():
+        m = re.match(r"\s{2}(\S.*?)\s{2,}(\d+)\s+(\d+)\s+"
+                     r"(\d+ \[\d+-\d+\]\*?)\s+(\d+ \[\d+-\d+\]\*?)\s+"
+                     r"(\d+ \[\d+-\d+\])\s+([\d.]+)\s+([\d.]+)", line)
+        if m:
+            rows[m.group(1).strip()] = {"J": m.group(2), "real": m.group(3), "gauss": m.group(4),
+                                        "q_top": m.group(7), "q_bulk": m.group(8)}
+    return rows
+
+
 def grab(name, pattern, group=1):
     m = re.search(pattern, read(name))
     return m.group(group) if m else "MISSING"
@@ -134,13 +147,46 @@ p("by integrating over the pairwise sigma distribution (`law1_pairwise.py`: mean
 p("error 4.4 -> 4.1 points), which is the same statement from the other side - the")
 p("heterogeneity averages out of the aggregate and matters entirely for the claim.")
 p("")
+TOP = top_rows()
+_sw = TOP.get("SWE-bench Verified", {})
+_mt = TOP.get("MTEB English v2", {})
+_tb = TOP.get("TabArena 45 variants", {})
+_out = grab("top_compression_results.txt", r"outside the Gaussian twin's interval on (\d+ of \d+)")
+_ins = grab("top_compression_results.txt", r"inside the shape twin's interval on (\d+ of \d+)")
+_cls = grab("top_compression_results.txt", r"shape median closer than corr on (\d+ of \d+)")
+_blw = grab("top_compression_results.txt", r"top gap below the twin median on (\d+ of \d+)")
+_spc = grab("top_compression_results.txt", r"top percentile >= 0.25 below bulk on (\d+ of \d+)")
 p("Neither do they predict the TOP. A simulated board with SWE-bench Verified's")
 p("shape and its own SNR of 3.1 reproduces the established share (38.3 % against")
 p("37.9 %) and the entropy (52.7 % against 54.2 %) and misses the number of")
-p("systems that could be first by a factor of six - 3 against 19")
-p("(`target_board.py`). The aggregate quantities are set by four numbers; the top")
-p("is set by the shape of the field there, and every real board has a dense")
-p("cluster at the top that a Gaussian field does not.")
+p("systems that could be first by a factor of six (`target_board.py`). That miss")
+p("survives being stated properly, which at first it was not: tie@1 moves from one")
+p("ability draw of a field spec to the next, so the twin's prediction is an")
+p("interval and not the single number `target_board.py` prints. Over 99 draws")
+p(f"SWE-bench Verified's twin gives {_sw.get('gauss', 'MISSING').rstrip('*')} against a real "
+  f"{_sw.get('real', 'MISSING')}, and the real value falls outside")
+p(f"the twin's central 90 % on {_out} boards (`top_compression.py`).")
+p("")
+p("What causes it is the SHAPE of the field, not the correlation between systems.")
+p("Two twins with the same J, n and latent spread separate the two: one keeps the")
+p("real score shape and gives it synthetic independent item noise, the other keeps")
+p("the real residual matrix and hangs it on a Gaussian ability vector. The shape")
+p(f"twin contains the real tie@1 on {_ins} boards and is closer to it than the")
+p(f"correlation twin on {_cls} boards where the two differ, while the correlation")
+p("twin is indistinguishable from the plain Gaussian one on every row. The")
+p("item-level dependence that makes paired comparison powerful does not change how")
+p("many systems can be first; the spacing of the field does.")
+p("")
+p("The spacing is not always a cluster at the top, and the earlier wording here -")
+p('"every real board has a dense cluster at the top" - was wrong twice over. The')
+p(f"real gap between first and second sits below the twin's median on {_blw} boards,")
+p("but CASP14 and LiveBench go the other way, and where compression appears it is")
+p(f"often board-wide: MTEB ({_mt.get('q_top', '?')} at the top, {_mt.get('q_bulk', '?')} in the bulk) and TabArena's 45")
+p(f"variants ({_tb.get('q_top', '?')}, {_tb.get('q_bulk', '?')}) are compressed everywhere. SWE-bench Verified is the")
+p(f"clean case of a crowded top: {_sw.get('q_top', '?')} at the top against {_sw.get('q_bulk', '?')} in the bulk,")
+p("compressed at the front and stretched in the middle. Top-specific compression")
+p(f"was pre-registered for at least 6 of 9 boards and holds on {_spc.split()[0] if _spc != 'MISSING' else 'MISSING'}; the prediction is")
+p("recorded as a miss in `top_compression_results.txt`.")
 p("")
 p("Neither law predicts the future. Pair sharpness at entry does not predict being")
 p("overtaken later once score is held fixed (`kappa_predicts_future.py`, partial")
