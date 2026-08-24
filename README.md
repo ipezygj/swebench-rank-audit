@@ -156,12 +156,20 @@ validated against a permutation null.
 
 ### Unsorted (add to a group in build_readme.py)
 
+- `case_augment.py` - A named case: what the board could and could not tell Augment Code
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
 - `ceiling_effect.py` - Is the top unresolvable because the items are too easy for it?
+- `conformance_cost.py` - What does conformance cost in compute?
 - `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
+- `effective_items.py` - How many of a benchmark's items actually separate the two systems at its top
+- `headline_fragility.py` - How many items decide the headline?
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?
+- `run_all.py` - Run every tool and record whether it still works
+- `selection_regret.py` - If you pick the leader, how much do you lose?
+- `target_board.py` - What would a benchmark that can name a winner look like?
+- `top_compression.py` - Why the laws reproduce a board and still miss its top by a factor of six
 
 ## How the results were produced
 

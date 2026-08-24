@@ -176,6 +176,39 @@ them, on nine boards of nine; on the smaller boards the factor is 1.1 to 1.3
 (`cheap_entry.py`). A submission policy can therefore offer a cheap tier
 without giving up the ability to place its entrants.
 
+## 5b. Queued for the next version, not part of 0.2
+
+Recorded here so it ships in one revision rather than as a same-week patch.
+
+**R11 (proposed): report how many items carry the headline comparison.** For
+the pair the board's headline is about, report `n_eff`, the participation
+ratio of their difference series, which on pass/fail items is exactly
+McNemar's discordant count `b + c`, and alongside it `m* = n_eff * (2/t)^2`,
+the carrying items that comparison would need to reach `t = 2` at its current
+effect size (`effective_items.py`). Measured on the nine matrices, the top
+pair is carried by 7 % of the items on SWE-bench Verified (36 of 500, split
+evenly, so `m*` is unbounded), 10 % on MathArena and 25 % on LiveBench, and is
+more concordant than a random pair of the same board on seven boards of nine.
+The number separates two situations a benchmark owner cannot otherwise tell
+apart: a top that a few dozen more discriminating items would settle
+(LiveBench 22, CASP14 1) and a top that no quantity of items of the same kind
+will (SWE-bench, MTEB). Two cautions belong with it: the ratio is generous on
+boards with few continuous items, where nearly every item differs a little and
+`n_eff / n` says more about `n` than about evidence; and `m*` assumes the
+paired statistic grows as the square root of the carrying items, which was
+tested by prediction and holds within 12 % on four boards and fails by 161 %
+on one, whose top pair sits in 13 of 51 items.
+
+**Correction to the commentary in 4b, already applied to LAWS.md.** The claim
+that every real board has a dense cluster at the top is false on two boards
+and not top-specific on four: the real first-to-second gap is below its
+Gaussian twin's median on seven of nine, but CASP14 and LiveBench go the other
+way, and MTEB and TabArena's 45 variants are compressed throughout rather than
+at the front (`top_compression.py`). What does hold is the cause: the twin
+that keeps the real score shape contains the real number of possible firsts on
+seven of nine boards, while the twin that keeps the real residual matrix is
+indistinguishable from a plain Gaussian one everywhere.
+
 ## 6. Status
 
 Draft. Validated on seven matrices from five fields (code, embeddings, QA,
