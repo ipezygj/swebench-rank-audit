@@ -170,6 +170,7 @@ validated against a permutation null.
 - `holm_pipeline_diff.py` - What changed across the whole repo when the construction was corrected
 - `holm_recompute.py` - Recompute every board under a construction that holds its coverage
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
+- `law2_closed_form.py` - Is law 2 a corollary of law 1, or does the twin know something extra?
 - `laws_paper/build_paper.py` - Assemble the two-laws paper from the results files, so no number is retyped
 - `laws_paper/make_anon_mirror.py` - Build the anonymised code artefact for double-blind review
 - `quantisation_curve.py` - How many score levels does an item need?

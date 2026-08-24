@@ -240,6 +240,34 @@ item-level noise is added, and the identical machinery is run on the result.
 The twin has no skew, no clusters and no outliers; if the real board's
 entropy needed any of those, the twin would miss.
 
+\paragraph{Most of what the twin knows is two numbers.} A partial order with
+more relations permits fewer total orders, and the established share is
+exactly the density of that partial order, so entropy should be largely a
+function of the established share and the width of the field. It is. Across
+the nine boards, Spearman's correlation between the established share and
+$H/\log_2 J!$ is $-0.83$ ($p = 0.005$), and a linear fit in the established
+share and $\log J$, scored by leave-one-out so that no board helps predict
+itself, reaches a mean absolute error of 2.7 points against the twin's 7.8
+and against 8.4 for predicting the average. With the established share
+shuffled between boards the fit is worse in every one of 199 shuffles, so
+the relation is not an artefact of fitting three parameters to nine points
+(\texttt{law2\_closed\_form.py}).
+
+This makes law 2 a corollary of law 1 in substance -- law 1 predicts the
+established share, and the established share carries the entropy -- and it
+replaces a black box with something a reader can reason about.
+
+\paragraph{It does not make the twin redundant.} The fit has three free
+parameters and the twin has none, so the five-point margin above is not a
+comparison between things of the same kind. The held-out board settles it as
+far as one board can: fitted on the nine and applied to the board reserved
+before any threshold was written, the two-number form predicts 49.0\,\%
+against an actual 47.3\,\%, an error of $+1.6$; the twin said 46.1\,\%, an
+error of $-1.2$. Out of sample the parameter-free construction is
+marginally the better of the two, and the five-point margin on the nine is
+at least partly the fit seeing them. We therefore report the two-number form
+as the interpretation of law 2 and the twin as its statement.
+
 Two self-checks guard the construction: a twin of a Gaussian field must
 reproduce its own entropy within three points on two independent seeds, and
 the twin must reproduce its target's $\tau$ and $\sigma_p$ within 10\,\%.

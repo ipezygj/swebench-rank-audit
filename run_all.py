@@ -34,7 +34,7 @@ SKIP = {
     "_aa_scrape.py", "_add_cites.py",
 }
 ARGS = {"leaderboard_standard.py": ["--all"]}   # tools that need an argument to do anything
-SLOW = {"top_compression.py", "effective_items.py", "family_clustering.py", "family_generalises.py", "top_redundancy.py", "redundancy_power.py", "detectable_difference.py", "tie_coverage.py", "tie_coverage_boards.py", "holm_recompute.py", "shape_correction.py", "shape_within.py", "leaderboard_standard.py", "chase_refit.py", "chase_correlated.py", "lineage_tree.py", "target_board.py",
+SLOW = {"top_compression.py", "effective_items.py", "family_clustering.py", "family_generalises.py", "top_redundancy.py", "redundancy_power.py", "detectable_difference.py", "tie_coverage.py", "tie_coverage_boards.py", "holm_recompute.py", "shape_correction.py", "shape_within.py", "law2_closed_form.py", "leaderboard_standard.py", "chase_refit.py", "chase_correlated.py", "lineage_tree.py", "target_board.py",
         "method_independence.py", "sibling_chase.py", "chase_model.py", "cluster_bootstrap.py"}
 FAIL_MARK = "A CHECK FAILED"
 

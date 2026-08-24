@@ -410,6 +410,34 @@ p(r"item-level noise is added, and the identical machinery is run on the result.
 p(r"The twin has no skew, no clusters and no outliers; if the real board's")
 p(r"entropy needed any of those, the twin would miss.")
 p("")
+p(r"\paragraph{Most of what the twin knows is two numbers.} A partial order with")
+p(r"more relations permits fewer total orders, and the established share is")
+p(r"exactly the density of that partial order, so entropy should be largely a")
+p(r"function of the established share and the width of the field. It is. Across")
+p(r"the nine boards, Spearman's correlation between the established share and")
+p(r"$H/\log_2 J!$ is $-0.83$ ($p = 0.005$), and a linear fit in the established")
+p(r"share and $\log J$, scored by leave-one-out so that no board helps predict")
+p(r"itself, reaches a mean absolute error of 2.7 points against the twin's 7.8")
+p(r"and against 8.4 for predicting the average. With the established share")
+p(r"shuffled between boards the fit is worse in every one of 199 shuffles, so")
+p(r"the relation is not an artefact of fitting three parameters to nine points")
+p(r"(\texttt{law2\_closed\_form.py}).")
+p("")
+p(r"This makes law 2 a corollary of law 1 in substance -- law 1 predicts the")
+p(r"established share, and the established share carries the entropy -- and it")
+p(r"replaces a black box with something a reader can reason about.")
+p("")
+p(r"\paragraph{It does not make the twin redundant.} The fit has three free")
+p(r"parameters and the twin has none, so the five-point margin above is not a")
+p(r"comparison between things of the same kind. The held-out board settles it as")
+p(r"far as one board can: fitted on the nine and applied to the board reserved")
+p(r"before any threshold was written, the two-number form predicts 49.0\,\%")
+p(r"against an actual 47.3\,\%, an error of $+1.6$; the twin said 46.1\,\%, an")
+p(r"error of $-1.2$. Out of sample the parameter-free construction is")
+p(r"marginally the better of the two, and the five-point margin on the nine is")
+p(r"at least partly the fit seeing them. We therefore report the two-number form")
+p(r"as the interpretation of law 2 and the twin as its statement.")
+p("")
 p(r"Two self-checks guard the construction: a twin of a Gaussian field must")
 p(r"reproduce its own entropy within three points on two independent seeds, and")
 p(r"the twin must reproduce its target's $\tau$ and $\sigma_p$ within 10\,\%.")
@@ -753,3 +781,28 @@ out.write_text(text + "\n", encoding="utf-8", newline="\n")
 missing = text.count("MISSING") - text.count("texttt{MISSING}")
 print(f"wrote paper.tex: {len(L)} lines, law1 rows {len(law1_rows())}, "
       f"law2 rows {len(law2_rows())}, tenth rows {len(tenth_rows())}, MISSING {missing}")
+
+# Compile here rather than separately. A failed compile leaves the previous pdf
+# in place, and every check run afterwards then reads a stale file and reports
+# that all is well - which is exactly what happened once.
+import shutil
+import subprocess
+import time
+
+if shutil.which("tectonic"):
+    before = out.with_suffix(".pdf")
+    stamp = before.stat().st_mtime if before.exists() else 0.0
+    r = subprocess.run(["tectonic", "-X", "compile", str(out), "--outdir", "."],
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    log = (r.stdout or "") + (r.stderr or "")
+    errs = [l for l in log.splitlines() if l.lower().startswith("error")]
+    fresh = before.exists() and before.stat().st_mtime > stamp
+    if r.returncode == 0 and fresh and not errs:
+        print(f"compiled paper.pdf ({before.stat().st_size // 1024} kB)")
+    else:
+        print("COMPILE FAILED - paper.pdf is stale, do not read it")
+        for e in errs[:5]:
+            print("   ", e)
+        raise SystemExit(1)
+else:
+    print("tectonic not found: paper.tex written, not compiled")
