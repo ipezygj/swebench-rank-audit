@@ -1,0 +1,38 @@
+DOES THE BASE-MODEL CLUSTER HOLD OFF SWE-BENCH, AND DOES COLLAPSING IT HELP?
+==============================================================================================================
+  leaderboard               J  fams  pairs  gap same  gap diff      p  k same  k diff      p
+  SWE-bench Verified      134    13   2686    0.1850    0.2351  0.001  0.9933  1.0020  0.006
+  MTEB English v2         181    37    276    0.0350    0.1098  0.001  0.5091  0.9645  0.001
+  LiveBench               152    21    611    0.1463    0.1986  0.001  0.9246  1.0024  0.001
+  MathArena 2025           35     7     60    0.1012    0.1061  0.327  0.9461  1.0040  0.009
+  LMArena categories       35    10     45    0.0616    0.0864  0.011  0.7659  1.0079  0.001
+
+  leaderboard               J  J collapsed  tie@1  collapsed  random drop  5th pct  below?
+  SWE-bench Verified      134           89     19         13           13      9.0      no
+  MTEB English v2         181           80     16          9            7      5.0      no
+  LiveBench               152           37      8          3            4      1.0      no
+  MathArena 2025           35           11     11          6            3      2.0      no
+  LMArena categories       35           14      4          3            2      1.0      no
+
+  P1  gap effect on 3 of the 4 new boards        pre-registered >= 3:  HIT
+  P2  kappa effect on 4 of the 4 new boards      pre-registered >= 3:  HIT
+  P3  collapse beats random dropping on 0 of 5   pre-registered >= 3:  MISS
+  P4  collapse reaches a single first place on 0          pre-registered >= 1:  MISS
+
+  The labelling rule has no free parameter and every call it made is
+  printed below, so a reader can audit it rather than trust it.
+
+  SWE-bench Verified - families with two or more members:
+    claude-3 (8), claude-3.5 (8), claude-4 (7), gpt-4o (6), qwen (6), claude-4.5 (4), llama (3), gemini (3), claude-3.7 (3), kimi (3), gpt-5 (3), gpt-4 (2), mistral (2)
+
+  MTEB English v2 - families with two or more members:
+    f (11), e (10), gte (7), snowflake (7), granite (6), jina (5), mmlw (5), nomic (5), arabic (5), potion (5), rubert (5), gist (4), cohere (4), bge (4), qwen (3), kalm (3), text (3), stella (3), multilingual (3), bilingual (3), sentence (3), labse (3), m (3), jasper (2), seed (2), sfr (2), nv (2), tarka (2), gritlm (2), llm (2), lco (2), user (2), bekko (2), voyage (2), paraphrase (2), static (2), sbert (2)
+
+  LiveBench - families with two or more members:
+    gemini (20), qwen (15), deepseek (11), gpt (11), mistral (9), claude (9), meta (8), phi (8), o (8), grok (7), command (4), gemma (4), llama (3), qwq (3), amazon (3), chatgpt (3), coding (2), dracarys (2), sonar (2), vicuna (2), zephyr (2)
+
+  MathArena 2025 - families with two or more members:
+    gpt (7), deepseek (5), grok (5), glm (4), gemini (4), o (4), kimi (2)
+
+  LMArena categories - families with two or more members:
+    gpt (7), claude (5), gemini (3), llama (3), qwen (3), command (2), mixtral (2), phi (2), reka (2), yi (2)
