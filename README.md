@@ -162,6 +162,7 @@ validated against a permutation null.
 - `ceiling_effect.py` - Is the top unresolvable because the items are too easy for it?
 - `conformance_cost.py` - What does conformance cost in compute?
 - `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
+- `detectable_difference.py` - The smallest difference each leaderboard could have detected, against the one it prints
 - `effective_items.py` - How many of a benchmark's items actually separate the two systems at its top
 - `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
 - `family_generalises.py` - Does the base-model cluster hold off SWE-bench, and would collapsing it help?

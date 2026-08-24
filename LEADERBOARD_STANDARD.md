@@ -199,6 +199,32 @@ paired statistic grows as the square root of the carrying items, which was
 tested by prediction and holds within 12 % on four boards and fails by 161 %
 on one, whose top pair sits in 13 of 51 items.
 
+**R12 (proposed): report the smallest difference the board could have
+detected.** For the pair the headline is about, report the minimum detectable
+effect at 80 % power and the 5 % level, using that pair's own difference SD and
+the board's item count (`detectable_difference.py`). It costs one line and is
+computable before a single system is run, because it is a property of the
+instrument and not of the entrants. Measured on the nine matrices, the MDE
+exceeds the gap the board actually prints on **seven of nine**: SWE-bench
+Verified could have detected 0.0337 and prints 0.0000, MTEB could have detected
+0.0284 and prints 0.0001, MathArena is short by 5.8x. Only CASP14 (0.3) and
+LiveBench (0.9) can resolve their own top gap. Two things belong with the
+number. Its own assumption - that the statistic grows as the square root of the
+item count - is testable and is reported alongside: it holds within 3 % on the
+boards whose evidence is spread (SWE-bench Verified's largest item carries 2.8 %
+of the top pair's absolute difference) and fails on the two TabArena boards,
+where one item carries 22 % and the ratio comes out at 0.96 instead of 1.41.
+And the formula is checked by planting a difference of exactly the computed MDE
+into the board's own difference series, which should then be caught four times
+in five; it reads 0.74 to 0.88 across the nine.
+
+The reason this requirement exists is worth stating plainly, because it is the
+mistake this project made itself and had to correct twice in one evening: a
+comparison that fails to separate is evidence of nothing until its power is
+known. A statistic with no power reads exactly like a statistic that found
+nothing, and a leaderboard that prints an order without an MDE is asking its
+readers to tell those two apart with no way to do it.
+
 **Correction to the commentary in 4b, already applied to LAWS.md.** The claim
 that every real board has a dense cluster at the top is false on two boards
 and not top-specific on four: the real first-to-second gap is below its
