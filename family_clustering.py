@@ -53,7 +53,11 @@ SELF-CHECKS (no table if any fails)
     machinery;
   * the date strata must be non-degenerate: at least three quarters must
     contain two or more families, otherwise the by-date null cannot permute
-    anything and P3 is vacuous.
+    anything and P3 is vacuous;
+  * P4's null must have spread. Permuting labels inside the top group alone
+    leaves its same-family count exactly invariant - 500 draws gave one value,
+    sd 1e-17 - so the null runs over the whole labelled board and the check
+    refuses the table if it still cannot move.
 
     python family_clustering.py
 """
@@ -86,8 +90,14 @@ def load():
 
 
 def quarter(d) -> str:
-    ts = pd.Timestamp(d)
-    return f"{ts.year}Q{(ts.month - 1) // 3 + 1}"
+    """parse_dates returns YYYYMMDD as an int, not a timestamp.
+
+    Reading it as one put every submission in 1970Q1, which the strata check
+    caught: a by-date null with one stratum is the free null wearing a label,
+    and P3 would have silently repeated P1.
+    """
+    d = int(d)
+    return f"{d // 10000}Q{((d // 100 % 100) - 1) // 3 + 1}"
 
 
 def pair_stats(x, keep):
@@ -180,6 +190,18 @@ def _check_null_centred(fam_kept, iu, gap, kap, strata) -> tuple[bool, str]:
     return 0.30 <= m <= 0.70, f"random labellings give mean p = {m:.2f} over {len(ps)} draws"
 
 
+def _check_p4_null_moves(fam_kept, strata, tidx, tiu, rng) -> tuple[bool, str]:
+    """A null with no spread prints a verdict it has not earned."""
+    def share_of(labels):
+        t = labels[tidx]
+        return float((t[tiu[0]] == t[tiu[1]]).mean())
+    draws = [share_of(permute_by_stratum(fam_kept, strata, rng)) for _ in range(200)]
+    sd = float(np.std(draws))
+    uniq = len(set(np.round(draws, 12)))
+    return sd > 1e-9, (f"the top-group null moves: {uniq} distinct values, sd "
+                       f"{100 * sd:.2f} points over 200 draws")
+
+
 def _check_strata(strata, fam_kept) -> tuple[bool, str]:
     good = 0
     for s in np.unique(strata):
@@ -197,10 +219,19 @@ def main() -> int:
     strata = np.array([quarter(dates[i]) for i in keep])
     iu, gap, kap = pair_stats(x, keep)
 
+    sc0 = x.mean(axis=1)
+    order0 = np.argsort(-sc0)
+    top_lab0 = [int(i) for i in order0[:TOPK] if fam[i] != ""]
+    pos0 = {int(i): j for j, i in enumerate(keep)}
+    tidx0 = np.array([pos0[i] for i in top_lab0])
+    tiu0 = np.triu_indices(len(tidx0), k=1)
+
     print("self-checks ...")
     checks = [_check_kappa_source(x, keep),
               _check_null_centred(fam_kept, iu, gap, kap, strata),
-              _check_strata(strata, fam_kept)]
+              _check_strata(strata, fam_kept),
+              _check_p4_null_moves(fam_kept, strata, tidx0, tiu0,
+                                   np.random.default_rng(9))]
     ok = True
     for passed, msg in checks:
         print(f"  [{'ok  ' if passed else 'FAIL'}] {msg}")
@@ -212,19 +243,24 @@ def main() -> int:
     rng = np.random.default_rng(SEED)
     r = run(fam_kept, iu, gap, kap, strata, rng)
 
-    # the top-20 concentration question
+    # the top-K concentration question, with the null taken over the WHOLE
+    # labelled board: permuting inside the top group alone cannot move it.
     sc = x.mean(axis=1)
-    top = np.argsort(-sc)[:TOPK]
-    top_lab = [i for i in top if fam[i] != ""]
-    tf = fam[top_lab]
-    tiu = np.triu_indices(len(top_lab), k=1)
-    obs_share = float((tf[tiu[0]] == tf[tiu[1]]).mean()) if len(top_lab) > 1 else float("nan")
-    tstrat = np.array([quarter(dates[i]) for i in top_lab])
-    shares = []
-    for _ in range(PERMS):
-        pm = permute_by_stratum(np.array(tf, dtype=object), tstrat, rng)
-        shares.append((pm[tiu[0]] == pm[tiu[1]]).mean())
+    order = np.argsort(-sc)
+    top_lab = [int(i) for i in order[:TOPK] if fam[i] != ""]
+    pos = {int(i): j for j, i in enumerate(keep)}
+    tidx = np.array([pos[i] for i in top_lab])
+    tiu = np.triu_indices(len(tidx), k=1)
+
+    def share_of(labels):
+        t = labels[tidx]
+        return float((t[tiu[0]] == t[tiu[1]]).mean())
+
+    obs_share = share_of(fam_kept)
+    shares = [share_of(permute_by_stratum(fam_kept, strata, rng)) for _ in range(PERMS)]
+    share_sd = float(np.std(shares))
     share_p = perm_p(obs_share, shares, lower_is_extreme=False)
+    p4_live = share_sd > 1e-9
 
     L = []
     p = L.append
@@ -246,7 +282,7 @@ def main() -> int:
     p(f"  Top {TOPK} by score: {len(top_lab)} labelled, same-family share of their pairs "
       f"{100 * obs_share:.0f} %,")
     p(f"  against a by-date null median of {100 * float(np.median(shares)):.0f} % "
-      f"(p = {share_p:.3f}).")
+      f"(sd {100 * share_sd:.1f} points, p = {share_p:.3f}).")
     p("")
     p(f"  P1  gap below the free null            p = {r['free']['gap_p']:.3f}   "
       f"{'HIT' if r['free']['gap_p'] < 0.05 else 'MISS'}")
@@ -255,7 +291,7 @@ def main() -> int:
     p(f"  P3  gap below the BY-DATE null         p = {r['date']['gap_p']:.3f}   "
       f"{'HIT' if r['date']['gap_p'] < 0.05 else 'MISS'}")
     p(f"  P4  top-{TOPK} family share above its by-date null   p = {share_p:.3f}   "
-      f"{'HIT' if share_p < 0.05 else 'MISS'}")
+      f"{('HIT' if share_p < 0.05 else 'MISS') if p4_live else 'VACUOUS - null cannot move'}")
     p("")
     p("  The free null asks whether the family label carries any information")
     p("  about proximity. The by-date null keeps every submission in its own")

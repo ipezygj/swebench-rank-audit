@@ -1,0 +1,26 @@
+IS THE CROWDED TOP A BASE-MODEL CLUSTER, OR A CROWDED CALENDAR?
+============================================================================================
+  SWE-bench Verified: 134 submissions, 62 name a base model, 17 families.
+  Pairs among the labelled: 1891, of which 130 share a family.
+
+  statistic                   same family   different   free null       p  by-date null       p
+  score gap                       0.1337      0.2656      0.2574   0.001        0.1636   0.011
+  kappa (pair sharpness)          0.9011      1.0098      1.0031   0.001        0.9586   0.001
+
+  Top 20 by score: 11 labelled, same-family share of their pairs 29 %,
+  against a by-date null median of 11 % (sd 3.6 points, p = 0.002).
+
+  P1  gap below the free null            p = 0.001   HIT
+  P2  kappa below the free null          p = 0.001   HIT
+  P3  gap below the BY-DATE null         p = 0.011   HIT
+  P4  top-20 family share above its by-date null   p = 0.002   HIT
+
+  The free null asks whether the family label carries any information
+  about proximity. The by-date null keeps every submission in its own
+  calendar quarter and permutes only which family it belongs to, so it
+  answers the question that matters: is the cluster the model, or is it
+  that the systems near the top are all recent?
+
+  72 of 134 submissions do not name a base model and are dropped rather
+  than guessed, which removes same-family pairs and weakens every effect
+  reported here.
