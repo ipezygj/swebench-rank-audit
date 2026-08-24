@@ -19,13 +19,19 @@ ARE THE SYSTEMS AT THE TOP DOING THE SAME WORK?
   assumes only that outcomes are independent given the two, so the whole
   distance is dependence between systems.
 
-  I pre-registered redundancy at the top and did not get it. Reading the
-  rows instead of the expectation:
+  SUPERSEDED: the reading below was drawn from a statistic later measured
+  to be nearly blind (union(10) rejects an injected latent factor of 1.6
+  logits only 24 % of the time on SWE-bench Verified). Residual
+  correlation, which has power, finds every group on every board MORE
+  dependent than independence predicts, the top of SWE-bench Verified by
+  the largest margin. See redundancy_power_results.txt.
+
+  What was concluded here, kept as the record:
     SWE-bench Verified     top 0.060, middle 0.025
     SWE-bench Lite         top 0.055, middle 0.075
     SWE-bench Test         top 1.000, middle 0.005
 
-  The top of these boards is where the independence null fits BEST, and
+  [overturned] The top of these boards is where the independence null fits BEST, and
   the middle is where it fails. Systems ranked in the middle cover less
   than independence predicts - they fail the same instances - while the
   systems crowding the top divide the items about as an independent field

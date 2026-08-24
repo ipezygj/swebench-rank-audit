@@ -153,22 +153,33 @@ an enriched top, not a top made of duplicates, and the other 71 % of top pairs
 are different families that the board still cannot separate. The cluster
 explains why the top is crowded; removing it does not uncrowd the top.
 
-Nor are they redundant, which was the last explanation left and the one I
-predicted. Fitting each binary board a Rasch model - system ability, item
-difficulty, nothing else - and simulating from it gives a field with the same
-scores and the same item solve rates in which systems are independent. The
-real top ten covers as much as that null does (0.060 on SWE-bench Verified,
-0.055 on Lite), while the MIDDLE of the board covers significantly less
-(0.025 and 2 of 3 boards): mid-ranked systems fail the same instances, and the
-systems crowding the top divide the items about as an independent field
-would (`top_redundancy.py`).
+They ARE redundant, and establishing that took two passes because the first
+statistic could not see it. Asking how much of each top ten's coverage
+exceeds a Rasch null - system ability, item difficulty, nothing else - found
+no dependence at the top and some in the middle, and I wrote that down as a
+finding. It was not one: injecting a latent factor of known size shows that
+the coverage statistic rejects a factor of 1.6 logits only a quarter of the
+time on SWE-bench Verified, so its silence was blindness
+(`redundancy_power.py`). Mean pairwise correlation of the Rasch residuals,
+with the null refitted so both sides carry the constraint fitting imposes,
+puts the top of SWE-bench Verified at 0.1209 against a null of -0.0147 - above
+every one of 299 simulated boards - and its middle at 0.0056. The excess at
+the top is roughly eight times the excess in the middle, and every group on
+every board is more dependent than independence predicts.
 
-So the crowded top is not an artefact of one family, not an artefact of
-correlated errors, and not fixable by ranking families. It is the plain
-reading: the systems are close, their difference is carried by a small and
-evenly split set of items, and the benchmark is being asked a question its
-item set cannot answer. That is a statement about the field as much as about
-the instrument, and it is the one a leaderboard is least equipped to make.
+That dependence does not, however, change how many systems could be first.
+The twin carrying the real residual matrix is indistinguishable from the
+plain Gaussian one on tie@1 (above), because the simultaneous rank sets are
+built on a multiplier bootstrap that already uses the dependence rather than
+paying for it. So the two findings sit together without contradiction: the
+systems at the top fail the same instances, and correcting for that fact is
+already in the machinery, which is why the top stays crowded either way.
+
+What remains, after a family explanation that does not survive collapsing
+and a redundancy explanation that does not change the rank sets, is the
+plain reading: the systems are close, their difference is carried by a small
+and evenly split set of items, and the benchmark is being asked a question
+its item set cannot answer.
 
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial

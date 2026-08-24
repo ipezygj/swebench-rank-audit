@@ -1,5 +1,16 @@
 """Are the systems crowding the top doing the same work, or different work?
 
+SUPERSEDED IN PART, 2026-08-24, by `redundancy_power.py`. The union(10)
+statistic used here turns out to have almost no power against the dependence
+it was meant to detect - 0.24 at a latent factor of 1.6 logits on SWE-bench
+Verified, and 0.06 in Lite's middle - so its failure to reject at the top said
+nothing about the top. Measured with residual correlation, which does have
+power and whose null is refitted so both sides carry the same constraint,
+every group on every board is significantly MORE dependent than independence
+predicts, and the top of SWE-bench Verified most of all. The tables below are
+what was computed; the conclusion drawn from them was wrong and is corrected
+in `redundancy_power_results.txt` and in LAWS.md.
+
 The chain so far: the top of a board is undecidable because of the shape of the
 field there (`top_compression.py`), the headline comparison is carried by a
 small fraction of the items (`effective_items.py`), the field's top is enriched
@@ -269,13 +280,19 @@ def main() -> int:
     p("  assumes only that outcomes are independent given the two, so the whole")
     p("  distance is dependence between systems.")
     p("")
-    p("  I pre-registered redundancy at the top and did not get it. Reading the")
-    p("  rows instead of the expectation:")
+    p("  SUPERSEDED: the reading below was drawn from a statistic later measured")
+    p("  to be nearly blind (union(10) rejects an injected latent factor of 1.6")
+    p("  logits only 24 % of the time on SWE-bench Verified). Residual")
+    p("  correlation, which has power, finds every group on every board MORE")
+    p("  dependent than independence predicts, the top of SWE-bench Verified by")
+    p("  the largest margin. See redundancy_power_results.txt.")
+    p("")
+    p("  What was concluded here, kept as the record:")
     for name, v in rows.items():
         t, m = v["top"], v["mid"]
         p(f"    {name:<22} top {t['u_p']:.3f}, middle {m['u_p']:.3f}")
     p("")
-    p("  The top of these boards is where the independence null fits BEST, and")
+    p("  [overturned] The top of these boards is where the independence null fits BEST, and")
     p("  the middle is where it fails. Systems ranked in the middle cover less")
     p("  than independence predicts - they fail the same instances - while the")
     p("  systems crowding the top divide the items about as an independent field")

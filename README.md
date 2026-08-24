@@ -168,6 +168,7 @@ validated against a permutation null.
 - `headline_fragility.py` - How many items decide the headline?
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?
+- `redundancy_power.py` - Was yesterday's result a finding, or a statistic running out of room?
 - `run_all.py` - Run every tool and record whether it still works
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `target_board.py` - What would a benchmark that can name a winner look like?
