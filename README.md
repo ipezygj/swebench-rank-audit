@@ -164,6 +164,7 @@ validated against a permutation null.
 - `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
 - `effective_items.py` - How many of a benchmark's items actually separate the two systems at its top
 - `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
+- `family_generalises.py` - Does the base-model cluster hold off SWE-bench, and would collapsing it help?
 - `headline_fragility.py` - How many items decide the headline?
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?

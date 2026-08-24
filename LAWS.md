@@ -135,9 +135,23 @@ null permutes family labels only WITHIN a quarter, keeping each submission's
 date and score: the gap effect survives it at p = 0.011 and the sharpness
 effect at p = 0.001 (`family_clustering.py`). Among the top twenty, 29 % of
 labelled pairs share a base model against 11 % for that null (p = 0.002).
-The crowded top is a base-model cluster and not a crowded calendar, which is
-why no quantity of items resolves it: the systems at the top are the same
-model wearing different harnesses.
+The crowded top is a base-model cluster and not a crowded calendar.
+
+It is not a SWE-bench peculiarity. Applying a labelling rule with no free
+parameter - the first run of letters in the lowercased name - to four other
+boards, the gap effect appears on 3 of the 4 and the sharpness effect on 4 of the 4
+(`family_generalises.py`), MTEB most sharply of all, where two models from one
+family compare at kappa 0.51 against 0.96 for two from different families.
+
+The obvious remedy does not work, and an earlier version of this paragraph
+asserted it would. Ranking families rather than submissions - keeping each
+family's best - takes SWE-bench from 19 possible first places to 13, which is
+what dropping the same number of systems AT RANDOM gives (13); across five
+boards the collapse beats random dropping on 0 of 5. The reason is visible in the
+top-twenty figure above: a same-family share of 29 % against a null of 11 % is
+an enriched top, not a top made of duplicates, and the other 71 % of top pairs
+are different families that the board still cannot separate. The cluster
+explains why the top is crowded; removing it does not uncrowd the top.
 
 Neither law predicts the future. Pair sharpness at entry does not predict being
 overtaken later once score is held fixed (`kappa_predicts_future.py`, partial
