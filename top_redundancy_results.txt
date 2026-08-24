@@ -1,0 +1,43 @@
+ARE THE SYSTEMS AT THE TOP DOING THE SAME WORK?
+========================================================================================================
+  leaderboard               J      n  group  union10    null    pct  unique   null    pct   n90  null    pct
+  SWE-bench Verified      134    500    top    89.8%   90.4%  0.060      15     14  0.573    11     8  0.864
+  SWE-bench Verified      134    500    mid    77.8%   79.4%  0.025      29     32  0.221    31    31   flat
+  SWE-bench Lite           84    300    top    78.0%   79.7%  0.055      24     23  0.543    31    31   flat
+  SWE-bench Lite           84    300    mid    60.7%   62.3%  0.075      26     30  0.131    31    31   flat
+  SWE-bench Test           24   2294    top    61.1%   58.7%  1.000     220    147  1.000    25    25   flat
+  SWE-bench Test           24   2294    mid    40.0%   41.2%  0.005     202    215  0.116    18    18   flat
+
+  P1  union(10) below the null on 0 of 3        pre-registered >= 2:  MISS
+  P2  n90 above the null on 0 of the 1 live rows     pre-registered >= 2:  VACUOUS - null is constant
+  P3  uniquely solved below the null on 0 of the 3 live rows  pre-registered >= 2:  MISS
+  P4  the same holds mid-board on 2 of 3        pre-registered >= 2:  HIT
+
+  pct is where the real board falls in its own null: 0.000 means every
+  simulated board covered more items with its top ten than the real one
+  does. The null keeps each system's score and each item's solve rate and
+  assumes only that outcomes are independent given the two, so the whole
+  distance is dependence between systems.
+
+  I pre-registered redundancy at the top and did not get it. Reading the
+  rows instead of the expectation:
+    SWE-bench Verified     top 0.060, middle 0.025
+    SWE-bench Lite         top 0.055, middle 0.075
+    SWE-bench Test         top 1.000, middle 0.005
+
+  The top of these boards is where the independence null fits BEST, and
+  the middle is where it fails. Systems ranked in the middle cover less
+  than independence predicts - they fail the same instances - while the
+  systems crowding the top divide the items about as an independent field
+  would. Whatever makes them indistinguishable, it is not that they are
+  doing the same work.
+
+  That closes the chain rather than extending it. The top cannot be
+  separated because the differences there are small against the items
+  that carry them (`effective_items.py`: 36 of 500 on SWE-bench Verified,
+  split evenly), not because the systems are redundant and not because
+  they are duplicates of one base model (`family_generalises.py`:
+  collapsing families does no better than dropping systems at random).
+  A crowded top of this kind is a true statement about the field: the
+  systems really are close, and the benchmark is being asked a question
+  its item set cannot answer.

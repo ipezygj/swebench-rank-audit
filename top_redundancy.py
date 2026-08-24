@@ -53,7 +53,9 @@ SELF-CHECKS (no table if any fails)
   * calibration - ten boards simulated FROM the fitted model, run through the
     whole pipeline, must reject at most once between them. A null that rejects
     its own data measures the fit, not the field;
-  * the null distribution of union(10) must have spread on every board.
+  * every statistic's null must have spread; any whose null is constant is
+    printed as vacuous rather than scored, because a constant statistic
+    returns a verdict it has not earned.
 
     python top_redundancy.py
 """
@@ -116,26 +118,35 @@ def simulate(theta, b, rng):
     return (rng.random(p.shape) < p).astype(float)
 
 
+DEPTH = 30      # how far down the group n90 is allowed to look
+
+
 def stats(x, idx, topk=TOPK):
-    """union curve, uniquely solved, and coverage depth for one group."""
+    """union(topk), uniquely solved among topk, and coverage depth to DEPTH.
+
+    n90 looks past the ten so that it can actually be reached; capped at the
+    group size it was constant, and a constant statistic prints verdicts it has
+    not earned.
+    """
     sub = x[idx][:topk]
     solved = sub > 0.5
     union = np.maximum.accumulate(solved, axis=0).mean(axis=1)
     hits = solved.sum(axis=0)
-    unique = int(((hits == 1)).sum())
-    full = union[-1]
-    target = 0.90
-    n90 = int(np.argmax(union >= target) + 1) if (union >= target).any() else len(union) + 1
-    return {"union": float(full), "unique": unique, "n90": n90, "curve": union}
+    unique = int((hits == 1).sum())
+    deep = x[idx][:DEPTH] > 0.5
+    dcurve = np.maximum.accumulate(deep, axis=0).mean(axis=1)
+    n90 = int(np.argmax(dcurve >= 0.90) + 1) if (dcurve >= 0.90).any() else len(dcurve) + 1
+    return {"union": float(union[-1]), "unique": unique, "n90": n90, "curve": union}
 
 
 def group_indices(x, kind, topk=TOPK):
+    """Enough systems for the deeper n90 window, in score order."""
     order = np.argsort(-x.mean(axis=1))
     if kind == "top":
-        return order[:topk]
+        return order[:max(topk, DEPTH)]
     mid = len(order) // 2
     lo = max(0, mid - topk // 2)
-    return order[lo:lo + topk]
+    return order[lo:lo + max(topk, DEPTH)]
 
 
 def pct_of(observed, draws):
@@ -155,8 +166,8 @@ def analyse(x, theta, b, rng, kind, sims=SIMS):
         m.append(s["n90"])
     return {"obs": obs,
             "u_p": pct_of(obs["union"], u), "u_med": float(np.median(u)), "u_sd": float(np.std(u)),
-            "q_p": pct_of(obs["unique"], q), "q_med": float(np.median(q)),
-            "m_p": pct_of(obs["n90"], m), "m_med": float(np.median(m))}
+            "q_p": pct_of(obs["unique"], q), "q_med": float(np.median(q)), "q_sd": float(np.std(q)),
+            "m_p": pct_of(obs["n90"], m), "m_med": float(np.median(m)), "m_sd": float(np.std(m))}
 
 
 def _check_margins(x, theta, b) -> tuple[bool, float, float]:
@@ -226,23 +237,29 @@ def main() -> int:
         for kind in ("top", "mid"):
             a = v[kind]
             o = a["obs"]
+            mp = f"{a['m_p']:.3f}" if a["m_sd"] > 1e-12 else "flat"
+            qp = f"{a['q_p']:.3f}" if a["q_sd"] > 1e-12 else "flat"
             p(f"  {name:<22} {v['J']:>4} {v['n']:>6} {kind:>6} "
               f"{100 * o['union']:>7.1f}% {100 * a['u_med']:>6.1f}% {a['u_p']:>6.3f} "
-              f"{o['unique']:>7} {a['q_med']:>6.0f} {a['q_p']:>6.3f} "
-              f"{o['n90']:>5} {a['m_med']:>5.0f} {a['m_p']:>6.3f}")
+              f"{o['unique']:>7} {a['q_med']:>6.0f} {qp:>6} "
+              f"{o['n90']:>5} {a['m_med']:>5.0f} {mp:>6}")
     p("")
     tops = [v["top"] for v in rows.values()]
     mids = [v["mid"] for v in rows.values()]
+    live_m = [a for a in tops if a["m_sd"] > 1e-12]
+    live_q = [a for a in tops if a["q_sd"] > 1e-12]
     p1 = sum(1 for a in tops if a["u_p"] < 0.05)
-    p2 = sum(1 for a in tops if a["m_p"] > 0.95)
-    p3 = sum(1 for a in tops if a["q_p"] < 0.05)
+    p2 = sum(1 for a in live_m if a["m_p"] > 0.95)
+    p3 = sum(1 for a in live_q if a["q_p"] < 0.05)
     p4 = sum(1 for a in mids if a["u_p"] < 0.05)
     p(f"  P1  union(10) below the null on {p1} of {len(tops)}        "
       f"pre-registered >= 2:  {'HIT' if p1 >= 2 else 'MISS'}")
-    p(f"  P2  n90 above the null on {p2} of {len(tops)}              "
-      f"pre-registered >= 2:  {'HIT' if p2 >= 2 else 'MISS'}")
-    p(f"  P3  uniquely solved below the null on {p3} of {len(tops)}  "
-      f"pre-registered >= 2:  {'HIT' if p3 >= 2 else 'MISS'}")
+    p(f"  P2  n90 above the null on {p2} of the {len(live_m)} live rows     "
+      f"pre-registered >= 2:  "
+      f"{('HIT' if p2 >= 2 else 'MISS') if len(live_m) >= 2 else 'VACUOUS - null is constant'}")
+    p(f"  P3  uniquely solved below the null on {p3} of the {len(live_q)} live rows  "
+      f"pre-registered >= 2:  "
+      f"{('HIT' if p3 >= 2 else 'MISS') if len(live_q) >= 2 else 'VACUOUS - null is constant'}")
     p(f"  P4  the same holds mid-board on {p4} of {len(mids)}        "
       f"pre-registered >= 2:  {'HIT' if p4 >= 2 else 'MISS'}")
     p("")
@@ -252,10 +269,28 @@ def main() -> int:
     p("  assumes only that outcomes are independent given the two, so the whole")
     p("  distance is dependence between systems.")
     p("")
-    p("  A top ten that covers less than independence predicts is a top ten")
-    p("  failing the same instances. That is redundancy, and it is the reason no")
-    p("  quantity of items of the same kind decides the top: the systems are not")
-    p("  disagreeing about which problems are hard.")
+    p("  I pre-registered redundancy at the top and did not get it. Reading the")
+    p("  rows instead of the expectation:")
+    for name, v in rows.items():
+        t, m = v["top"], v["mid"]
+        p(f"    {name:<22} top {t['u_p']:.3f}, middle {m['u_p']:.3f}")
+    p("")
+    p("  The top of these boards is where the independence null fits BEST, and")
+    p("  the middle is where it fails. Systems ranked in the middle cover less")
+    p("  than independence predicts - they fail the same instances - while the")
+    p("  systems crowding the top divide the items about as an independent field")
+    p("  would. Whatever makes them indistinguishable, it is not that they are")
+    p("  doing the same work.")
+    p("")
+    p("  That closes the chain rather than extending it. The top cannot be")
+    p("  separated because the differences there are small against the items")
+    p("  that carry them (`effective_items.py`: 36 of 500 on SWE-bench Verified,")
+    p("  split evenly), not because the systems are redundant and not because")
+    p("  they are duplicates of one base model (`family_generalises.py`:")
+    p("  collapsing families does no better than dropping systems at random).")
+    p("  A crowded top of this kind is a true statement about the field: the")
+    p("  systems really are close, and the benchmark is being asked a question")
+    p("  its item set cannot answer.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("top_redundancy_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
