@@ -33,11 +33,74 @@ can decide, and for two of the boards here the answer is almost nothing
 while for another it is everything.
 \end{abstract}
 
+\section{Introduction}
+
+A leaderboard prints an order. Some of that order is evidence and some of
+it is sampling noise on a finite item set, and the two are not
+distinguishable by looking at the table. This is not a new observation, and
+the tools for acting on it are not new either.
+
+\citet{card2020} measured the statistical power of NLP experiments and
+found that most attempted comparisons to state of the art on the GLUE tasks
+are underpowered, and that a 2\,000-sentence machine-translation test set
+has about 75\,\% power for a one-point BLEU difference. \citet{mogstad2024}
+give simultaneous confidence sets for ranks, and two 2026 papers carry that
+construction to model leaderboards \citep{rankintervals}.
+\citet{uncertaintyranking} quantify rank uncertainty by counting the linear
+extensions of the order induced by interval estimates.
+\citet{saturation} define an uncertainty-aware saturation index from
+leaderboard data and observe that discriminative power is lost once the top
+models sit within a couple of points.
+
+Every one of these measures a leaderboard that already exists. Power
+analysis needs the observed variance; rank intervals need the observed
+scores; the saturation index takes the highest observed score as its
+ceiling. That is the right thing to do when auditing a published table, and
+it leaves one question unanswered: \emph{how much ranking will a benchmark
+be able to support}, asked by someone deciding how many items to write
+before any system has been run on any of them.
+
+This paper answers that question with two closed forms in four quantities:
+the number of entrants $J$, the number of items $n$, the spread of the
+field's scores $\tau$, and the difference SD of a typical pair $\sigma_p$.
+Three of the four are design choices or planning estimates; the fourth,
+$\sigma_p$, is a property of the item set that a pilot on two systems
+measures. Nothing is fitted to leaderboards: the only constant in the
+formula is the critical value the multiplicity procedure itself returns.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item A closed form for the share of pairs a leaderboard's evidence
+  establishes, $\bar\Phi(1/\mathrm{SNR})$ with
+  $\mathrm{SNR} = \tau\sqrt{2n}/(c\,\sigma_p)$, holding to a mean absolute
+  error of 5.1 points (3.3 robust) across 9 leaderboards.
+\item The finding that the entropy of the orderings the evidence permits is
+  reproduced by a Gaussian field with the same four numbers and nothing else
+  of the real board, on 6 of 9 boards.
+\item Validation across five fields -- code, embeddings, competition
+  mathematics, protein fitness, tabular prediction -- and on a tenth board
+  held out until every threshold had been committed to version control.
+\item Evidence that the laws are about resolution rather than about an
+  estimator: the multiplicity procedure underneath was found to undercover,
+  was replaced, the realised critical value moved from 3.14 to 8.45 across
+  boards, and the predictions followed (\S\ref{sec:robust}).
+\end{enumerate}
+
+\paragraph{What is not claimed.} That leaderboards are bad; the laws are
+neutral and say of one board here that it resolves its top at $t = 9.89$.
+That benchmark comparisons are underpowered, which is \citet{card2020}.
+That we contribute a method for rank inference, which is
+\citet{mogstad2024}. And the laws do not predict the frontier: they
+reproduce aggregates and miss, by a factor of six on one board, the number
+of systems that could be first.
+
 \section{What is being predicted}
 
 Fix a leaderboard: $J$ systems, each scored on the same $n$ items, so that
-every pair can be compared on paired differences. Two summaries of what
-the evidence supports are then well defined.
+every pair can be compared on paired differences. Write $x_{ji}$ for system
+$j$'s outcome on item $i$, $s_j$ for its mean, and for a pair $(j,k)$ let
+$d_i = x_{ji} - x_{ki}$ with SD $\sigma_{jk}$. Two summaries of what the
+evidence supports are then well defined.
 
 \paragraph{The established share.} The fraction of ordered pairs $(j,k)$
 for which the evidence places $j$ above $k$ at a simultaneous level. This
@@ -56,36 +119,71 @@ predictable from $(J, n, \tau, \sigma_p)$ before the board exists.
 
 \section{Law 1: the established share}
 
-Two systems separate when their difference exceeds the simultaneous
-half-width, $c\,\sigma_p/\sqrt{n}$. If abilities are spread with SD $\tau$,
-the difference of two draws has SD $\tau\sqrt{2}$, and the share of ordered
-pairs that clear the threshold is
+A simultaneous procedure at level $\alpha$ returns a critical value $c$ and
+declares $j$ above $k$ when
 \begin{equation}
-\mathrm{established} \;=\; \bar\Phi\!\left(\frac{c\,\sigma_p}{\sqrt{2n}\,\tau}\right) \;=\; \bar\Phi(1/\mathrm{SNR}).
+|s_j - s_k| \;>\; c\,\frac{\sigma_{jk}}{\sqrt{n}} .
+\label{eq:sep}
 \end{equation}
-Nothing here is fitted. $c$ is the critical value the multiplicity
-procedure returns, $\sigma_p$ is the median pairwise difference SD, and
-$\tau$ is the spread of the observed scores.
+Treat the pair as drawn from the field. The difference of two scores drawn
+from a spread of SD $\tau$ has SD $\tau\sqrt{2}$, so writing $\sigma_p$ for
+the difference SD of a typical pair, the probability that a random pair
+clears \eqref{eq:sep} is
+\begin{equation}
+\Pr\!\left(|s_j - s_k| > \frac{c\,\sigma_p}{\sqrt{n}}\right)
+\;=\; 2\,\bar\Phi\!\left(\frac{c\,\sigma_p}{\sqrt{2n}\,\tau}\right)
+\;=\; 2\,\bar\Phi(1/\mathrm{SNR}),
+\qquad
+\mathrm{SNR} \;=\; \frac{\tau\sqrt{2n}}{c\,\sigma_p} .
+\label{eq:law1}
+\end{equation}
 
-\begin{table}[t]\centering\small
-\begin{tabular}{l rr r rr rr}
-\toprule
- & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\
-\midrule
-SWE-bench Verified & 134 & 500 & 3.00 & 37.4\,\% & 36.9\,\% & $-0.4$ & $+0.6$ \\
-MTEB English v2 & 181 & 41 & 1.96 & 28.5\,\% & 30.5\,\% & $+1.9$ & $-3.5$ \\
-HELM classic & 90 & 10 & 0.58 & 6.6\,\% & 4.3\,\% & $-2.2$ & $+1.2$ \\
-ProteinGym DMS & 96 & 217 & 2.70 & 34.4\,\% & 35.5\,\% & $+1.1$ & $-4.4$ \\
-TabArena 16 models & 16 & 51 & 3.12 & 19.6\,\% & 37.4\,\% & $+17.8$ & $-8.5$ \\
-TabArena 45 variants & 45 & 51 & 2.99 & 19.7\,\% & 36.9\,\% & $+17.2$ & $-8.1$ \\
-CASP14 & 101 & 42 & 1.51 & 21.0\,\% & 25.4\,\% & $+4.4$ & $-0.8$ \\
-LiveBench & 152 & 200 & 1.69 & 28.8\,\% & 27.7\,\% & $-1.2$ & $+1.3$ \\
-MathArena 2025 & 35 & 183 & 1.94 & 30.3\,\% & 30.3\,\% & $+0.0$ & $-1.0$ \\
-\bottomrule
-\end{tabular}
-\caption{Law 1 across 9 leaderboards. The predicted column uses the SD of scores as $\tau$; the robust error column uses the IQR scaled to a Gaussian SD, which ignores outliers at the tails of the field. Mean absolute error 5.1 points, or 3.3 points robust.}
-\label{tab:law1}
-\end{table}
+A separated \emph{unordered} pair contributes exactly one entry to the
+$J(J-1)$ ordered pairs, so the established share as reported here -- the
+density of the beats matrix -- is half of \eqref{eq:law1}, namely
+$\bar\Phi(1/\mathrm{SNR})$. We labour the factor of two because the first
+version of this work predicted the unordered share, compared it against the
+ordered one, and failed its own Gaussian self-check by exactly $2\times$;
+the definitions were reconciled, not the data.
+
+$\mathrm{SNR}$ has a reading: it is the spread of the field measured in
+units of one pair's simultaneous resolution. It grows as $\sqrt{n}$, so
+quadrupling the item set doubles it, and it falls as $c$ grows, which is
+how the price of comparing many systems at once enters.
+
+\paragraph{What the derivation assumes.} Three things, and they are worth
+naming because the boards that fail the law fail exactly one of them.
+
+\begin{description}
+\item[A1: one $\sigma_p$ for all pairs.] False in detail. On five dated
+  boards the pair-specific difference SD varies by 6 to 47\,\% between pairs,
+  and substituting the board-wide figure into a power calculation misstates
+  the items needed by between $1.0\times$ and $45\times$ for individual
+  pairs. It survives here because the law is an aggregate: integrating
+  \eqref{eq:law1} over the observed distribution of $\sigma_{jk}$ instead of
+  using its median changes the mean absolute error from 5.1 to 4.3 points.
+  The heterogeneity averages out of the aggregate and matters entirely for
+  the individual claim.
+\item[A2: the score differences are Gaussian.] This is the load-bearing
+  assumption and the one that breaks. It enters only through $\bar\Phi$,
+  and a field with a long lower tail has a $\tau$ inflated by systems far
+  from the pack, so \eqref{eq:law1} over-predicts. Both TabArena boards
+  behave this way, and replacing $\tau$ by an IQR-based estimate -- which
+  ignores the tails -- moves their errors from $+17.8$ and $+17.2$ points
+  to $-8.5$ and $-8.1$.
+\item[A3: $c$ is a scalar.] Exactly true for a single-step procedure and
+  approximately true for a step-down one, where we take $c$ to be the
+  realised critical value at the final step.
+\end{description}
+
+\paragraph{What the derivation does \emph{not} assume.} Independence between
+systems. $\sigma_p$ is the SD of the \emph{paired difference} series, which
+already contains whatever correlation the systems have; two systems that
+fail the same items have a small $\sigma_{jk}$ and separate more easily at
+the same score gap. This is why the law needs no term for the dependence
+between entrants, and it is consistent with a separate finding of ours that
+a twin carrying the real residual correlation structure is
+indistinguishable from an independent one on these aggregates.
 
 \section{Law 2: the ordering entropy}
 
@@ -180,6 +278,7 @@ identical -- the ones whose measurements never touch rank sets.
 \bibitem[Card et al.(2020)]{card2020} D.~Card, P.~Henderson, U.~Khandelwal, R.~Jia, K.~Mahowald, D.~Jurafsky. With Little Power Comes Great Responsibility. \emph{EMNLP}, 2020.
 \bibitem[Mogstad et al.(2024)]{mogstad2024} M.~Mogstad, J.~P.~Romano, A.~M.~Shaikh, D.~Wilhelm. Inference for Ranks with Applications to Mobility across Neighbourhoods and Academic Achievement across Countries. \emph{Review of Economic Studies}, 2024.
 \bibitem[Rank Intervals(2026)]{rankintervals} Rank Intervals for Leaderboards: A Hierarchical Framework for Model Evaluation. arXiv:2606.08679, 2026.
+\bibitem[Benchmark Saturation(2026)]{saturation} When AI Benchmarks Plateau: A Systematic Study of Benchmark Saturation. arXiv:2602.16763, 2026.
 \bibitem[Uncertainty in Ranking(2021)]{uncertaintyranking} Uncertainty in Ranking. arXiv:2107.03459, 2021.
 \end{thebibliography}
 \end{document}
