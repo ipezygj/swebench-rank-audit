@@ -1,11 +1,11 @@
 METRIC OR ORDINAL? THE FAILURE OF INVARIANCE, DECOMPOSED
 ==========================================================================
 drift in units of between-system spread; the band is what random
-splits of the same size produce (100 of them)
+splits of the same size produce (150 of them)
 
                                metric  ordinal  stretch     tau
-  random split (floor)          0.161    0.107    0.107   0.910
-    97.5 % / 2.5 % bound        0.202    0.131            0.898
+  random split (floor)          0.163    0.108    0.108   0.910
+    97.5 % / 2.5 % bound        0.203    0.134            0.898
   difficulty (hard vs easy)     0.383    0.297    0.215   0.806
   django vs rest                0.210    0.140    0.132   0.873
 
@@ -20,10 +20,10 @@ splits of the same size produce (100 of them)
 
 IS THE REORDERING A FLOOR ARTEFACT? DROP THE WEAK SYSTEMS AND SEE
             kept    n  ordinal   floor  ratio
-   score >= 0.00  134    0.297   0.108    2.7
-   score >= 0.30  115    0.340   0.162    2.1
+   score >= 0.00  134    0.297   0.107    2.8
+   score >= 0.30  115    0.340   0.160    2.1
    score >= 0.50   76    0.539   0.231    2.3
-   score >= 0.60   54    0.801   0.334    2.4
+   score >= 0.60   54    0.801   0.344    2.3
   Dropping the floor does not reduce it. Among the 54 systems above
   sixty per cent the ordinal drift is the largest of all. The
   reordering is a property of the benchmark, not of clipped estimates.

@@ -1,153 +1,153 @@
 LEADERBOARD REPORT CARD - SWE-bench Verified
 ==========================================================================
 R1 shape          134 systems x 500 items, binary, matrix sha256 67c8790ed2e8
-R2 rank sets      median width 35 of 134 (26 %); 19 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 411.0 bits = 54.2 % of log2(134!); the table is one of 2^411 equally supported
+R2 rank sets      median width 37 of 134 (28 %); 19 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 414.7 bits = 54.7 % of log2(134!); the table is one of 2^415 equally supported
 R4 top-10 resolution 21.8 of 21.8 bits undetermined  (complete antichain)
-R5 established    37.9 % of ordered pairs (transitivity violations 0)
-R6 tiers          10 resolved of 134 printed; largest antichain 27
-R7 invariance     metric drift 0.383 vs floor 0.159 (EXCEEDS); ordinal 0.297 vs 0.105 (EXCEEDS)
+R5 established    37.4 % of ordered pairs (transitivity violations 0)
+R6 tiers          10 resolved of 134 printed; largest antichain 28
+R7 invariance     metric drift 0.383 vs floor 0.162 (EXCEEDS); ordinal 0.297 vs 0.107 (EXCEEDS)
 R8 discordance D  whole field 150.5, top decile 57.2 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0000, that pair's SE 0.0120 (t 0.00); kappa 0.61 vs board median 1.01
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: 20251205_sonar-foundation-agent_claude-opus-4-5
 
 LEADERBOARD REPORT CARD - MTEB English v2
 ==========================================================================
 R1 shape          181 systems x 41 items, continuous, matrix sha256 b9e7ba676209
-R2 rank sets      median width 61 of 181 (34 %); 16 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 600.0 bits = 54.5 % of log2(181!); the table is one of 2^600 equally supported
+R2 rank sets      median width 87 of 181 (48 %); 24 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 668.0 bits = 60.7 % of log2(181!); the table is one of 2^668 equally supported
 R4 top-10 resolution 21.8 of 21.8 bits undetermined  (complete antichain)
-R5 established    34.2 % of ordered pairs (transitivity violations 0)
-R6 tiers          17 resolved of 181 printed; largest antichain 43
-R7 invariance     metric drift 0.418 vs floor 0.238 (EXCEEDS); ordinal 0.261 vs 0.134 (EXCEEDS)
+R5 established    28.5 % of ordered pairs (transitivity violations 0)
+R6 tiers          12 resolved of 181 printed; largest antichain 56
+R7 invariance     metric drift 0.418 vs floor 0.240 (EXCEEDS); ordinal 0.261 vs 0.127 (EXCEEDS)
 R8 discordance D  whole field 5.0, top decile 1.9 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0001, that pair's SE 0.0102 (t 0.01); kappa 0.58 vs board median 0.99
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: jcorners/ingot-8b-r3
 
 LEADERBOARD REPORT CARD - HELM classic
 ==========================================================================
 R1 shape          90 systems x 10 items, continuous, matrix sha256 46806e7c4dc8
-R2 rank sets      median width 49 of 90 (54 %); 15 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 294.1 bits = 64.1 % of log2(90!); the table is one of 2^294 equally supported
+R2 rank sets      median width 78 of 90 (87 %); 50 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 390.8 bits = 85.1 % of log2(90!); the table is one of 2^391 equally supported
 R4 top-10 resolution 21.8 of 21.8 bits undetermined  (complete antichain)
-R5 established    24.4 % of ordered pairs (transitivity violations 0)
-R6 tiers          7 resolved of 90 printed; largest antichain 30
-R7 invariance     metric drift 0.457 vs floor 0.473 (within); ordinal 0.362 vs 0.367 (within)
+R5 established    6.6 % of ordered pairs (transitivity violations 0)
+R6 tiers          3 resolved of 90 printed; largest antichain 58
+R7 invariance     metric drift 0.457 vs floor 0.467 (within); ordinal 0.362 vs 0.358 (within)
 R8 discordance D  whole field 3.4, top decile 1.1 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0100, that pair's SE 0.0106 (t 0.94); kappa 0.44 vs board median 1.01
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: GPT-4o (2024-05-13)
 
 LEADERBOARD REPORT CARD - ProteinGym DMS
 ==========================================================================
 R1 shape          96 systems x 217 items, continuous, matrix sha256 4fea20b09f75
-R2 rank sets      median width 31 of 96 (32 %); 3 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 246.1 bits = 49.4 % of log2(96!); the table is one of 2^246 equally supported
-R4 top-10 resolution 13.1 of 21.8 bits undetermined
-R5 established    36.0 % of ordered pairs (transitivity violations 0)
-R6 tiers          16 resolved of 96 printed; largest antichain 20
-R7 invariance     metric drift 0.337 vs floor 0.176 (EXCEEDS); ordinal 0.231 vs 0.100 (EXCEEDS)
+R2 rank sets      median width 34 of 96 (35 %); 3 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 254.8 bits = 51.1 % of log2(96!); the table is one of 2^255 equally supported
+R4 top-10 resolution 13.8 of 21.8 bits undetermined
+R5 established    34.4 % of ordered pairs (transitivity violations 0)
+R6 tiers          13 resolved of 96 printed; largest antichain 21
+R7 invariance     metric drift 0.337 vs floor 0.174 (EXCEEDS); ordinal 0.231 vs 0.098 (EXCEEDS)
 R8 discordance D  whole field 30.9, top decile 17.9 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0062, that pair's SE 0.0058 (t 1.07); kappa 0.69 vs board median 1.02
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: AIDO Protein-RAG (16B)
 
 LEADERBOARD REPORT CARD - TabArena 16 models
 ==========================================================================
 R1 shape          16 systems x 51 items, continuous, matrix sha256 8cd985535461
-R2 rank sets      median width 8 of 16 (53 %); 8 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 27.1 bits = 61.3 % of log2(16!); the table is one of 2^27 equally supported
-R4 top-10 resolution 19.0 of 21.8 bits undetermined
-R5 established    22.1 % of ordered pairs (transitivity violations 0)
+R2 rank sets      median width 10 of 16 (62 %); 8 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 28.2 bits = 63.8 % of log2(16!); the table is one of 2^28 equally supported
+R4 top-10 resolution 19.5 of 21.8 bits undetermined
+R5 established    19.6 % of ordered pairs (transitivity violations 0)
 R6 tiers          5 resolved of 16 printed; largest antichain 8
-R7 invariance     metric drift 0.512 vs floor 0.311 (EXCEEDS); ordinal 0.296 vs 0.185 (EXCEEDS)
+R7 invariance     metric drift 0.512 vs floor 0.325 (EXCEEDS); ordinal 0.296 vs 0.198 (within)
 R8 discordance D  whole field 7.9, top decile 1.5 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0092, that pair's SE 0.0080 (t 1.14); kappa 0.59 vs board median 1.03
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: REALMLP (tuned + ensemble)
 
 LEADERBOARD REPORT CARD - TabArena 45 variants
 ==========================================================================
 R1 shape          45 systems x 51 items, continuous, matrix sha256 d54a37275051
-R2 rank sets      median width 24 of 45 (53 %); 12 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 108.9 bits = 58.5 % of log2(45!); the table is one of 2^109 equally supported
+R2 rank sets      median width 31 of 45 (69 %); 18 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 124.8 bits = 67.0 % of log2(45!); the table is one of 2^125 equally supported
 R4 top-10 resolution 20.8 of 21.8 bits undetermined
-R5 established    25.3 % of ordered pairs (transitivity violations 0)
-R6 tiers          9 resolved of 45 printed; largest antichain 19
-R7 invariance     metric drift 0.421 vs floor 0.262 (EXCEEDS); ordinal 0.165 vs 0.150 (within)
+R5 established    19.7 % of ordered pairs (transitivity violations 0)
+R6 tiers          7 resolved of 45 printed; largest antichain 24
+R7 invariance     metric drift 0.421 vs floor 0.293 (within); ordinal 0.165 vs 0.157 (within)
 R8 discordance D  whole field 9.0, top decile 1.2 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0050, that pair's SE 0.0079 (t 0.63); kappa 0.51 vs board median 1.02
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: AutoGluon 1.3 (4h)
 
 LEADERBOARD REPORT CARD - MathArena 2025
 ==========================================================================
 R1 shape          35 systems x 183 items, continuous, matrix sha256 88499db3338b
-R2 rank sets      median width 13 of 35 (37 %); 11 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 74.6 bits = 56.1 % of log2(35!); the table is one of 2^75 equally supported
+R2 rank sets      median width 15 of 35 (43 %); 11 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 76.6 bits = 57.6 % of log2(35!); the table is one of 2^77 equally supported
 R4 top-10 resolution 21.8 of 21.8 bits undetermined  (complete antichain)
-R5 established    31.6 % of ordered pairs (transitivity violations 0)
-R6 tiers          6 resolved of 35 printed; largest antichain 11
-R7 invariance     metric drift 0.572 vs floor 0.322 (EXCEEDS); ordinal 0.462 vs 0.209 (EXCEEDS)
+R5 established    30.3 % of ordered pairs (transitivity violations 0)
+R6 tiers          6 resolved of 35 printed; largest antichain 12
+R7 invariance     metric drift 0.572 vs floor 0.317 (EXCEEDS); ordinal 0.462 vs 0.211 (EXCEEDS)
 R8 discordance D  whole field 27.1, top decile 8.7 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0041, that pair's SE 0.0085 (t 0.48); kappa 0.49 vs board median 1.02
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: Step 3.5 Flash
 
 LEADERBOARD REPORT CARD - CASP14
 ==========================================================================
 R1 shape          101 systems x 42 items, continuous, matrix sha256 3a224dc61470
-R2 rank sets      median width 62 of 101 (61 %); 1 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 363.5 bits = 68.4 % of log2(101!); the table is one of 2^364 equally supported
+R2 rank sets      median width 69 of 101 (68 %); 1 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 394.4 bits = 74.2 % of log2(101!); the table is one of 2^394 equally supported
 R4 top-10 resolution 17.5 of 21.8 bits undetermined
-R5 established    24.9 % of ordered pairs (transitivity violations 0)
-R6 tiers          7 resolved of 101 printed; largest antichain 51
-R7 invariance     metric drift 0.414 vs floor 0.269 (EXCEEDS); ordinal 0.217 vs 0.179 (within)
+R5 established    21.0 % of ordered pairs (transitivity violations 0)
+R6 tiers          6 resolved of 101 printed; largest antichain 61
+R7 invariance     metric drift 0.414 vs floor 0.269 (EXCEEDS); ordinal 0.217 vs 0.181 (within)
 R8 discordance D  whole field 6.8, top decile 4.6 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.2249, that pair's SE 0.0227 (t 9.89); kappa 0.79 vs board median 1.02
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: G427
 
 LEADERBOARD REPORT CARD - LiveBench
 ==========================================================================
 R1 shape          152 systems x 200 items, continuous, matrix sha256 6a808520d621
-R2 rank sets      median width 66 of 152 (43 %); 8 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 566.4 bits = 63.8 % of log2(152!); the table is one of 2^566 equally supported
-R4 top-10 resolution 20.2 of 21.8 bits undetermined
-R5 established    30.4 % of ordered pairs (transitivity violations 0)
-R6 tiers          7 resolved of 152 printed; largest antichain 50
-R7 invariance     metric drift 0.639 vs floor 0.236 (EXCEEDS); ordinal 0.408 vs 0.173 (EXCEEDS)
+R2 rank sets      median width 70 of 152 (46 %); 10 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 581.7 bits = 65.6 % of log2(152!); the table is one of 2^582 equally supported
+R4 top-10 resolution 21.8 of 21.8 bits undetermined  (complete antichain)
+R5 established    28.8 % of ordered pairs (transitivity violations 0)
+R6 tiers          7 resolved of 152 printed; largest antichain 55
+R7 invariance     metric drift 0.639 vs floor 0.252 (EXCEEDS); ordinal 0.408 vs 0.180 (EXCEEDS)
 R8 discordance D  whole field 57.0, top decile 44.5 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0929, that pair's SE 0.0311 (t 2.99); kappa 0.87 vs board median 1.01
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: gemini-2.5-pro-exp-03-25
 
 LEADERBOARD REPORT CARD - LMArena categories
 ==========================================================================
 R1 shape          35 systems x 28 items, continuous, matrix sha256 8abdf17d6742
-R2 rank sets      median width 7 of 35 (20 %); 4 system(s) could be first; observed rank inside its set: True
-R3 entropy        H = 55.1 bits = 41.4 % of log2(35!); the table is one of 2^55 equally supported
-R4 top-10 resolution 12.5 of 21.8 bits undetermined
-R5 established    39.6 % of ordered pairs (transitivity violations 0)
-R6 tiers          8 resolved of 35 printed; largest antichain 8
-R7 invariance     metric drift 0.214 vs floor 0.196 (within); ordinal 0.097 vs 0.096 (within)
+R2 rank sets      median width 9 of 35 (26 %); 5 system(s) could be first; observed rank inside its set: True
+R3 entropy        H = 63.6 bits = 47.8 % of log2(35!); the table is one of 2^64 equally supported
+R4 top-10 resolution 15.0 of 21.8 bits undetermined
+R5 established    36.6 % of ordered pairs (transitivity violations 0)
+R6 tiers          7 resolved of 35 printed; largest antichain 9
+R7 invariance     metric drift 0.214 vs floor 0.206 (within); ordinal 0.097 vs 0.103 (within)
 R8 discordance D  whole field 2.6, top decile 0.7 items-equivalent
 R10 pair resolution  #1 vs #2: gap 0.0009, that pair's SE 0.0066 (t 0.14); kappa 0.76 vs board median 1.02
-R9 provenance     leaderboard_standard 0.2, git b0976fc, seed 20260823, 2026-08-23
+R9 provenance     leaderboard_standard 0.2, git b273b4ba, seed 20260823, 2026-08-24
    leader as printed: gpt-4o-2024-05-13
 
 SUMMARY TABLE
 ==========================================================================
   leaderboard               J    n  tie@1  H/ceil       top-k  tiers  estab  ord.drift
-  SWE-bench Verified      134  500     19   54.2%  21.8/21.8     10  37.9%       2.8x
-  MTEB English v2         181   41     16   54.5%  21.8/21.8     17  34.2%       1.9x
-  HELM classic             90   10     15   64.1%  21.8/21.8      7  24.4%       1.0x
-  ProteinGym DMS           96  217      3   49.4%  13.1/21.8     16  36.0%       2.3x
-  TabArena 16 models       16   51      8   61.3%  19.0/21.8      5  22.1%       1.6x
-  TabArena 45 variants     45   51     12   58.5%  20.8/21.8      9  25.3%       1.1x
-  MathArena 2025           35  183     11   56.1%  21.8/21.8      6  31.6%       2.2x
-  CASP14                  101   42      1   68.4%  17.5/21.8      7  24.9%       1.2x
-  LiveBench               152  200      8   63.8%  20.2/21.8      7  30.4%       2.4x
-  LMArena categories       35   28      4   41.4%  12.5/21.8      8  39.6%       1.0x
+  SWE-bench Verified      134  500     19   54.7%  21.8/21.8     10  37.4%       2.8x
+  MTEB English v2         181   41     24   60.7%  21.8/21.8     12  28.5%       2.1x
+  HELM classic             90   10     50   85.1%  21.8/21.8      3   6.6%       1.0x
+  ProteinGym DMS           96  217      3   51.1%  13.8/21.8     13  34.4%       2.4x
+  TabArena 16 models       16   51      8   63.8%  19.5/21.8      5  19.6%       1.5x
+  TabArena 45 variants     45   51     18   67.0%  20.8/21.8      7  19.7%       1.0x
+  MathArena 2025           35  183     11   57.6%  21.8/21.8      6  30.3%       2.2x
+  CASP14                  101   42      1   74.2%  17.5/21.8      6  21.0%       1.2x
+  LiveBench               152  200     10   65.6%  21.8/21.8      7  28.8%       2.3x
+  LMArena categories       35   28      5   47.8%  15.0/21.8      7  36.6%       0.9x

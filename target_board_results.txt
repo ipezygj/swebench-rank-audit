@@ -4,15 +4,15 @@ WHAT A BOARD THAT CAN NAME A WINNER LOOKS LIKE
   Only the spread of the field changes.
 
     SNR      tau    estab   tie@1   entropy   tiers  median width   top t
-    1.5   0.0990    26.5%       7     67.6%       6            72    0.85
-    2.0   0.1324    32.2%       5     61.3%       8            55    1.11
-    3.1   0.2063    38.3%       3     52.7%      11            36    1.86
-    4.0   0.2591    41.1%       2     47.8%      14            26    2.51
-    6.0   0.4032    44.2%       2     40.0%      20            18    3.59
-    9.0   0.6022    46.2%       1     32.9%      27            11    4.88
+    1.5   0.1038    26.8%       8     67.4%       6            70    0.86
+    2.0   0.1380    32.2%       4     61.2%       8            54    1.17
+    3.1   0.2144    38.7%       3     52.2%      11            34    1.94
+    4.0   0.2761    41.2%       2     47.4%      14            26    2.62
+    6.0   0.4144    44.2%       2     39.9%      20            17    3.68
+    9.0   0.6225    46.2%       1     33.0%      28            11    5.01
 
-  at SNR 6: tie@1 2 and entropy 40.0 % (pre-registered tie@1 = 1 and entropy < 20 %)
-  at SWE-bench's own SNR 3.1: tie@1 3, entropy 52.7 % (the real board: 19 and 54.2 %)
+  at SNR 6: tie@1 2 and entropy 39.9 % (pre-registered tie@1 = 1 and entropy < 20 %)
+  at SWE-bench's own SNR 3.1: tie@1 3, entropy 52.2 % (the real board: 19 and 54.2 %)
 
   Read as a design table. A board with SWE-bench's size and item noise
   needs its systems spread over roughly twice the range they currently

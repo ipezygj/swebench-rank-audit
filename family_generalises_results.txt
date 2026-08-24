@@ -9,10 +9,10 @@ DOES THE BASE-MODEL CLUSTER HOLD OFF SWE-BENCH, AND DOES COLLAPSING IT HELP?
 
   leaderboard               J  J collapsed  tie@1  collapsed  random drop  5th pct  below?
   SWE-bench Verified      134           89     19         13           13      9.0      no
-  MTEB English v2         181           80     16          9            7      5.0      no
-  LiveBench               152           37      8          3            4      1.0      no
+  MTEB English v2         181           80     24         11           10      7.0      no
+  LiveBench               152           37     10          4            5      1.0      no
   MathArena 2025           35           11     11          6            3      2.0      no
-  LMArena categories       35           14      4          3            2      1.0      no
+  LMArena categories       35           14      5          3            2      1.0      no
 
   P1  gap effect on 3 of the 4 new boards        pre-registered >= 3:  HIT
   P2  kappa effect on 4 of the 4 new boards      pre-registered >= 3:  HIT

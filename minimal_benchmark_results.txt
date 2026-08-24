@@ -1,19 +1,19 @@
 HOW SMALL COULD THIS BENCHMARK BE?
 ====================================================================================
   leaderboard               J     n  items used  share of n  recovered  held-out   selected vs rest
-  SWE-bench Verified      134   500         180         36%        91%       85% |p-0.5| 0.024 vs 0.010
-  MTEB English v2         181    41          20         49%        90%       90%  SD 0.141 vs 0.100
-  HELM classic             90    10           2         20%        96%       98%  SD 0.293 vs 0.293
-  ProteinGym DMS           96   217         104         48%        90%       92%  SD 0.170 vs 0.103
-  TabArena 16 models       16    51          28         55%        92%       88%  SD 0.219 vs 0.124
-  TabArena 45 variants     45    51          34         67%        91%       85%  SD 0.232 vs 0.176
-  CASP14                  101    42          18         43%        90%       85%  SD 0.182 vs 0.136
-  LiveBench               152   200         120         60%        91%       92%  SD 0.427 vs 0.187
-  MathArena 2025           35   183          48         26%        91%       83%  SD 0.332 vs 0.102
+  SWE-bench Verified      134   500         190         38%        91%       86% |p-0.5| 0.030 vs 0.005
+  MTEB English v2         181    41          34         83%        93%       91%  SD 0.130 vs 0.074
+  HELM classic             90    10          10        100%       100%      100%    SD 0.293 vs nan
+  ProteinGym DMS           96   217         124         57%        90%       91%  SD 0.162 vs 0.099
+  TabArena 16 models       16    51          34         67%        91%      100%  SD 0.208 vs 0.113
+  TabArena 45 variants     45    51          38         75%        91%       77%  SD 0.226 vs 0.177
+  CASP14                  101    42          28         67%        91%       88%  SD 0.180 vs 0.108
+  LiveBench               152   200         136         68%        90%       95%  SD 0.399 vs 0.185
+  MathArena 2025           35   183          64         35%        90%       83%  SD 0.314 vs 0.081
 
-  30 % of items or fewer recover 90 %: 2/9 (pre-registered >= 6)
-  held-out recovery at least 80 %: 9/9 (pre-registered >= 5)
-  selected items more discriminating than the rest: 8/9 (pre-registered >= 7)
+  30 % of items or fewer recover 90 %: 0/9 (pre-registered >= 6)
+  held-out recovery at least 80 %: 8/9 (pre-registered >= 5)
+  selected items more discriminating than the rest: 7/9 (pre-registered >= 7)
 
   The critical value is recomputed for every subset, so a smaller board is
   held to its own standard rather than the full board's. 'held-out' selects

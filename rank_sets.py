@@ -100,7 +100,13 @@ SEED = 20260823
 # Which construction to use. Set RANK_SETS_METHOD=holm (or =union) to rerun
 # the whole pipeline under a construction that holds its coverage on the
 # small-n boards; see tie_coverage_boards.py for which those are.
-METHOD = os.environ.get("RANK_SETS_METHOD", "bootstrap").strip().lower()
+# Default changed 2026-08-24 from "bootstrap" to "holm". The multiplier
+# bootstrap does not hold its nominal simultaneous coverage when systems
+# outnumber items - 0.013 on HELM classic, 0.540 on MTEB English v2 against a
+# nominal 0.95 - while Holm holds it on every shape measured, and where both
+# hold the bootstrap is only 0 to 3 % narrower (tie_coverage_boards.py). Set
+# RANK_SETS_METHOD=bootstrap to reproduce results from before that date.
+METHOD = os.environ.get("RANK_SETS_METHOD", "holm").strip().lower()
 
 
 

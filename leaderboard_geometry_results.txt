@@ -3,16 +3,16 @@ THE GEOMETRY OF A LEADERBOARD
 134 systems, 500 items
 
 I. TIERS - how many performance levels the instrument resolves
-  relations 'significantly above'   6719 of 17822 ordered pairs (37.7 %)
+  relations 'significantly above'   6662 of 17822 ordered pairs (37.4 %)
   transitivity violations           0
   HEIGHT (longest chain)            10
-  largest antichain                 27
+  largest antichain                 28
 
   -> this leaderboard prints 134 positions and resolves 10 levels.
-     27 of its systems cannot be ordered among themselves at all.
+     28 of its systems cannot be ordered among themselves at all.
 
   tier sizes, best first:
-   19, 23, 18, 18, 22, 13, 11, 3, 3, 4
+   19, 24, 18, 21, 26, 8, 9, 2, 3, 4
   tier 1 (19 systems), first few:
     0.732  20250522_tools_claude-4-opus
     0.744  20250603_Refact_Agent_claude-4-sonnet
@@ -23,14 +23,14 @@ I. TIERS - how many performance levels the instrument resolves
 
 II. DIMENSIONS - how many numbers the benchmark is measuring
    component   singular value   permutation 95%   ratio  var share
-           1           32.347            28.081    1.15      14.0% *
-           2           23.283            21.036    1.11       7.3% *
-           3           13.052            11.465    1.14       2.3% *
-           4           12.136            11.189    1.08       2.0% *
-           5           11.797            11.011    1.07       1.9% *
-           6           11.578            10.832    1.07       1.8% *
-           7           11.192            10.687    1.05       1.7% *
-           8           11.022            10.563    1.04       1.6% *
+           1           32.347            28.075    1.15      14.0% *
+           2           23.283            21.039    1.11       7.3% *
+           3           13.052            11.463    1.14       2.3% *
+           4           12.136            11.193    1.08       2.0% *
+           5           11.797            10.999    1.07       1.9% *
+           6           11.578            10.823    1.07       1.8% *
+           7           11.192            10.675    1.05       1.7% *
+           8           11.022            10.565    1.04       1.6% *
 
   clearly above the null (ratio > 1.5):   0
   marginally above (1.0 to 1.5):          12

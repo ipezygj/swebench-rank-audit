@@ -2,18 +2,18 @@ HOW MANY ITEMS CAN STILL SEPARATE THE TOP TEN?
 ====================================================================================
   board                      n   dead  saturated   live  live share  tie@1
   SWE-bench Verified       500      0        336    164         33%     19
-  MTEB English v2           41      0          1     40         98%     16
-  HELM classic              10      0          0     10        100%     15
+  MTEB English v2           41      0          1     40         98%     24
+  HELM classic              10      0          0     10        100%     50
   ProteinGym DMS           217      0          0    217        100%      3
   TabArena 16 models        51      1          4     46         90%      8
-  TabArena 45 variants      51      0         23     28         55%     12
+  TabArena 45 variants      51      0         23     28         55%     18
   CASP14                    42      0          0     42        100%      1
-  LiveBench                200      0         59    141         70%      8
+  LiveBench                200      0         59    141         70%     10
   MathArena 2025           183      0        128     55         30%     11
 
   live share below 60 %: 3/9 (pre-registered: all)
   lowest live share among the binary boards: MathArena 2025 (30 %)
-  Spearman(live count, tie@1) = -0.27 (p 0.49); pre-registered negative
+  Spearman(live count, tie@1) = -0.48 (p 0.19); pre-registered negative
 
   An item is live for the top group when the top ten disagree on it by
   more than 5 % of the field's range; otherwise they agree, above the

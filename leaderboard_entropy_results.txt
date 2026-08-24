@@ -3,9 +3,9 @@ LEADERBOARD ENTROPY: BITS OF ORDER THE DATA DOES NOT DETERMINE
 134 systems; a total order with no evidence at all carries log2(134!) = 758 bits
 
   evidential order            pairs  viol   H bits     ±  of ceiling  equally good tables
-  noise (rank_sets)            6719     0    413.5   0.2       54.5%                2^413
-  basket (invariant core)      5535     0    417.6   0.3       55.1%                2^418
-  both (IUT core)              1072     0    661.3   0.3       87.2%                2^661
+  noise (rank_sets)            6662     0    420.1   0.1       55.4%                2^420
+  basket (invariant core)      5535     0    418.3   0.2       55.2%                2^418
+  both (IUT core)              1072     0    662.5   0.2       87.4%                2^663
 
   H is log2 of the number of total orders consistent with every
   established pair. The published leaderboard is one of them. The
@@ -23,8 +23,8 @@ THE SAME QUESTION FOR THE TOP OF THE TABLE
   basket (invariant core)        19     49.6     56.8                             2^49.6
   both (IUT core)                19     56.8     56.8                             2^56.8
 
-  noise (rank_sets)              30     97.9    107.7                             2^97.9
-  basket (invariant core)        30     87.6    107.7                             2^87.6
+  noise (rank_sets)              30     98.3    107.7                             2^98.3
+  basket (invariant core)        30     87.3    107.7                             2^87.3
   both (IUT core)                30    107.7    107.7                            2^107.7
 
   For the nineteen candidate leaders the noise order establishes

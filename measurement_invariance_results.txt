@@ -4,11 +4,11 @@ drift = how far a system's estimated ability moves when the instance
 subset changes, in units of the spread of ability across systems
 
   split                items   drift   verdict
-  random (noise floor)     250   0.161   band [0.131, 0.201]
+  random (noise floor)     250   0.163   band [0.130, 0.208]
   difficulty             250   0.383   EXCEEDS the noise floor
   django vs rest         231   0.210   EXCEEDS the noise floor
 
-  worst structured drift is 2.4 times the noise floor
+  worst structured drift is 2.3 times the noise floor
 
   VERDICT: SPECIFIC OBJECTIVITY FAILS. A system's estimated ability
   depends on which instances it was estimated from by more than
@@ -24,10 +24,10 @@ subset changes, in units of the spread of ability across systems
 IS IT A FLOOR ARTEFACT? THE SYSTEMS THAT MOVE MOST SOLVE ALMOST
 NOTHING, AND LOGIT ESTIMATES ARE UNSTABLE THERE. SO DROP THEM.
       kept systems    n  difficulty drift  noise floor  ratio
-     score >= 0.00  134             0.383        0.167    2.3
-     score >= 0.10  128             0.392        0.184    2.1
-     score >= 0.30  115             0.449        0.213    2.1
-     score >= 0.50   76             0.733        0.306    2.4
+     score >= 0.00  134             0.383        0.159    2.4
+     score >= 0.10  128             0.392        0.182    2.2
+     score >= 0.30  115             0.449        0.215    2.1
+     score >= 0.50   76             0.733        0.314    2.3
 
   Dropping the floor does not reduce it. Among the 76 systems above
   fifty per cent - the ones anyone is choosing between - the drift is

@@ -4,7 +4,7 @@ WHO COULD BE FIRST UNDER A DIFFERENT COMPOSITION?
   SWE-bench Verified          12        122          3     19      rank 128/134         rank 3/134
   MathArena 2025               5          5          3     11         rank 6/35          rank 3/35
   CASP14                      33         20          1      1       rank 74/101         rank 1/101
-  MTEB English v2             19         23          3     12      rank 147/174         rank 7/174
+  MTEB English v2             19         23          3     21      rank 147/174         rank 7/174
 
   champion set larger than one: 4/4 (pre-registered: all but CASP14)
   champion set smaller than tie@1: 1/4 (pre-registered >= 3)

@@ -143,7 +143,9 @@ def coverage(method, abilities, n, reps, seed):
 
 
 def boot(x):
-    return rs.rank_sets(x, draws=DRAWS)
+    # explicit: this measurement compares the two constructions, so it must ask
+    # for the bootstrap by name even when RANK_SETS_METHOD says otherwise.
+    return rs.rank_sets(x, draws=DRAWS, method="bootstrap")
 
 
 def _check_harness_can_fail() -> tuple[bool, str]:

@@ -1,10 +1,10 @@
 HOW MANY SCORE LEVELS DOES AN ITEM NEED?
 ==========================================================================================
   board                    k=2     k=3     k=4     k=6     k=8    k=16    cont |   t k=2   t k=8  t cont
-  MTEB English v2           87      37      12      17      15      14      12 |     nan    0.21    0.01   biggest gain at k=3
-  ProteinGym DMS            21       4       4       3       2       3       3 |    0.58    1.38    1.07   biggest gain at k=3
-  CASP14                    16       1       1       1       1       1       1 |    2.61    9.33    9.89   biggest gain at k=3
-  LiveBench                  6       6       4       6       6       6       8 |    3.01    3.16    2.99   biggest gain at k=4
+  MTEB English v2          127      49      26      26      25      22      21 |     nan    0.21    0.01   biggest gain at k=3
+  ProteinGym DMS            26       4       5       3       3       3       3 |    0.58    1.38    1.07   biggest gain at k=3
+  CASP14                    42       1       1       1       1       1       1 |    2.61    9.33    9.89   biggest gain at k=3
+  LiveBench                  7       7       6       8       8       7      10 |    3.01    3.16    2.99   biggest gain at k=4
 
   tie@1 within 2 of continuous by k = 8: 3/4 (pre-registered >= 3)
   the biggest single gain is at k = 3 or 4: 4/4 (pre-registered: most)

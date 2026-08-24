@@ -167,6 +167,7 @@ validated against a permutation null.
 - `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
 - `family_generalises.py` - Does the base-model cluster hold off SWE-bench, and would collapsing it help?
 - `headline_fragility.py` - How many items decide the headline?
+- `holm_pipeline_diff.py` - What changed across the whole repo when the construction was corrected
 - `holm_recompute.py` - Recompute every board under a construction that holds its coverage
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
 - `quantisation_curve.py` - How many score levels does an item need?

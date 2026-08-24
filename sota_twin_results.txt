@@ -1,9 +1,9 @@
 IS THE SHARE OF SEPARABLE SOTA ADVANCES A FUNCTION OF THE FIELD'S DRIFT?
 ======================================================================================
   leaderboard             J  beta/yr  tau_res  sigma_p  A real   A twin  P real  P twin  S real  S twin
-  SWE-bench Verified    134   +0.325   0.1145    0.482      32  13.6[10-20]     25%     55%      9%     32%
-  MTEB English v2       174   +0.047   0.0819    0.092      16   8.5[6-12]     38%     60%     12%     41%
-  LiveBench             152   +0.405   0.1274    0.448      12   8.5[5-14]     33%     50%     17%     21%
+  SWE-bench Verified    134   +0.325   0.1145    0.482      32  13.6[10-20]     25%     55%      9%     29%
+  MTEB English v2       174   +0.047   0.0819    0.092      16   8.5[6-12]     38%     60%      6%     32%
+  LiveBench             152   +0.405   0.1274    0.448      12   8.5[5-14]     33%     50%     17%     18%
 
   pre-registered: A within +-30 %, P and S within +-10 points, on each board;
   twin OVER-predicts A on SWE-bench (linear drift vs slow-then-fast history).

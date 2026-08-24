@@ -1,18 +1,18 @@
 IS A LEADERBOARD PUNISHED FOR BEING POPULAR?
 ============================================================================================
   board                     J    tie@1 @25%    tie@1 @50%   tie@1 @100%  share 50 %  share 100 %  top pair at J=10
-  SWE-bench Verified      134           5.0          10.0          19.0         15%          14%            0 of 6
-  MTEB English v2         181           5.0           9.5          16.0         11%           9%            0 of 6
-  HELM classic             90           4.8           8.0          15.0         18%          17%            0 of 6
-  ProteinGym DMS           96           2.0           2.5           3.0          5%           3%            0 of 6
-  TabArena 16 models       16           2.0           3.8           8.0         48%          50%            0 of 6
-  TabArena 45 variants     45           4.2           6.5          12.0         30%          27%            0 of 6
+  SWE-bench Verified      134           5.0          11.2          19.0         17%          14%            0 of 6
+  MTEB English v2         181           6.2          11.8          24.0         13%          13%            0 of 6
+  HELM classic             90          10.0          20.2          50.0         45%          56%            0 of 6
+  ProteinGym DMS           96           2.2           2.5           3.0          5%           3%            0 of 6
+  TabArena 16 models       16           2.5           4.8           8.0         60%          50%            0 of 6
+  TabArena 45 variants     45           4.5           9.2          18.0         42%          40%            0 of 6
   CASP14                  101           1.0           1.0           1.0          2%           1%            6 of 6
-  LiveBench               152           2.3           3.3           8.0          4%           5%            6 of 6
-  MathArena 2025           35           3.2           6.3          11.0         35%          31%            0 of 6
+  LiveBench               152           2.7           4.2          10.0          5%           7%            5 of 6
+  MathArena 2025           35           3.5           6.7          11.0         37%          31%            0 of 6
 
   halving J cuts tie@1 by at least 25 %: 7/9 (pre-registered >= 6)
-  the tie@1 share moves less than 10 points: 9/9 (pre-registered >= 6)
+  the tie@1 share moves less than 10 points: 7/9 (pre-registered >= 6)
   the top pair separates at J' = 10 on: 2/9 boards (pre-registered >= 1)
 
   The top two systems are kept in every subsample, so their comparison uses

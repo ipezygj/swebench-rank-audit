@@ -1,9 +1,9 @@
 WOULD A MODEL-BASED SCORE RESOLVE THE TOP BETTER?
 ====================================================================================
   board                     J     n  Spearman  tie@1 mean   Rasch  #1v#2 mean   Rasch
-  SWE-bench Verified      134   500     1.000          19      99          no      no
+  SWE-bench Verified      134   500     1.000          19     103          no      no
   SWE-bench Lite           84   300     1.000           6      76          no      no
-  MathArena 2025           35   183     1.000          11      17          no      no
+  MathArena 2025           35   183     1.000          11      18          no      no
 
   orderings agree above 0.95: 3/3 (pre-registered: all)
   Rasch tie@1 no larger: 0/3 (pre-registered >= 2)

@@ -2,13 +2,13 @@ IF THE ITEMS WERE RESAMPLED, WHO WOULD BE FIRST?
 ====================================================================================
   leaderboard               J     n  leader keeps  runner-up  distinct winners  tie@1
   SWE-bench Verified      134   500         32.8%      31.1%                 9     19
-  MTEB English v2         181    41         44.8%      49.0%                 6     16
-  HELM classic             90    10         66.4%      10.7%                10     15
+  MTEB English v2         181    41         44.8%      49.0%                 6     24
+  HELM classic             90    10         66.4%      10.7%                10     50
   ProteinGym DMS           96   217         86.0%      14.1%                 2      3
   TabArena 16 models       16    51         86.5%      12.8%                 6      8
-  TabArena 45 variants     45    51         72.7%      27.0%                 6     12
+  TabArena 45 variants     45    51         72.7%      27.0%                 6     18
   CASP14                  101    42        100.0%       0.0%                 1      1
-  LiveBench               152   200         99.8%       0.1%                 3      8
+  LiveBench               152   200         99.8%       0.1%                 3     10
   MathArena 2025           35   183         41.3%      24.3%                 7     11
 
   leader keeps the crown in under 60 % of resamples: 3/9 (pre-registered >= 7)
@@ -19,15 +19,3 @@ IF THE ITEMS WERE RESAMPLED, WHO WOULD BE FIRST?
   share of resamples in which the printed first-place system is still
   first. tie@1 is the simultaneous statement - how many systems have a
   rank set containing 1 - and it is the more conservative of the two.
-
-  VERIFICATION OF THE MTEB REVERSAL (20 000 resamples, added after the run
-  because 2 000 draws put the two within 4 points of each other):
-    printed #1  jcorners/ingot-8b-r3            0.7598   wins 46.1 %
-    printed #2  Kingsoft-LLM/QZhou-Embedding    0.7597   wins 48.7 %
-    Monte Carlo SE 0.35 points, so the 2.6-point difference is real as a
-    bootstrap statistic - but the underlying score gap is 0.0001, one part
-    in seven thousand, and the paired t is 0.01. The honest statement is
-    that MTEB's first place is a coin flip whose printed side is the less
-    likely one, not that the ranking is wrong.
-    Third most frequent winner: codefuse-ai/F2LLM-4B, printed 7th, 5.0 %.
-

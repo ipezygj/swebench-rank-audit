@@ -5,14 +5,14 @@ TENTH BOARD, HELD OUT ALL EVENING: LMARENA CATEGORIES
 
   [yes] 1 kappa over all pairs 1.00 +-0.05                   1.017
   [yes] 2 kappa(#1,#2) below 0.90                            0.758
-  [NO ] 3 at least 5 rank sets contain 1                     4
-  [yes] 4 law 1 within 5 points                              observed 39.3 %, law 38.3 %
-  [yes] 5 law 2 within 5 points                              real 41.9 %, twin 41.7 %
-  [NO ] 6 pairing dividend above 1.3                         1.12 (paired 8, independent 9)
+  [yes] 3 at least 5 rank sets contain 1                     5
+  [yes] 4 law 1 within 5 points                              observed 36.6 %, law 35.6 %
+  [yes] 5 law 2 within 5 points                              real 47.5 %, twin 46.1 %
+  [NO ] 6 pairing dividend above 1.3                         1.00 (paired 10, independent 10)
   [NO ] 7 kappa split-half above 0.5 (expected to FAIL at n=28) r 0.41
 
-  first six (blind application of the evening's findings): 4/6
+  first six (blind application of the evening's findings): 5/6
   seventh, predicted to fail: failed as predicted
 
-  tie@1 4 of 35 · median rank-set width 7 · entropy 41.9 % of ceiling · tau 0.0728 · sigma_p 0.0484
+  tie@1 5 of 35 · median rank-set width 9 · entropy 47.5 % of ceiling · tau 0.0728 · sigma_p 0.0484
   leader as printed: gpt-4o-2024-05-13  ·  runner-up: gpt-4-1106-preview

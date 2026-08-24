@@ -1,19 +1,19 @@
 DOES THE ANSWER PATTERN LOOK LIKE A COHERENT ABILITY?
 ==========================================================================
-134 systems, 500 items, null = 250 draws from the fitted
+134 systems, 500 items, null = 400 draws from the fitted
 one-dimensional model, refitted on every draw
 
-  patterns LESS probable than the model expects (l_z < 1 %):  14
+  patterns LESS probable than the model expects (l_z < 1 %):  10
   patterns MORE orderly than a noisy draw  (l_z > 99 %):      8
   more rare solves than expected           (> 99 %):          13
 
-  flagged in total                     20 of 134  (14.9 %)
+  flagged in total                     18 of 134  (13.4 %)
   calibrated false-flag rate at this shape   3.7 %  (self-check above)
-  excess over the baseline                   11.2 percentage points
+  excess over the baseline                   9.7 percentage points
 
   A CONFOUND, MEASURED RATHER THAN HOPED AWAY
-    correlation of score with being flagged   -0.162
-    median score, flagged 0.405   not flagged 0.560
+    correlation of score with being flagged   -0.190
+    median score, flagged 0.386   not flagged 0.560
     The flag tracks weakness as well as strangeness: a weak system that
     solves a few rare items looks anomalous, and there are more weak
     systems than strong ones. So this list is NOT a contamination list
@@ -22,18 +22,18 @@ one-dimensional model, refitted on every draw
 
 THE TOP OF THE TABLE, WHICH IS WHERE IT MATTERS
   rank system                                    score  l_z pct  rare    exp    pct
-     1 20251205_sonar-foundation-agent_claude-o  0.792    0.004     0    0.6  0.000
-     2 20251215_livesweagent_claude-opus-4-5     0.792    0.152     1    0.6  0.792
-     3 20250928_trae_doubao_seed_code            0.788    0.024     0    0.6  0.000
-     4 20251127_openhands_claude-opus-4-5        0.776    0.016     0    0.5  0.000
-     5 20251120_livesweagent_gemini-3-pro-previ  0.774    0.104     0    0.5  0.000
-     6 20250804_epam-ai-run-claude-4-sonnet      0.768    0.380     1    0.4  0.736
-     7 20250902_atlassian-rovo-dev               0.768    0.532     0    0.4  0.000
-     8 20250819_ACoder                           0.764    0.684     0    0.4  0.000
-     9 20250901_warp                             0.756    0.036     1    0.4  0.644
-    10 20250612_trae                             0.752    0.752     0    0.3  0.000
+     1 20251205_sonar-foundation-agent_claude-o  0.792    0.005     0    0.6  0.000
+     2 20251215_livesweagent_claude-opus-4-5     0.792    0.165     1    0.6  0.790
+     3 20250928_trae_doubao_seed_code            0.788    0.022     0    0.6  0.000
+     4 20251127_openhands_claude-opus-4-5        0.776    0.020     0    0.5  0.000
+     5 20251120_livesweagent_gemini-3-pro-previ  0.774    0.100     0    0.5  0.000
+     6 20250804_epam-ai-run-claude-4-sonnet      0.768    0.345     1    0.4  0.705
+     7 20250902_atlassian-rovo-dev               0.768    0.560     0    0.4  0.000
+     8 20250819_ACoder                           0.764    0.657     0    0.4  0.000
+     9 20250901_warp                             0.756    0.040     1    0.4  0.635
+    10 20250612_trae                             0.752    0.760     0    0.3  0.000
     11 20250731_harness_ai                       0.748    1.000     0    0.8  0.000
-    12 20251103_sonar-foundation-agent_claude-s  0.748    0.204     2    0.8  0.904
+    12 20251103_sonar-foundation-agent_claude-s  0.748    0.180     2    0.8  0.910
 
 SYSTEMS SOLVING MORE 'IMPOSSIBLE' ITEMS THAN THE MODEL ALLOWS
   20250627_agentless_MCTS-Refine-7B              solved 15 of the items it had < 5 % on, expected 2.7

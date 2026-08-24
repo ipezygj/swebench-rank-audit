@@ -1,19 +1,19 @@
 THE PAIRING DIVIDEND: RANK-SET WIDTH WITH AND WITHOUT CO-MOVEMENT
 ========================================================================================
   leaderboard               J   paired  independent  ratio  tie@1 paired   indep  mean kappa
-  SWE-bench Verified      134       36           55   1.53            19      36       0.999
-  MTEB English v2         181       61          167   2.74            15     131       0.957
-  HELM classic             90       50           52   1.04            15      17       0.981
-  ProteinGym DMS           96       32           57   1.78             3      15       0.981
-  TabArena 16 models       16       10           14   1.42             8      10       0.981
-  TabArena 45 variants     45       25           36   1.44            12      27       0.964
-  CASP14                  101       64           79   1.23             1       1       0.986
-  LiveBench               152       67           94   1.40             8      17       0.998
-  MathArena 2025           35       14           22   1.57            11      19       0.998
+  SWE-bench Verified      134       38           56   1.47            19      36       0.999
+  MTEB English v2         181       88          172   1.95            24     147       0.957
+  HELM classic             90       80           81   1.02            50      47       0.981
+  ProteinGym DMS           96       34           58   1.70             3      16       0.981
+  TabArena 16 models       16       11           14   1.27             8      12       0.981
+  TabArena 45 variants     45       32           38   1.19            18      32       0.964
+  CASP14                  101       70           80   1.14             1       1       0.986
+  LiveBench               152       71           96   1.35            10      19       0.998
+  MathArena 2025           35       16           23   1.44            11      19       0.998
 
   independent version wider: 9/9 (pre-registered >= 8)
-  ratio above 1.3: 7/9 (pre-registered >= 6)
-  Spearman(mean kappa, ratio) = -0.20 (p 0.61); pre-registered < -0.4
+  ratio above 1.3: 5/9 (pre-registered >= 6)
+  Spearman(mean kappa, ratio) = +0.03 (p 0.93); pre-registered < -0.4
 
   'independent' repeats the identical estimator on a board whose rows have
   been permuted item-wise: every system keeps its score and its own

@@ -16,10 +16,10 @@ RANKING INSIDE THE HARDEST INSTANCES, AGAINST TWO NULLS
   info: the share of the whole benchmark's ranking information in the
     stratum - a tenth of the instances is nowhere near a tenth of it.
           stratum  items   info   agree  count-null           info-null  leader
-      hardest 5 %     25   0.0%   0.004       0.866  [0.004, 0.479]  20231010_rag_claude2
-     hardest 10 %     50   0.3%   0.230       0.913  [0.276, 0.571]  20250915_JoyCode  <-- outside
-     hardest 20 %    100   4.4%   0.712       0.944  [0.822, 0.884]  20251205_sonar-foundat  <-- outside
-     hardest 40 %    200  32.0%   0.930       0.966  [0.953, 0.966]  20251205_sonar-foundat  <-- outside
+      hardest 5 %     25   0.0%   0.004       0.866  [0.004, 0.478]  20231010_rag_claude2
+     hardest 10 %     50   0.3%   0.230       0.913  [0.273, 0.579]  20250915_JoyCode  <-- outside
+     hardest 20 %    100   4.4%   0.712       0.943  [0.822, 0.884]  20251205_sonar-foundat  <-- outside
+     hardest 40 %    200  32.0%   0.930       0.965  [0.952, 0.965]  20251205_sonar-foundat  <-- outside
 
 WHO LEADS WHEN ONLY THE HARDEST TENTH COUNTS
    rank now system                                        hard score    full

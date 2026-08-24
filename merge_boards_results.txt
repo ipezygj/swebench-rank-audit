@@ -3,15 +3,15 @@ DOES MERGING TWO BENCHMARKS RESOLVE WHAT NEITHER RESOLVES ALONE?
   25 submissions appear on both SWE-bench Verified and Lite; 500 + 300 instances, 207 of Lite's not in Verified, merged to 707
 
   item set                      n  median width   tie@1  established
-  Verified only               500             5       2        40.3%
-  Lite only                   300             9       3        35.7%
-  merged                      707             5       2        41.3%
+  Verified only               500             5       2        40.5%
+  Lite only                   300             9       3        35.2%
+  merged                      707             5       2        40.8%
 
   merged is 0 % narrower than Verified (pre-registered >= 20 %): NO
   merged tie@1 2 vs Verified 2 (pre-registered: no larger): yes
   the two boards rank these systems the same way: Spearman +0.99 (p 1.1e-21); pre-registered > 0.9: yes
 
-  pairs established by the merge but not by Verified: 8; lost: 2
+  pairs established by the merge but not by Verified: 4; lost: 2
 
   Merging is the cheapest way to add items: they already exist and the
   systems have already been run on them. The cost is that the two item

@@ -47,17 +47,17 @@ ceiling of the ordered share is 0.5.
 
 | leaderboard | J | n | SNR | observed | law | error (points) |
 |---|---|---|---|---|---|---|
-| SWE-bench Verified | 134 | 500 | 3.12 | 37.9 % | 37.4 % | -0.4 |
-| MTEB English v2 | 181 | 41 | 2.51 | 34.2 % | 34.5 % | +0.3 |
-| HELM classic | 90 | 10 | 1.39 | 24.4 % | 23.7 % | -0.7 |
-| ProteinGym DMS | 96 | 217 | 2.98 | 36.0 % | 36.9 % | +0.9 |
-| TabArena 16 models | 16 | 51 | 3.64 | 22.1 % | 39.2 % | +17.1 |
-| TabArena 45 variants | 45 | 51 | 3.70 | 25.3 % | 39.3 % | +14.0 |
-| CASP14 | 101 | 42 | 1.88 | 24.9 % | 29.7 % | +4.8 |
-| LiveBench | 152 | 200 | 1.81 | 30.4 % | 29.0 % | -1.4 |
-| MathArena 2025 | 35 | 183 | 2.08 | 31.6 % | 31.5 % | -0.1 |
+| SWE-bench Verified | 134 | 500 | 3.00 | 37.4 % | 36.9 % | -0.4 |
+| MTEB English v2 | 181 | 41 | 1.96 | 28.5 % | 30.5 % | +1.9 |
+| HELM classic | 90 | 10 | 0.58 | 6.6 % | 4.3 % | -2.2 |
+| ProteinGym DMS | 96 | 217 | 2.70 | 34.4 % | 35.5 % | +1.1 |
+| TabArena 16 models | 16 | 51 | 3.12 | 19.6 % | 37.4 % | +17.8 |
+| TabArena 45 variants | 45 | 51 | 2.99 | 19.7 % | 36.9 % | +17.2 |
+| CASP14 | 101 | 42 | 1.51 | 21.0 % | 25.4 % | +4.4 |
+| LiveBench | 152 | 200 | 1.69 | 28.8 % | 27.7 % | -1.2 |
+| MathArena 2025 | 35 | 183 | 1.94 | 30.3 % | 30.3 % | +0.0 |
 
-Held-out test, run blind on a board untouched while the law was developed (LMArena, 35 models x 28 category win rates): observed 39.3 %, law 38.3 %.
+Held-out test, run blind on a board untouched while the law was developed (LMArena, 35 models x 28 category win rates): observed 36.6 %, law 35.6 %.
 
 **Where it fails.** TabArena, both versions: the law over-predicts by 12 to 17
 points. Its field is 16 models with a few far below the rest, so `tau` is
@@ -81,17 +81,17 @@ same `J`, `n`, `tau`, `sigma_p` and nothing else of the real field.
 
 | leaderboard | J | n | H/ceiling real | Gaussian twin | difference |
 |---|---|---|---|---|---|
-| SWE-bench Verified | 134 | 500 | 54.5 % | 52.9 % | +1.6 |
-| MTEB English v2 | 181 | 41 | 54.7 % | 58.2 % | -3.4 |
-| HELM classic | 90 | 10 | 64.7 % | 64.1 % | +0.6 |
-| ProteinGym DMS | 96 | 217 | 50.4 % | 52.1 % | -1.7 |
-| TabArena 16 models | 16 | 51 | 61.9 % | 32.1 % | +29.8 |
-| TabArena 45 variants | 45 | 51 | 58.9 % | 42.1 % | +16.8 |
-| CASP14 | 101 | 42 | 68.2 % | 61.1 % | +7.1 |
-| LiveBench | 152 | 200 | 63.6 % | 63.8 % | -0.2 |
-| MathArena 2025 | 35 | 183 | 56.1 % | 52.2 % | +3.9 |
+| SWE-bench Verified | 134 | 500 | 54.6 % | 53.0 % | +1.6 |
+| MTEB English v2 | 181 | 41 | 61.2 % | 61.8 % | -0.6 |
+| HELM classic | 90 | 10 | 85.9 % | 82.8 % | +3.1 |
+| ProteinGym DMS | 96 | 217 | 53.4 % | 53.2 % | +0.2 |
+| TabArena 16 models | 16 | 51 | 63.9 % | 35.7 % | +28.2 |
+| TabArena 45 variants | 45 | 51 | 67.2 % | 44.4 % | +22.8 |
+| CASP14 | 101 | 42 | 75.0 % | 64.6 % | +10.5 |
+| LiveBench | 152 | 200 | 65.3 % | 65.3 % | +0.0 |
+| MathArena 2025 | 35 | 183 | 57.7 % | 54.3 % | +3.4 |
 
-Held-out test on the same blind board: real 41.9 %, twin 41.7 %.
+Held-out test on the same blind board: real 47.5 %, twin 46.1 %.
 
 **The full accounting.** The agreement is not simple; it is two effects that
 partly cancel, and `entropy_decomposition.py` separates them:
@@ -129,7 +129,7 @@ survives being stated properly, which at first it was not: tie@1 moves from one
 ability draw of a field spec to the next, so the twin's prediction is an
 interval and not the single number `target_board.py` prints. Over 99 draws
 SWE-bench Verified's twin gives 2 [1-7] against a real 19, and the real value falls outside
-the twin's central 90 % on 6 of 9 boards (`top_compression.py`).
+the twin's central 90 % on 7 of 9 boards (`top_compression.py`).
 
 What causes it is the SHAPE of the field, not the correlation between systems.
 Two twins with the same J, n and latent spread separate the two: one keeps the

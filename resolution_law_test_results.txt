@@ -1,17 +1,17 @@
 IS THE ESTABLISHED SHARE DETERMINED BY ONE NUMBER?
 ==============================================================================
   leaderboard               J    n    SNR  observed  pred (sd)  pred (iqr)  err sd  err iqr
-  SWE-bench Verified      134  500   3.12     37.9%      37.4%       38.4%   -0.4    +0.5
-  MTEB English v2         181   41   2.51     34.2%      34.5%       30.0%   +0.3    -4.3
-  HELM classic             90   10   1.39     24.4%      23.7%       27.6%   -0.7    +3.2
-  ProteinGym DMS           96  217   2.98     36.0%      36.9%       31.8%   +0.9    -4.2
-  TabArena 16 models       16   51   3.64     22.1%      39.2%       14.8%  +17.1    -7.3
-  TabArena 45 variants     45   51   3.70     25.3%      39.3%       16.7%  +14.0    -8.6
-  CASP14                  101   42   1.88     24.9%      29.7%       25.1%   +4.8    +0.2
-  LiveBench               152  200   1.81     30.4%      29.0%       31.4%   -1.4    +1.0
-  MathArena 2025           35  183   2.08     31.6%      31.5%       30.6%   -0.1    -1.0
+  SWE-bench Verified      134  500   3.00     37.4%      36.9%       37.9%   -0.4    +0.6
+  MTEB English v2         181   41   1.96     28.5%      30.5%       25.0%   +1.9    -3.5
+  HELM classic             90   10   0.58      6.6%       4.3%        7.7%   -2.2    +1.2
+  ProteinGym DMS           96  217   2.70     34.4%      35.5%       30.0%   +1.1    -4.4
+  TabArena 16 models       16   51   3.12     19.6%      37.4%       11.1%  +17.8    -8.5
+  TabArena 45 variants     45   51   2.99     19.7%      36.9%       11.7%  +17.2    -8.1
+  CASP14                  101   42   1.51     21.0%      25.4%       20.2%   +4.4    -0.8
+  LiveBench               152  200   1.69     28.8%      27.7%       30.2%   -1.2    +1.3
+  MathArena 2025           35  183   1.94     30.3%      30.3%       29.3%   +0.0    -1.0
 
-  mean |error|: Gaussian-SD 4.4 points, IQR-robust 3.4 points
+  mean |error|: Gaussian-SD 5.1 points, IQR-robust 3.3 points
 
   'observed' and 'pred' are shares of ORDERED pairs (the beats matrix),
   so the share of unordered pairs separated is twice each. The first
