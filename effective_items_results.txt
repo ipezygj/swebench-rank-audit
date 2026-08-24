@@ -1,0 +1,38 @@
+HOW MANY ITEMS SEPARATE THE TOP TWO
+========================================================================================================
+  leaderboard               J     n  tie@1   top t   n_eff   share  median pair  m* for t=2   scaling
+  SWE-bench Verified      134   500     19    0.00    36.0      7%        139.0         inf no effect
+  MTEB English v2         181    41     16    0.01    15.2     37%         24.4   1,090,807 no effect
+  HELM classic             90    10     15    0.94     8.1     81%          7.7          37 no effect
+  ProteinGym DMS           96   217      3    1.07   116.8     54%        117.2         406    12% ok
+  TabArena 16 models       16    51      8    1.14    12.7     25%         20.9          39  161% BAD
+  TabArena 45 variants     45    51     12    0.63    12.9     25%         22.0         130     4% ok
+  CASP14                  101    42      1    9.89    29.6     70%         22.5           1     2% ok
+  LiveBench               152   200      8    2.99    50.2     25%         59.1          22     2% ok
+  MathArena 2025           35   183     11    0.48    18.7     10%         47.4         325 no effect
+
+  P1  top pair separated by under half the items on 6 of 9   pre-registered >= 7:  MISS
+  P2  top pair below the median pair on 7 of 9              pre-registered >= 7:  HIT
+  P3  m* above ten times the current n on 2 of 9            pre-registered >= 5:  MISS
+  P4  Spearman(tie@1, share) = -0.31 (p 0.42)               pre-registered negative:  HIT
+
+  n_eff is the participation ratio of the difference series between the
+  printed first and second: on the binary board it is exactly McNemar's
+  discordant count, on the others it is its continuous analogue, whose
+  no-concentration baseline is 0.637 of n and not 1. share is n_eff / n.
+  median pair is the same statistic over 400 random pairs of the board.
+
+  m* = n_eff * (2 / t)^2 is the number of CARRYING items the top
+  comparison would need to reach t = 2 at its current effect size. It is
+  not a number of items: instances both systems already solve, or both
+  already fail, move it not at all. A board whose m* is far above its own
+  n_eff cannot buy a decidable top by growing the way it grew.
+
+  scaling is that assumption tested rather than assumed: t on a random
+  quarter of the items, doubled, against t on all of them. It holds to
+  12 % or better on 4 of the 5 boards where there is an effect
+  to scale, and fails by 161 % on TabArena 16 models, whose top pair is
+  carried by 13 of 51 items - too concentrated for any statement of
+  the form 'this many more items'. Boards whose top pair shows no effect
+  are marked accordingly, and for them m* is the arithmetic of a difference
+  that is not there.

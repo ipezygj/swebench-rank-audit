@@ -53,8 +53,13 @@ SELF-CHECKS (no table if any fails)
   * on the one binary board, n_eff must equal McNemar's b + c exactly, for the
     top pair and for twenty random pairs;
   * iid Gaussian differences must give n_eff / n = 0.637 within 0.03;
-  * the m* formula must round-trip: fed the observed discordant count and
-    split, it must reproduce the observed t within 10 %.
+  * the closed form of the paired t on binary outcomes must hold to machine
+    precision on at least ten pairs - the check that caught the confusion
+    between the paired t and the McNemar statistic;
+  * the sqrt(n) scaling m* rests on must PREDICT on at least three boards: t
+    measured on a quarter of the items, doubled, within 25 % of the t on the
+    whole set. Where it does not, the board's m* is printed with BAD beside
+    it rather than suppressed.
 
     python effective_items.py
 """
@@ -105,10 +110,14 @@ def split_share(d: np.ndarray) -> float:
     return pos / tot if tot > 0 else 0.5
 
 
-def m_star(p: float, target_t: float = 2.0) -> float:
-    """Discordant items needed to reach target_t at this split."""
-    edge = 2.0 * p - 1.0
-    return float("inf") if abs(edge) < 1e-9 else (target_t / edge) ** 2
+def m_star(neff: float, t: float, target_t: float = 2.0) -> float:
+    """Carrying items needed to reach target_t, at this board's effect size.
+
+    A paired statistic grows as sqrt(of the items that carry it), so reaching
+    target_t needs n_eff * (target_t / t)^2 of them. On binary outcomes
+    t = (2p - 1) * sqrt(m) and this reduces exactly to (2 / (2p - 1))^2.
+    """
+    return float("inf") if abs(t) < 1e-9 else neff * (target_t / t) ** 2
 
 
 def paired_t(d: np.ndarray) -> float:
@@ -137,24 +146,80 @@ def _check_gaussian_baseline() -> tuple[bool, str]:
     return abs(m - 2 / math.pi) < 0.03, f"iid Gaussian gives n_eff/n = {m:.3f} (2/pi = {2 / math.pi:.3f})"
 
 
-def _check_mstar_roundtrip() -> tuple[bool, str]:
-    """Fed the observed split and count, the formula must reproduce observed t."""
+def _check_binary_t_identity() -> tuple[bool, str]:
+    """The closed form of the paired t on binary outcomes, to machine precision.
+
+    With b items only the leader solves, c only the follower, m = b + c and n
+    items in all,
+
+        t = (b - c) / sqrt(n) * sqrt(n - 1) / sqrt(m - (b - c)^2 / n)
+
+    which is the McNemar form (b - c)/sqrt(m) only while (b - c)^2 / n is small
+    against m. The earlier claim that m* "reduces exactly" to the split form on
+    binary boards confused the two, and this check is what caught it.
+    """
     x = load(MATRICES["SWE-bench Verified"])
-    sc = x.mean(axis=1)
-    order = np.argsort(-sc)
-    d = x[order[0]] - x[order[1]]
-    m, p = n_eff(d), split_share(d)
-    implied = (2 * p - 1) * math.sqrt(m)
-    obs = paired_t(d)
-    rel = abs(implied - obs) / max(abs(obs), 1e-9)
-    ok = rel < 0.10 or (abs(obs) < 0.2 and abs(implied) < 0.2)
-    return ok, f"round trip on the top pair: implied t {implied:+.3f}, observed {obs:+.3f}"
+    n = x.shape[1]
+    rng = np.random.default_rng(3)
+    worst, tested = 0.0, 0
+    for a, b_ in rng.integers(0, x.shape[0], (300, 2)):
+        if a == b_:
+            continue
+        d = x[a] - x[b_]
+        b = float((d > 0).sum())
+        c = float((d < 0).sum())
+        m = b + c
+        if m == 0 or abs(m - (b - c) ** 2 / n) <= 0:
+            continue
+        closed = (b - c) / math.sqrt(n) * math.sqrt(n - 1) / math.sqrt(m - (b - c) ** 2 / n)
+        obs = paired_t(d)
+        if abs(obs) < 1e-9:
+            continue
+        tested += 1
+        worst = max(worst, abs(closed - obs) / abs(obs))
+        if tested >= 40:
+            break
+    ok = tested >= 10 and worst < 1e-9
+    return ok, (f"closed form of the paired t on {tested} binary pairs "
+                f"(needs >= 10), worst relative gap {worst:.1e}")
+
+
+def scale_error(d: np.ndarray, rng, reps: int = 200) -> float:
+    """How well t on a quarter of the items, doubled, predicts t on all of them.
+
+    This is the assumption m* rests on, tested by prediction. Returns nan where
+    the board is too small or its top pair shows no effect to scale.
+    """
+    full = paired_t(d)
+    if abs(full) < 0.5 or len(d) < 40:
+        return float("nan")
+    q = len(d) // 4
+    preds = [paired_t(d[rng.choice(len(d), q, replace=False)]) * 2.0 for _ in range(reps)]
+    return abs(float(np.median(preds)) - full) / abs(full)
+
+
+def _check_scaling_somewhere() -> tuple[bool, str]:
+    """m* means nothing if the scaling holds on no board at all."""
+    rng = np.random.default_rng(4)
+    good, tested = 0, 0
+    for name, path in MATRICES.items():
+        if not Path(path).exists():
+            continue
+        x = load(path)
+        order = np.argsort(-x.mean(axis=1))
+        e = scale_error(x[order[0]] - x[order[1]], rng)
+        if not math.isnan(e):
+            tested += 1
+            good += e < 0.25
+    return good >= 3, (f"sqrt(n) scaling validated on {good} of the {tested} boards "
+                       f"where it can be tested (needs >= 3)")
 
 
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     print("self-checks ...")
-    checks = [_check_binary_identity(), _check_gaussian_baseline(), _check_mstar_roundtrip()]
+    checks = [_check_binary_identity(), _check_gaussian_baseline(),
+              _check_binary_t_identity(), _check_scaling_somewhere()]
     ok_all = True
     for passed, msg in checks:
         print(f"  [{'ok  ' if passed else 'FAIL'}] {msg}")
@@ -179,14 +244,15 @@ def main() -> int:
         p = split_share(d)
         rows[name] = {"J": J, "n": n, "tie": tie, "t": paired_t(d),
                       "neff": n_eff(d), "share": n_eff(d) / n, "med": med,
-                      "p": p, "mstar": m_star(p)}
+                      "p": p, "mstar": m_star(n_eff(d), paired_t(d)),
+                      "scale": scale_error(d, np.random.default_rng(SEED + 5))}
 
     L = []
     out = L.append
     out("HOW MANY ITEMS SEPARATE THE TOP TWO")
     out("=" * 104)
     out(f"  {'leaderboard':<22} {'J':>4} {'n':>5} {'tie@1':>6} {'top t':>7} {'n_eff':>7} "
-        f"{'share':>7} {'median pair':>12} {'split':>7} {'m* for t=2':>11}")
+        f"{'share':>7} {'median pair':>12} {'m* for t=2':>11} {'scaling':>9}")
     p1 = p2 = p3 = 0
     for name, v in rows.items():
         if v["share"] < 0.50:
@@ -196,9 +262,11 @@ def main() -> int:
         if v["mstar"] > 10 * v["n"]:
             p3 += 1
         ms = "inf" if not np.isfinite(v["mstar"]) else f"{v['mstar']:,.0f}"
+        sc = "no effect" if math.isnan(v["scale"]) else (
+            f"{100 * v['scale']:.0f}% ok" if v["scale"] < 0.25 else f"{100 * v['scale']:.0f}% BAD")
         out(f"  {name:<22} {v['J']:>4} {v['n']:>5} {v['tie']:>6} {v['t']:>7.2f} "
             f"{v['neff']:>7.1f} {100 * v['share']:>6.0f}% {v['med']:>12.1f} "
-            f"{100 * v['p']:>6.1f}% {ms:>11}")
+            f"{ms:>11} {sc:>9}")
     out("")
     shares = [v["share"] for v in rows.values()]
     ties = [v["tie"] for v in rows.values()]
@@ -218,11 +286,24 @@ def main() -> int:
     out("  no-concentration baseline is 0.637 of n and not 1. share is n_eff / n.")
     out("  median pair is the same statistic over 400 random pairs of the board.")
     out("")
-    out("  m* is the number of DISCORDANT items the top comparison would need to")
-    out("  reach t = 2 at the split it currently shows. It is not a number of")
-    out("  items: instances both systems already solve, or both already fail,")
-    out("  move it not at all. A board whose m* is far above its n cannot buy")
-    out("  a decidable top by growing the way it grew.")
+    out("  m* = n_eff * (2 / t)^2 is the number of CARRYING items the top")
+    out("  comparison would need to reach t = 2 at its current effect size. It is")
+    out("  not a number of items: instances both systems already solve, or both")
+    out("  already fail, move it not at all. A board whose m* is far above its own")
+    out("  n_eff cannot buy a decidable top by growing the way it grew.")
+    out("")
+    tested = {k: v for k, v in rows.items() if not math.isnan(v["scale"])}
+    good = {k: v for k, v in tested.items() if v["scale"] < 0.25}
+    bad = {k: v for k, v in tested.items() if v["scale"] >= 0.25}
+    out("  scaling is that assumption tested rather than assumed: t on a random")
+    out("  quarter of the items, doubled, against t on all of them. It holds to")
+    out(f"  {100 * max(v['scale'] for v in good.values()):.0f} % or better on {len(good)} of the {len(tested)} boards where there is an effect")
+    for k, v in bad.items():
+        out(f"  to scale, and fails by {100 * v['scale']:.0f} % on {k}, whose top pair is")
+        out(f"  carried by {v['neff']:.0f} of {v['n']} items - too concentrated for any statement of")
+        out("  the form 'this many more items'. Boards whose top pair shows no effect")
+    out("  are marked accordingly, and for them m* is the arithmetic of a difference")
+    out("  that is not there.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("effective_items_results.txt").write_text(text + chr(10), encoding="utf-8", newline=chr(10))
