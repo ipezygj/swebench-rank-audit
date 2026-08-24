@@ -217,18 +217,18 @@ def rank_sets(x: np.ndarray, alpha: float = ALPHA, draws: int = 4000,
     rng = np.random.default_rng(seed)
     iu = np.triu_indices(J, k=1)
     sig_u = sigma_safe[iu]
-    # Talletetaan bootstrap-vektorit S (J x draws) eika pelkkia maksimeja:
-    # askellus tarvitsee saman vedon uudelleen supistuvalle parijoukolle, ja
-    # S on 134 x draws eli murto-osa siita mita 8 911 x draws olisi.
+    # Keep the bootstrap vectors S (J x draws), not just the maxima: the
+    # step-down needs the same draw again on a shrinking set of pairs, and S is
+    # 134 x draws, a fraction of what 8 911 x draws would be.
     S = u @ rng.standard_normal((n, draws))      # J x draws
     boot_t = np.abs(S[iu[0], :] - S[iu[1], :]) / (np.sqrt(n) * sig_u[:, None])
     crit = float(np.quantile(np.nanmax(boot_t, axis=0), 1.0 - alpha))
 
     # Simultaneous CI for every difference theta_j - theta_k.
     delta = theta[:, None] - theta[None, :]
-    # crit voi olla 0 kun kaikki jarjestelmat ovat identtisia, ja silloin
-    # 0 * inf = nan. Nan vertautuu aina epatodeksi, joten separaatio
-    # menisi lapi vaarin pain hiljaa.
+    # crit can be 0 when every system is identical, and then 0 * inf = nan.
+    # A nan always compares false, so a separation would pass the wrong way
+    # round in silence.
     with np.errstate(invalid="ignore"):
         half = crit * sigma_safe / np.sqrt(n)
     half = np.where(np.isnan(half), np.inf, half)
@@ -365,20 +365,20 @@ def _coverage(rates, reps, n, draws, seed):
 
 def _check_coverage_easy(reps: int = 150, n: int = 250,
                          draws: int = 300) -> tuple[bool, str]:
-    """Helppo asetelma: sijaluvut kaukana toisistaan."""
+    """The easy setting: true ranks far apart."""
     cov = _coverage(np.linspace(0.30, 0.70, 8), reps, n, draws, 11)
     return cov >= 0.90, f"coverage, well-separated truth: {cov:.3f} (nominal 0.95)"
 
 
 def _check_coverage_hard(reps: int = 150, n: int = 250,
                          draws: int = 300) -> tuple[bool, str]:
-    """Vaikea asetelma, ja tama on se joka voi kaatua.
+    """The hard setting, and the one that can fail.
 
-    Ensimmainen versio testasi vain hyvin erottuvia jarjestelmia ja antoi
-    peitoksi 1.000. Tarkistin joka ei voi kaatua ei ole tarkistin: kun tosi
-    sijaluvut ovat kaukana, ne osuvat joukkoon vaikka menetelma olisi vaara.
-    Tassa tosi osuudet ovat 0.48-0.52, jolloin jarjestys on juuri ja juuri
-    olemassa ja peitto mittaa oikeasti menetelmaa eika asetelmaa.
+    The first version tested only well-separated systems and reported
+    coverage of 1.000. A check that cannot fail is not a check: when the true
+    ranks are far apart they land inside the sets even if the method is wrong.
+    Here the true rates are 0.48-0.52, so an ordering barely exists and the
+    coverage measures the method rather than the setup.
     """
     cov = _coverage(np.linspace(0.480, 0.520, 8), reps, n, draws, 23)
     return cov >= 0.90, f"coverage, near-tied truth:     {cov:.3f} (nominal 0.95)"

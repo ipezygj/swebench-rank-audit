@@ -31,3 +31,5 @@ tabarena/*.parquet
 livebench/*.parquet
 casp/*.tar.gz
 casp/tables/
+laws_paper/anon_mirror/
+laws_paper/anon_mirror.zip
