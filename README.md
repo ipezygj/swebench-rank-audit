@@ -170,10 +170,14 @@ validated against a permutation null.
 - `holm_pipeline_diff.py` - What changed across the whole repo when the construction was corrected
 - `holm_recompute.py` - Recompute every board under a construction that holds its coverage
 - `irt_scoring.py` - Would a model-based score resolve the top better than the mean?
+- `laws_paper/build_paper.py` - Assemble the two-laws paper from the results files, so no number is retyped
+- `laws_paper/make_anon_mirror.py` - Build the anonymised code artefact for double-blind review
 - `quantisation_curve.py` - How many score levels does an item need?
 - `redundancy_power.py` - Was yesterday's result a finding, or a statistic running out of room?
 - `run_all.py` - Run every tool and record whether it still works
 - `selection_regret.py` - If you pick the leader, how much do you lose?
+- `shape_correction.py` - The fifth number: can one shape statistic close law 1's residual?
+- `shape_within.py` - Does law 1's residual track the field's shape WITHIN one board?
 - `target_board.py` - What would a benchmark that can name a winner look like?
 - `tie_coverage.py` - Does the prior art's criticism of this repo's machinery hold at the size I use it?
 - `tie_coverage_boards.py` - Which of this repo's ten boards sit in the regime where the bootstrap fails?

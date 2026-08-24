@@ -410,12 +410,40 @@ $\rho$ \emph{shuffled} between boards improves a median of 3 of 9, and 74\,\% of
 shuffles reach the unshuffled figure. The improvement is not distinguishable
 from none.
 
-The reason is the sample, not the statistic. Nine points of which two
-extremes carry the correlation: leaving out either extreme removes exactly
-what the fit needs to predict it, and on the seven boards whose residual is
-already small the correction adds more noise than it takes away. We report
-the relation as visible and not yet usable, which is what the evidence
-supports; closing it needs more boards rather than a better formula.
+\paragraph{It does not rest on one benchmark.} The obvious objection is that
+two of the nine rows are the same benchmark scored twice -- TabArena's
+sixteen models and forty-five variants of them -- and that they are also the
+two extremes. Removing either leaves the correlation at $-0.90$; removing
+both leaves $-0.86$ on the remaining seven ($p = 0.014$), and no
+leave-one-out over the nine takes it above $-0.90$. The ordering is a
+property of the set, not of its endpoints.
+
+\paragraph{And more fields cannot be manufactured from the boards in hand.}
+If nine points are too few, a tempting shortcut is to treat subsets of a
+board's systems as separate fields: each has its own $J$, spread, pairwise
+noise and shape, and subsetting moves the shape a long way. We tried it and
+it does not work, for a reason worth recording. Subsetting a \emph{Gaussian}
+field and correlating shape against residual does not give zero: over 24
+synthetic boards it averages $-0.23$, because the systems that inflate an SD
+are the same ones whose removal both raises the shape statistic and moves
+what the law predicts. Against a null matched to each board -- a Gaussian
+twin on the same four numbers, subsetted identically -- only three of nine
+real boards fall below their own twin's fifth percentile, and the fitted
+correction wins on every board and on every twin alike. The subsets are not
+independent fields but noisy views of one, and the noise reproduces exactly
+the relation the test was for.
+
+\paragraph{The ordering is robust; the fit is not.} These two findings are
+about different statistics and the difference is the point. Spearman's
+correlation is a statement about rank, and rank survives losing the
+endpoints. A least-squares correction is a statement about magnitude, and
+the magnitude of the residual is dominated by the same two boards: on the
+other seven it never exceeds four and a half points, so a line fitted
+without an extreme has almost no slope to work with, and applied to the
+seven small residuals it adds more noise than it removes. We therefore
+report the relation as visible and not yet usable. Closing it needs more
+boards -- genuinely different fields, not more views of these -- rather
+than a better formula.
 
 \section{Discussion}
 
