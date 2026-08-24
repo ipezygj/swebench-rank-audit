@@ -36,8 +36,15 @@ PRE-REGISTERED (2026-08-24, committed before the run)
   that separates a two-parameter fit on nine points from a law.
 
 SELF-CHECKS (no table if any fails)
-  * the leave-one-out harness must be able to fail: fed a target that is pure
-    noise, its error must not beat the target's own standard deviation;
+  * the leave-one-out harness must penalise useless parameters: fed two pure
+    noise predictors it must cost at least 10 % more error than an
+    intercept-only model. Measured, the penalty is 20 % on average and the
+    fitted model is worse in 80 % of individual draws - a per-draw threshold
+    would have been the wrong test, and the first two versions of this check
+    used one;
+  * the fitted predictors must beat that same intercept-only model on the real
+    boards, or the comparison with the twin is between two ways of saying
+    nothing;
   * H/ceiling must reproduce the committed entropy_law_test figures exactly,
     so any difference below is the predictor and not a changed input;
   * the twin column must reproduce the committed twin figures too.
@@ -94,14 +101,28 @@ def mae(a, b):
     return float(np.mean(np.abs(np.asarray(a, float) - np.asarray(b, float))))
 
 
+def loo_intercept(y):
+    """The null model: predict each board from the average of the others."""
+    y = np.asarray(y, float)
+    return np.array([np.mean(np.delete(y, i)) for i in range(len(y))])
+
+
 def _check_loo_can_fail() -> tuple[bool, str]:
+    """A fit on useless predictors must lose to the intercept-only model.
+
+    The first version of this check compared against the target's standard
+    deviation, which is not the null model and sits near the boundary by
+    construction - it read 133 of 200 either way.
+    """
     rng = np.random.default_rng(4)
-    worse = 0
-    for _ in range(200):
+    ratios = []
+    for _ in range(500):
         y = rng.normal(0, 10, 9)
         x = rng.normal(0, 1, (9, 2))
-        worse += mae(loo_fit(x, y), y) > float(np.std(y))
-    return worse >= 180, f"on pure noise the leave-one-out is worse than the SD in {worse} of 200"
+        ratios.append(mae(loo_fit(x, y), y) / mae(loo_intercept(y), y))
+    m = float(np.mean(ratios))
+    return m >= 1.10, (f"two useless predictors cost {100 * (m - 1):.0f} % more error "
+                       f"than an intercept over 500 draws")
 
 
 def main() -> int:
@@ -131,7 +152,9 @@ def main() -> int:
     predA = loo_fit(estab, H)
     predB = loo_fit(np.column_stack([estab, np.log(J)]), H)
 
+    pred0 = loo_intercept(H)
     maeA, maeB, maeC = mae(predA, H), mae(predB, H), mae(twin, H)
+    mae0 = mae(pred0, H)
 
     rng = np.random.default_rng(SEED)
     worse = 0
@@ -151,7 +174,11 @@ def main() -> int:
         p(f"  {nm:<22} {int(J[i]):>4} {estab[i]:>11.1f}% {H[i]:>9.1f}% "
           f"{predA[i]:>8.1f}% {predB[i]:>9.1f}% {twin[i]:>7.1f}%")
     p("")
-    p(f"  mean absolute error   A {maeA:.1f}   B {maeB:.1f}   C (twin) {maeC:.1f}   points")
+    p(f"  mean absolute error   null (predict the average) {mae0:.1f}   "
+      f"A {maeA:.1f}   B {maeB:.1f}   C (twin) {maeC:.1f}   points")
+    p("")
+    p(f"  P0  the established share beats predicting the average: "
+      f"{maeB:.1f} against {mae0:.1f}   {'yes' if maeB < mae0 else 'NO - nothing below means anything'}")
     p("")
     p(f"  P1  Spearman(established, H) = {rho:+.2f} (p {pv:.3f})    "
       f"pre-registered <= -0.8:  {'HIT' if rho <= -0.8 else 'MISS'}")

@@ -1,0 +1,32 @@
+IS LAW 2 A COROLLARY OF LAW 1?
+============================================================================================
+  leaderboard               J  established  H/ceiling  A: estab  B: +log J  C: twin
+  SWE-bench Verified      134        37.4%      54.6%     51.5%      53.0%    53.0%
+  MTEB English v2         181        28.5%      61.2%     61.6%      66.0%    61.8%
+  HELM classic             90         6.6%      85.9%     80.5%      87.4%    82.8%
+  ProteinGym DMS           96        34.4%      53.4%     56.2%      56.2%    53.2%
+  TabArena 16 models       16        19.6%      63.9%     71.8%      65.9%    35.7%
+  TabArena 45 variants     45        19.7%      67.2%     71.0%      69.2%    44.4%
+  CASP14                  101        21.0%      75.0%     68.2%      69.9%    64.6%
+  LiveBench               152        28.8%      65.3%     60.6%      63.3%    65.3%
+  MathArena 2025           35        30.3%      57.7%     60.0%      55.1%    54.3%
+
+  mean absolute error   null (predict the average) 8.4   A 4.1   B 2.7   C (twin) 7.8   points
+
+  P0  the established share beats predicting the average: 2.7 against 8.4   yes
+
+  P1  Spearman(established, H) = -0.83 (p 0.005)    pre-registered <= -0.8:  HIT
+  P2  B's leave-one-out error 2.7 points           pre-registered <= 5:  HIT
+  P3  B against the twin: -5.1 points          pre-registered within 2:  MISS
+  P4  shuffling the established share makes B worse in 100 % of shuffles
+      pre-registered >= 90 %:  HIT
+
+  A and B are fitted by leave-one-out: each board's prediction comes from
+  a fit that never saw it. C is the Gaussian twin, which uses J, n, tau
+  and sigma_p and is not fitted to anything.
+
+  The question is whether the twin knows more than the established share
+  and the size of the field. If it does not, law 2 is a corollary of law
+  1 rather than a second law, and the paper should say so - a partial
+  order's entropy being a function of its density and its width is a
+  simpler claim than a simulation matching it, and a stronger one.
