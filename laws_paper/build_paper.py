@@ -111,6 +111,17 @@ _WORDS = {0: "None", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
           11: "Eleven", 12: "Twelve"}
 
 
+def shape_rows():
+    """(board, J, n, r, observed, law1, residual) from shape_correction."""
+    rows = []
+    for line in read("shape_correction_results.txt").splitlines():
+        m = re.match(r"\s{2}(\S.*?)\s{2,}(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)%\s+"
+                     r"([\d.]+)%\s+([+-][\d.]+)", line)
+        if m:
+            rows.append(tuple(m.group(i) for i in range(1, 8)))
+    return rows
+
+
 def tex_escape(s):
     for a, b in (("\\", r"\textbackslash{}"), ("&", r"\&"), ("%", r"\%"),
                  ("#", r"\#"), ("_", r"\_"), ("$", r"\$")):
@@ -315,9 +326,14 @@ p(f"  using its median changes the mean absolute error from {_pi[0]} to {_pi[1]}
 p(r"  The heterogeneity averages out of the aggregate and matters entirely for")
 p(r"  the individual claim.")
 p(r"\item[A2: the score differences are Gaussian.] This is the load-bearing")
-p(r"  assumption and the one that breaks. It enters only through $\bar\Phi$,")
-p(r"  and a field with a long lower tail has a $\tau$ inflated by systems far")
-p(r"  from the pack, so \eqref{eq:law1} over-predicts. Both TabArena boards")
+p(r"  assumption and the one that breaks. Note what it is \emph{not}: the")
+p(r"  difference of two independent draws from the same field is symmetric")
+p(r"  whatever that field looks like, so the field's skew cancels exactly and")
+p(r"  cannot be the problem. What survives is the tail against the bulk. A")
+p(r"  field with a long tail has a $\tau$ inflated by systems far from the")
+p(r"  pack while the pack itself sits close together, so a threshold measured")
+p(r"  in units of $\tau$ separates fewer pairs than a Gaussian of the same")
+p(r"  $\tau$ would, and \eqref{eq:law1} over-predicts. Both TabArena boards")
 p(r"  behave this way, and replacing $\tau$ by an IQR-based estimate -- which")
 p(f"  ignores the tails -- moves their errors from ${_ta[0][0]}$ and ${_ta[1][0]}$ points")
 p(f"  to ${_ta[0][1]}$ and ${_ta[1][1]}$.")
@@ -524,6 +540,65 @@ p(r"Of the 95 results files in the repository, 41 changed and 53 were")
 p(r"identical -- the ones whose measurements never touch rank sets.")
 p("")
 
+_sh = shape_rows()
+_rho = grab("shape_correction_results.txt", r"Spearman\(r, residual\) = ([+-][\d.]+)")
+_loo = grab("shape_correction_results.txt", r"beats the plain law on (\d+) of (\d+)")
+_loon = grab("shape_correction_results.txt", r"beats the plain law on \d+ of (\d+)")
+_nullmed = grab("shape_correction_results.txt", r"the median is (\d+) of \d+")
+_nullpct = grab("shape_correction_results.txt", r"and (\d+) % of shuffles reach")
+
+p(r"\section{The fifth number, and why it is not yet a fifth number}")
+p(r"\label{sec:shape}")
+p("")
+p(r"Where law 1 misses, it misses in one direction and on fields of one kind.")
+p(r"A statistic for that kind is free, since both of its ingredients are")
+p(r"already computed:")
+p(r"\begin{equation}")
+p(r"\rho \;=\; \frac{\mathrm{IQR}(s)}{1.349\,\mathrm{SD}(s)} \Big/ "
+  r"\mathbb{E}\!\left[\frac{\mathrm{IQR}}{1.349\,\mathrm{SD}}\;\Big|\;"
+  r"\mathcal{N}, J\right],")
+p(r"\end{equation}")
+p(r"one for a Gaussian field of any size, below one when a tail inflates the SD")
+p(r"while the bulk stays close. The division by its own Gaussian expectation at")
+p(r"that $J$ is not cosmetic: the raw ratio reads 0.953 on a Gaussian field of")
+p(r"sixteen systems, and the board with the most extreme value is also the")
+p(r"smallest, so without it the headline would have been a sample-size artefact")
+p(r"wearing the name of a shape effect.")
+p("")
+p(r"\begin{table}[t]\centering\small")
+p(r"\begin{tabular}{l rr r rr}")
+p(r"\toprule")
+p(r" & $J$ & $n$ & $\rho$ & observed & residual \\")
+p(r"\midrule")
+for b, J, n, rr, obs, pred, res in _sh:
+    p(f"{tex_escape(b)} & {J} & {n} & {rr} & {obs}\\,\\% & ${res}$ \\\\")
+p(r"\bottomrule")
+p(r"\end{tabular}")
+p(r"\caption{Law 1's residual against the shape of the field, sorted by shape. "
+  r"Spearman correlation " + _rho + r".}")
+p(r"\label{tab:shape}")
+p(r"\end{table}")
+p("")
+p(f"The ordering in Table~\\ref{{tab:shape}} is almost perfect: Spearman {_rho}.")
+p(r"The two boards the law misses are the two whose SD is more than three times")
+p(r"what their interquartile range implies. That is the diagnosis, and it is")
+p(r"where the account stops.")
+p("")
+p(r"\paragraph{It does not yield a correction, and the control is what says so.}")
+p(r"Fitting a one-parameter correction on eight boards and testing it on the")
+p(f"ninth, in turn, improves {_loo} of the {_loon}. Refitting the same procedure with")
+p(f"$\\rho$ \\emph{{shuffled}} between boards improves a median of {_nullmed} of {_loon}, and {_nullpct}\\,\\% of")
+p(r"shuffles reach the unshuffled figure. The improvement is not distinguishable")
+p(r"from none.")
+p("")
+p(r"The reason is the sample, not the statistic. Nine points of which two")
+p(r"extremes carry the correlation: leaving out either extreme removes exactly")
+p(r"what the fit needs to predict it, and on the seven boards whose residual is")
+p(r"already small the correction adds more noise than it takes away. We report")
+p(r"the relation as visible and not yet usable, which is what the evidence")
+p(r"supports; closing it needs more boards rather than a better formula.")
+p("")
+
 p(r"\section{Discussion}")
 p("")
 p(r"\paragraph{The laws invert.} The practical use is not to audit a published")
@@ -576,11 +651,11 @@ p("")
 p(r"\section{Limitations}")
 p("")
 p(r"\begin{enumerate}")
-p(r"\item \textbf{The Gaussian assumption fails on skewed fields, and we have no")
-p(r"  theory for that case.} Two of nine boards miss both laws, in the")
-p(r"  pre-registered direction. Substituting an IQR-based $\tau$ repairs the")
-p(r"  numbers but is a patch, not an account: the honest fix is a $\bar\Phi$")
-p(r"  that carries the field's skew, and we do not have one.")
+p(r"\item \textbf{The Gaussian assumption fails on heavy-tailed fields, and the")
+p(r"  fifth number that would fix it is visible but not yet usable.} Two of nine")
+p(r"  boards miss both laws, in the pre-registered direction, and \S\ref{sec:shape}")
+p(r"  identifies what separates them. It does not yet give a correction: see")
+p(r"  there for the control that says so.")
 p(r"\item \textbf{The frontier is not predicted.} Aggregates are reproduced;")
 p(r"  the number of systems that could be first is not, by a factor of six on")
 p(r"  the board we know best.")

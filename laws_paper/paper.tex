@@ -173,9 +173,14 @@ naming because the boards that fail the law fail exactly one of them.
   The heterogeneity averages out of the aggregate and matters entirely for
   the individual claim.
 \item[A2: the score differences are Gaussian.] This is the load-bearing
-  assumption and the one that breaks. It enters only through $\bar\Phi$,
-  and a field with a long lower tail has a $\tau$ inflated by systems far
-  from the pack, so \eqref{eq:law1} over-predicts. Both TabArena boards
+  assumption and the one that breaks. Note what it is \emph{not}: the
+  difference of two independent draws from the same field is symmetric
+  whatever that field looks like, so the field's skew cancels exactly and
+  cannot be the problem. What survives is the tail against the bulk. A
+  field with a long tail has a $\tau$ inflated by systems far from the
+  pack while the pack itself sits close together, so a threshold measured
+  in units of $\tau$ separates fewer pairs than a Gaussian of the same
+  $\tau$ would, and \eqref{eq:law1} over-predicts. Both TabArena boards
   behave this way, and replacing $\tau$ by an IQR-based estimate -- which
   ignores the tails -- moves their errors from $+17.8$ and $+17.2$ points
   to $-8.5$ and $-8.1$.
@@ -357,6 +362,61 @@ Law 2 stayed within five points on the same six boards.
 Of the 95 results files in the repository, 41 changed and 53 were
 identical -- the ones whose measurements never touch rank sets.
 
+\section{The fifth number, and why it is not yet a fifth number}
+\label{sec:shape}
+
+Where law 1 misses, it misses in one direction and on fields of one kind.
+A statistic for that kind is free, since both of its ingredients are
+already computed:
+\begin{equation}
+\rho \;=\; \frac{\mathrm{IQR}(s)}{1.349\,\mathrm{SD}(s)} \Big/ \mathbb{E}\!\left[\frac{\mathrm{IQR}}{1.349\,\mathrm{SD}}\;\Big|\;\mathcal{N}, J\right],
+\end{equation}
+one for a Gaussian field of any size, below one when a tail inflates the SD
+while the bulk stays close. The division by its own Gaussian expectation at
+that $J$ is not cosmetic: the raw ratio reads 0.953 on a Gaussian field of
+sixteen systems, and the board with the most extreme value is also the
+smallest, so without it the headline would have been a sample-size artefact
+wearing the name of a shape effect.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{l rr r rr}
+\toprule
+ & $J$ & $n$ & $\rho$ & observed & residual \\
+\midrule
+TabArena 16 models & 16 & 51 & 0.283 & 19.6\,\% & $+17.8$ \\
+TabArena 45 variants & 45 & 51 & 0.287 & 19.7\,\% & $+17.2$ \\
+ProteinGym DMS & 96 & 217 & 0.714 & 34.4\,\% & $+1.1$ \\
+MTEB English v2 & 181 & 41 & 0.765 & 28.5\,\% & $+1.9$ \\
+CASP14 & 101 & 42 & 0.802 & 21.0\,\% & $+4.4$ \\
+MathArena 2025 & 35 & 183 & 0.977 & 30.3\,\% & $+0.0$ \\
+SWE-bench Verified & 134 & 500 & 1.096 & 37.4\,\% & $-0.4$ \\
+LiveBench & 152 & 200 & 1.149 & 28.8\,\% & $-1.2$ \\
+HELM classic & 90 & 10 & 1.219 & 6.6\,\% & $-2.2$ \\
+\bottomrule
+\end{tabular}
+\caption{Law 1's residual against the shape of the field, sorted by shape. Spearman correlation -0.93.}
+\label{tab:shape}
+\end{table}
+
+The ordering in Table~\ref{tab:shape} is almost perfect: Spearman -0.93.
+The two boards the law misses are the two whose SD is more than three times
+what their interquartile range implies. That is the diagnosis, and it is
+where the account stops.
+
+\paragraph{It does not yield a correction, and the control is what says so.}
+Fitting a one-parameter correction on eight boards and testing it on the
+ninth, in turn, improves 3 of the 9. Refitting the same procedure with
+$\rho$ \emph{shuffled} between boards improves a median of 3 of 9, and 74\,\% of
+shuffles reach the unshuffled figure. The improvement is not distinguishable
+from none.
+
+The reason is the sample, not the statistic. Nine points of which two
+extremes carry the correlation: leaving out either extreme removes exactly
+what the fit needs to predict it, and on the seven boards whose residual is
+already small the correction adds more noise than it takes away. We report
+the relation as visible and not yet usable, which is what the evidence
+supports; closing it needs more boards rather than a better formula.
+
 \section{Discussion}
 
 \paragraph{The laws invert.} The practical use is not to audit a published
@@ -405,11 +465,11 @@ where $\sigma_p$ is the measurable quantity.
 \section{Limitations}
 
 \begin{enumerate}
-\item \textbf{The Gaussian assumption fails on skewed fields, and we have no
-  theory for that case.} Two of nine boards miss both laws, in the
-  pre-registered direction. Substituting an IQR-based $\tau$ repairs the
-  numbers but is a patch, not an account: the honest fix is a $\bar\Phi$
-  that carries the field's skew, and we do not have one.
+\item \textbf{The Gaussian assumption fails on heavy-tailed fields, and the
+  fifth number that would fix it is visible but not yet usable.} Two of nine
+  boards miss both laws, in the pre-registered direction, and \S\ref{sec:shape}
+  identifies what separates them. It does not yet give a correction: see
+  there for the control that says so.
 \item \textbf{The frontier is not predicted.} Aggregates are reproduced;
   the number of systems that could be first is not, by a factor of six on
   the board we know best.
