@@ -1,5 +1,29 @@
 """Simultaneous confidence sets for a leaderboard's RANKS, not its pairs.
 
+COVERAGE WARNING, measured 2026-08-24 (`tie_coverage_boards.py`). The
+multiplier bootstrap below does NOT hold its nominal 0.95 simultaneous
+coverage when the number of systems is large relative to the number of items.
+Under exact ties, coverage by J/n:
+
+    HELM classic         J/n 9.0   0.013        LiveBench          0.76  0.867
+    MTEB English v2          4.4   0.540        ProteinGym DMS     0.44  0.840
+    CASP14                   2.4   0.633        TabArena 16            0.31  0.873
+    LMArena categories       1.2   0.727        SWE-bench Lite     0.28  0.940
+    TabArena 45 variants     0.88  0.833        SWE-bench Verified 0.27  0.900
+
+Holm on directional t-tests holds coverage on every one of those shapes
+(0.880 to 0.973). The cause is structural: the critical value for all
+J(J-1)/2 pairwise statistics is estimated from n items, and when there are
+more statistics than observations it comes out too small.
+
+DIRECTION: too small a critical value means rank sets that are too NARROW, so
+counts of systems that could be first are too LOW on the affected boards. It
+hides ties rather than manufacturing them.
+
+The failure was found by reading arXiv:2606.08679, which reports exactly this
+about bootstrap rank intervals. The check that was already here tested ties at
+J = 6 and passed at 0.980; the regime that matters is J/n, not J.
+
 WHY THIS EXISTS
 ---------------
 swebench_rank_noise.py answers a question about PAIRS: of 133 adjacent pairs,

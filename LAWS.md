@@ -5,6 +5,19 @@ evidence, are both computable before the benchmark is run. This states the
 two relations, the evidence for them across ten leaderboards in five fields,
 and the conditions under which they fail.*
 
+> **Coverage warning (2026-08-24).** Every rank set in this document comes
+> from a multiplier bootstrap that does not hold its nominal coverage when
+> systems outnumber items. Measured under exact ties: HELM classic 0.013,
+> MTEB English v2 0.540, CASP14 0.633, LMArena 0.727, TabArena 45 0.833,
+> LiveBench 0.867, ProteinGym 0.840, TabArena 16 0.873, against a nominal
+> 0.95; SWE-bench Verified 0.900, Lite 0.940, Test 0.947 and MathArena
+> 0.933 are the sound ones. Holm on directional t-tests holds coverage on
+> all of them (`tie_coverage_boards.py`). The bias narrows rank sets, so
+> counts of possible first places are too LOW on the eight affected boards
+> and the claims below understate rather than overstate how unresolvable
+> those boards are. The numbers still need recomputing before any of them
+> is quoted. Found by reading arXiv:2606.08679, not by the checks here.
+
 ## Law 1 — the established share
 
 For a field whose scores have spread `tau`, measured on `n` items whose

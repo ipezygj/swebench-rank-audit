@@ -97,6 +97,24 @@ Saturation* (arXiv:2602.16763) defines an uncertainty-aware saturation index
 from leaderboard data and makes the point that discriminative power is lost
 when the top models sit within a couple of points.
 
+## What reading the prior art cost, immediately
+
+Reading arXiv:2606.08679 properly - not its abstract - turned up a direct claim
+about this repo's machinery: bootstrap rank intervals fail under ties while
+FWER-based ones keep coverage. Tested at the shapes actually used
+(`tie_coverage.py`, `tie_coverage_boards.py`), it is right. **Eight of twelve
+boards undercover**, HELM classic at 0.013 and MTEB English v2 at 0.540 against
+a nominal 0.95, while Holm holds coverage on every shape. The boundary is J/n,
+not J, which is why the existing tie check at J = 6 passed at 0.980 and missed
+it. The bias narrows rank sets, so the repo has been understating how
+unresolvable the affected boards are - but every number on those eight boards
+needs recomputing.
+
+That damages contribution 3 below more than any other, because the cross-field
+breadth rests on exactly the small-n boards. It is also the strongest argument
+for having done this exercise at all: 91 iterations of self-checks did not find
+it, and one afternoon of reading did.
+
 ## What survives
 
 Stated as narrowly as the evidence allows.
@@ -110,13 +128,33 @@ Stated as narrowly as the evidence allows.
    from four numbers measurable before the board is run. This is the one piece
    worth trying to publish on its own terms.
 
+   Both nearest papers were read in full rather than skimmed, and neither
+   contains it. The saturation index (arXiv:2602.16763) is
+   `S = exp(-R^2)` with `R = (s1 - sk)/SE`, needs an observed leaderboard, and
+   uses an unpaired binomial SE with an ad-hoc effective size `n_eff = n^0.5`
+   - an exponent standing in for exactly the pair correlation `pair_sharpness.py`
+   measures. The rank-interval paper (arXiv:2606.08679) computes intervals from
+   observed scores, has no closed form for the separable share, no entropy or
+   linear-extension count, and its simulation is a full multivariate-normal
+   framework rather than a four-parameter reconstruction. Its non-LLM
+   validation is TabArena alone.
+
+   Caveat that belongs with this: the laws are validated with the same rank-set
+   machinery whose coverage failed above, so law 1's established-share figures
+   on the eight affected boards must be recomputed before the claim is made in
+   public. SWE-bench Verified, Lite, Test and MathArena are unaffected.
+
 2. **Pair-level heterogeneity and its cost.** Section 4 above.
 
-3. **Cross-field breadth.** Ten boards over code, embeddings, QA, competition
-   mathematics, protein fitness and tabular prediction, with one implementation
-   and one set of thresholds. Most of the prior work above is LLM-only, and
-   several of the findings here reverse between fields - CASP14 resolves its
-   top at t = 9.89 while SWE-bench Verified resolves it at 0.00.
+3. **Cross-field breadth — now damaged.** Ten boards over code, embeddings,
+   QA, competition mathematics, protein fitness and tabular prediction, with one
+   implementation and one set of thresholds. Most of the prior work above is
+   LLM-only, and several of the findings here reverse between fields: CASP14
+   resolves its top at t = 9.89 while SWE-bench Verified resolves it at 0.00.
+   But the coverage failure hits the small-n boards, which is most of the
+   non-SWE-bench half, so this contribution is the one that needs the rerun
+   before it can be claimed. The reversal above survives it: t = 9.89 against
+   t = 0.00 is a statement about paired statistics, not about rank sets.
 
 4. **The failure record.** Nine instrument defects found and documented in six
    iterations, each with the check that caught it, including two that overturned
