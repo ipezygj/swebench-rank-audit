@@ -1,0 +1,33 @@
+WHY THE LAWS MISS THE TOP - AND WHETHER THEY MISS IT AT ALL
+============================================================================================================
+  leaderboard               J  real     gaussian twin        shape twin        corr twin   q top  q bulk
+  SWE-bench Verified      134    19          2 [1-7]*        24 [16-29]          3 [1-7]   0.000   0.992
+  MTEB English v2         181    16          3 [1-9]*        24 [14-32]         4 [1-11]   0.002   0.001
+  HELM classic             90    15         6 [2-13]*        17 [10-21]         8 [2-17]   0.103   0.983
+  ProteinGym DMS           96     3           2 [1-7]         7 [4-10]*          2 [1-7]   0.161   0.384
+  TabArena 16 models       16     8          2 [1-4]*          9 [6-11]          2 [1-4]   0.097   0.091
+  TabArena 45 variants     45    12          2 [1-5]*       20 [14-26]*          2 [1-4]   0.070   0.002
+  CASP14                  101     1          5 [1-12]           1 [1-1]         5 [1-12]   0.999   0.003
+  LiveBench               152     8          5 [1-14]          8 [3-16]         6 [1-14]   0.776   0.594
+  MathArena 2025           35    11          3 [1-7]*         12 [9-16]          3 [1-8]   0.084   0.669
+
+  Intervals are the twin's central 90 % over 99 replicates. A star on the
+  Gaussian column means the real board falls outside it; a star on the
+  shape column means it falls outside that one too.
+
+  P1  real outside the Gaussian twin's interval on 6 of 9      pre-registered >= 6:  HIT
+  P2  real inside the shape twin's interval on 7 of 9          pre-registered >= 6:  HIT
+  P3  shape median closer than corr on 8 of 8                 pre-registered >= 6:  HIT
+  P4  top gap below the twin median on 7 of 9               pre-registered >= 7:  HIT
+  P5  top percentile >= 0.25 below bulk on 3 of 9         pre-registered >= 6:  MISS
+
+  q top is where the real gap between the printed first and second falls
+  inside the distribution of that gap in 999 Gaussian fields of the same
+  spread: 0.02 means only 2 % of Gaussian fields put their top two that
+  close together. q bulk is the same reading for the median gap in the
+  middle third of the board.
+
+  The Gaussian interval is the correction this file owes its own repo:
+  target_board.py prints the twin's tie@1 as a single number and LAWS.md
+  quotes it as one. Whether a board's top departs from a Gaussian field
+  is a containment question, and only the interval can answer it.
