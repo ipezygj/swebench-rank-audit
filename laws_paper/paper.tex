@@ -185,12 +185,51 @@ between entrants, and it is consistent with a separate finding of ours that
 a twin carrying the real residual correlation structure is
 indistinguishable from an independent one on these aggregates.
 
+\begin{table}[t]\centering\small
+\begin{tabular}{l rr r rr rr}
+\toprule
+ & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\\\
+\midrule
+SWE-bench Verified & 134 & 500 & 3.00 & 37.4\,\% & 36.9\,\% & $-0.4$ & $+0.6$ \\
+MTEB English v2 & 181 & 41 & 1.96 & 28.5\,\% & 30.5\,\% & $+1.9$ & $-3.5$ \\
+HELM classic & 90 & 10 & 0.58 & 6.6\,\% & 4.3\,\% & $-2.2$ & $+1.2$ \\
+ProteinGym DMS & 96 & 217 & 2.70 & 34.4\,\% & 35.5\,\% & $+1.1$ & $-4.4$ \\
+TabArena 16 models & 16 & 51 & 3.12 & 19.6\,\% & 37.4\,\% & $+17.8$ & $-8.5$ \\
+TabArena 45 variants & 45 & 51 & 2.99 & 19.7\,\% & 36.9\,\% & $+17.2$ & $-8.1$ \\
+CASP14 & 101 & 42 & 1.51 & 21.0\,\% & 25.4\,\% & $+4.4$ & $-0.8$ \\
+LiveBench & 152 & 200 & 1.69 & 28.8\,\% & 27.7\,\% & $-1.2$ & $+1.3$ \\
+MathArena 2025 & 35 & 183 & 1.94 & 30.3\,\% & 30.3\,\% & $+0.0$ & $-1.0$ \\
+\bottomrule
+\end{tabular}
+\caption{Law 1 across 9 leaderboards in five fields. The predicted column uses the SD of scores as $\tau$; the robust error column uses the IQR rescaled to a Gaussian SD, which ignores the tails of the field. Mean absolute error 5.1 points, or 3.3 points robust. No constant in the formula is fitted.}
+\label{tab:law1}
+\end{table}
+
 \section{Law 2: the ordering entropy}
 
-Entropy has no closed form -- it depends on \emph{which} pairs are
-established, not only how many -- but the question is still well posed.
-Take a Gaussian field with the same $J$, $n$, $\tau$ and $\sigma_p$, run the
-identical machinery on it, and compare.
+Law 1 is a formula because the established share counts pairs. Entropy
+does not: it depends on \emph{which} pairs are established, since a partial
+order concentrated among the weakest systems constrains fewer total orders
+than the same number of relations spread through the field. Counting linear
+extensions is \#P-complete, and we know of no closed form. The claim here is
+therefore of a different and weaker kind, and it is stated as such:
+
+\begin{quote}
+A Gaussian field with the same $J$, $n$, $\tau$ and $\sigma_p$ as a real
+leaderboard, and nothing else of it, reproduces its ordering entropy.
+\end{quote}
+
+The twin is constructed by inverting the noise: the observed spread $\tau$
+already contains measurement error, so the latent spread is
+$\sqrt{\max(\tau^2 - \sigma_{\mathrm{item}}^2/n,\,0)}$ with
+$\sigma_{\mathrm{item}} = \sigma_p/\sqrt{2}$. Abilities are drawn from it,
+item-level noise is added, and the identical machinery is run on the result.
+The twin has no skew, no clusters and no outliers; if the real board's
+entropy needed any of those, the twin would miss.
+
+Two self-checks guard the construction: a twin of a Gaussian field must
+reproduce its own entropy within three points on two independent seeds, and
+the twin must reproduce its target's $\tau$ and $\sigma_p$ within 10\,\%.
 
 \begin{table}[t]\centering\small
 \begin{tabular}{l rr rrr}
@@ -208,9 +247,61 @@ LiveBench & 152 & 200 & 65.3\,\% & 65.3\,\% & $+0.0$ \\
 MathArena 2025 & 35 & 183 & 57.7\,\% & 54.3\,\% & $+3.4$ \\
 \bottomrule
 \end{tabular}
-\caption{Law 2. The twin knows $J$, $n$, $\tau$ and $\sigma_p$ and nothing else of the real board: no skew, no clusters, no outliers. Within five points on 6 of 9 boards.}
+\caption{Law 2. Ordering entropy as a share of $\log_2 J!$, real against a twin that knows only $J$, $n$, $\tau$ and $\sigma_p$. Within five points on 6 of 9 boards.}
 \label{tab:law2}
 \end{table}
+
+\section{Results}
+
+\paragraph{Law 1.} Table~\ref{tab:law1} gives the nine boards. The mean
+absolute error is 5.1 points, or 3.3 using a robust estimate of
+$\tau$, against a quantity that ranges over the table from
+37.4\,\% down to 6.6\,\%.
+6 of the 9 sit within 2.5 points. The prediction is not a fit:
+there is no free parameter in \eqref{eq:law1} to have absorbed the error.
+
+\paragraph{Law 2.} Table~\ref{tab:law2} gives the same boards. The twin is
+within five points on 6 of 9. Where it matches, a leaderboard's evidential
+entropy is a function of four numbers and nothing else about the field --
+which means a benchmark designer can compute it from a planned size and an
+expected spread before a single system is run.
+
+\paragraph{Both failures are the same failure.} The two TabArena boards
+miss law 1 by about seventeen points and law 2 by twenty-three and
+twenty-eight, and the direction was pre-registered before the run: the twin
+has a symmetric field and spreads established pairs evenly, while the real
+field concentrates them, and concentrated relations constrain fewer
+orderings, so the \emph{real} entropy should come out higher. It does.
+
+Decomposing the law-2 residual into a shape term -- what a twin gains when
+it is given the real score shape instead of a Gaussian one -- and the
+remainder separates the two cases cleanly:
+
+\begin{table}[t]\centering\small
+\begin{tabular}{l rrr rr}
+\toprule
+ & real & Gaussian & + real shape & SHAPE & residual \\
+\midrule
+SWE-bench Verified & 54.6\,\% & 53.0\,\% & 57.2\,\% & $+4.2$ & $-2.6$ \\
+MTEB English v2 & 61.5\,\% & 61.7\,\% & 67.2\,\% & $+5.5$ & $-5.8$ \\
+LiveBench & 66.0\,\% & 64.7\,\% & 66.2\,\% & $+1.5$ & $-0.2$ \\
+TabArena 16 models & 63.6\,\% & 35.6\,\% & 75.1\,\% & $+39.5$ & $-11.5$ \\
+TabArena 45 variants & 67.4\,\% & 44.6\,\% & 68.3\,\% & $+23.7$ & $-0.9$ \\
+CASP14 & 74.5\,\% & 65.0\,\% & 73.7\,\% & $+8.7$ & $+0.8$ \\
+\bottomrule
+\end{tabular}
+\caption{Where law 2's residual comes from. The SHAPE column is what the twin gains from being handed the real distribution of scores; the residual is what remains. On the boards the law fits, SHAPE is a few points and the residual cancels it; on TabArena's sixteen models SHAPE is $+39.5$.}
+\label{tab:decomp}
+\end{table}
+
+\paragraph{It is the shape, not the noise profile.} A natural repair is to
+give the twin each system's own item-noise level rather than one level for
+the whole field. It does not help: that variant is within five points on
+6/9 boards, the same count, and on the two TabArena boards the deviation
+is not halved -- it moves from $+28.2$ to $+29.2$ on one and from $+22.9$ to
+$+16.1$ on the other, against a pre-registered requirement that both be at
+least halved. What the twin lacks is the asymmetry of the field, and giving
+it a better noise model does not supply that.
 
 \section{A board held out until the thresholds were committed}
 

@@ -294,14 +294,69 @@ p(r"a twin carrying the real residual correlation structure is")
 p(r"indistinguishable from an independent one on these aggregates.")
 p("")
 
+p(r"\begin{table}[t]\centering\small")
+p(r"\begin{tabular}{l rr r rr rr}")
+p(r"\toprule")
+p(r" & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\\\")
+p(r"\midrule")
+for b, J, n, snr, obs, psd, piqr, esd, eiqr in law1_rows():
+    p(f"{tex_escape(b)} & {J} & {n} & {snr} & {obs}\\,\\% & {psd}\\,\\% & "
+      f"${esd}$ & ${eiqr}$ \\\\")
+p(r"\bottomrule")
+p(r"\end{tabular}")
+p(r"\caption{Law 1 across " + str(n_boards) + r" leaderboards in five fields. The "
+  r"predicted column uses the SD of scores as $\tau$; the robust error column "
+  r"uses the IQR rescaled to a Gaussian SD, which ignores the tails of the "
+  r"field. Mean absolute error " + mean_err + r" points, or " + mean_err_iqr +
+  r" points robust. No constant in the formula is fitted.}")
+p(r"\label{tab:law1}")
+p(r"\end{table}")
+p("")
+
 # ------------------------------------------------------------------ law 2
+def decomposition_rows():
+    """(board, real, gauss, shape, SHAPE, RESID) from entropy_decomposition."""
+    rows = []
+    for line in read("entropy_decomposition_results.txt").splitlines():
+        m = re.match(r"\s{2}(\S.*?)\s{2,}(\d+)\s+(\d+)\s+([\d.]+)%\s+([\d.]+)%\s+"
+                     r"([\d.]+)%\s+([+-][\d.]+)\s+([+-][\d.]+)", line)
+        if m:
+            rows.append((m.group(1).strip(), m.group(4), m.group(5), m.group(6),
+                         m.group(7), m.group(8)))
+    return rows
+
+
+_dec = {r[0]: r for r in decomposition_rows()}
+_twin2 = grab("entropy_law_twin2_results.txt",
+              r"within 5 points: twin1 (\d+/\d+)\s+twin2a (\d+/\d+)", 2)
+
 p(r"\section{Law 2: the ordering entropy}")
 p("")
-p(r"Entropy has no closed form -- it depends on \emph{which} pairs are")
-p(r"established, not only how many -- but the question is still well posed.")
-p(r"Take a Gaussian field with the same $J$, $n$, $\tau$ and $\sigma_p$, run the")
-p(r"identical machinery on it, and compare.")
+p(r"Law 1 is a formula because the established share counts pairs. Entropy")
+p(r"does not: it depends on \emph{which} pairs are established, since a partial")
+p(r"order concentrated among the weakest systems constrains fewer total orders")
+p(r"than the same number of relations spread through the field. Counting linear")
+p(r"extensions is \#P-complete, and we know of no closed form. The claim here is")
+p(r"therefore of a different and weaker kind, and it is stated as such:")
 p("")
+p(r"\begin{quote}")
+p(r"A Gaussian field with the same $J$, $n$, $\tau$ and $\sigma_p$ as a real")
+p(r"leaderboard, and nothing else of it, reproduces its ordering entropy.")
+p(r"\end{quote}")
+p("")
+p(r"The twin is constructed by inverting the noise: the observed spread $\tau$")
+p(r"already contains measurement error, so the latent spread is")
+p(r"$\sqrt{\max(\tau^2 - \sigma_{\mathrm{item}}^2/n,\,0)}$ with")
+p(r"$\sigma_{\mathrm{item}} = \sigma_p/\sqrt{2}$. Abilities are drawn from it,")
+p(r"item-level noise is added, and the identical machinery is run on the result.")
+p(r"The twin has no skew, no clusters and no outliers; if the real board's")
+p(r"entropy needed any of those, the twin would miss.")
+p("")
+p(r"Two self-checks guard the construction: a twin of a Gaussian field must")
+p(r"reproduce its own entropy within three points on two independent seeds, and")
+p(r"the twin must reproduce its target's $\tau$ and $\sigma_p$ within 10\,\%.")
+p("")
+
 p(r"\begin{table}[t]\centering\small")
 p(r"\begin{tabular}{l rr rrr}")
 p(r"\toprule")
@@ -311,11 +366,70 @@ for b, J, n, hr, ht, d, er, et in law2_rows():
     p(f"{tex_escape(b)} & {J} & {n} & {hr}\\,\\% & {ht}\\,\\% & ${d}$ \\\\")
 p(r"\bottomrule")
 p(r"\end{tabular}")
-p(r"\caption{Law 2. The twin knows $J$, $n$, $\tau$ and $\sigma_p$ and nothing "
-  r"else of the real board: no skew, no clusters, no outliers. Within five "
-  r"points on " + law2_within + r" boards.}")
+p(r"\caption{Law 2. Ordering entropy as a share of $\log_2 J!$, real against a "
+  r"twin that knows only $J$, $n$, $\tau$ and $\sigma_p$. Within five points on "
+  + law2_within + r" boards.}")
 p(r"\label{tab:law2}")
 p(r"\end{table}")
+p("")
+
+# ------------------------------------------------------------------ results
+p(r"\section{Results}")
+p("")
+p(r"\paragraph{Law 1.} Table~\ref{tab:law1} gives the nine boards. The mean")
+p(f'absolute error is {mean_err} points, or {mean_err_iqr} using a robust estimate of')
+p(r"$\tau$, against a quantity that ranges over the table from")
+_obs = [float(r[4]) for r in law1_rows()]
+p(f'{max(_obs):.1f}\\,\\% down to {min(_obs):.1f}\\,\\%.')
+_close = sum(1 for r in law1_rows() if abs(float(r[7])) <= 2.5)
+p(f"{_close} of the {n_boards} sit within 2.5 points. The prediction is not a fit:")
+p(r"there is no free parameter in \eqref{eq:law1} to have absorbed the error.")
+p("")
+p(r"\paragraph{Law 2.} Table~\ref{tab:law2} gives the same boards. The twin is")
+p(f'within five points on {law2_within}. Where it matches, a leaderboard\'s evidential')
+p(r"entropy is a function of four numbers and nothing else about the field --")
+p(r"which means a benchmark designer can compute it from a planned size and an")
+p(r"expected spread before a single system is run.")
+p("")
+p(r"\paragraph{Both failures are the same failure.} The two TabArena boards")
+p(r"miss law 1 by about seventeen points and law 2 by twenty-three and")
+p(r"twenty-eight, and the direction was pre-registered before the run: the twin")
+p(r"has a symmetric field and spreads established pairs evenly, while the real")
+p(r"field concentrates them, and concentrated relations constrain fewer")
+p(r"orderings, so the \emph{real} entropy should come out higher. It does.")
+p("")
+p(r"Decomposing the law-2 residual into a shape term -- what a twin gains when")
+p(r"it is given the real score shape instead of a Gaussian one -- and the")
+p(r"remainder separates the two cases cleanly:")
+p("")
+p(r"\begin{table}[t]\centering\small")
+p(r"\begin{tabular}{l rrr rr}")
+p(r"\toprule")
+p(r" & real & Gaussian & + real shape & SHAPE & residual \\")
+p(r"\midrule")
+for b in ("SWE-bench Verified", "MTEB English v2", "LiveBench",
+          "TabArena 16 models", "TabArena 45 variants", "CASP14"):
+    if b in _dec:
+        _, real, gauss, shape, S, R = _dec[b]
+        p(f"{tex_escape(b)} & {real}\\,\\% & {gauss}\\,\\% & {shape}\\,\\% & "
+          f"${S}$ & ${R}$ \\\\")
+p(r"\bottomrule")
+p(r"\end{tabular}")
+p(r"\caption{Where law 2's residual comes from. The SHAPE column is what the "
+  r"twin gains from being handed the real distribution of scores; the residual "
+  r"is what remains. On the boards the law fits, SHAPE is a few points and the "
+  r"residual cancels it; on TabArena's sixteen models SHAPE is $+39.5$.}")
+p(r"\label{tab:decomp}")
+p(r"\end{table}")
+p("")
+p(r"\paragraph{It is the shape, not the noise profile.} A natural repair is to")
+p(r"give the twin each system's own item-noise level rather than one level for")
+p(r"the whole field. It does not help: that variant is within five points on")
+p(f'{_twin2} boards, the same count, and on the two TabArena boards the deviation')
+p(r"is not halved -- it moves from $+28.2$ to $+29.2$ on one and from $+22.9$ to")
+p(r"$+16.1$ on the other, against a pre-registered requirement that both be at")
+p(r"least halved. What the twin lacks is the asymmetry of the field, and giving")
+p(r"it a better noise model does not supply that.")
 p("")
 
 # -------------------------------------------------------------- held out
