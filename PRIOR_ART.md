@@ -110,10 +110,33 @@ it. The bias narrows rank sets, so the repo has been understating how
 unresolvable the affected boards are - but every number on those eight boards
 needs recomputing.
 
-That damages contribution 3 below more than any other, because the cross-field
+That damaged contribution 3 below more than any other, because the cross-field
 breadth rests on exactly the small-n boards. It is also the strongest argument
 for having done this exercise at all: 91 iterations of self-checks did not find
 it, and one afternoon of reading did.
+
+**Repaired, 2026-08-24.** The construction is now selectable and the default is
+Holm; the whole pipeline was rerun under it (twice, because run_all executes
+alphabetically and several tools read each other's results files). 101 tools,
+100 pass. Of 95 results files, 41 changed and **53 are identical** - the
+item-side measurements, the family clustering, the harness decomposition and
+kappa do not touch rank sets and did not move at all.
+
+Both laws survive the corrected construction, which is a stronger test than the
+one they originally passed: the realised critical value now ranges from 3.14 to
+8.45 across boards and constructions, and the prediction follows it.
+
+    law 1   mean absolute error 4.4 -> 5.1 points on the Gaussian-SD version,
+            and 3.4 -> 3.3 on the IQR-robust one, which is the version the
+            heavy-tailed fields require. It improves.
+    law 2   within five points on 6 of 9, unchanged, with TabArena still the
+            exception and still in the pre-registered direction.
+    tenth   the board held out until the thresholds were committed still
+            passes both: 36.6 % observed against 35.6 % predicted for law 1,
+            47.5 % against 46.1 % for law 2.
+
+Contribution 3 therefore stands, on numbers computed with a construction whose
+coverage was measured rather than assumed.
 
 ## What survives
 
@@ -139,22 +162,24 @@ Stated as narrowly as the evidence allows.
    framework rather than a four-parameter reconstruction. Its non-LLM
    validation is TabArena alone.
 
-   Caveat that belongs with this: the laws are validated with the same rank-set
-   machinery whose coverage failed above, so law 1's established-share figures
-   on the eight affected boards must be recomputed before the claim is made in
-   public. SWE-bench Verified, Lite, Test and MathArena are unaffected.
+   The caveat that belonged here - that the laws were validated with machinery
+   whose coverage failed - has been discharged: the pipeline was rerun under
+   Holm and both laws hold, law 1's robust version slightly better than before.
+   That the prediction tracks a critical value moving from 3.14 to 8.45 is
+   evidence the law is about resolution and not about one estimator.
 
 2. **Pair-level heterogeneity and its cost.** Section 4 above.
 
-3. **Cross-field breadth — now damaged.** Ten boards over code, embeddings,
+3. **Cross-field breadth — damaged, then repaired.** Ten boards over code, embeddings,
    QA, competition mathematics, protein fitness and tabular prediction, with one
    implementation and one set of thresholds. Most of the prior work above is
    LLM-only, and several of the findings here reverse between fields: CASP14
    resolves its top at t = 9.89 while SWE-bench Verified resolves it at 0.00.
-   But the coverage failure hits the small-n boards, which is most of the
-   non-SWE-bench half, so this contribution is the one that needs the rerun
-   before it can be claimed. The reversal above survives it: t = 9.89 against
-   t = 0.00 is a statement about paired statistics, not about rank sets.
+   The coverage failure hit the small-n boards, which is most of the
+   non-SWE-bench half. The rerun under Holm has been done and the laws hold on
+   the corrected figures, so the contribution stands. The reversal above never
+   depended on it: t = 9.89 against t = 0.00 is a statement about paired
+   statistics, not about rank sets.
 
 4. **The failure record.** Nine instrument defects found and documented in six
    iterations, each with the check that caught it, including two that overturned

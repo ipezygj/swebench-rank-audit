@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,amsmath,amssymb,graphicx,hyperref,natbib}
+\usepackage[T1]{fontenc}
+\newcommand{\Hcn}{\ensuremath{H_{\mathrm{cn}}}}
+\title{\bfseries How Much Ranking a Benchmark Can Support Is Predictable Before It Is Run}
+\author{Ilpo V\"a\"at\"ainen\thanks{Independent researcher, Helsinki. \texttt{ipezygj2@gmail.com}. Code and results: \url{https://github.com/ipezygj/swebench-rank-audit}.}}
+\date{August 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A leaderboard reports an ordering, but how much of that ordering the
+evidence actually supports is a property of the measuring instrument
+rather than of the systems on it. We show that two such properties are
+predictable in closed form from four numbers available before any system
+is run: the number of entrants $J$, the number of items $n$, the spread of
+scores $\tau$, and the paired difference SD $\sigma_p$.
+The share of pairs the evidence establishes follows
+$\bar\Phi(1/\mathrm{SNR})$ with $\mathrm{SNR}=\tau\sqrt{2n}/(c\,\sigma_p)$,
+to a mean absolute error of 5.1 points across 9 leaderboards in
+five fields (3.3 points using a robust estimate of $\tau$), and
+the entropy of the orderings the evidence permits is reproduced by a
+Gaussian field with the same four numbers and nothing else of the real
+board, within five points on 6 of 9 boards.
+A tenth board was held out until the thresholds were committed and passes
+both. Neither law is fitted: the only constant is the critical value the
+multiplicity procedure itself uses, and when that procedure was replaced
+after its coverage was found wanting -- moving the realised critical value
+from 3.14 to 8.45 across boards -- the predictions followed it.
+The laws are neutral about whether a benchmark is good: they say what it
+can decide, and for two of the boards here the answer is almost nothing
+while for another it is everything.
+\end{abstract}
+
+\section{What is being predicted}
+
+Fix a leaderboard: $J$ systems, each scored on the same $n$ items, so that
+every pair can be compared on paired differences. Two summaries of what
+the evidence supports are then well defined.
+
+\paragraph{The established share.} The fraction of ordered pairs $(j,k)$
+for which the evidence places $j$ above $k$ at a simultaneous level. This
+is what a reader is entitled to read off the printed order.
+
+\paragraph{The ordering entropy.} $\log_2$ of the number of total orders
+consistent with the established partial order, normalised by $\log_2 J!$.
+Zero means the evidence fixes the ranking; one means it fixes nothing.
+This quantity is not new -- \citet{uncertaintyranking} measure rank
+uncertainty by counting linear extensions of the order induced by interval
+estimates -- and counting them exactly is \#P-complete, so we use Knuth's
+estimator.
+
+Neither summary is the contribution. The contribution is that both are
+predictable from $(J, n, \tau, \sigma_p)$ before the board exists.
+
+\section{Law 1: the established share}
+
+Two systems separate when their difference exceeds the simultaneous
+half-width, $c\,\sigma_p/\sqrt{n}$. If abilities are spread with SD $\tau$,
+the difference of two draws has SD $\tau\sqrt{2}$, and the share of ordered
+pairs that clear the threshold is
+\begin{equation}
+\mathrm{established} \;=\; \bar\Phi\!\left(\frac{c\,\sigma_p}{\sqrt{2n}\,\tau}\right) \;=\; \bar\Phi(1/\mathrm{SNR}).
+\end{equation}
+Nothing here is fitted. $c$ is the critical value the multiplicity
+procedure returns, $\sigma_p$ is the median pairwise difference SD, and
+$\tau$ is the spread of the observed scores.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{l rr r rr rr}
+\toprule
+ & $J$ & $n$ & SNR & observed & predicted & err & err (robust) \\
+\midrule
+SWE-bench Verified & 134 & 500 & 3.00 & 37.4\,\% & 36.9\,\% & $-0.4$ & $+0.6$ \\
+MTEB English v2 & 181 & 41 & 1.96 & 28.5\,\% & 30.5\,\% & $+1.9$ & $-3.5$ \\
+HELM classic & 90 & 10 & 0.58 & 6.6\,\% & 4.3\,\% & $-2.2$ & $+1.2$ \\
+ProteinGym DMS & 96 & 217 & 2.70 & 34.4\,\% & 35.5\,\% & $+1.1$ & $-4.4$ \\
+TabArena 16 models & 16 & 51 & 3.12 & 19.6\,\% & 37.4\,\% & $+17.8$ & $-8.5$ \\
+TabArena 45 variants & 45 & 51 & 2.99 & 19.7\,\% & 36.9\,\% & $+17.2$ & $-8.1$ \\
+CASP14 & 101 & 42 & 1.51 & 21.0\,\% & 25.4\,\% & $+4.4$ & $-0.8$ \\
+LiveBench & 152 & 200 & 1.69 & 28.8\,\% & 27.7\,\% & $-1.2$ & $+1.3$ \\
+MathArena 2025 & 35 & 183 & 1.94 & 30.3\,\% & 30.3\,\% & $+0.0$ & $-1.0$ \\
+\bottomrule
+\end{tabular}
+\caption{Law 1 across 9 leaderboards. The predicted column uses the SD of scores as $\tau$; the robust error column uses the IQR scaled to a Gaussian SD, which ignores outliers at the tails of the field. Mean absolute error 5.1 points, or 3.3 points robust.}
+\label{tab:law1}
+\end{table}
+
+\section{Law 2: the ordering entropy}
+
+Entropy has no closed form -- it depends on \emph{which} pairs are
+established, not only how many -- but the question is still well posed.
+Take a Gaussian field with the same $J$, $n$, $\tau$ and $\sigma_p$, run the
+identical machinery on it, and compare.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{l rr rrr}
+\toprule
+ & $J$ & $n$ & real & Gaussian twin & difference \\
+\midrule
+SWE-bench Verified & 134 & 500 & 54.6\,\% & 53.0\,\% & $+1.6$ \\
+MTEB English v2 & 181 & 41 & 61.2\,\% & 61.8\,\% & $-0.6$ \\
+HELM classic & 90 & 10 & 85.9\,\% & 82.8\,\% & $+3.1$ \\
+ProteinGym DMS & 96 & 217 & 53.4\,\% & 53.2\,\% & $+0.2$ \\
+TabArena 16 models & 16 & 51 & 63.9\,\% & 35.7\,\% & $+28.2$ \\
+TabArena 45 variants & 45 & 51 & 67.2\,\% & 44.4\,\% & $+22.8$ \\
+CASP14 & 101 & 42 & 75.0\,\% & 64.6\,\% & $+10.5$ \\
+LiveBench & 152 & 200 & 65.3\,\% & 65.3\,\% & $+0.0$ \\
+MathArena 2025 & 35 & 183 & 57.7\,\% & 54.3\,\% & $+3.4$ \\
+\bottomrule
+\end{tabular}
+\caption{Law 2. The twin knows $J$, $n$, $\tau$ and $\sigma_p$ and nothing else of the real board: no skew, no clusters, no outliers. Within five points on 6 of 9 boards.}
+\label{tab:law2}
+\end{table}
+
+\section{A board held out until the thresholds were committed}
+
+Every threshold above was written into version control before the tenth
+board was fetched. Its outcome:
+
+\begin{table}[t]\centering\small
+\begin{tabular}{l l l}
+\toprule
+& prediction & outcome \\
+\midrule
+\checkmark & kappa & over all pairs 1.00 +-0.05                   1.017 \\
+\checkmark & kappa(\#1,\#2) & below 0.90                            0.758 \\
+\checkmark & at & least 5 rank sets contain 1                     5 \\
+\checkmark & law & 1 within 5 points                              observed 36.6 \%, law 35.6 \% \\
+\checkmark & law & 2 within 5 points                              real 47.5 \%, twin 46.1 \% \\
+$\times$ & pairing & dividend above 1.3                         1.00 (paired 10, independent 10) \\
+$\times$ & kappa & split-half above 0.5 (expected to FAIL at n=28) r 0.41 \\
+\bottomrule
+\end{tabular}
+\caption{The held-out board. The two failures were pre-registered as expected failures at that item count.}
+\label{tab:tenth}
+\end{table}
+
+\section{Where the laws fail, and why that is informative}
+
+\paragraph{Skewed fields.} Both TabArena boards miss law 1 by about
+seventeen points and law 2 by twenty-three to twenty-eight, in the
+direction pre-registered before the run: the Gaussian twin has a symmetric
+field and spreads established pairs evenly, while the real field
+concentrates them, and concentrated pairs constrain fewer orderings, so the
+real entropy is higher. Two of nine.
+
+\paragraph{The top.} The laws reproduce aggregates and miss the top. A
+simulated board with SWE-bench Verified's shape reproduces its established
+share and its entropy and then says three systems could be first where
+nineteen can. Whatever governs the frontier is not in these four numbers.
+
+\paragraph{$c$ is not free.} The law predicts resolution \emph{given} a
+multiplicity procedure. That is a restriction, not a hidden parameter: $c$
+is measured from the procedure, and \S\ref{sec:robust} is what happens when
+the procedure changes.
+
+\section{The laws survive replacing the estimator}
+\label{sec:robust}
+
+The rank sets underneath these numbers were originally built with a
+multiplier bootstrap. Prompted by \citet{rankintervals}, who report that
+bootstrap rank intervals fail under ties, we measured its simultaneous
+coverage at the shapes actually used and found it failing on eight of
+twelve boards -- 0.013 on the board with 90 systems and 10 items, 0.540 on
+the one with 181 systems and 41 items, against a nominal 0.95 -- while Holm
+on directional paired tests holds coverage on every shape. The construction
+was replaced and the whole pipeline rerun.
+
+This is the strongest test the laws have been put to, because the realised
+critical value moved from 3.14 to 8.45 across boards and constructions. The
+predictions followed: law 1's robust mean absolute error went from 3.4 to
+3.3 points, and law 2 stayed within five points on the same six boards.
+Of the 95 results files in the repository, 41 changed and 53 were
+identical -- the ones whose measurements never touch rank sets.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{9}
+\bibitem[Card et al.(2020)]{card2020} D.~Card, P.~Henderson, U.~Khandelwal, R.~Jia, K.~Mahowald, D.~Jurafsky. With Little Power Comes Great Responsibility. \emph{EMNLP}, 2020.
+\bibitem[Mogstad et al.(2024)]{mogstad2024} M.~Mogstad, J.~P.~Romano, A.~M.~Shaikh, D.~Wilhelm. Inference for Ranks with Applications to Mobility across Neighbourhoods and Academic Achievement across Countries. \emph{Review of Economic Studies}, 2024.
+\bibitem[Rank Intervals(2026)]{rankintervals} Rank Intervals for Leaderboards: A Hierarchical Framework for Model Evaluation. arXiv:2606.08679, 2026.
+\bibitem[Uncertainty in Ranking(2021)]{uncertaintyranking} Uncertainty in Ranking. arXiv:2107.03459, 2021.
+\end{thebibliography}
+\end{document}
