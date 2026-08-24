@@ -179,6 +179,7 @@ validated against a permutation null.
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `shape_correction.py` - The fifth number: can one shape statistic close law 1's residual?
 - `shape_within.py` - Does law 1's residual track the field's shape WITHIN one board?
+- `staleness_audit.py` - Which results files are older than the tool that writes them?
 - `target_board.py` - What would a benchmark that can name a winner look like?
 - `tie_coverage.py` - Does the prior art's criticism of this repo's machinery hold at the size I use it?
 - `tie_coverage_boards.py` - Which of this repo's ten boards sit in the regime where the bootstrap fails?

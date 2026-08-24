@@ -431,8 +431,11 @@ def main(argv=None) -> int:
     p = lines.append
     p("SIMULTANEOUS CONFIDENCE SETS FOR RANK")
     p("=" * 74)
-    p(f"systems {J}, items {r['n']}, alpha {a.alpha}, "
-      f"bootstrap draws {a.draws}")
+    meth = r.get("method", "bootstrap")
+    detail = (f"bootstrap draws {a.draws}" if meth == "bootstrap"
+              else ("Holm step-down on directional paired t-tests" if meth == "holm"
+                    else f"union of both constructions (bootstrap draws {a.draws})"))
+    p(f"systems {J}, items {r['n']}, alpha {a.alpha}, construction: {meth} - {detail}")
     npairs = J * (J - 1) // 2
     bonf = float(stats.norm.ppf(1.0 - a.alpha / (2 * npairs)))
     p(f"simultaneous critical value {r['crit']:.3f}   "
@@ -440,8 +443,12 @@ def main(argv=None) -> int:
     p("")
     w1 = r["single_worst"] - r["single_best"]
     steps = r.get("steps", 0)
-    p("stepdown: %d steps, critical value %.3f -> %.3f"
-      % (steps, r["single_crit"], r["crit"]))
+    if meth == "holm":
+        p("Holm: %d of %d pairs rejected, critical value %.3f (Bonferroni) -> %.3f"
+          % (steps, npairs, r["single_crit"], r["crit"]))
+    else:
+        p("stepdown: %d steps, critical value %.3f -> %.3f"
+          % (steps, r["single_crit"], r["crit"]))
     p("")
     p("median rank-set width %.0f of %d possible ranks   "
       "(single-step would give %.0f)"

@@ -1,41 +1,41 @@
 SIMULTANEOUS CONFIDENCE SETS FOR RANK
 ==========================================================================
-systems 134, items 500, alpha 0.05, bootstrap draws 4000
-simultaneous critical value 4.282   (pointwise 1.96; Bonferroni over 8911 pairs would be 4.541)
+systems 134, items 500, alpha 0.05, construction: bootstrap - bootstrap draws 4000
+simultaneous critical value 4.154   (pointwise 1.96; Bonferroni over 8911 pairs would be 4.541)
 
-stepdown: 6662 steps, critical value 4.590 -> 4.282
+stepdown: 4 steps, critical value 4.375 -> 4.154
 
-median rank-set width 37 of 134 possible ranks   (single-step would give 37)
+median rank-set width 35 of 134 possible ranks   (single-step would give 38)
 systems whose rank is pinned to one value: 0
 systems that could be ranked first:        19
 systems that could be ranked last:         4
 
  obs system                                         score  rank set
    1 20251205_sonar-foundation-agent_claude-opus-   0.792  [1, 19]
-   2 20251215_livesweagent_claude-opus-4-5          0.792  [1, 20]
-   3 20250928_trae_doubao_seed_code                 0.788  [1, 21]
-   4 20251127_openhands_claude-opus-4-5             0.776  [1, 32]
-   5 20251120_livesweagent_gemini-3-pro-preview     0.774  [1, 30]
-   6 20250804_epam-ai-run-claude-4-sonnet           0.768  [1, 34]
+   2 20251215_livesweagent_claude-opus-4-5          0.792  [1, 19]
+   3 20250928_trae_doubao_seed_code                 0.788  [1, 20]
+   4 20251127_openhands_claude-opus-4-5             0.776  [1, 30]
+   5 20251120_livesweagent_gemini-3-pro-preview     0.774  [1, 29]
+   6 20250804_epam-ai-run-claude-4-sonnet           0.768  [1, 32]
    7 20250902_atlassian-rovo-dev                    0.768  [1, 33]
    8 20250819_ACoder                                0.764  [1, 34]
-   9 20250901_warp                                  0.756  [1, 36]
-  10 20250612_trae                                  0.752  [1, 36]
+   9 20250901_warp                                  0.756  [1, 34]
+  10 20250612_trae                                  0.752  [1, 34]
   11 20250731_harness_ai                            0.748  [1, 34]
   12 20251103_sonar-foundation-agent_claude-sonne   0.748  [1, 36]
   13 20250720_Lingxi-v1.5_claude-4-sonnet-2025051   0.746  [1, 36]
   14 20250915_JoyCode                               0.746  [1, 36]
   15 20250603_Refact_Agent_claude-4-sonnet          0.744  [1, 36]
-  16 20251015_Prometheus_v1.2.1_gpt5                0.744  [1, 37]
+  16 20251015_Prometheus_v1.2.1_gpt5                0.744  [1, 36]
   17 20251103_SalesforceAIResearch_SAGE_OpenHands   0.738  [1, 38]
-  18 20250522_tools_claude-4-opus                   0.732  [1, 41]
-  19 20251021_SalesforceAIResearch_SAGE_bash_only   0.730  [1, 42]
-  20 20250522_tools_claude-4-sonnet                 0.724  [2, 43]
-  21 20250807_openhands_gpt5                        0.718  [3, 44]
-  22 20250710_bloop                                 0.712  [4, 46]
-  23 20250715_qodo_command                          0.712  [4, 46]
-  24 20250929_Prometheus_v1.2_gpt5                  0.712  [4, 49]
-  25 20251014_Lingxi_kimi_k2                        0.712  [4, 45]
+  18 20250522_tools_claude-4-opus                   0.732  [1, 39]
+  19 20251021_SalesforceAIResearch_SAGE_bash_only   0.730  [1, 41]
+  20 20250522_tools_claude-4-sonnet                 0.724  [3, 42]
+  21 20250807_openhands_gpt5                        0.718  [4, 43]
+  22 20250710_bloop                                 0.712  [4, 44]
+  23 20250715_qodo_command                          0.712  [4, 44]
+  24 20250929_Prometheus_v1.2_gpt5                  0.712  [4, 48]
+  25 20251014_Lingxi_kimi_k2                        0.712  [4, 44]
 ...
  130 20231010_rag_claude2                           0.044  [128, 133]
  131 20240402_rag_gpt4                              0.028  [129, 134]

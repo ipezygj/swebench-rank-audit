@@ -41,7 +41,12 @@ from pathlib import Path
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
 DOCS = ["LAWS.md", "README.md", "LEADERBOARD_STANDARD.md", "laws_paper/paper.tex"]
-SKIP_RERUN = {"selection_sbi.py"}      # known to fail its own calibration check
+SKIP_RERUN = {
+    "selection_sbi.py",   # known to fail its own calibration check
+    "run_all.py",         # not a measurement: it runs every other tool, and
+                          # "repairing" it means a half-hour pipeline run that
+                          # should be a deliberate act, not a side effect
+}
 
 
 def pairs():
@@ -103,15 +108,20 @@ def main() -> int:
             if stem in txt:
                 doc_hits.append((d, stem))
 
-    repaired, changed = [], []
+    repaired, changed, failed = [], [], []
     if fix and bad:
         for t, r in bad:
             if t.name in SKIP_RERUN:
                 continue
             before = r.read_text(encoding="utf-8", errors="replace")
             print(f"  re-running {t.name} ...")
-            run = subprocess.run([sys.executable, t.name], capture_output=True,
-                                 text=True, encoding="utf-8", errors="replace", timeout=1800)
+            try:
+                subprocess.run([sys.executable, t.name], capture_output=True,
+                               text=True, encoding="utf-8", errors="replace", timeout=900)
+            except subprocess.TimeoutExpired:
+                # One tool failing must not cost the repairs already made.
+                failed.append(t.name)
+                continue
             after = r.read_text(encoding="utf-8", errors="replace")
             repaired.append(t.name)
             if before.splitlines() != after.splitlines():
@@ -142,6 +152,10 @@ def main() -> int:
         p("")
         p(f"  re-ran {len(repaired)} tools; {len(changed)} produced different output"
           + (": " + ", ".join(changed) if changed else ""))
+        if failed:
+            p(f"  timed out and left for a person: {', '.join(failed)}")
+        if SKIP_RERUN:
+            p(f"  never re-run automatically: {', '.join(sorted(SKIP_RERUN))}")
     p("")
     p("  A results file older than its tool is a measurement from a version of")
     p("  the code that no longer exists. Nothing warns about it: the file parses,")

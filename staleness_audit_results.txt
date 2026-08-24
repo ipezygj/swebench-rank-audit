@@ -1,0 +1,19 @@
+RESULTS FILES OLDER THAN THE TOOL THAT WRITES THEM
+========================================================================================
+  99 tool/results pairs examined.
+
+  1 stale:
+    run_all.py                         tool is     5.7 h newer than its results
+
+  generated documents quoting a stale file:
+    README.md                  cites run_all
+
+  A results file older than its tool is a measurement from a version of
+  the code that no longer exists. Nothing warns about it: the file parses,
+  the documents that quote it render, and the number can be wrong in
+  either direction.
+
+  This audit reads modification times, which git does not preserve. On a
+  fresh clone every file carries the checkout time and this table is
+  empty for that reason rather than because the repository is clean. It
+  is a check for a working tree, not for a release.
