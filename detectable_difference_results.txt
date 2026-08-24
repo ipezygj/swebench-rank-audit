@@ -1,0 +1,49 @@
+THE SMALLEST DIFFERENCE EACH BOARD COULD HAVE DETECTED
+====================================================================================================
+  leaderboard               J     n   top t   gap 1-2       MDE  MDE/gap   gap 1-5  MDE/g15  power   scale  top item
+  SWE-bench Verified      134   500    0.00    0.0000    0.0337      inf    0.0180      1.9   0.81    1.42      2.8%
+  MTEB English v2         181    41    0.01    0.0001    0.0284    375.0    0.0123      2.3   0.86    1.44     16.3%
+  HELM classic             90    10    0.94    0.0100    0.0296      3.0    0.0528      0.6   0.83       -     18.5%
+  ProteinGym DMS           96   217    1.07    0.0062    0.0162      2.6    0.0296      0.5   0.81    1.42      2.8%
+  TabArena 16 models       16    51    1.14    0.0092    0.0225      2.5    0.0246      0.9   0.74    0.96     22.3%
+  TabArena 45 variants     45    51    0.63    0.0050    0.0223      4.4    0.0196      1.1   0.88    1.18     21.6%
+  CASP14                  101    42    9.89    0.2249    0.0637      0.3    0.2691      0.2   0.84    1.44      6.6%
+  LiveBench               152   200    2.99    0.0929    0.0871      0.9    0.1168      0.7   0.81    1.43      2.2%
+  MathArena 2025           35   183    0.48    0.0041    0.0240      5.8    0.0123      1.9   0.79    1.40     11.1%
+
+  P1  MDE above the printed 1-2 gap on 7 of 9      pre-registered >= 7:  HIT
+  P2  median MDE / gap = 2.8                       pre-registered > 3:   MISS
+  P3  MDE above the 1-5 gap on 4 of 9              pre-registered >= 5:  MISS
+  P4  MDE below the board's own spread on 9 of 9   pre-registered = 9:  HIT
+
+  MDE is the smallest difference in mean score this board's top pair
+  could have detected four times in five, at the 5 % level, using that
+  pair's own difference SD and the board's own item count. It is not a
+  property of the systems: it is a property of the measuring instrument,
+  computable before any system is run.
+
+  A board whose MDE exceeds its own printed gap ran a comparison it could
+  not make. The ordering may still be right - nothing here says otherwise -
+  but the board is not the reason to believe it.
+
+  scale is the MDE's own assumption tested: the median MDE on half the
+  items over the MDE on all of them, which is 1.41 if the statistic grows
+  as the square root of the item count. top item is the share of the total
+  absolute difference carried by the single largest item. The two move
+  together: SWE-bench Verified spreads its evidence over many items
+  (2.8 % in the largest) and scales at 1.41; TabArena's top pair keeps
+  22 % in one item and scales at 0.97, so its MDE is a number without the
+  assumption that makes it mean anything.
+
+  power is the check made visible: a difference of exactly the computed
+  MDE is planted into that board's own difference series and the test is
+  run. It should read 0.80. Where it reads higher, the normal-theory
+  formula is conservative for that board - heavy-tailed differences on
+  few items - and the MDE quoted is if anything too small.
+
+  The formula is not trusted: the self-check plants a difference of
+  exactly the computed MDE into each board's own difference series and
+  confirms the test then rejects four times in five. This loop spent two
+  iterations on a statistic whose power nobody had measured, and that is
+  the general lesson worth carrying: a comparison that fails to separate
+  is evidence of nothing until its power is known.
