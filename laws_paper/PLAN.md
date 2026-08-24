@@ -11,8 +11,10 @@ draft is held to it.
 ## The claim, in one sentence
 
 **How much ranking a leaderboard can support is predictable from four numbers
-that are measurable before any system is run**, and the prediction is a closed
-form rather than a simulation.
+fixed before the field of entrants exists**, and for the first of the two the
+prediction is a closed form rather than a simulation. Three of the four are
+design choices; the fourth needs a two-system pilot on the item set, which is
+the correction the limitations section forced on the abstract.
 
 ## The two laws
 
@@ -85,3 +87,40 @@ Every number in the paper is parsed out of a `*_results.txt` by
 figure it cannot find prints as MISSING. Nothing is retyped by hand. This
 project has put a wrong number in a commit message four times in one evening by
 writing from memory, and a paper is not the place to do it a fifth.
+
+## TMLR requirements, checked 2026-08-24
+
+From the author guide (jmlr.org/tmlr/author-guide.html):
+
+- **Double blind, enforced.** "Non-anonymous submissions will be rejected
+  without review." The `tmlr` package hides the author block by itself when
+  loaded without `[accepted]` or `[preprint]`, so the work is in the body: the
+  repository URL carried the author's username and is gone, and the
+  reproducibility statement no longer points at a named repository.
+- **A submission must not link to a non-anonymous version of itself.** So the
+  code link becomes a statement until an anonymised mirror exists. Note this
+  cuts against the repo being public under the author's name — an anonymised
+  mirror has to be made before submitting, not after.
+- **Style file mandatory**, from the tmlr-style-file repository. Applied:
+  `tmlr.sty`, `fancyhdr.sty`, `tmlr.bst` sit beside the paper and the
+  bibliography style is `tmlr`.
+- **No page limit**, but "a paper's length should be justified by its content"
+  and unusually long papers delay review. Currently seven pages plus
+  references, which is short for TMLR and appropriate for two results.
+- **Broader Impact Statement is conditional** — required only if the work
+  "carries a significant risk of harm". This does not, and none is included.
+  If a reviewer asks, the answer is that the laws are neutral about whether a
+  benchmark is good.
+- **arXiv preprints are allowed at any time**, anonymously or not, as long as
+  the submission itself is not linked to a named version.
+
+### The blocker, and it is not the paper
+
+All authors must have "complete and active OpenReview profiles". Ours is not
+complete: OpenReview's moderation rejects a profile whose only history entry is
+"Independent Researcher", and the account has no institution and no registered
+business to supply a second entry. What passes moderation is a second history
+record (a former employer with an end year is enough) plus a homepage showing
+name, affiliation and email. That is an administrative task with a moderation
+queue of up to two weeks, and it has to be finished before the paper can be
+submitted at all.

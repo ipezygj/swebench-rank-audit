@@ -1,11 +1,14 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{booktabs,amsmath,amssymb,graphicx,hyperref,natbib}
-\usepackage[T1]{fontenc}
-\newcommand{\Hcn}{\ensuremath{H_{\mathrm{cn}}}}
-\title{\bfseries How Much Ranking a Benchmark Can Support Is Predictable Before It Is Run}
-\author{Ilpo V\"a\"at\"ainen\thanks{Independent researcher, Helsinki. \texttt{ipezygj2@gmail.com}. Code and results: \url{https://github.com/ipezygj/swebench-rank-audit}.}}
-\date{August 2026}
+\documentclass[10pt]{article}
+% TMLR reviews double blind; loading tmlr without [accepted] or [preprint]
+% hides the author block. Non-anonymous submissions are rejected unreviewed.
+\usepackage{tmlr}
+\usepackage{booktabs,amsmath,amssymb,hyperref,url}
+\title{How Much Ranking a Benchmark Can Support Is Predictable Before It Is Run}
+\author{\name Anonymous \email anonymous@example.com \\
+      \addr Withheld for review}
+\def\month{08}
+\def\year{2026}
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}}
 \begin{document}
 \maketitle
 
@@ -434,9 +437,12 @@ where $\sigma_p$ is the measurable quantity.
 
 \section*{Reproducibility statement}
 
-All per-item outcome matrices are public and cited at their sources; the
-code that produces every table is in the repository named on the first
-page. Each figure in this paper is parsed by the build script out of the
+All per-item outcome matrices are public and cited at their sources. The
+code that produces every table in this paper, and every results file it
+reads, will be released under an anonymised mirror for review and under a
+permanent identifier on acceptance; it is withheld here only because the
+repository carries the authors' names. Each figure in this paper is parsed
+by the build script out of the
 results file written by the tool that computed it, and any figure the parser
 cannot find is emitted as \texttt{MISSING} rather than filled in, so the
 paper cannot drift from the measurements. Every threshold in the
@@ -445,7 +451,7 @@ tested, including the ones the tests then failed. The two constructions
 compared in \S\ref{sec:robust} are selectable by an environment variable, so
 the entire pipeline can be rerun either way from one command.
 
-\bibliographystyle{plainnat}
+\bibliographystyle{tmlr}
 \begin{thebibliography}{9}
 \bibitem[Card et al.(2020)]{card2020} D.~Card, P.~Henderson, U.~Khandelwal, R.~Jia, K.~Mahowald, D.~Jurafsky. With Little Power Comes Great Responsibility. \emph{EMNLP}, 2020.
 \bibitem[Mogstad et al.(2024)]{mogstad2024} M.~Mogstad, J.~P.~Romano, A.~M.~Shaikh, D.~Wilhelm. Inference for Ranks with Applications to Mobility across Neighbourhoods and Academic Achievement across Countries. \emph{Review of Economic Studies}, 2024.

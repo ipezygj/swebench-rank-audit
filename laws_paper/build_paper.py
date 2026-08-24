@@ -121,17 +121,18 @@ def tex_escape(s):
 L = []
 p = L.append
 
-p(r"\documentclass[11pt]{article}")
-p(r"\usepackage[margin=1in]{geometry}")
-p(r"\usepackage{booktabs,amsmath,amssymb,graphicx,hyperref,natbib}")
-p(r"\usepackage[T1]{fontenc}")
-p(r"\newcommand{\Hcn}{\ensuremath{H_{\mathrm{cn}}}}")
-p(r"\title{\bfseries How Much Ranking a Benchmark Can Support Is Predictable"
+p(r"\documentclass[10pt]{article}")
+p(r"% TMLR reviews double blind; loading tmlr without [accepted] or [preprint]")
+p(r"% hides the author block. Non-anonymous submissions are rejected unreviewed.")
+p(r"\usepackage{tmlr}")
+p(r"\usepackage{booktabs,amsmath,amssymb,hyperref,url}")
+p(r"\title{How Much Ranking a Benchmark Can Support Is Predictable"
   r" Before It Is Run}")
-p(r"\author{Ilpo V\"a\"at\"ainen\thanks{Independent researcher, Helsinki."
-  r" \texttt{ipezygj2@gmail.com}. Code and results:"
-  r" \url{https://github.com/ipezygj/swebench-rank-audit}.}}")
-p(r"\date{August 2026}")
+p(r"\author{\name Anonymous \email anonymous@example.com \\")
+p(r"      \addr Withheld for review}")
+p(r"\def\month{08}")
+p(r"\def\year{2026}")
+p(r"\def\openreview{\url{https://openreview.net/forum?id=XXXX}}")
 p(r"\begin{document}")
 p(r"\maketitle")
 p("")
@@ -608,9 +609,12 @@ p("")
 
 p(r"\section*{Reproducibility statement}")
 p("")
-p(r"All per-item outcome matrices are public and cited at their sources; the")
-p(r"code that produces every table is in the repository named on the first")
-p(r"page. Each figure in this paper is parsed by the build script out of the")
+p(r"All per-item outcome matrices are public and cited at their sources. The")
+p(r"code that produces every table in this paper, and every results file it")
+p(r"reads, will be released under an anonymised mirror for review and under a")
+p(r"permanent identifier on acceptance; it is withheld here only because the")
+p(r"repository carries the authors' names. Each figure in this paper is parsed")
+p(r"by the build script out of the")
 p(r"results file written by the tool that computed it, and any figure the parser")
 p(r"cannot find is emitted as \texttt{MISSING} rather than filled in, so the")
 p(r"paper cannot drift from the measurements. Every threshold in the")
@@ -620,7 +624,7 @@ p(r"compared in \S\ref{sec:robust} are selectable by an environment variable, so
 p(r"the entire pipeline can be rerun either way from one command.")
 p("")
 
-p(r"\bibliographystyle{plainnat}")
+p(r"\bibliographystyle{tmlr}")
 p(r"\begin{thebibliography}{9}")
 p(r"\bibitem[Card et al.(2020)]{card2020} D.~Card, P.~Henderson, U.~Khandelwal, "
   r"R.~Jia, K.~Mahowald, D.~Jurafsky. With Little Power Comes Great "
