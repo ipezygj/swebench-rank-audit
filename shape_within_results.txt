@@ -1,0 +1,29 @@
+DOES THE SHAPE RELATION HOLD WITHIN A SINGLE BOARD?
+================================================================================================
+  leaderboard             fields    shape range     rho  twin 5th  twin med    fit  twin fit
+  SWE-bench Verified          40   0.93-1.26      +0.06     -0.81     -0.55   100%      100%
+  MTEB English v2             40   0.59-0.88      -0.75     -0.78     -0.47   100%      100%
+  HELM classic                40   1.01-1.42      +0.14     -0.54     -0.26   100%      100%
+  ProteinGym DMS              40   0.57-0.95      -0.87     -0.79     -0.48   100%      100%
+  TabArena 16 models          40   0.23-0.98      -0.61     -0.82     -0.22   100%      100%
+  TabArena 45 variants        40   0.18-0.77      -0.63     -0.57     -0.26   100%      100%
+  CASP14                      40   0.38-1.12      -0.88     -0.78     -0.57   100%      100%
+  LiveBench                   40   0.79-1.25      -0.60     -0.71     -0.49   100%      100%
+  MathArena 2025              40   0.36-1.29      -0.60     -0.70     -0.45   100%      100%
+
+  P1  real rho below its twin null's 5th percentile on 3 of 9   pre-registered >= 5:  MISS
+  P2  both TabArena boards among them: 1 of 2            MISS
+  P3  fit beats its own twin's fit on 0 of 9                pre-registered >= 5:  MISS
+  P4  twins reproduce tau and sigma_p within 15 % on 127 of 135 draws
+
+  Each row treats subsets of one board's systems as separate fields:
+  same items, same domain, same measurement, different field. The shape
+  range column says how far subsetting moved the statistic, which is what
+  makes the within-board test possible at all.
+
+  fit wins is the share of random half/half splits in which a correction
+  fitted on one half lowers the mean absolute residual on the other.
+  shuffled is the same thing with the shape statistic permuted among that
+  board's own subsets, which is the only control that matters here: the
+  subsets share systems and are not independent, so a naive significance
+  test on them would be wrong by a wide margin.
