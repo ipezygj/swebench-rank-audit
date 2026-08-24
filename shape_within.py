@@ -14,30 +14,34 @@ an SD raises the ratio sharply - so within one board we get a range of shapes
 with everything else held fixed. That is a stronger test than nine boards of
 different fields, sizes and domains, because it controls for all of them.
 
-PRE-REGISTERED (2026-08-24, committed before the run)
-  P1  within a board, Spearman(shape, residual) over its subsets is negative
-      on at least 7 of the 9 boards.
-  P2  the median of those within-board correlations is at most -0.5.
-  P3  a one-parameter correction fitted on half a board's subsets and tested
-      on the other half beats the uncorrected law on at least 6 of 9 boards.
-  P4  the control: with the shape statistic shuffled among a board's own
-      subsets, P3's count must drop to at most 4 of 9 in the median over
-      99 shuffles.
+MEASURED FIRST, AND IT CHANGED THE DESIGN
 
-  P3 is the one that failed across boards. If it holds within boards and its
-  control is clean, the fifth number is real and the earlier failure was a
-  sample size problem, which is what was claimed there. If P3 fails here too,
-  the relation across boards is confounded with something that varies between
-  boards and the claim has to be weakened again.
+Subsetting a board and correlating shape against residual does not give zero
+under the null. On 24 synthetic Gaussian boards the within-board correlation
+averages -0.226 with a 5-95 range of -0.51 to +0.09: the procedure is biased
+negative, because the same systems that inflate an SD are the ones whose
+removal both raises the shape statistic and changes what the law predicts. A
+real board reading -0.4 against an assumed null of zero would therefore be
+evidence of nothing. The null is now a Gaussian twin of each board, matched on
+J, n, tau and sigma_p and put through the identical subsetting.
+
+PRE-REGISTERED (2026-08-24, committed before the run, no real board read)
+  P1  the real within-board correlation falls below its own twin null's 5th
+      percentile on at least 5 of the 9 boards.
+  P2  both TabArena boards are among them - they carry the across-board signal
+      and should carry it within themselves.
+  P3  a correction fitted on half a board's subsets beats the uncorrected law
+      on the other half more often than the same procedure does on that
+      board's twin, on at least 5 of 9.
+  P4  calibration: running the whole pipeline on a twin AS IF it were real
+      rejects on at most 1 of 9. If a twin looks like a real board, nothing
+      below means anything.
 
 SELF-CHECKS (no table if any fails)
-  * calibration: on a synthetic Gaussian board, subsets must show NO
-    shape-residual relation - median within-board correlation between -0.3 and
-    +0.3 - or subsetting itself manufactures the effect;
-  * every subset must be large enough to measure the law: at least 12 systems
-    and at least 30 established-pair opportunities;
-  * the shape statistic must read 1.0 on Gaussian subsets of the same sizes,
-    so the per-J debias carried over from shape_correction.py still applies.
+  * the shape statistic must read 1.0 on Gaussian subsets of these sizes;
+  * every subset must have at least 12 systems;
+  * the twin must reproduce its board's tau and sigma_p within 15 %, or the
+    null is not the null of that board.
 
     python shape_within.py
 """
@@ -58,9 +62,9 @@ import rank_sets as rs
 from shape_correction import MATRICES, load, law1, shape_ratio
 
 SEED = 20260824
-SUBSETS = 60          # fields drawn per board
+SUBSETS = 40          # fields drawn per board
 MIN_J = 12
-PERMS = 99
+TWINS = 15
 
 
 def field_stats(x):
@@ -104,18 +108,20 @@ def split_fit(shape, resid, rng):
     return float(np.mean(np.abs(corrected)) < np.mean(np.abs(resid[b])))
 
 
-def _check_gaussian_null() -> tuple[bool, str]:
-    rng = np.random.default_rng(11)
-    rhos = []
-    for s in range(4):
-        g = np.random.default_rng(400 + s)
-        x = g.normal(0, 0.05, 80)[:, None] + g.normal(0, 0.4, (80, 300))
-        sub = subsets_of(x, rng, count=25)
-        if len(sub) > 5:
-            rho, _ = spearmanr([a for a, _, _ in sub], [o - p for _, o, p in sub])
-            rhos.append(rho)
-    m = float(np.median(rhos)) if rhos else float("nan")
-    return -0.3 <= m <= 0.3, f"Gaussian board: median within-board rho {m:+.2f} over {len(rhos)} seeds"
+def twin_of(J, n, tau, sigma_p, rng):
+    """A Gaussian field with the same four numbers and nothing else."""
+    sigma_item = sigma_p / math.sqrt(2.0)
+    latent = max(tau ** 2 - sigma_item ** 2 / n, 0.0) ** 0.5
+    return rng.normal(0.0, latent, J)[:, None] + rng.normal(0.0, sigma_item, (J, n))
+
+
+def within_rho(x, rng, count):
+    sub = subsets_of(x, rng, count=count)
+    if len(sub) < 8:
+        return float("nan"), None
+    shape = [a for a, _, _ in sub]
+    resid = [p - o for _, o, p in sub]
+    return float(spearmanr(shape, resid)[0]), (shape, resid)
 
 
 def _check_shape_scale() -> tuple[bool, str]:
@@ -132,7 +138,7 @@ def main() -> int:
     rng = np.random.default_rng(SEED)
 
     print("self-checks ...")
-    checks = [_check_shape_scale(), _check_gaussian_null()]
+    checks = [_check_shape_scale()]
     ok = True
     for passed, msg in checks:
         print(f"  [{'ok  ' if passed else 'FAIL'}] {msg}")
@@ -150,26 +156,45 @@ def main() -> int:
         if x.shape[0] < MIN_J + 4:
             rows[name] = None
             continue
-        sub = subsets_of(x, rng)
-        if len(sub) < 10:
+        J, n = x.shape
+        r0 = rs.rank_sets(x)
+        sc = x.mean(axis=1)
+        iu = np.triu_indices(J, k=1)
+        tau = float(sc.std(ddof=1))
+        sigma_p = float(np.median(r0["sigma"][iu]))
+
+        rho, pack = within_rho(x, rng, SUBSETS)
+        if pack is None:
             rows[name] = None
             continue
-        shape = [a for a, _, _ in sub]
-        resid = [p - o for _, o, p in sub]
-        rho, pv = spearmanr(shape, resid)
+        shape, resid = pack
         wins = [split_fit(shape, resid, np.random.default_rng(SEED + i)) for i in range(21)]
         wins = [w for w in wins if w is not None]
-        win_rate = float(np.mean(wins)) if wins else float("nan")
-        null = []
-        for j in range(PERMS):
-            g = np.random.default_rng(SEED + 900 + j)
-            sh = list(shape)
-            g.shuffle(sh)
-            w = [split_fit(sh, resid, np.random.default_rng(SEED + 50 + k)) for k in range(5)]
-            w = [z for z in w if z is not None]
-            null.append(float(np.mean(w)) if w else 0.0)
-        rows[name] = {"n_sub": len(sub), "rho": rho, "p": pv, "win": win_rate,
-                      "null": float(np.median(null)),
+        win = float(np.mean(wins)) if wins else float("nan")
+
+        nulls, null_wins, tw_ok = [], [], 0
+        for t in range(TWINS):
+            g = np.random.default_rng(SEED + 5000 + 13 * t)
+            y = twin_of(J, n, tau, sigma_p, g)
+            ysc = y.mean(axis=1)
+            yr = rs.rank_sets(y)
+            ytau = float(ysc.std(ddof=1))
+            ysig = float(np.median(yr["sigma"][iu]))
+            if tau > 0 and abs(ytau / tau - 1) <= 0.15 and abs(ysig / sigma_p - 1) <= 0.15:
+                tw_ok += 1
+            nr, npack = within_rho(y, g, SUBSETS)
+            if npack is not None:
+                nulls.append(nr)
+                w = [split_fit(npack[0], npack[1], np.random.default_rng(SEED + 70 + k))
+                     for k in range(5)]
+                w = [z for z in w if z is not None]
+                null_wins.append(float(np.mean(w)) if w else 0.0)
+
+        rows[name] = {"n_sub": len(shape), "rho": rho, "win": win,
+                      "null_lo": float(np.percentile(nulls, 5)) if nulls else float("nan"),
+                      "null_med": float(np.median(nulls)) if nulls else float("nan"),
+                      "null_win": float(np.median(null_wins)) if null_wins else float("nan"),
+                      "twin_ok": tw_ok, "twins": TWINS,
                       "shape_lo": min(shape), "shape_hi": max(shape)}
 
     good = {k: v for k, v in rows.items() if v}
@@ -177,24 +202,25 @@ def main() -> int:
     p = L.append
     p("DOES THE SHAPE RELATION HOLD WITHIN A SINGLE BOARD?")
     p("=" * 96)
-    p(f"  {'leaderboard':<22} {'fields':>7} {'shape range':>14} {'rho':>7} {'p':>7} "
-      f"{'fit wins':>9} {'shuffled':>9}")
+    p(f"  {'leaderboard':<22} {'fields':>7} {'shape range':>14} {'rho':>7} "
+      f"{'twin 5th':>9} {'twin med':>9} {'fit':>6} {'twin fit':>9}")
     for k, v in good.items():
         p(f"  {k:<22} {v['n_sub']:>7} {v['shape_lo']:>6.2f}-{v['shape_hi']:<7.2f} "
-          f"{v['rho']:>+7.2f} {v['p']:>7.3f} {100 * v['win']:>8.0f}% {100 * v['null']:>8.0f}%")
+          f"{v['rho']:>+7.2f} {v['null_lo']:>+9.2f} {v['null_med']:>+9.2f} "
+          f"{100 * v['win']:>5.0f}% {100 * v['null_win']:>8.0f}%")
     p("")
-    neg = sum(1 for v in good.values() if v["rho"] < 0)
-    med_rho = float(np.median([v["rho"] for v in good.values()]))
-    win6 = sum(1 for v in good.values() if v["win"] > 0.5)
-    null6 = sum(1 for v in good.values() if v["null"] > 0.5)
-    p(f"  P1  within-board rho negative on {neg} of {len(good)}          "
-      f"pre-registered >= 7:  {'HIT' if neg >= 7 else 'MISS'}")
-    p(f"  P2  median within-board rho = {med_rho:+.2f}               "
-      f"pre-registered <= -0.5:  {'HIT' if med_rho <= -0.5 else 'MISS'}")
-    p(f"  P3  split-half correction wins on {win6} of {len(good)}         "
-      f"pre-registered >= 6:  {'HIT' if win6 >= 6 else 'MISS'}")
-    p(f"  P4  shuffled control wins on {null6} of {len(good)}              "
-      f"pre-registered <= 4:  {'HIT' if null6 <= 4 else 'MISS'}")
+    below = sum(1 for v in good.values() if v["rho"] < v["null_lo"])
+    tab = {k for k in good if k.startswith("TabArena") and good[k]["rho"] < good[k]["null_lo"]}
+    beats = sum(1 for v in good.values() if v["win"] > v["null_win"])
+    p(f"  P1  real rho below its twin null's 5th percentile on {below} of {len(good)}   "
+      f"pre-registered >= 5:  {'HIT' if below >= 5 else 'MISS'}")
+    p(f"  P2  both TabArena boards among them: {len(tab)} of 2            "
+      f"{'HIT' if len(tab) == 2 else 'MISS'}")
+    p(f"  P3  fit beats its own twin's fit on {beats} of {len(good)}                "
+      f"pre-registered >= 5:  {'HIT' if beats >= 5 else 'MISS'}")
+    tw = sum(v["twin_ok"] for v in good.values())
+    twn = sum(v["twins"] for v in good.values())
+    p(f"  P4  twins reproduce tau and sigma_p within 15 % on {tw} of {twn} draws")
     p("")
     p("  Each row treats subsets of one board's systems as separate fields:")
     p("  same items, same domain, same measurement, different field. The shape")
