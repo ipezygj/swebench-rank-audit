@@ -156,14 +156,18 @@ validated against a permutation null.
 
 ### Unsorted (add to a group in build_readme.py)
 
+- `band_slack.py` - Each rank band is exactly right on its own. Together they are far too loose
 - `case_augment.py` - A named case: what the board could and could not tell Augment Code
 - `casp/probe.py` - Probe predictioncenter.org for a groups x targets table
 - `casp/probe2.py` - (no docstring)
 - `ceiling_effect.py` - Is the top unresolvable because the items are too easy for it?
 - `conformance_cost.py` - What does conformance cost in compute?
 - `curation_attack.py` - Can a benchmark owner manufacture a winner by choosing items?
+- `degenerate_comparison.py` - A comparison whose two arms never differ has not been run
 - `detectable_difference.py` - The smallest difference each leaderboard could have detected, against the one it prints
+- `doc_numbers.py` - Every number in a generated document should exist in a results file
 - `effective_items.py` - How many of a benchmark's items actually separate the two systems at its top
+- `exact_extensions.py` - Law 2's dependent variable has never been checked against a known value
 - `family_clustering.py` - Is the crowded top a base-model cluster, or just a crowded calendar?
 - `family_generalises.py` - Does the base-model cluster hold off SWE-bench, and would collapsing it help?
 - `headline_fragility.py` - How many items decide the headline?
@@ -173,18 +177,25 @@ validated against a permutation null.
 - `law2_closed_form.py` - Is law 2 a corollary of law 1, or does the twin know something extra?
 - `laws_paper/build_paper.py` - Assemble the two-laws paper from the results files, so no number is retyped
 - `laws_paper/make_anon_mirror.py` - Build the anonymised code artefact for double-blind review
+- `order_shape.py` - What KIND of partial order is a leaderboard?
+- `planted_defect.py` - If the data were wrong, would these tools notice?
 - `quantisation_curve.py` - How many score levels does an item need?
 - `redundancy_power.py` - Was yesterday's result a finding, or a statistic running out of room?
 - `run_all.py` - Run every tool and record whether it still works
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `shape_correction.py` - The fifth number: can one shape statistic close law 1's residual?
 - `shape_within.py` - Does law 1's residual track the field's shape WITHIN one board?
+- `slack_law.py` - Where does the band picture cost the most, and can that be predicted?
+- `slack_law2.py` - slack_law.py fitted a curve in density alone. That curve cannot be right
+- `slack_scaling.py` - Everything about the band picture was measured on 18 systems. Does it scale?
 - `staleness_audit.py` - Which results files are older than the tool that writes them?
 - `target_board.py` - What would a benchmark that can name a winner look like?
+- `targeted_split.py` - Is the targeted six a property of the systems, or of the noise?
 - `tie_coverage.py` - Does the prior art's criticism of this repo's machinery hold at the size I use it?
 - `tie_coverage_boards.py` - Which of this repo's ten boards sit in the regime where the bootstrap fails?
 - `top_compression.py` - Why the laws reproduce a board and still miss its top by a factor of six
 - `top_redundancy.py` - Are the systems crowding the top doing the same work, or different work?
+- `top_verdicts.py` - What would a report card have to print to stop inventing orderings?
 
 ## How the results were produced
 
