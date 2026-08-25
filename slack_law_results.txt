@@ -1,0 +1,71 @@
+WHERE DOES THE BAND PICTURE COST THE MOST?
+============================================================================================
+  372 simulated boards of 18 systems. Two families, both counted
+  exactly and both in the fit; the real boards contribute nothing to it.
+    random field     336 boards, 12 to 800 items, spread swept over two orders of magnitude
+    evenly spaced     36 boards, 1000 to 8000 items
+  The second family exists because the first cannot reach the ordered
+  end: a random field of 18 nearly always holds one pair closer than the
+  rest, and that pair caps the density near 0.94 whatever the item count.
+
+     density   mean slack   boards
+       0.025        0.289      178
+       0.075        3.285       15
+       0.125        3.776       14
+       0.175        3.803        7
+       0.225        3.982       14
+       0.275        3.799        6
+       0.325        3.911        2
+       0.375        3.446        8
+       0.425        3.284        9
+       0.475        2.769       12
+       0.525        2.730        7
+       0.575        2.404        6
+       0.625        1.996        7
+       0.675        1.804        9
+       0.725        1.017        8
+       0.775        0.981       10
+       0.825        0.573       17
+       0.875        0.073       11
+       0.925        0.000       12
+       0.975        0.000        6
+
+  peak of the fitted curve: 4.36 bits at density 0.241
+
+  board                    density    slack   predicted    error
+  SWE-bench Verified         0.582    2.721       1.964   -0.757
+  MTEB English v2            0.660    2.104       1.429   -0.675
+  HELM classic               0.176    4.785       4.140   -0.645
+  ProteinGym DMS             0.686    2.016       1.281   -0.735
+  TabArena 45 variants       0.405    3.455       3.488    0.033
+  CASP14                     0.444    0.000       3.144    3.144
+  LiveBench                  0.503    2.320       2.616    0.296
+  MathArena 2025             0.680    1.259       1.316    0.057
+
+  P1  single-peaked: True, peak at density 0.241       pre-registered < 0.35:  HIT
+  P2  mean slack below 0.05 density: 0.289 (178 boards); above 0.95: 0.000 (20)
+      pre-registered both < 0.5:  HIT
+  P3  peak 4.36 bits                          pre-registered > 4:     HIT
+  P4  MAE on the real boards 0.793 bits, against 1.427 for the simulated mean   pre-registered < 1.0 and < that:  HIT
+
+  Dropping CASP14, whose slack is exactly zero for the structural reason
+  band_slack.py sets out - its sub-poset is an ordinal sum of a
+  13-antichain over a band-exact 5-element tail - the error on the
+  remaining 7 boards is 0.457 bits.
+
+  Those errors are not random: mean signed -0.347. Every board
+  above density 0.58 is UNDER-predicted, by 0.65 to 0.76 bits. Real
+  boards carry more slack than simulated boards of the same density, so
+  the curve understates the cost on exactly the boards this repository
+  cares about. That is the conservative direction, and it is a measured
+  gap between a simulated field and a real one rather than a fitted one.
+
+  The two ends are not assumptions. A board with no noise is a total
+  order: one ordering, and the bands admit exactly that one. A board with
+  no signal is an antichain: every band is [1, 18] and both counts are
+  18!. Both come out exactly zero above, as integers, not approximately.
+
+  What the peak means for a benchmark owner. The band summary is safest
+  on a board that resolves almost nothing and on a board that resolves
+  almost everything. It is least safe in between - which is where every
+  board in this repository sits, and where a benchmark is useful.

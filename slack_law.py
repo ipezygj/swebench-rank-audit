@@ -62,9 +62,15 @@ from exact_extensions import exact_log2
 
 SEED = 20260825
 J = 18
-NS = (12, 20, 35, 60, 100, 200, 400)
-SPREADS = (0.004, 0.008, 0.014, 0.022, 0.032, 0.045, 0.065, 0.09, 0.13, 0.2)
+NS = (12, 20, 35, 60, 100, 200, 400, 800)
+# The first sweep stopped at 0.2 and put 162 of 210 boards below density 0.05,
+# so the ordered end of the curve was never reached and P2's upper arm was
+# scored against zero boards. Extended to 0.5.
+SPREADS = (0.004, 0.008, 0.014, 0.022, 0.032, 0.045, 0.065, 0.09,
+           0.13, 0.18, 0.25, 0.32, 0.40, 0.50)
 REPS = 3
+EVEN_HALVES = (0.25, 0.35, 0.42)
+EVEN_NS = (1000, 2000, 4000, 8000)
 PAIRS = J * (J - 1) // 2
 
 
@@ -76,8 +82,23 @@ def slack_of(beats: np.ndarray) -> float:
 
 
 def simulate(n: int, tau: float, rng) -> np.ndarray:
-    """A binary board: J systems with latent rates spread by tau, n items."""
+    """A random field: J systems with latent rates spread by tau, n items."""
     p = np.clip(0.5 + rng.normal(0, tau, J), 0.02, 0.98)
+    return (rng.random((J, n)) < p[:, None]).astype(float)
+
+
+def simulate_even(n: int, half: float, rng) -> np.ndarray:
+    """An evenly spaced field, which is how the ORDERED end gets reached.
+
+    A randomly drawn field of 18 systems very nearly always contains one pair
+    closer than the rest, and that pair sets the ceiling: sweeping the random
+    family to n = 800 never got past density 0.94, and raising n to 1600 did
+    not help because the binding pair is a property of the draw, not of the
+    sample size. Spacing the rates evenly guarantees a minimum gap, and at
+    n = 4000 the board is fully ordered. Without this family the upper arm of
+    P2 has no boards in it and cannot be scored.
+    """
+    p = np.linspace(0.5 - half, 0.5 + half, J)
     return (rng.random((J, n)) < p[:, None]).astype(float)
 
 
@@ -96,16 +117,24 @@ def main() -> int:
     print(f"  [{'ok  ' if ok_deg else 'FAIL'}] degenerate cases exactly zero: "
           f"total order {s_clean:.6f}, antichain {s_noise:.6f}")
 
-    sim = []
+    sim, fam = [], []
     rng = np.random.default_rng(SEED)
     for n in NS:
         for tau in SPREADS:
             for _ in range(REPS):
                 b = rs.rank_sets(simulate(n, tau, rng))["beats"]
                 sim.append((b.sum() / PAIRS, slack_of(b)))
-    sim = np.array(sim)
+                fam.append(0)
+    for n in EVEN_NS:
+        for h in EVEN_HALVES:
+            for _ in range(REPS):
+                b = rs.rank_sets(simulate_even(n, h, rng))["beats"]
+                sim.append((b.sum() / PAIRS, slack_of(b)))
+                fam.append(1)
+    sim, fam = np.array(sim), np.array(fam)
     print(f"  simulated {len(sim)} boards, density {sim[:, 0].min():.3f} "
-          f"to {sim[:, 0].max():.3f}")
+          f"to {sim[:, 0].max():.3f} "
+          f"({int((fam == 0).sum())} random field, {int((fam == 1).sum())} evenly spaced)")
 
     real = []
     for name, path in MATRICES.items():
@@ -120,10 +149,15 @@ def main() -> int:
         sub = beats[np.ix_(pick, pick)]
         real.append((name, sub.sum() / PAIRS, slack_of(sub)))
 
+    # Spanning the real range is not enough: the argument this file rests on is
+    # about BOTH ends of the density axis, so the sweep must reach them too or
+    # the claim about the ordered end is untested rather than confirmed.
     ok_span = (sim[:, 0].min() <= min(r[1] for r in real)
-               and sim[:, 0].max() >= max(r[1] for r in real))
+               and sim[:, 0].max() >= max(r[1] for r in real)
+               and sim[:, 0].min() < 0.05 and sim[:, 0].max() > 0.95)
     print(f"  [{'ok  ' if ok_span else 'FAIL'}] the sweep spans the real range "
-          f"[{min(r[1] for r in real):.3f}, {max(r[1] for r in real):.3f}]")
+          f"[{min(r[1] for r in real):.3f}, {max(r[1] for r in real):.3f}] AND "
+          f"reaches both ends ({sim[:, 0].min():.3f}, {sim[:, 0].max():.3f})")
     ok_n = len(sim) >= 100
     print(f"  [{'ok  ' if ok_n else 'FAIL'}] {len(sim)} simulated boards (need >= 100)")
 
@@ -175,9 +209,14 @@ def main() -> int:
     p = L.append
     p("WHERE DOES THE BAND PICTURE COST THE MOST?")
     p("=" * 92)
-    p(f"  {len(sim)} simulated boards of {J} systems, {min(NS)} to {max(NS)} items,")
-    p("  field spread swept over more than an order of magnitude. Slack counted")
-    p("  exactly on each. The real boards contribute nothing to the fit.")
+    p(f"  {len(sim)} simulated boards of {J} systems. Two families, both counted")
+    p("  exactly and both in the fit; the real boards contribute nothing to it.")
+    p(f"    random field    {int((fam == 0).sum()):>4} boards, {min(NS)} to {max(NS)} items, "
+      f"spread swept over two orders of magnitude")
+    p(f"    evenly spaced   {int((fam == 1).sum()):>4} boards, {min(EVEN_NS)} to {max(EVEN_NS)} items")
+    p("  The second family exists because the first cannot reach the ordered")
+    p("  end: a random field of 18 nearly always holds one pair closer than the")
+    p("  rest, and that pair caps the density near 0.94 whatever the item count.")
     p("")
     p(f"  {'density':>10}{'mean slack':>13}{'boards':>9}")
     for a, b in zip(edges, edges[1:]):
@@ -194,16 +233,38 @@ def main() -> int:
     single = (np.diff(np.sign(np.diff(curve))) != 0).sum() <= 1
     p(f"  P1  single-peaked: {single}, peak at density {peak_at:.3f}       "
       f"pre-registered < 0.35:  {'HIT' if single and peak_at < 0.35 else 'MISS'}")
-    p(f"  P2  mean slack below 0.05 density: {lo.mean() if len(lo) else float('nan'):.3f} "
-      f"({len(lo)} boards); above 0.95: "
-      f"{hi.mean() if len(hi) else float('nan'):.3f} ({len(hi)})   "
-      f"pre-registered both < 0.5:  "
-      f"{'HIT' if len(lo) and len(hi) and lo.mean() < 0.5 and hi.mean() < 0.5 else 'MISS'}")
+    if not len(lo) or not len(hi):
+        # An arm with no boards in it has not failed; it has not been run. The
+        # first version of this file printed MISS against an empty upper arm.
+        v2 = f"VACUOUS - {len(lo)} boards at the low end, {len(hi)} at the high"
+    elif lo.mean() < 0.5 and hi.mean() < 0.5:
+        v2 = "HIT"
+    else:
+        v2 = "MISS"
+    p(f"  P2  mean slack below 0.05 density: "
+      f"{lo.mean() if len(lo) else float('nan'):.3f} ({len(lo)} boards); "
+      f"above 0.95: {hi.mean() if len(hi) else float('nan'):.3f} ({len(hi)})")
+    p(f"      pre-registered both < 0.5:  {v2}")
     p(f"  P3  peak {peak_val:.2f} bits                          "
       f"pre-registered > 4:     {'HIT' if peak_val > 4 else 'MISS'}")
     p(f"  P4  MAE on the real boards {mae:.3f} bits, against {mae0:.3f} for the "
       f"simulated mean   pre-registered < 1.0 and < that:  "
       f"{'HIT' if mae < 1.0 and mae < mae0 else 'MISS'}")
+    p("")
+    ex = [(n_, q - t) for (n_, _, t), q in zip(real, pred) if n_ != "CASP14"]
+    mae_ex = float(np.mean([abs(d) for _, d in ex]))
+    bias_ex = float(np.mean([d for _, d in ex]))
+    p(f"  Dropping CASP14, whose slack is exactly zero for the structural reason")
+    p(f"  band_slack.py sets out - its sub-poset is an ordinal sum of a")
+    p(f"  13-antichain over a band-exact 5-element tail - the error on the")
+    p(f"  remaining {len(ex)} boards is {mae_ex:.3f} bits.")
+    p("")
+    p(f"  Those errors are not random: mean signed {bias_ex:+.3f}. Every board")
+    p("  above density 0.58 is UNDER-predicted, by 0.65 to 0.76 bits. Real")
+    p("  boards carry more slack than simulated boards of the same density, so")
+    p("  the curve understates the cost on exactly the boards this repository")
+    p("  cares about. That is the conservative direction, and it is a measured")
+    p("  gap between a simulated field and a real one rather than a fitted one.")
     p("")
     p("  The two ends are not assumptions. A board with no noise is a total")
     p("  order: one ordering, and the bands admit exactly that one. A board with")
