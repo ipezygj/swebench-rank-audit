@@ -1,0 +1,66 @@
+SLACK IS NOT A FUNCTION OF DENSITY ALONE
+================================================================================================
+  672 simulated boards across 7 sizes (10 to 22 systems) and 6 item counts.
+
+  mean slack by size and density bin
+     J     0.00-0.25     0.25-0.45     0.45-0.65     0.65-1.01
+    10          0.29          1.22          0.37          0.09
+    12          0.42          1.55          0.94          0.15
+    14          0.61          2.01          1.73          0.47
+    16          0.70          2.71          2.05          0.61
+    18          1.14          3.31          2.06          1.08
+    20          1.00          4.61          3.19          1.22
+    22          1.28          5.37          3.61          1.97
+
+  the same divided by J
+     J     0.00-0.25     0.25-0.45     0.45-0.65     0.65-1.01
+    10         0.029         0.122         0.037         0.009
+    12         0.035         0.129         0.079         0.012
+    14         0.044         0.143         0.123         0.033
+    16         0.044         0.169         0.128         0.038
+    18         0.063         0.184         0.115         0.060
+    20         0.050         0.230         0.159         0.061
+    22         0.058         0.244         0.164         0.089
+
+  P1  slack rises with J in 4 of 4 density bins        pre-registered >= 3:  HIT
+  P2  slack/J varies relatively less in 4 of 4 bins   pre-registered >= 3:  HIT
+  P3  held-out simulated MAE: f(d) 0.506, J*g(d) 0.343   pre-registered J*g wins:  HIT
+  P4  real boards at J=22: f(d) 1.992, J*g(d) 1.505    pre-registered J*g wins:  HIT
+
+  board                    density    slack     f(d)    J*g(d)   (J,d) cell
+  SWE-bench Verified         0.797    1.889    0.755     0.910        1.966
+  MTEB English v2            0.481    4.999    2.211     2.804        3.610
+  HELM classic               0.117    6.079    2.874     3.721        1.283
+  ProteinGym DMS             0.654    4.348    1.461     1.791        1.966
+  TabArena 45 variants       0.476    3.558    2.235     2.836        3.610
+  CASP14                     0.463    3.741    2.309     2.935        3.610
+  LiveBench                  0.623    2.684    1.571     1.937        3.610
+  MathArena 2025             0.610    3.675    1.619     2.001        3.610
+
+  EXPLORATORY, decided after seeing the table above. Both fitted forms
+  under-predict every real board. Dropping the polynomial entirely and
+  reading the matching cell of the binned (J, density) table gives
+  1.227 bits against 1.505 for J*g(d) and 1.992 for f(d).
+  So the second variable is right and the functional form is the weak
+  part: a degree-4 polynomial in density, fitted across all sizes at
+  once, cannot follow a surface whose shape changes with J.
+
+  HELM classic is the worst row of all three predictors and it is out of
+  the simulated range: it has 10 items and the sweep runs from 20 to
+  640. Excluding it the cell predictor gives 0.717 bits against 1.383 for J*g(d).
+  That is a coverage gap in the sweep, not a failure of the form, and it
+  is named rather than dropped.
+
+  RECORDED, NOT PREDICTED, measured before this file was written. Growing
+  a real board's sub-poset from 8 systems to 24 barely moves its density
+  - SWE-bench Verified 0.821 to 0.804, HELM classic 0.107 to 0.098,
+  LiveBench 0.714 to 0.609 - while the slack rises on every board, from
+  0.00 to 2.18, from 0.72 to 6.50, from 0.00 to 3.62. That alone rules
+  out any function of density alone, and it was sitting in
+  slack_scaling_results.txt and slack_law_results.txt at the same time,
+  in two files that never had their numbers put side by side.
+
+  slack_law.py is not retracted. Its four predictions hold and its curve
+  predicts real 18-system sub-posets to 0.46 bits. What it is, is a
+  section through a surface at J = 18, and it was written as though the
+  surface had only one axis.

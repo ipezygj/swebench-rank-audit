@@ -124,8 +124,12 @@ def main() -> int:
     uniq = sorted(set(cells))
     hold = set(uniq[::4])
     tr = np.array([c not in hold for c in cells])
-    ok_split = not (set(np.array(cells, dtype=object)[~tr].tolist())
-                    & set(np.array(cells, dtype=object)[tr].tolist()))
+    # Keep this in plain Python. np.array(list_of_tuples, dtype=object) turns
+    # each tuple into a list, and a list is not hashable, so building a set of
+    # them raises rather than answering the question.
+    train_cells = {c for c, t in zip(cells, tr) if t}
+    held_cells = {c for c, t in zip(cells, tr) if not t}
+    ok_split = not (train_cells & held_cells)
     print(f"  [{'ok  ' if ok_split else 'FAIL'}] the held-out split removes whole cells: "
           f"{int(tr.sum())} train, {int((~tr).sum())} held out, no cell in both")
 
@@ -217,9 +221,37 @@ def main() -> int:
     p(f"  P4  real boards at J={REAL_J}: f(d) {rmae1:.3f}, J*g(d) {rmae2:.3f}    "
       f"pre-registered J*g wins:  {'HIT' if rmae2 < rmae1 else 'MISS'}")
     p("")
-    p(f"  {'board':<22}{'density':>10}{'slack':>9}{'f(d)':>9}{'J*g(d)':>10}")
-    for (name, d, s), q1, q2 in zip(real, p1(rd, REAL_J), p2(rd, REAL_J)):
-        p(f"  {name:<22}{d:>10.3f}{s:>9.3f}{q1:>9.3f}{q2:>10.3f}")
+    # EXPLORATORY, decided after seeing the numbers and labelled as such: read
+    # the matching cell of the binned (J, density) table instead of evaluating
+    # a polynomial. Same two variables, no functional form at all.
+    def cellpred(d):
+        k = max(0, int(np.digitize(d, BINS)) - 1)
+        m = (Js == REAL_J) & (binid == k)
+        return float(S[m].mean()) if m.sum() else float("nan")
+
+    cp = np.array([cellpred(d) for d in rd])
+    rmae3 = float(np.mean(np.abs(cp - rs_)))
+    p(f"  {'board':<22}{'density':>10}{'slack':>9}{'f(d)':>9}{'J*g(d)':>10}"
+      f"{'(J,d) cell':>13}")
+    for (name, d, s), q1, q2, q3 in zip(real, p1(rd, REAL_J), p2(rd, REAL_J), cp):
+        p(f"  {name:<22}{d:>10.3f}{s:>9.3f}{q1:>9.3f}{q2:>10.3f}{q3:>13.3f}")
+    p("")
+    p("  EXPLORATORY, decided after seeing the table above. Both fitted forms")
+    p("  under-predict every real board. Dropping the polynomial entirely and")
+    p(f"  reading the matching cell of the binned (J, density) table gives")
+    p(f"  {rmae3:.3f} bits against {rmae2:.3f} for J*g(d) and {rmae1:.3f} for f(d).")
+    p("  So the second variable is right and the functional form is the weak")
+    p("  part: a degree-4 polynomial in density, fitted across all sizes at")
+    p("  once, cannot follow a surface whose shape changes with J.")
+    p("")
+    ex = [i for i, (n_, _, _) in enumerate(real) if n_ != "HELM classic"]
+    p(f"  HELM classic is the worst row of all three predictors and it is out of")
+    p(f"  the simulated range: it has 10 items and the sweep runs from {min(NS)} to")
+    p(f"  {max(NS)}. Excluding it the cell predictor gives "
+      f"{float(np.mean(np.abs(cp[ex] - rs_[ex]))):.3f} bits against "
+      f"{float(np.mean(np.abs(p2(rd, REAL_J)[ex] - rs_[ex]))):.3f} for J*g(d).")
+    p("  That is a coverage gap in the sweep, not a failure of the form, and it")
+    p("  is named rather than dropped.")
     p("")
     p("  RECORDED, NOT PREDICTED, measured before this file was written. Growing")
     p("  a real board's sub-poset from 8 systems to 24 barely moves its density")
