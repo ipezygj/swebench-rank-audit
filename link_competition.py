@@ -127,9 +127,16 @@ def main() -> int:
 
     print("self-checks ...")
     xs = np.linspace(0, 12, 400)
-    ok_ends = all(abs(f(0.0) - 0.5) < 1e-9 and f(50.0) < 1e-3
+    # The decay must be tested where a HEAVY tail has actually decayed. At
+    # x = 50 the algebraic link is still at 0.0098 and Cauchy at 0.0064, which
+    # is the point of including them - a slow tail is a legitimate competitor,
+    # not a broken link. The first version of this check demanded 1e-3 at 50 and
+    # rejected the two links whose tails it was written to compare against.
+    ok_ends = all(abs(f(0.0) - 0.5) < 1e-9 and f(1e6) < 1e-3
                   for f in LINKS.values())
-    print(f"  [{'ok  ' if ok_ends else 'FAIL'}] every link is 0.5 at 0 and tends to 0")
+    print(f"  [{'ok  ' if ok_ends else 'FAIL'}] every link is 0.5 at 0 and below "
+          f"1e-3 far out: " + ", ".join(f"{k.split()[0]} {f(50.0):.4f}@50"
+                                        for k, f in LINKS.items()))
     ok_mono = all(np.all(np.diff(f(xs)) <= 1e-12) for f in LINKS.values())
     print(f"  [{'ok  ' if ok_mono else 'FAIL'}] every link is decreasing on the swept range")
 
@@ -187,6 +194,27 @@ def main() -> int:
     p(f"  P4  best without TabArena: {best_x}")
     p(f"      pre-registered ranking changes:  "
       f"{'HIT' if best_x != best_r else 'MISS'}")
+    p("")
+    p("  THE REVIEWER WAS HALF RIGHT, AND THE HALF THAT FAILED MATTERS.")
+    p("")
+    p(f"  P2 holds: the spread between the best and worst link is {spread:.2f}")
+    p(f"  points and law 1's own residual scatter is {resid_sd:.2f}. Nine boards")
+    p("  do NOT have the resolution to exclude a competitor, so no sentence here")
+    p("  may claim the data SELECTS the Gaussian tail.")
+    p("")
+    p("  P3 and P4 missed, and they missed in law 1's favour. Phibar is not")
+    p("  merely surviving - it is the best of the four on all nine boards, and")
+    p("  still the best on the seven with TabArena removed, and the ranking does")
+    p("  not move when those two 17-point misses are dropped. The runner-up on")
+    p(f"  the real boards is off by {100 * sorted(rm.values())[1]:.2f} points")
+    p(f"  against Phibar's {100 * min(rm.values()):.2f}.")
+    p("")
+    p("  So the honest statement about the link is neither of the two that were")
+    p("  on offer. It is not an empirical finding - the data cannot pick it out")
+    p("  of a crowd. It is not arbitrary either - it is derived, and among")
+    p("  parameter-free competitors it is the one that fits. Law 1 should be")
+    p("  presented as a DERIVED form that the data is consistent with and")
+    p("  prefers, not as a discovered one.")
     p("")
     p("  Law 1 makes two claims and only one of them has ever been tested. That")
     p("  the established share is a function of ONE number - the collapse - is")

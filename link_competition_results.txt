@@ -1,0 +1,48 @@
+CAN NINE BOARDS TELL THE GAUSSIAN TAIL FROM ANY OTHER SQUASH?
+================================================================================================
+  Four parameter-free links, all 0.5 at 0 and decreasing to 0. Mean
+  absolute error in PERCENTAGE POINTS of established share.
+
+  link                       simulated (240)    real (9)   real minus TabArena (7)
+  Gaussian  Phibar(x)                  0.25        5.17                     1.64
+  logistic  1/(1+e^x)                  4.64       11.08                     7.90
+  Cauchy    .5-atan/pi                 8.58        9.22                     6.06
+  algebraic .5/(1+x)                  10.24        7.66                     4.70
+
+  P1  simulated winner: Gaussian  Phibar(x), by a factor of 18.5 over the runner-up
+      pre-registered Gaussian by >= 2x:  HIT
+  P2  real-board spread between best and worst link: 5.92 points,
+      against law 1's own residual sd of 7.74 points
+      pre-registered spread < residual sd:  HIT
+  P3  best link on the real boards: Gaussian  Phibar(x)
+      pre-registered NOT Gaussian:  MISS
+  P4  best without TabArena: Gaussian  Phibar(x)
+      pre-registered ranking changes:  MISS
+
+  THE REVIEWER WAS HALF RIGHT, AND THE HALF THAT FAILED MATTERS.
+
+  P2 holds: the spread between the best and worst link is 5.92
+  points and law 1's own residual scatter is 7.74. Nine boards
+  do NOT have the resolution to exclude a competitor, so no sentence here
+  may claim the data SELECTS the Gaussian tail.
+
+  P3 and P4 missed, and they missed in law 1's favour. Phibar is not
+  merely surviving - it is the best of the four on all nine boards, and
+  still the best on the seven with TabArena removed, and the ranking does
+  not move when those two 17-point misses are dropped. The runner-up on
+  the real boards is off by 7.66 points
+  against Phibar's 5.17.
+
+  So the honest statement about the link is neither of the two that were
+  on offer. It is not an empirical finding - the data cannot pick it out
+  of a crowd. It is not arbitrary either - it is derived, and among
+  parameter-free competitors it is the one that fits. Law 1 should be
+  presented as a DERIVED form that the data is consistent with and
+  prefers, not as a discovered one.
+
+  Law 1 makes two claims and only one of them has ever been tested. That
+  the established share is a function of ONE number - the collapse - is
+  the substantive claim, and it survives everything in this repository.
+  That the function is the Gaussian upper tail is a modelling
+  convention inherited from the derivation, and the table above is what
+  nine boards can say about it.
