@@ -1,0 +1,44 @@
+EVERY SLACK FIGURE HERE IS ONE DRAW OF A RANDOM VARIABLE
+================================================================================================
+  25 fresh 18-system subsets per board, seeded independently of the arc.
+
+  board                   arc draw    mean     sd  median             IQR  arc pctile
+  SWE-bench Verified         2.721   1.206  0.530   1.139    [0.80, 1.57]        100%
+  MTEB English v2            2.104   2.701  0.908   2.852    [2.15, 3.19]         20%
+  HELM classic               4.785   4.064  0.608   4.082    [3.52, 4.60]         88%
+  ProteinGym DMS             2.016   1.996  0.757   1.978    [1.48, 2.51]         60%
+  TabArena 45 variants       3.455   3.570  0.693   3.555    [3.10, 3.95]         48%
+  CASP14                     0.000   1.665  1.002   1.721    [0.92, 2.24]          0%
+  LiveBench                  2.320   2.242  0.808   2.234    [1.78, 2.61]         56%
+  MathArena 2025             1.259   2.353  0.697   2.340    [1.83, 2.85]          8%
+
+  P1  the arc's draw outside the central half on 5 of 8   pre-registered >= 4:  HIT
+  P2  draw sd above 0.4 bits on 8 of 8          pre-registered >= 6:  HIT
+  P3  board pairs whose slack ordering reverses: 8       pre-registered >= 1:  HIT
+  P4  CASP14 mean slack 1.665 bits against its published 0.000   pre-registered > 1.0:  HIT
+
+  REVERSED PAIRS - every sentence ordering these two by slack is wrong:
+    SWE-bench Verified 2.72 > LiveBench 2.32 on the arc's draw, but 1.21 < 2.24 on 25 draws
+    SWE-bench Verified 2.72 > MTEB English v2 2.10 on the arc's draw, but 1.21 < 2.70 on 25 draws
+    SWE-bench Verified 2.72 > ProteinGym DMS 2.02 on the arc's draw, but 1.21 < 2.00 on 25 draws
+    SWE-bench Verified 2.72 > MathArena 2025 1.26 on the arc's draw, but 1.21 < 2.35 on 25 draws
+    SWE-bench Verified 2.72 > CASP14 0.00 on the arc's draw, but 1.21 < 1.67 on 25 draws
+    LiveBench 2.32 > MTEB English v2 2.10 on the arc's draw, but 2.24 < 2.70 on 25 draws
+
+  WHAT CHANGES. SWE-bench Verified's 2.721 bits, quoted in six files, is
+  above every one of 25 fresh draws; its mean is 1.206. CASP14's exact
+  zero is the minimum of its distribution, whose mean is 1.665, and that
+  single draw is load-bearing in four places: band_slack's P1 miss, the
+  structural ordinal-sum explanation built on it, slack_law's MAE with
+  CASP14 excluded as the exception, redundant_edges' 100 % free share, and
+  realizer's headline that two boards are free.
+
+  The explanations attached to those draws are not thereby wrong - CASP14's
+  sub-poset really does decompose as 13! x 30 - but they explain a
+  coincidence of one subset, and they were written as if they explained a
+  property of the board.
+
+  This was not caught by any self-check in the arc. Every one of them
+  verified that the sub-poset was correctly induced, correctly counted and
+  correctly compared. None asked whether one draw was enough, because none
+  of them treated the draw as a random variable at all.
