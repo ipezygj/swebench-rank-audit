@@ -185,7 +185,7 @@ validated against a permutation null.
 - `selection_regret.py` - If you pick the leader, how much do you lose?
 - `shape_correction.py` - The fifth number: can one shape statistic close law 1's residual?
 - `shape_within.py` - Does law 1's residual track the field's shape WITHIN one board?
-- `slack_law.py` - Where does the band picture cost the most, and can that be predicted?
+- `archive/slack_law.py` - Where does the band picture cost the most, and can that be predicted? Archived 2026-08-25: not retracted (its four predictions hold, curve predicts real 18-system sub-posets to 0.46 bits), but superseded as a J=18 special case of slack_law2's fuller surface.
 - `slack_law2.py` - slack_law.py fitted a curve in density alone. That curve cannot be right
 - `slack_scaling.py` - Everything about the band picture was measured on 18 systems. Does it scale?
 - `staleness_audit.py` - Which results files are older than the tool that writes them?
