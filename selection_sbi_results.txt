@@ -7,23 +7,23 @@ top 19 observed scores, centred; prior on log10 N is uniform on [0, 6]
       the prior median is 3.00. If the posterior
       median sits on it, the number is the prior speaking, not the
       data, and must not be quoted as an estimate of anything.
-    50 % interval       [1.90, 4.30]
-    90 % interval       [0.50, 5.60]
-    information gained over the prior   0.045 nats
+    50 % interval       [1.80, 4.20]
+    90 % interval       [0.20, 5.60]
+    information gained over the prior   0.065 nats
 
   posterior over s (ability spread and noise, confounded by algebra)
-    median              0.0683
-    90 % interval       [0.0107, 0.1143]
+    median              0.0711
+    90 % interval       [0.0079, 0.1143]
 
   VERDICT: the shape of the leaderboard says almost nothing about
-  how many attempts produced it. 0.04 nats over a uniform
+  how many attempts produced it. 0.06 nats over a uniform
   prior across six orders of magnitude is close to nothing, and
   that is the measurement yesterday's file asserted without one.
   The sensitivity curve in deflated_benchmark.py was the right
   form to report, and this is why.
 
   WHY THE MARGINAL IS FLAT - it is a ridge, not an absence
-    posterior correlation of log10 N and s   +0.888
+    posterior correlation of log10 N and s   +0.887
     Many attempts with a narrow spread produce the same shape as few
     attempts with a wide one. The data constrains the COMBINATION and
     neither coordinate alone, which is a sharper statement than 'no
@@ -35,11 +35,11 @@ top 19 observed scores, centred; prior on log10 N is uniform on [0, 6]
     hypothesis that the top 19 differ in no ability whatever (tau = 0)
     the spread is pure measurement noise, s = sigma sqrt(1 - rho).
     s = 0.0111  (nearest grid value 0.0107)
-    conditional median log10 N   0.50  (N = 3)
-    90 % interval                [0.00, 1.00]
-    information over the prior   1.669 nats
+    conditional median log10 N   0.30  (N = 2)
+    90 % interval                [0.00, 0.90]
+    information over the prior   1.778 nats
 
-    READ THIS AS A REJECTION, NOT AN ESTIMATE. N = 3
+    READ THIS AS A REJECTION, NOT AN ESTIMATE. N = 2
     is impossible when 19 systems are reported: you cannot
     show the best 19 of 3. The conditional posterior piles up
     against the lower boundary because at this s the model

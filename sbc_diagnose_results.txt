@@ -1,0 +1,26 @@
+SELECTION_SBI'S CALIBRATION FAILURE: WHICH WAY, AND IS THE CHECK SOUND?
+============================================================================================
+  selection_sbi.py is the only failure in a 110-tool run. It refuses to
+  print because its own SBC check rejects. This asks what that means.
+
+                                                      KS p                                       shape
+  positive control: posterior = prior               0.5983              neither (ends 17%, middle 21%)
+  negative control: 4x narrow, centred            0.000000MIDDLE 100% (posterior too WIDE - underconfident)
+  negative control: 4x narrow, offset             0.000000ENDS 52% (posterior too NARROW - overconfident)
+  the real posterior, original rank stat          0.000027              neither (ends 17%, middle 21%)
+  the real posterior, half-bin corrected          0.096090              neither (ends 17%, middle 23%)
+  CONTROL: that posterior sharpened 4x            0.000000ENDS 42% (posterior too NARROW - overconfident)
+
+  rank deciles, real posterior (corrected): 0.00 0.07 0.16 0.30 0.37 0.47 0.56 0.65 0.73 0.83 1.00
+
+  P1  positive control uniform: KS p = 0.5983      pre-registered > 0.05:  HIT
+  P2  negative control caught: KS p = 0.000000   pre-registered < 0.01:  HIT
+  P3  failure is overconfidence: ends 17%, middle 23%   pre-registered ENDS:  MISS
+  P4  half-bin correction moves p from 0.000027 to 0.096090 and the check still fails: MISS
+
+  Why the direction decides the meaning. selection_sbi.py's headline is
+  that the number of unreported attempts N is NOT identified, evidenced
+  by a flat posterior. A posterior that is too WIDE would manufacture
+  that conclusion. A posterior that is too NARROW argues the other way:
+  the flatness it reports is real and understated, and the tool is
+  refusing to print a conclusion that is if anything conservative.

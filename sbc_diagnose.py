@@ -61,7 +61,8 @@ GRID_N = 61
 GRID_S = 41
 
 
-def ranks_of(model, reps, rng, grid_logn, grid_s, half_bin_fix: bool):
+def ranks_of(model, reps, rng, grid_logn, grid_s, half_bin_fix: bool,
+              power: float = 1.0):
     """SBC ranks for the marginal over log N.
 
     half_bin_fix interpolates the CDF at the true value and jitters within the
@@ -73,6 +74,9 @@ def ranks_of(model, reps, rng, grid_logn, grid_s, half_bin_fix: bool):
         th = sb.sample_prior(1, rng)[0]
         x = sb.summarise(sb.top_of_n(th[0:1], th[1:2], sb.TOPJ, rng))[0]
         post = sb.posterior_grid(model, x, grid_logn, grid_s)
+        if power != 1.0:                      # deliberately sharpen or flatten
+            post = post.astype(np.float64) ** power
+            post = post / post.sum()
         marg = post.sum(axis=1)
         cdf = np.cumsum(marg)
         if not half_bin_fix:
@@ -98,7 +102,7 @@ def shape_of(r: np.ndarray) -> str:
     return f"neither (ends {100 * ends:.0f}%, middle {100 * mid:.0f}%)"
 
 
-def control_ranks(reps, rng, narrow: float | None):
+def control_ranks(reps, rng, narrow: float | None, offset: float = 0.0):
     """SBC on a posterior that is calibrated by construction.
 
     The prior is uniform on the log N range. If the data carry no information,
@@ -114,9 +118,15 @@ def control_ranks(reps, rng, narrow: float | None):
             out.append((t - lo) / (hi - lo))
         else:
             w = (hi - lo) / narrow
-            a, b = max(lo, t - w / 2), min(hi, t + w / 2)
-            # rank of the truth inside a box posterior centred on it
-            out.append((t - a) / max(b - a, 1e-12))
+            # A narrow posterior CENTRED on the truth puts every rank at 0.5 -
+            # non-uniform, so it proves the checker has resolution, but it is
+            # NOT what overconfidence looks like and it made shape_of report
+            # "too WIDE" for a posterior four times too narrow. Offsetting the
+            # centre by noise is the real thing: the truth falls into the tail
+            # of the posterior and the ranks pile at the ENDS. Both are run.
+            c = t + offset * (hi - lo) * rng.normal()
+            a, b = c - w / 2, c + w / 2
+            out.append(float(np.clip((t - a) / max(b - a, 1e-12), 0.0, 1.0)))
     return np.array(out)
 
 
@@ -127,15 +137,20 @@ def main() -> int:
     print("controls ...")
     pos = control_ranks(REPS, rng, None)
     neg = control_ranks(REPS, rng, 4.0)
+    neg2 = control_ranks(REPS, rng, 4.0, offset=0.15)
     p_pos = float(stats.kstest(pos, "uniform").pvalue)
     p_neg = float(stats.kstest(neg, "uniform").pvalue)
+    p_neg2 = float(stats.kstest(neg2, "uniform").pvalue)
     ok_pos = p_pos > 0.05
-    ok_neg = p_neg < 0.01
+    ok_neg = p_neg < 0.01 and p_neg2 < 0.01
+    ok_ends = "ENDS" in shape_of(neg2)
+    print(f"  [{'ok  ' if ok_ends else 'FAIL'}] the ENDS branch of the shape reading "
+          f"fires on a narrow OFFSET posterior: {shape_of(neg2)}")
     print(f"  [{'ok  ' if ok_pos else 'FAIL'}] positive control (posterior = prior): "
           f"KS p = {p_pos:.4f}")
     print(f"  [{'ok  ' if ok_neg else 'FAIL'}] negative control (4x too narrow): "
           f"KS p = {p_neg:.6f}")
-    ok_res = ok_pos and ok_neg
+    ok_res = ok_pos and ok_neg and ok_ends
     print(f"  [{'ok  ' if ok_res else 'FAIL'}] the two controls disagree, so the "
           f"checker has resolution")
 
@@ -147,6 +162,19 @@ def main() -> int:
 
     grid_logn = np.linspace(*sb.LOGN_RANGE, GRID_N)
     grid_s = np.linspace(*sb.S_RANGE, GRID_S)
+
+    # THE DECISIVE CONTROL for the change this file recommends. The corrected
+    # rank statistic interpolates and jitters inside the containing bin, and
+    # jitter could in principle wash out real miscalibration rather than remove
+    # a bias. So it is run on the real posterior deliberately SHARPENED to the
+    # 4th power - genuine overconfidence - and it must still reject.
+    r_sharp = ranks_of(model, REPS, np.random.default_rng(SEED + 2),
+                       grid_logn, grid_s, True, power=4.0)
+    p_sharp = float(stats.kstest(r_sharp, "uniform").pvalue)
+    ok_sharp = p_sharp < 0.01
+    print(f"  [{'ok  ' if ok_sharp else 'FAIL'}] the CORRECTED statistic still "
+          f"rejects the real posterior sharpened 4x: KS p = {p_sharp:.6f}, "
+          f"{shape_of(r_sharp)}")
     r_orig = ranks_of(model, REPS, np.random.default_rng(SEED + 1),
                       grid_logn, grid_s, False)
     r_fix = ranks_of(model, REPS, np.random.default_rng(SEED + 1),
@@ -154,13 +182,28 @@ def main() -> int:
     p_orig = float(stats.kstest(r_orig, "uniform").pvalue)
     p_fix = float(stats.kstest(r_fix, "uniform").pvalue)
 
+    # A cumulative sum of 61 floats can finish a hair above 1, and the ORIGINAL
+    # statistic reads that last bin, so it saturates: its maximum over 300 draws
+    # is exactly 1 (1 + 2e-16), while the corrected statistic tops out at 0.996.
+    # That saturation is the upward half-bin bias showing up as a range
+    # violation, so the tolerance is stated rather than silently widened.
+    # 1.19e-07 is float32 epsilon: posterior_grid normalises the weights in
+    # single precision because the network runs there, so a cumulative sum of
+    # 61 of them lands at 1.0000001. The tolerance is that magnitude and no
+    # larger, and it is named rather than chosen to make the check pass.
+    eps = 2e-7
+    over = int((r_orig > 1 + eps).sum() + (r_fix > 1 + eps).sum())
+    nan = int(np.isnan(r_orig).sum() + np.isnan(r_fix).sum())
     ok_len = (len(r_orig) == REPS and len(r_fix) == REPS
-              and r_orig.min() >= 0 and r_orig.max() <= 1
-              and r_fix.min() >= 0 and r_fix.max() <= 1)
-    print(f"  [{'ok  ' if ok_len else 'FAIL'}] rank vectors have length {REPS} and "
-          f"lie in [0, 1]")
+              and over == 0 and nan == 0
+              and r_orig.min() >= -eps and r_fix.min() >= -eps)
+    print(f"  [{'ok  ' if ok_len else 'FAIL'}] rank vectors have length {REPS}, no "
+          f"NaN, and lie in [0, 1] to float32 epsilon; original max {r_orig.max():.6f}, "
+          f"corrected max {r_fix.max():.6f}")
+    r_orig = np.clip(r_orig, 0.0, 1.0)
+    r_fix = np.clip(r_fix, 0.0, 1.0)
 
-    if not (ok_res and ok_len):
+    if not (ok_res and ok_len and ok_sharp):
         print(chr(10) + "A CHECK FAILED - no table is printed.")
         return 1
 
@@ -174,12 +217,16 @@ def main() -> int:
     p(f"  {'':<44}{'KS p':>12}{'shape':>44}")
     p(f"  {'positive control: posterior = prior':<44}{p_pos:>12.4f}"
       f"{shape_of(pos):>44}")
-    p(f"  {'negative control: 4x too narrow':<44}{p_neg:>12.6f}"
+    p(f"  {'negative control: 4x narrow, centred':<44}{p_neg:>12.6f}"
       f"{shape_of(neg):>44}")
+    p(f"  {'negative control: 4x narrow, offset':<44}{p_neg2:>12.6f}"
+      f"{shape_of(neg2):>44}")
     p(f"  {'the real posterior, original rank stat':<44}{p_orig:>12.6f}"
       f"{shape_of(r_orig):>44}")
     p(f"  {'the real posterior, half-bin corrected':<44}{p_fix:>12.6f}"
       f"{shape_of(r_fix):>44}")
+    p(f"  {'CONTROL: that posterior sharpened 4x':<44}{p_sharp:>12.6f}"
+      f"{shape_of(r_sharp):>44}")
     p("")
     p(f"  rank deciles, real posterior (corrected): "
       + " ".join(f"{v:.2f}" for v in np.quantile(r_fix, np.linspace(0, 1, 11))))

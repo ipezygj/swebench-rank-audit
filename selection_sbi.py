@@ -223,9 +223,19 @@ def _check_sbc(model, reps, rng, grid_logn, grid_s) -> tuple[bool, str]:
         post = posterior_grid(model, x, grid_logn, grid_s)
         marg = post.sum(axis=1)
         cdf = np.cumsum(marg)
-        i = int(np.searchsorted(grid_logn, th[0]))
-        i = min(max(i, 0), len(cdf) - 1)
-        ranks.append(cdf[i])
+        # The rank must be the posterior CDF AT the true value. Reading cdf at
+        # the grid point at or above it takes the TOP of the containing bin and
+        # biases every rank upward by up to a whole bin - enough to saturate at
+        # 1.0 and to turn a calibrated posterior into a rejection. This takes
+        # the bottom of the bin plus a uniform draw across it, which is the
+        # standard treatment of a discrete grid in SBC. Diagnosed in
+        # sbc_diagnose.py: the correction moves KS p from 0.000027 to 0.096,
+        # and it is verified there NOT to cost the check its power - the same
+        # statistic still rejects this posterior sharpened to the 4th power at
+        # p < 1e-6.
+        lo = np.concatenate([[0.0], cdf[:-1]])
+        i = int(np.clip(np.searchsorted(grid_logn, th[0]) - 1, 0, len(cdf) - 1))
+        ranks.append(float(np.clip(lo[i] + rng.random() * marg[i], 0.0, 1.0)))
     ranks = np.array(ranks)
     ks = float(stats.kstest(ranks, "uniform").pvalue)
     return ks > 0.01, (f"SBC uniformity of posterior ranks: "
