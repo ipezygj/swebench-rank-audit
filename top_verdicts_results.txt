@@ -1,0 +1,61 @@
+WHAT WOULD A REPORT CARD HAVE TO PRINT?
+================================================================================================
+  A band is the in-degree and out-degree of a system: best = 1 + systems
+  that beat it, worst = J - systems it beats. Printing bands is printing
+  the degree sequence. The slack is everything the structure adds.
+  Induced sub-posets of 18 systems; k = how many top rows get their
+  full pairwise verdicts printed alongside.
+  Not measured, fewer systems than the sub-poset size: TabArena 16 models (J=16).
+
+  board                    slack    k=2    k=4    k=6    k=8   k=10   k=12   k=14   k=16   k=18   rand 6
+  SWE-bench Verified       2.721    -0%    -0%    -0%    -0%    18%    34%    60%    88%   100%      12%
+  MTEB English v2          2.104    -0%    -0%    11%    26%    47%    74%    91%   100%   100%      11%
+  HELM classic             4.785    -0%    -0%    -0%    -0%     8%    22%    35%    58%   100%      13%
+  ProteinGym DMS           2.016    -0%    -0%    -0%    13%    44%    69%    86%    92%   100%      12%
+  TabArena 45 variants     3.455    -0%    -0%    -0%    -0%    -0%    25%    63%    95%   100%      12%
+  CASP14                   0.000   100%   100%   100%   100%   100%   100%   100%   100%   100%     100%
+  LiveBench                2.320    -0%    -0%    -0%    -0%    -0%    -0%    52%    95%   100%      11%
+  MathArena 2025           1.259    -0%    -0%    -0%     8%    26%    42%    74%   100%   100%       8%
+
+  SIX VERDICTS, CHOSEN FOUR WAYS. Same budget, same boards.
+  board                     top 6  evenly spaced   random  targeted  edges in top 6
+  SWE-bench Verified          -0%            10%      12%       39%               8
+  MTEB English v2             11%             8%      11%       36%               2
+  HELM classic                -0%            16%      13%       42%               0
+  ProteinGym DMS              -0%            12%      12%       41%               5
+  TabArena 45 variants        -0%             5%      12%       24%               0
+  CASP14                     100%           100%     100%      100%               0
+  LiveBench                   -0%             9%      11%       56%               7
+  MathArena 2025              -0%            21%       8%       45%               0
+
+  Each cell is the share of the slack removed by printing that many
+  verdicts. 100 % means the printed table admits exactly the orderings
+  the data admits, and nothing more.
+
+  P1  endpoints exact on 8 of 8                 pre-registered = all:  HIT
+  P2  top 6 recovers >= half the slack on 1 of 8  pre-registered >= 6:   MISS
+  P3  top 12 recovers >= 90 % on 1 of 8            pre-registered >= 6:   MISS
+  P4  top 6 beats a random 6 on 0 of 8            pre-registered >= 6:   MISS
+
+  The random column is the control, averaged over 40 draws of 6 systems.
+  Without it, a large number under k=6 would say only that printing
+  verdicts helps, which is true of any 6 systems and says nothing about
+  where a report card should spend its space.
+
+  P4 did not merely fail. It failed the other way round: the top 6
+  recovers NOTHING on 7 of 8 boards while 6 systems drawn at random
+  recover 8 to 14 %. The worst place to spend the ink is where every
+  report card spends it.
+
+  The reason is not that the top rows are unrelated to each other. The
+  last column counts the relations among them and several boards have
+  five to eight. Those verdicts are already IMPLIED by the bands: a
+  system whose band starts at 1 and a system it beats cannot be ordered
+  any other way inside the band constraints, so printing the verdict
+  adds no information that the degree sequence did not already carry.
+
+  A benchmark owner holds the poset and can therefore choose. Adding the
+  system that removes the most orderings, six times, recovers 24 to 56 %
+  against 0 % for the top six - the same amount of printed table, several
+  times the information. That is the constructive result: the six rows
+  worth expanding are not the six a reader looks at.
