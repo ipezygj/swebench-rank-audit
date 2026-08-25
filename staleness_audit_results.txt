@@ -1,9 +1,9 @@
 RESULTS FILES OLDER THAN THE TOOL THAT WRITES THEM
 ========================================================================================
-  101 tool/results pairs examined.
+  105 tool/results pairs examined.
 
   1 stale:
-    run_all.py                         tool is     5.7 h newer than its results
+    run_all.py                         tool is     0.0 h newer than its results
 
   generated documents quoting a stale file:
     README.md                  cites run_all

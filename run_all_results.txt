@@ -1,107 +1,130 @@
-FULL RUN 2026-08-24 16:15
+FULL RUN 2026-08-25 04:16
 ========================================================================
-  101 tools run, 100 passed, 1 failed, 1806 s total
+  110 tools run, 109 passed, 1 failed, 2534 s total
+  123 python files present, 11 deliberately not run
   ok    alpha_sensitivity.py                   1.8s  
+  ok    band_slack.py                         11.9s  
   ok    benchmark_health.py                    0.1s  
   ok    benchmark_spectrum.py                  0.6s  
-  ok    broad_or_deep.py                      14.1s  
+  ok    broad_or_deep.py                      12.1s  
   ok    build_certified_mteb.py                0.1s  
   ok    build_certified_page.py                0.1s  
-  ok    case_augment.py                        1.6s  
-  ok    ceiling_effect.py                      1.9s  
-  ok    chase_correlated.py                   96.9s  
-  ok    chase_model.py                        40.4s  
-  ok    chase_refit.py                        51.0s  
-  ok    cheap_entry.py                         2.6s  
-  ok    cluster_bootstrap.py                  53.2s  
+  ok    case_augment.py                        1.4s  
+  ok    ceiling_effect.py                      1.4s  
+  ok    chase_correlated.py                   91.8s  
+  ok    chase_model.py                        48.8s  
+  ok    chase_refit.py                        66.2s  
+  ok    cheap_entry.py                         3.2s  
+  ok    cluster_bootstrap.py                  52.7s  
   ok    composition_all.py                     3.3s  
-  ok    conformance_cost.py                   22.3s  
-  ok    crowding_penalty.py                    1.6s  
-  ok    crown_stability.py                     2.1s  
+  ok    conformance_cost.py                   21.6s  
+  ok    crowding_penalty.py                    1.8s  
+  ok    crown_stability.py                     2.5s  
   ok    curation_attack.py                     1.5s  
-  ok    decisiveness_history.py                1.4s  
-  ok    deflated_benchmark.py                 17.8s  
-  ok    detectable_difference.py               3.1s  
+  ok    decisiveness_history.py                1.5s  
+  ok    deflated_benchmark.py                 17.3s  
+  ok    degenerate_comparison.py               0.3s  
+  ok    detectable_difference.py               2.8s  
   ok    effective_entrants.py                  1.8s  
   ok    effective_items.py                     1.7s  
-  ok    entropy_decomposition.py              52.6s  
-  ok    entropy_law_test.py                   32.6s  
-  ok    entropy_law_twin2.py                  75.0s  
-  ok    evidence_trajectory.py                39.0s  
-  ok    export_card_data.py                    4.4s  
-  ok    export_card_mteb.py                    7.9s  
+  ok    entropy_decomposition.py              50.8s  
+  ok    entropy_law_test.py                   31.2s  
+  ok    entropy_law_twin2.py                  70.8s  
+  ok    evidence_trajectory.py                37.3s  
+  ok    exact_extensions.py                    7.8s  
+  ok    export_card_data.py                    4.3s  
+  ok    export_card_mteb.py                    7.8s  
   ok    family_clustering.py                   2.6s  
-  ok    family_generalises.py                  6.2s  
-  ok    fifth_board.py                         2.7s  
-  ok    fourth_board.py                       16.0s  
-  ok    frontier_lineage.py                    1.7s  
-  ok    granularity.py                         1.7s  
-  ok    half_split_replication.py              2.7s  
+  ok    family_generalises.py                  7.9s  
+  ok    fifth_board.py                         3.1s  
+  ok    fourth_board.py                       16.2s  
+  ok    frontier_lineage.py                    1.8s  
+  ok    granularity.py                         1.5s  
+  ok    half_split_replication.py              4.0s  
   ok    headline_fragility.py                  1.4s  
-  ok    holm_recompute.py                     26.6s  
-  ok    incentive_asymmetry.py                 1.5s  
-  ok    independence_flag.py                   1.9s  
-  ok    information_depletion.py               1.5s  
+  ok    holm_recompute.py                     26.1s  
+  ok    incentive_asymmetry.py                 1.6s  
+  ok    independence_flag.py                   2.0s  
+  ok    information_depletion.py               1.4s  
   ok    invariant_core.py                      0.8s  
-  ok    irt_scoring.py                         1.8s  
-  ok    isotonic_families.py                   3.9s  
-  ok    item_side.py                          26.8s  
-  ok    kappa_generality.py                    1.5s  
-  ok    kappa_predicts_future.py               1.5s  
-  ok    kappa_reliability.py                   3.7s  
-  ok    kappa_trend.py                         1.9s  
-  ok    law1_pairwise.py                       1.5s  
-  ok    leader_luck.py                        27.8s  
-  ok    leaderboard_entropy.py                20.1s  
-  ok    leaderboard_geometry.py                4.3s  
+  ok    irt_scoring.py                         2.0s  
+  ok    isotonic_families.py                   4.8s  
+  ok    item_side.py                          25.1s  
+  ok    kappa_generality.py                    1.7s  
+  ok    kappa_predicts_future.py               1.7s  
+  ok    kappa_reliability.py                   3.9s  
+  ok    kappa_trend.py                         2.1s  
+  ok    law1_pairwise.py                       1.7s  
+  ok    law2_closed_form.py                    1.4s  
+  ok    leader_luck.py                        31.9s  
+  ok    leaderboard_entropy.py                19.3s  
+  ok    leaderboard_geometry.py                3.5s  
   ok    leaderboard_resolution.py              1.5s  
-  ok    leaderboard_standard.py               64.5s  
+  ok    leaderboard_standard.py               63.5s  
   ok    lineage_detection.py                   2.6s  
-  ok    lineage_tree.py                       29.0s  
-  ok    measurement_invariance.py            119.0s  
-  ok    merge_boards.py                        1.5s  
-  ok    method_independence.py               103.9s  
-  ok    minimal_benchmark.py                   6.0s  
+  ok    lineage_tree.py                       37.4s  
+  ok    measurement_invariance.py            117.8s  
+  ok    merge_boards.py                        1.4s  
+  ok    method_independence.py                95.2s  
+  ok    minimal_benchmark.py                   6.9s  
   ok    missing_entries.py                     1.5s  
   ok    model_or_harness.py                    1.4s  
-  ok    ordinal_invariance.py                150.6s  
+  ok    order_shape.py                        40.9s  
+  ok    ordinal_invariance.py                146.2s  
   ok    pair_sharpness.py                      1.5s  
-  ok    pairing_dividend.py                    1.5s  
-  ok    pattern_anomaly.py                    91.9s  
-  ok    prescription_pairwise.py               1.7s  
-  ok    progress_or_selection.py               1.3s  
-  ok    quantisation_curve.py                  1.5s  
+  ok    pairing_dividend.py                    1.6s  
+  ok    pattern_anomaly.py                    85.4s  
+  ok    planted_defect.py                    175.3s  
+  ok    prescription_pairwise.py               1.6s  
+  ok    progress_or_selection.py               1.4s  
+  ok    quantisation_curve.py                  1.7s  
   ok    rank_sets.py                           1.6s  
   ok    recount_margin.py                      0.6s  
-  ok    redundancy_power.py                   81.8s  
+  ok    redundancy_power.py                   76.7s  
   ok    refill_all.py                          0.6s  
   ok    refill_prescription.py                 2.3s  
-  ok    residual_correlation.py               50.1s  
+  ok    residual_correlation.py               48.4s  
   ok    resolution_law.py                      4.4s  
   ok    resolution_law_test.py                 1.4s  
-  ok    reweighting_polytope.py                1.2s  
+  ok    reweighting_polytope.py                1.1s  
   ok    saturation_horizon.py                  1.7s  
-  ok    selection_regret.py                    1.4s  
-  FAIL  selection_sbi.py                      10.7s  KNOWN: its own SBC check fails (KS p 0.0003) and it refuses to print - a pre-existing calibration problem in the neural posterior, not a regression from this evening; recorded rather than silenced
-  ok    sibling_chase.py                      42.8s  
-  ok    sota_audit.py                          1.8s  
-  ok    sota_clustered.py                      5.0s  
+  ok    selection_regret.py                    1.6s  
+  FAIL  selection_sbi.py                      14.3s  KNOWN: its own SBC check fails (KS p 0.0003) and it refuses to print - a pre-existing calibration problem in the neural posterior, not a regression from this evening; recorded rather than silenced
+  ok    shape_correction.py                    4.9s  
+  ok    shape_within.py                       73.7s  
+  ok    sibling_chase.py                      51.9s  
+  ok    sota_audit.py                          2.1s  
+  ok    sota_clustered.py                      4.9s  
   ok    sota_families.py                       1.7s  
-  ok    sota_luck_law.py                       2.4s  
-  ok    sota_twin.py                           7.4s  
-  ok    step_sizes.py                          1.7s  
+  ok    sota_luck_law.py                       3.8s  
+  ok    sota_twin.py                           8.8s  
+  ok    staleness_audit.py                     0.2s  
+  ok    step_sizes.py                          2.0s  
   ok    swebench_base_models.py                0.6s  
-  ok    swebench_rank_noise.py                 3.3s  
-  ok    target_board.py                       95.0s  
+  ok    swebench_rank_noise.py                 3.2s  
+  ok    target_board.py                       90.4s  
   ok    tenth_board.py                         1.9s  
-  ok    tie_coverage.py                       64.0s  
-  ok    tie_coverage_boards.py                30.3s  
-  ok    time_to_decide.py                      1.5s  
-  ok    top_compression.py                    18.0s  
-  ok    top_redundancy.py                      1.8s  
-  ok    two_way_bootstrap.py                  71.5s  
-  ok    universality.py                       20.6s  
-  ok    within_family_spread.py                1.7s  
+  ok    tie_coverage.py                      311.5s  
+  ok    tie_coverage_boards.py               166.5s  
+  ok    time_to_decide.py                      1.6s  
+  ok    top_compression.py                    44.4s  
+  ok    top_redundancy.py                      1.9s  
+  ok    two_way_bootstrap.py                  69.7s  
+  ok    universality.py                       20.1s  
+  ok    within_family_spread.py                1.8s  
 
   FAILURES:
     selection_sbi.py: KNOWN: its own SBC check fails (KS p 0.0003) and it refuses to print - a pre-existing calibration problem in the neural posterior, not a regression from this evening; recorded rather than silenced
+
+  NOT RUN:
+    _aa_scrape.py              underscore-prefixed helper
+    _add_cites.py              underscore-prefixed helper
+    all_splits.py              needs the raw submission tree, not in the repo
+    build_laws_md.py           regenerates documents from results, run after this
+    build_readme.py            regenerates documents from results, run after this
+    helm_matrix.py             needs the raw HELM release, not in the repo
+    holm_pipeline_diff.py      takes two result directories as arguments and compares them; a one-shot analysis, not a measurement that regenerates
+    lmarena_resolution.py      needs the raw LMArena export, not in the repo
+    mteb_dates.py              needs the network
+    run_all.py                 this file
+    swebench_matrix.py         needs the raw submission tree, not in the repo

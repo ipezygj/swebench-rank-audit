@@ -60,7 +60,7 @@ from exact_extensions import exact_log2
 
 SEED = 20260825
 SIZES = (8, 10, 12, 14, 16, 18, 20, 22, 24)
-DRAWS_AT_18 = 5
+DRAWS_AT_18 = 12
 
 
 def slack_of(beats: np.ndarray) -> tuple[float, float, float]:
@@ -82,10 +82,15 @@ def main() -> int:
             t = line.split()
             if len(t) >= 7:
                 try:
-                    float(t[-1]); float(t[-4])
+                    float(t[-1]); float(t[-3])
                 except ValueError:
                     continue
-                reported[" ".join(t[:-6])] = float(t[-4])
+                # t[-3] is the slack column: the row ends
+                #   ... log2e log2B slack B/e 2+2rate
+                # The first version read t[-4] and picked up log2 B instead. The
+                # self-check below reported 0 of 8 and was right; nothing about
+                # the draws was wrong.
+                reported[" ".join(t[:-6])] = float(t[-3])
 
     rows, skipped, nested_ok, order_ok = [], [], True, True
     for name, path in MATRICES.items():
@@ -113,19 +118,26 @@ def main() -> int:
             np.sort(rng.choice(J, 18, replace=False))))])[2]
             for _ in range(DRAWS_AT_18)]
         rows.append({"name": name, "J": J, "curve": curve,
-                     "at18": (min(at18), max(at18)),
+                     "at18_mean": float(np.mean(at18)),
+                     "at18_sd": float(np.std(at18, ddof=1)),
                      "reported": reported.get(name, float("nan"))})
         print(f"  {name:<22} slack {curve[8][2]:5.2f} at 8 -> {curve[24][2]:5.2f} at 24")
 
     print("self-checks ...")
     print(f"  [{'ok  ' if nested_ok else 'FAIL'}] the sub-posets are nested prefixes")
     print(f"  [{'ok  ' if order_ok else 'FAIL'}] B >= e at every size on every board")
+    # Calibration matters here. The first version asked whether band_slack's
+    # value fell inside the MIN-MAX of 5 fresh draws. For exchangeable draws a
+    # sixth value lands outside that range 2/6 of the time, so demanding 7 of 8
+    # would fail about 80 % of the time with nothing wrong - and it did, at
+    # 6 of 8. Three standard deviations of 12 draws is a criterion whose
+    # failure rate is set by the statistics rather than by the sample size.
     inside = sum(1 for r in rows
-                 if math.isnan(r["reported"])
-                 or r["at18"][0] - 1e-9 <= r["reported"] <= r["at18"][1] + 1e-9)
+                 if math.isnan(r["reported"]) or r["at18_sd"] == 0
+                 or abs(r["reported"] - r["at18_mean"]) <= 3 * r["at18_sd"])
     ok_rep = inside >= len(rows) - 1
-    print(f"  [{'ok  ' if ok_rep else 'FAIL'}] band_slack's size-18 value sits inside "
-          f"5 fresh draws on {inside} of {len(rows)}")
+    print(f"  [{'ok  ' if ok_rep else 'FAIL'}] band_slack's size-18 value is within "
+          f"3 SD of {DRAWS_AT_18} fresh draws on {inside} of {len(rows)}")
     ok_n = len(rows) >= 8
     print(f"  [{'ok  ' if ok_n else 'FAIL'}] {len(rows)} boards measured (need >= 8)")
 
@@ -180,6 +192,25 @@ def main() -> int:
     p(f"  {'board':<22}{'slack/H at 12':>15}{'at 24':>9}")
     for r in rows:
         p(f"  {r['name']:<22}{100 * r['frac12']:>14.1f}%{100 * r['frac24']:>8.1f}%")
+    p("")
+    p("  P4 MISSED, and it missed the other way round: on 8 of 8 boards the")
+    p("  slack as a share of ordering entropy is LARGER at 24 systems than at")
+    p("  12, not smaller. I expected e(P) to grow faster than the slack. It does")
+    p("  not. ProteinGym DMS goes from 6.4 % to 15.5 %, SWE-bench Verified from")
+    p("  0.0 % to 7.6 %, and no board moves the other way.")
+    p("")
+    p("  That reverses the reading of band_slack.py rather than extending it.")
+    p("  Its 1.3 to 4.8 bits on 18 systems is not a small cost that stays small")
+    p("  on a real board - it is the bottom of a curve that is still rising in")
+    p("  both absolute and relative terms at the largest size that can be")
+    p("  counted exactly. The band picture gets worse as a board grows, which is")
+    p("  the direction that matters, because boards grow.")
+    p("")
+    p("  P3 missed too: 5 of 8 extrapolate past 20 bits rather than 6 of 8. The")
+    p("  two that fall short are the two smallest boards, TabArena 45 variants")
+    p("  and MathArena 2025, where the line is evaluated at 45 and 35 and barely")
+    p("  leaves the fitted range. On the four boards above J = 90 the")
+    p("  extrapolations are 30 to 61 bits.")
     p("")
     p("  The last column of the first table is an EXTRAPOLATION, not a")
     p("  measurement. It is a straight line fitted over 8 to 24 systems and")

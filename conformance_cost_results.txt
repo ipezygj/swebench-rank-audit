@@ -1,19 +1,19 @@
 WHAT CONFORMANCE COSTS
 ==============================================================================
   board                     J     n  rank sets   entropy    kappa    total   per pair
-  SWE-bench Verified      134   500      0.01s     2.58s    0.02s    2.61s      0.29ms
-  MTEB English v2         181    41      0.01s     6.44s    0.01s    6.46s      0.40ms
-  HELM classic             90    10      0.00s     1.07s    0.00s    1.08s      0.27ms
-  ProteinGym DMS           96   217      0.00s     1.34s    0.01s    1.35s      0.30ms
-  TabArena 16 models       16    51      0.00s     0.08s    0.00s    0.08s      0.69ms
-  TabArena 45 variants     45    51      0.00s     0.33s    0.00s    0.33s      0.34ms
-  CASP14                  101    42      0.00s     1.44s    0.00s    1.44s      0.29ms
-  LiveBench               152   200      0.01s     4.04s    0.01s    4.06s      0.35ms
+  SWE-bench Verified      134   500      0.02s     2.70s    0.02s    2.74s      0.31ms
+  MTEB English v2         181    41      0.01s     6.56s    0.01s    6.58s      0.40ms
+  HELM classic             90    10      0.00s     1.10s    0.00s    1.11s      0.28ms
+  ProteinGym DMS           96   217      0.03s     1.36s    0.01s    1.40s      0.31ms
+  TabArena 16 models       16    51      0.00s     0.08s    0.00s    0.09s      0.71ms
+  TabArena 45 variants     45    51      0.00s     0.35s    0.00s    0.36s      0.36ms
+  CASP14                  101    42      0.00s     1.51s    0.00s    1.52s      0.30ms
+  LiveBench               152   200      0.01s     4.28s    0.01s    4.30s      0.37ms
   MathArena 2025           35   183      0.00s     0.25s    0.00s    0.25s      0.42ms
 
   full card under 30 seconds: 9/9 (pre-registered: all)
   entropy dominates on boards with J >= 100: 4 of 4
-  largest boards: MTEB English v2 (J 181, 6.5s), LiveBench (J 152, 4.1s), SWE-bench Verified (J 134, 2.6s)
+  largest boards: MTEB English v2 (J 181, 6.6s), LiveBench (J 152, 4.3s), SWE-bench Verified (J 134, 2.7s)
 
   Timed on one laptop core with the settings the reference implementation
   uses (1500 bootstrap draws, 2000 entropy samples). The per-pair column is

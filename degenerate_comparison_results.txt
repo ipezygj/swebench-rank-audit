@@ -1,6 +1,6 @@
 A COMPARISON WHOSE ARMS NEVER DIFFER HAS NOT BEEN RUN
 ========================================================================================
-  101 results files, 66 of them carrying a numeric table of 4+ rows.
+  105 results files, 70 of them carrying a numeric table of 4+ rows.
 
   CONTROL: tie_coverage_results.txt, the file this check was built from
     before the fix: 2 identical column pair(s)

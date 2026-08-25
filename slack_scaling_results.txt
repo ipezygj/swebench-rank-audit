@@ -1,0 +1,58 @@
+DOES THE BAND PICTURE'S COST SCALE?
+====================================================================================================
+  Nested sub-posets: one permutation per board, prefixes taken, so the
+  24-system order contains the 22 contains the 20.
+  Not measured, fewer systems than the largest size: TabArena 16 models (J=16).
+
+  board                     J      8     10     12     14     16     18     20     22     24   slope     R2     ->J
+  SWE-bench Verified      134   0.00   0.00   0.00   0.42   0.52   0.54   1.03   1.89   2.18   0.138  0.861    17.0
+  MTEB English v2         181   0.00   0.50   1.21   2.49   3.30   3.52   4.16   5.00   5.38   0.350  0.982    60.5
+  HELM classic             90   0.72   1.31   1.92   2.49   2.69   3.98   4.42   6.08   6.50   0.366  0.968    30.5
+  ProteinGym DMS           96   0.00   0.64   0.64   1.43   1.94   3.01   3.40   4.35   6.00   0.352  0.951    30.5
+  TabArena 45 variants     45   0.28   0.62   1.21   1.43   1.99   2.92   3.04   3.56   4.21   0.247  0.987     9.3
+  CASP14                  101   1.04   1.42   1.55   2.04   2.58   3.02   3.27   3.74   4.42   0.208  0.987    20.2
+  LiveBench               152   0.00   0.15   0.61   1.00   1.06   1.94   2.47   2.68   3.62   0.223  0.966    31.8
+  MathArena 2025           35   0.52   0.64   1.16   1.21   1.37   2.15   3.01   3.67   4.16   0.236  0.935     6.5
+
+  Slack in bits at each sub-poset size, then the slope per system, the
+  fit quality, and the line's value at the board's own J.
+
+  P1  slack no smaller at 24 than at 8 on 8 of 8      pre-registered >= 6:  HIT
+  P2  linear fit R2 >= 0.9 on 7 of 8                pre-registered >= 6:  HIT
+  P3  extrapolation to J gives >= 20 bits on 5 of 8  pre-registered >= 6:  MISS
+  P4  slack/entropy smaller at 24 than at 12 on 0 of 8  pre-registered >= 6:  MISS
+
+  board                   slack/H at 12    at 24
+  SWE-bench Verified               0.0%     7.6%
+  MTEB English v2                  8.1%    10.8%
+  HELM classic                     8.0%     9.5%
+  ProteinGym DMS                   6.4%    15.5%
+  TabArena 45 variants             7.3%     8.8%
+  CASP14                           6.9%     8.4%
+  LiveBench                        4.5%     8.4%
+  MathArena 2025                   6.1%     9.3%
+
+  P4 MISSED, and it missed the other way round: on 8 of 8 boards the
+  slack as a share of ordering entropy is LARGER at 24 systems than at
+  12, not smaller. I expected e(P) to grow faster than the slack. It does
+  not. ProteinGym DMS goes from 6.4 % to 15.5 %, SWE-bench Verified from
+  0.0 % to 7.6 %, and no board moves the other way.
+
+  That reverses the reading of band_slack.py rather than extending it.
+  Its 1.3 to 4.8 bits on 18 systems is not a small cost that stays small
+  on a real board - it is the bottom of a curve that is still rising in
+  both absolute and relative terms at the largest size that can be
+  counted exactly. The band picture gets worse as a board grows, which is
+  the direction that matters, because boards grow.
+
+  P3 missed too: 5 of 8 extrapolate past 20 bits rather than 6 of 8. The
+  two that fall short are the two smallest boards, TabArena 45 variants
+  and MathArena 2025, where the line is evaluated at 45 and 35 and barely
+  leaves the fitted range. On the four boards above J = 90 the
+  extrapolations are 30 to 61 bits.
+
+  The last column of the first table is an EXTRAPOLATION, not a
+  measurement. It is a straight line fitted over 8 to 24 systems and
+  evaluated at 35 to 181. Whether that line has any right to be extended
+  that far is what P2 asks, and P3 should be read as void on any board
+  where P2 fails rather than as evidence in either direction.
