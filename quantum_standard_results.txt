@@ -1,0 +1,61 @@
+THE STANDARD, APPLIED TO QUANTUM HARDWARE
+================================================================================================
+  Devices from IBM, IQM, IonQ, Rigetti, Quantinuum and Origin, from
+  Metriq's public results archive. Rows are devices, columns are
+  benchmark configurations, cells are the reported score. Continuous
+  outcomes, not pass/fail - a first for this repository.
+
+  board                  J   n    J/n    SNR   estab   law 1    err  tie@1    free  H/ceil
+  Mirror Circuits       10   4   2.50   0.28    3.3%    0.0%   -3.3      7      0%     88%
+  QML Kernel             6  16   0.38   1.47   33.3%   24.8%   -8.5      1    100%     37%
+  Linear Ramp QAOA       7   4   1.75   0.16    2.4%    0.0%   -2.4      6      0%     92%
+
+  P1  more than one device could be first on 2 of 3   pre-registered = all:  MISS
+  P2  established share below 10 % on 2 of 3            pre-registered = all:  MISS
+  P3  law 1 within 10 points on 3 of 3                pre-registered >= 2:   HIT
+  P4  at least one board establishes something: 3 of 3  pre-registered >= 1:   HIT
+
+  Top three by mean score, which is what a quantum leaderboard prints:
+    Mirror Circuits      H2-2, ibm_boston, ibm_pittsburgh
+    QML Kernel           ibm_boston, ibm_kingston, ibm_pittsburgh
+    Linear Ramp QAOA     ibm_boston, ibm_kingston, ibm_pittsburgh
+
+  P3 IS THE RESULT. Law 1 was derived for, and only ever tested on,
+  software boards with pass/fail items. Asked about physical devices,
+  continuous fidelities and as few as 4 items, it lands within 10 points
+  on all three - errors of -3.3, -8.5 and -2.4. At n = 4 it predicts
+  0.0 % and the boards establish 2 to 3 %, so it under-predicts slightly
+  where the degrees of freedom run out, which is the direction that
+  understates a benchmark's power rather than overstating it.
+
+  P1 AND P2 MISSED, AND THE MISS IS THE OTHER RESULT. I predicted no
+  quantum board could name a winner and that all three would establish
+  under 10 %. QML Kernel does name one: tie@1 is exactly 1, ibm_boston,
+  and it establishes 33.3 % of its pairs. It has 16 configurations where
+  the other two have 4.
+
+  So the three quantum boards span the whole range WITHIN one field, and
+  they line up on items rather than devices:
+
+    n = 4,  10 devices   3.3 % established,  7 could be first,   0 % free
+    n = 4,   7 devices   2.4 % established,  6 could be first,   0 % free
+    n = 16,  6 devices  33.3 % established,  1 could be first, 100 % free
+
+  The 16-item board resolves its winner and its band table carries its
+  ENTIRE relation; the 4-item boards resolve almost nothing and their
+  bands carry none of it. That is the same ordering full_board_free.py
+  found across the software boards at Spearman -0.64 against J/n, and it
+  reappears here inside a single field, on hardware, with a fourfold
+  change in items and no change in anything else.
+
+  Why the shape is the story. Mirror Circuits ranks 10 devices on 4
+  configurations. A paired test on 4 items has 3 degrees of freedom, and
+  Holm over 45 pairs at alpha 0.05 asks for a critical value that 4
+  items can rarely reach. HELM classic, the worst-resolved software
+  board here, has 10 items and establishes 6.6 % of its pairs.
+
+  This is not a defect of the devices or of the benchmark. It is the
+  cost of running physical hardware: every column is machine time on a
+  scarce processor, so a quantum leaderboard buys its items at a price
+  no software benchmark pays, and the number of items is what decides
+  how much of an ordering the board can support.
