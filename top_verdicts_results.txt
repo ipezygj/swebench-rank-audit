@@ -17,6 +17,20 @@ WHAT WOULD A REPORT CARD HAVE TO PRINT?
   LiveBench                2.320    -0%    -0%    -0%    -0%    -0%    -0%    52%    95%   100%      11%
   MathArena 2025           1.259    -0%    -0%    -0%     8%    26%    42%    74%   100%   100%       8%
 
+  OVER 25 DRAWS PER BOARD. The single-draw version of this
+  table is why slack_draws.py exists; the medians below replace it.
+  board                      top 6   evenly spaced    random 6
+  SWE-bench Verified            0%              6%          8%
+  MTEB English v2               0%              8%         11%
+  HELM classic                  0%             22%         13%
+  ProteinGym DMS                8%              6%         10%
+  TabArena 45 variants          0%             14%         12%
+  CASP14                        0%             11%         14%
+  LiveBench                     0%             10%         11%
+  MathArena 2025                0%             11%          9%
+
+  the top six beats a random six on 0 of 8 boards by median over draws
+
   SIX VERDICTS, CHOSEN FOUR WAYS. Same budget, same boards.
   board                     top 6  evenly spaced   random  targeted  edges in top 6
   SWE-bench Verified          -0%            10%      12%       39%               8

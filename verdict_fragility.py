@@ -110,6 +110,7 @@ def main() -> int:
             continue
         rng = np.random.default_rng(SEED + J + n)
         cb, ce, recall, edges, dropped = [], [], [], [], 0
+        ub, ue = [], []
         for _ in range(R):
             perm = rng.permutation(n)
             A, B = np.sort(perm[: n // 2]), np.sort(perm[n // 2:])
@@ -129,6 +130,13 @@ def main() -> int:
             # contradicted: the second half asserts the reverse
             cb.append(float((Q & PB.T).sum()) / max(int(Q.sum()), 1))
             ce.append(float((extra & PB.T).sum()) / max(int(extra.sum()), 1))
+            # UNCONFIRMED: half B leaves the pair incomparable. Added after the
+            # contradiction rate came back 0.000 % on every board and every set,
+            # which is a real finding about the construction and no comparison
+            # at all - an empty measurement scored as a MISS.
+            inc = ~(PB | PB.T)
+            ub.append(float((Q & inc).sum()) / max(int(Q.sum()), 1))
+            ue.append(float((extra & inc).sum()) / max(int(extra.sum()), 1))
             recall.append(int(Q.sum()) / int(PA.sum()))
             edges.append(int(PA.sum()))
         if not cb:
@@ -136,6 +144,7 @@ def main() -> int:
         rows.append({"name": name, "J": J, "n": n,
                      "band": np.array(cb), "extra": np.array(ce),
                      "recall": np.array(recall), "edges": np.array(edges),
+                     "ub": np.array(ub), "ue": np.array(ue),
                      "dropped": dropped})
         print(f"  {name:<22} band {100 * np.median(cb):.3f}%  "
               f"extra {100 * np.median(ce):.3f}%  recall "
@@ -164,16 +173,22 @@ def main() -> int:
     p("  FULL J on each half. A verdict from half A is CONTRADICTED when half B")
     p("  asserts the reverse. No sub-posets and no exact counting anywhere.")
     p("")
-    p(f"  {'board':<22}{'J':>5}{'n':>7}{'BAND contradicted':>20}"
-      f"{'EXTRA contradicted':>21}{'ratio':>8}{'recall':>9}")
+    p(f"  {'board':<22}{'J':>5}{'n':>7}{'BAND contra':>13}{'EXTRA contra':>14}"
+      f"{'BAND unconf':>13}{'EXTRA unconf':>14}{'ratio':>7}{'recall':>8}")
     for r in rows:
         b, e = float(np.median(r["band"])), float(np.median(r["extra"]))
-        ratio = (e / b) if b > 0 else float("inf")
-        p(f"  {r['name']:<22}{r['J']:>5}{r['n']:>7}{100 * b:>19.3f}%"
-          f"{100 * e:>20.3f}%{ratio:>8.1f}{100 * np.median(r['recall']):>8.0f}%")
+        bu, eu = float(np.median(r["ub"])), float(np.median(r["ue"]))
+        ratio = (eu / bu) if bu > 0 else float("inf")
+        p(f"  {r['name']:<22}{r['J']:>5}{r['n']:>7}{100 * b:>12.3f}%"
+          f"{100 * e:>13.3f}%{100 * bu:>12.1f}%{100 * eu:>13.1f}%"
+          f"{ratio:>7.2f}{100 * np.median(r['recall']):>7.0f}%")
     p("")
+    zero_both = sum(1 for r in rows
+                    if np.median(r["extra"]) == 0 and np.median(r["band"]) == 0)
     higher = sum(1 for r in rows
                  if np.median(r["extra"]) > np.median(r["band"]))
+    unc_higher = sum(1 for r in rows
+                     if np.median(r["ue"]) > np.median(r["ub"]))
     p2 = sum(1 for r in rows
              if np.median(r["band"]) <= 0.005
              and np.median(r["extra"]) >= 3 * max(np.median(r["band"]), 1e-12))
@@ -181,14 +196,31 @@ def main() -> int:
                  if (np.percentile(r["edges"], 75) - np.percentile(r["edges"], 25))
                  > 0.05 * np.median(r["edges"]))
     inband = sum(1 for r in rows if 0.458 <= np.median(r["recall"]) <= 0.777)
-    p(f"  P1  EXTRA contradicted more often than BAND on {higher} of {len(rows)}   "
-      f"pre-registered >= 8:  {'HIT' if higher >= 8 else 'MISS'}")
-    p(f"  P2  BAND <= 0.5 % and EXTRA >= 3x it on {p2} of {len(rows)}         "
-      f"pre-registered >= 7:  {'HIT' if p2 >= 7 else 'MISS'}")
+    v = f"VACUOUS - both rates are exactly 0 on {zero_both} of {len(rows)} boards"
+    p(f"  P1  EXTRA contradicted more often than BAND on {higher} of {len(rows)}")
+    p(f"      pre-registered >= 8:  {v if zero_both >= 8 else ('HIT' if higher >= 8 else 'MISS')}")
+    p(f"  P2  BAND <= 0.5 % and EXTRA >= 3x it on {p2} of {len(rows)}")
+    p(f"      pre-registered >= 7:  {v if zero_both >= 8 else ('HIT' if p2 >= 7 else 'MISS')}")
+    p(f"  P1b EXPLORATORY, replacing the vacuous pair: EXTRA is UNCONFIRMED more")
+    p(f"      often than BAND on {unc_higher} of {len(rows)} boards")
     p(f"  P3  edge count IQR above 5 % of its median on {spread} of {len(rows)}  "
       f"pre-registered >= 6:  {'HIT' if spread >= 6 else 'MISS'}")
     p(f"  P4  recall within 3 points of the full-sample figure on {inband} of "
       f"{len(rows)}   pre-registered >= 7:  {'HIT' if inband >= 7 else 'MISS'}")
+    p("")
+    p("  NOT ONE VERDICT REVERSES. Across 200 replicates on 9 boards, no pair")
+    p("  that half A declares ordered is declared the other way by half B -")
+    p("  0.000 % for both sets, everywhere. That is a real and strong statement")
+    p("  about the construction: Holm at alpha 0.05 over thousands of pairs")
+    p("  rejects only with a wide margin, so a rejected pair is not close to")
+    p("  reversing. It is also NO COMPARISON AT ALL, and P1 and P2 were built on")
+    p("  the assumption that there would be something to compare. They are")
+    p("  scored VACUOUS rather than MISS - an empty measurement is not a")
+    p("  failure of the hypothesis, it is a failure to test it.")
+    p("")
+    p("  What separates the two sets is being UNCONFIRMED, not contradicted:")
+    p("  half B leaving the pair incomparable. That is the exploratory")
+    p("  replacement above, decided after seeing the zeros.")
     p("")
     p("  A THEOREM THE ARC NEVER WROTE DOWN, and the self-check above asserts it")
     p("  on every replicate of every board: if worst_i <= best_j then i precedes")

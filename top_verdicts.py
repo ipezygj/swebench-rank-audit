@@ -59,6 +59,7 @@ import pandas as pd
 
 import rank_sets as rs
 from band_slack import band_matrix, bands_of, permanent01, _random_poset
+from draws import R_DEFAULT, subsets, summarise
 from entropy_law_test import MATRICES
 from exact_extensions import exact_log2
 
@@ -67,6 +68,7 @@ SUB = 18
 KS = (0, 2, 4, 6, 8, 10, 12, 14, 16, 18)
 RANDOM_K = 6
 RANDOM_REPS = 40
+R_DRAWS = R_DEFAULT
 
 
 def count_with(bandM: np.ndarray, R: np.ndarray) -> int:
@@ -166,7 +168,40 @@ def main() -> int:
             skipped.append((name, J))
             continue
         b = rs.rank_sets(x)["beats"]
-        pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
+
+        # THE SWEEP over draws. The greedy selection is not swept: the
+        # recommendation it supported was withdrawn at ce93ddf when it failed a
+        # split of the items, so what is still worth measuring is the k-curve
+        # and the control that the top is not special.
+        cur_d = {k: [] for k in KS}
+        top_d, rnd_d, even_d = [], [], []
+        for pd_ in subsets(J, SUB, R=R_DRAWS, seed=SEED + J):
+            sdd = b[np.ix_(pd_, pd_)].copy()
+            bb, ww = bands_of(sdd)
+            Md = band_matrix(bb, ww)
+            ed = exact_log2(sdd)[0]
+            Bd = permanent01(Md)
+            sld = math.log2(Bd) - math.log2(ed)
+            od = np.argsort(bb * 100 + ww, kind="stable")
+            def rec(q):
+                if sld <= 0:
+                    return None
+                c = count_with(Md, restrict(sdd, np.sort(np.asarray(q))))
+                return (sld - (math.log2(c) - math.log2(ed))) / sld
+            for k in KS:
+                cur_d[k].append(rec(od[:k]) if k else 0.0)
+            top_d.append(rec(od[:RANDOM_K]))
+            even_d.append(rec(od[np.linspace(0, SUB - 1, RANDOM_K)
+                                 .round().astype(int)]))
+            rr = np.random.default_rng(SEED + 11 + J + len(rnd_d))
+            vals = [rec(rr.choice(SUB, RANDOM_K, replace=False)) for _ in range(6)]
+            vals = [v for v in vals if v is not None]
+            rnd_d.append(float(np.mean(vals)) if vals else None)
+        curve_s = {k: summarise(cur_d[k]) for k in KS}
+        top_ss, rnd_ss, even_ss = (summarise(top_d), summarise(rnd_d),
+                                   summarise(even_d))
+
+        pick = list(subsets(J, SUB, R=1, seed=SEED + J))[0]
         sub = b[np.ix_(pick, pick)].copy()
         best, worst = bands_of(sub)
         M = band_matrix(best, worst)
@@ -194,6 +229,8 @@ def main() -> int:
         greedy_cnt = count_with(M, restrict(sub, np.sort(np.array(chosen))))
         top_edges = int(sub[np.ix_(order[:RANDOM_K], order[:RANDOM_K])].sum())
         rows.append({"name": name, "J": J, "e": e_cnt, "b": b_cnt,
+                     "curve_s": curve_s, "top_ss": top_ss, "rnd_ss": rnd_ss,
+                     "even_ss": even_ss, "R": R_DRAWS,
                      "curve": curve, "even": even_cnt, "greedy": greedy_cnt,
                      "top_edges": top_edges,
                      "rand": float(np.mean([math.log2(v) for v in rand]))})
@@ -239,6 +276,19 @@ def main() -> int:
         p(f"  {r['name']:<22}{r['slack']:>8.3f}"
           + "".join(f"{100 * r['rec'][k]:>6.0f}%" for k in KS[1:])
           + f"{100 * r['rand_rec']:>8.0f}%")
+    p("")
+    p(f"  OVER {rows[0]['R']} DRAWS PER BOARD. The single-draw version of this")
+    p("  table is why slack_draws.py exists; the medians below replace it.")
+    p(f"  {'board':<22}{'top 6':>10}{'evenly spaced':>16}{'random 6':>12}")
+    for r in rows:
+        p(f"  {r['name']:<22}{100 * r['top_ss']['median']:>9.0f}%"
+          f"{100 * r['even_ss']['median']:>15.0f}%"
+          f"{100 * r['rnd_ss']['median']:>11.0f}%")
+    p("")
+    beats_rnd = sum(1 for r in rows
+                    if r["top_ss"]["median"] > r["rnd_ss"]["median"])
+    p(f"  the top six beats a random six on {beats_rnd} of {len(rows)} boards by "
+      f"median over draws")
     p("")
     p("  SIX VERDICTS, CHOSEN FOUR WAYS. Same budget, same boards.")
     p(f"  {'board':<22}{'top 6':>9}{'evenly spaced':>15}{'random':>9}"

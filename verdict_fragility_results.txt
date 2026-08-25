@@ -1,0 +1,53 @@
+WHICH VERDICTS SURVIVE A SECOND SAMPLE OF ITEMS?
+====================================================================================================
+  200 replicates per board. Items split in half; the relation is built at
+  FULL J on each half. A verdict from half A is CONTRADICTED when half B
+  asserts the reverse. No sub-posets and no exact counting anywhere.
+
+  board                     J      n  BAND contra  EXTRA contra  BAND unconf  EXTRA unconf  ratio  recall
+  SWE-bench Verified      134    500       0.000%        0.000%         0.0%         16.0% 539.11     60%
+  SWE-bench Lite           84    300       0.000%        0.000%         0.0%         21.6%    inf     35%
+  MTEB English v2         181     41       0.000%        0.000%         0.0%         24.6%    inf      7%
+  HELM classic             90     10       0.000%        0.000%         0.0%         79.1%    inf      0%
+  ProteinGym DMS           96    217       0.000%        0.000%         0.2%         18.2% 109.02     48%
+  TabArena 45 variants     45     51       0.000%        0.000%         0.0%         27.8%    inf     40%
+  CASP14                  101     42       0.000%        0.000%         0.0%         18.7%    inf     10%
+  LiveBench               152    200       0.000%        0.000%         0.0%         18.1%    inf     24%
+  MathArena 2025           35    183       0.000%        0.000%         1.1%         22.2%  20.52     37%
+
+  P1  EXTRA contradicted more often than BAND on 0 of 9
+      pre-registered >= 8:  VACUOUS - both rates are exactly 0 on 9 of 9 boards
+  P2  BAND <= 0.5 % and EXTRA >= 3x it on 0 of 9
+      pre-registered >= 7:  VACUOUS - both rates are exactly 0 on 9 of 9 boards
+  P1b EXPLORATORY, replacing the vacuous pair: EXTRA is UNCONFIRMED more
+      often than BAND on 9 of 9 boards
+  P3  edge count IQR above 5 % of its median on 8 of 9  pre-registered >= 6:  HIT
+  P4  recall within 3 points of the full-sample figure on 2 of 9   pre-registered >= 7:  MISS
+
+  NOT ONE VERDICT REVERSES. Across 200 replicates on 9 boards, no pair
+  that half A declares ordered is declared the other way by half B -
+  0.000 % for both sets, everywhere. That is a real and strong statement
+  about the construction: Holm at alpha 0.05 over thousands of pairs
+  rejects only with a wide margin, so a rejected pair is not close to
+  reversing. It is also NO COMPARISON AT ALL, and P1 and P2 were built on
+  the assumption that there would be something to compare. They are
+  scored VACUOUS rather than MISS - an empty measurement is not a
+  failure of the hypothesis, it is a failure to test it.
+
+  What separates the two sets is being UNCONFIRMED, not contradicted:
+  half B leaving the pair incomparable. That is the exploratory
+  replacement above, decided after seeing the zeros.
+
+  A THEOREM THE ARC NEVER WROTE DOWN, and the self-check above asserts it
+  on every replicate of every board: if worst_i <= best_j then i precedes
+  j in every band-respecting permutation, so the relation a reader
+  reconstructs from a band table is CONTAINED in the measured relation.
+  A band table cannot print a verdict the data does not support. It is
+  sound and incomplete, and the recall column is the incompleteness.
+
+  That is a better characterisation than the one this repository has been
+  using. 'The band invents 1.3 to 4.8 bits of ordering freedom' is true
+  and it is OVER-COVERAGE - the safe direction for a confidence object.
+  The rank sets are a simultaneous 1-alpha construction; a summary that
+  admits more orderings than the data supports is conservative, not
+  wrong, and eleven iterations described it as though it were a defect.
