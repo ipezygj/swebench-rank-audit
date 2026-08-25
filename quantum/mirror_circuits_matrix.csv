@@ -1,0 +1,11 @@
+,width24_num_layers16,width16_num_layers32,width8_num_layers64,width32_num_layers8
+H2-2,0.747,0.6898,0.7227,0.8213
+ibm_boston,0.4317,0.4952,0.7487,0.4707
+ibm_fez,0.2868,0.2624,0.4528,0.0944
+ibm_kingston,0.3337,0.3871,0.5213,0.3309
+ibm_marrakesh,0.4014,0.4846,0.4969,0.1285
+ibm_miami,0.1215,0.2082,0.4384,0.1241
+ibm_pittsburgh,0.3309,0.4613,0.6057,0.225
+ibm_torino,0.1268,0.2757,0.3199,0.0336
+iqm_emerald,0.0,0.0,0.0038,0.0
+rigetti_cepheus-1-108q,0.0,0.0,0.0033,0.0
