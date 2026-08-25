@@ -1,0 +1,63 @@
+HOW MUCH ORDERING FREEDOM DOES THE BAND PICTURE INVENT?
+============================================================================================
+  Exact counts on induced sub-posets of 18 systems. e(P) is what the
+  partial order permits; B(P) is what the per-system bands permit.
+  Not measured, fewer systems than the sub-poset size: TabArena 16 models (J=16).
+
+  board                     J   log2 e(P)   log2 B(P)  slack bits           B/e  2+2 rate
+  SWE-bench Verified      134      28.089      30.810       2.721         6.591   0.00000
+  MTEB English v2         181      24.650      26.754       2.104         4.299   0.00123
+  HELM classic             90      42.297      47.082       4.785         27.58   0.00146
+  ProteinGym DMS           96      23.854      25.870       2.016         4.045   0.00138
+  TabArena 45 variants     45      34.476      37.931       3.455         10.97   0.00225
+  CASP14                  101      37.443      37.443       0.000             1   0.00018
+  LiveBench               152      31.404      33.725       2.320         4.994   0.00006
+  MathArena 2025           35      25.304      26.563       1.259         2.393   0.00010
+
+  P1  B > e on 7 of 8                      pre-registered = all:   MISS
+  P2  median slack 2.21 bits                 pre-registered >= 5:    MISS
+  P3  Spearman(slack, 2+2 rate) = +0.333 (p 0.420) on 8 boards  pre-registered >= +0.5: MISS
+  P4  B >= e on 8 of 8                     pre-registered = all:   HIT
+
+  THREE OF THE FOUR PREDICTIONS MISSED, and they missed toward the
+  report cards rather than against them.
+
+  P2 predicted at least 5 bits of invented freedom. The median is 2.21,
+  and the worst board is HELM classic at 4.79. The band picture admits
+  between 2.4 and 27.6 times as many orderings as the data supports -
+  real, bounded, and far smaller than predicted against 24 to 47 bits of
+  actual ordering entropy.
+
+  P1 predicted slack everywhere. CASP14 has NONE: e and B are the same
+  integer, 186 810 624 000, not merely the same to three decimals. The
+  reason is structural and was checked rather than guessed. Its sub-poset
+  splits as an ordinal sum: 13 systems that form an antichain, every one
+  of which beats every one of the remaining 5. So e = 13! x e(tail) and
+  B = 13! x B(tail), and the 5-element tail happens to satisfy
+  e = B = 30. 6 227 020 800 x 30 = 186 810 624 000.
+
+  P3 predicted that the slack would track the departure from an interval
+  representation. It does not: Spearman +0.33, p 0.42. Nor does it track
+  the obvious alternative - the number of intransitive incomparability
+  triples, tried afterwards and reported here as the exploratory
+  measurement it is: Spearman +0.11, p 0.80. What sets the size of the
+  slack is not explained by anything measured here.
+
+  This also corrects how order_shape.py put its own result. That file
+  says the band picture is "not available", which is true as stated - no
+  interval assignment reproduces any of these relations. It reads as
+  though the bands were therefore misleading. The cost is now measured
+  and it is 1.3 to 4.8 bits. The picture is inexact, not misleading, and
+  on one board it is exact.
+
+  Per element the band is exact: the ranks an element attains across
+  linear extensions are a contiguous run and both endpoints are reached,
+  verified by brute force on 200 posets at 7 elements. The slack above is
+  entirely joint. It is the price of printing J independent intervals for
+  a structure that is not a product of intervals.
+
+  A reader who takes the bands at face value is being handed a set of
+  possible orderings that is larger than the one the data supports, by
+  the factor in the B/e column. Every one of those extra orderings is
+  consistent with the printed table and excluded by the measurement it
+  came from.

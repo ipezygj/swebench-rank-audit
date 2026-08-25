@@ -72,5 +72,13 @@ WHAT KIND OF PARTIAL ORDER IS A LEADERBOARD?
   repository is presented as a band - system i sits somewhere between
   rank a and rank b. A band is an interval, and a relation that is not an
   interval order cannot be produced by any assignment of intervals to
-  systems. Where the answer below is NO, the picture the reader is being
-  handed is not available, however sound the arithmetic underneath it.
+  systems. On every board above, no such assignment exists.
+
+  How much that costs is a separate question and this file does not
+  answer it. band_slack.py does, by counting exactly: the bands admit
+  between 2.4 and 27.6 times as many orderings as the partial order does,
+  1.3 to 4.8 bits against 24 to 47 bits of ordering entropy, and on CASP14
+  they admit exactly the right number. An earlier version of this
+  paragraph said the reader was being handed a picture that was "not
+  available" and left it there, which invited a stronger reading than the
+  measurement supports. The picture is inexact. It is not a fiction.
