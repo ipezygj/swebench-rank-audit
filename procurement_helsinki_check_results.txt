@@ -1,0 +1,20 @@
+ROUTE 1: Finlex's own API
+  judgment endpoint's document types: ['chancellor-of-justice-decision', 'data-protection-ombudsman-decision']
+  [ok  ] Market Court is ABSENT from the type enum - the API cannot reach it (dead end confirmed)
+
+ROUTE 2: viranhaltija.fi archive, a PDF indexed by a search engine
+  [ok  ] still gated: b'T\xc3\xa4m\xc3\xa4 tiedosto on lukittu (yli 21 pv vanha). Kirjaudu sis\xc3\xa4\xc3\xa4n.'
+
+ROUTE 4 (not one of the three listed): Helsinki Ahjo publication
+  [ok  ] HEL 2021-005918, arvokuljetuspalvelut (halvin hinta)
+        https://ahjojulkaisu.hel.fi/62DC944F-D9FD-C589-97A6-7B0AE1000000.pdf
+        977608 bytes, PDF=True, (bidders, criteria)=(2, 1)
+  [ok  ] HEL 2023-014799, kopiopaperit (halvin hinta)
+        https://ahjojulkaisu.hel.fi/D17E0692-BEC7-C9FA-B95A-8E514F700001.pdf
+        1246173 bytes, PDF=True, (bidders, criteria)=(3, 1)
+  [ok  ] kiinteistoen kunnossapitourakka, 8 tarjoajaa (hinta+laatu)
+        https://ahjojulkaisu.hel.fi/4DF0073A-284F-C168-8D38-6D1A7AE00000.pdf
+        179287 bytes, PDF=True, (bidders, criteria)=(8, 4)
+
+1/3 checked URLs are a real multi-criterion scoring table (n >= 2), openly fetchable, no login.
+This is a usable overlay source procurement_shape.py did not have: enumeration (not just spot-checking) is the open work, since Helsinki's old OpenAhjo listing API was retired and paatokset.hel.fi has no documented replacement.

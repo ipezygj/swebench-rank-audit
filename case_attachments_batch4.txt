@@ -1,0 +1,15 @@
+hel-2023-004963	https://ahjojulkaisu.hel.fi/7458E5EA-5E10-C5C6-84EA-8C1ACB700000.pdf
+hel-2020-000253	https://ahjojulkaisu.hel.fi/51F2DCDC-ED60-CD31-87F8-767099600000.pdf
+hel-2020-000253	https://ahjojulkaisu.hel.fi/C2AE6324-2C63-C5FC-AEA7-762CC0400000.pdf
+hel-2021-014499	https://ahjojulkaisu.hel.fi/7B16F195-FE0C-CDDA-8781-7DFBB3800000.pdf
+hel-2023-012732	https://ahjojulkaisu.hel.fi/D85161BD-A4C7-C6B4-9C67-8DA11FD0000A.pdf
+hel-2025-004639	https://ahjojulkaisu.hel.fi/BFC4274D-BF9B-C7DB-A83E-9B210D500008.pdf
+hel-2024-000017	https://ahjojulkaisu.hel.fi/DD0E8E16-8F73-CEE1-9617-9082D0F00000.pdf
+hel-2024-005735	https://ahjojulkaisu.hel.fi/975ECE53-9791-CB33-853E-930B6EA00001.pdf
+hel-2025-004636	https://ahjojulkaisu.hel.fi/7CA7F23E-5E25-C78D-876B-97C5B1400000.pdf
+hel-2019-005868	https://ahjojulkaisu.hel.fi/21E2D4D2-1483-C40E-87CC-6B892E000007.pdf
+hel-2019-005868	https://ahjojulkaisu.hel.fi/F78C286A-CD66-C2B5-8EB8-6B26BD000000.pdf
+hel-2021-010570	https://ahjojulkaisu.hel.fi/2BB13107-7C5C-C750-927D-8AABFAD00001.pdf
+hel-2018-010266	https://ahjojulkaisu.hel.fi/899BF9EB-D77C-C59D-8097-672B44C00004.pdf
+hel-2018-010266	https://ahjojulkaisu.hel.fi/A9132F84-4461-C1C8-8F1D-66C49FE00000.pdf
+hel-2024-009822	https://ahjojulkaisu.hel.fi/2ECD33BE-F63E-C151-9291-91266C200000.pdf

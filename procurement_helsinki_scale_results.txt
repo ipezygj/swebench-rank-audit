@@ -1,0 +1,725 @@
+[ok  ] 27210BA1 (from 'tarjousten vertailutaulukko' search)
+      https://ahjojulkaisu.hel.fi/27210BA1-78CB-C9CB-9764-72750B400000.pdf
+      433946 bytes, PDF=True, (bidders_ranked, criteria)=(3, 1)
+[ok  ] 8EC11F59 'tarjousten vertailutaulukko'
+      https://ahjojulkaisu.hel.fi/8EC11F59-E82D-C525-8D16-667C15300000.pdf
+      359983 bytes, PDF=True, (bidders_ranked, criteria)=(4, 1)
+[ok  ] CA165D22 Diaidea Oy kuvaustarjous, Sijoitus 1
+      https://ahjojulkaisu.hel.fi/CA165D22-D3CA-CEBA-87B5-9204BFF00002.pdf
+      100187 bytes, PDF=True, (bidders_ranked, criteria)=(16, 0)
+[ok  ] E0167DBD HEL 2019-012257 Steniuksenkenttä tarjouspyyntö
+      https://ahjojulkaisu.hel.fi/E0167DBD-E9B9-C21A-BA87-6F1938C00000.pdf
+      181993 bytes, PDF=True, (bidders_ranked, criteria)=(0, 4)
+[ok  ] 45740180 Sosiaalipalvelut hankintasopimukset
+      https://ahjojulkaisu.hel.fi/45740180-EE22-CE5A-A5C4-79189B500003.pdf
+      314438 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] 4E279498 Kokonaistaloudellinen edullisuus, pisteytys
+      https://ahjojulkaisu.hel.fi/4E279498-6DAB-C8B2-8D7F-6A7DCFC00000.pdf
+      1756700 bytes, PDF=True, (bidders_ranked, criteria)=(5, 2)
+[ok  ] 0DBFE288 (kokonaistaloudellinen edullisuus search)
+      https://ahjojulkaisu.hel.fi/0DBFE288-A06E-C59F-86C2-9FFEE8600007.pdf
+      112167 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 2A6A1F80 Liite 2 (rakennusurakka search)
+      https://ahjojulkaisu.hel.fi/2A6A1F80-D758-CA89-9353-8418BA900002.pdf
+      1461426 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] ACE07762 Liite 3 Rakennuttaminen
+      https://ahjojulkaisu.hel.fi/ACE07762-CD87-CB47-9757-6ECB0B600000.pdf
+      1222176 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 2B28C571 Liite 1, Arviointitaulukko
+      https://ahjojulkaisu.hel.fi/2B28C571-FA69-CD6C-9768-8B94E5100000.pdf
+      50557 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] E852FC53 HEL 2019-005067 sote tarjousvertailu
+      https://ahjojulkaisu.hel.fi/E852FC53-3DCC-C1C6-BB08-6EFA67800000.pdf
+      1208748 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 62932B2C HEL 2022-001280 Kumpulan kärki tarjouspyyntö
+      https://ahjojulkaisu.hel.fi/62932B2C-6AE8-C679-B88B-7F6E2C600000.pdf
+      426717 bytes, PDF=True, (bidders_ranked, criteria)=(0, 4)
+[ok  ] D29D40A8 TARJOUSTEN VERTAILUTAULUKKO 58H19 Sahko-tele
+      https://ahjojulkaisu.hel.fi/D29D40A8-6300-CB56-BBE1-6FEBDDC00000.pdf
+      398138 bytes, PDF=True, (bidders_ranked, criteria)=(2, 2)
+[ok  ] E0D50685 (vartiointi search)
+      https://ahjojulkaisu.hel.fi/E0D50685-323F-C038-9520-7E2523300000.pdf
+      1632792 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 9560AA27 (vartiointi/kuljetus search)
+      https://ahjojulkaisu.hel.fi/9560AA27-FF3E-C569-95F4-744E70800000.pdf
+      674878 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] D99DE4E0 (ICT-hankinta search)
+      https://ahjojulkaisu.hel.fi/D99DE4E0-BE3C-CABE-ACD4-A00F9C700006.pdf
+      93389 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 5D819142 (ateriapalvelu search)
+      https://ahjojulkaisu.hel.fi/5D819142-AE61-C8E4-B90C-7DBDD2700000.pdf
+      869052 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 173A5982 hammashoitoyksikko, Sote 2020-08-14
+      https://www.hel.fi/static/public/hela/vipaU32020020VH1_Terveys-_ja_paihdepalvelujen_joht/Suomi/Paatos/2020/Sote_2020-08-14_48_Pk/173A5982-4F55-CDC2-97E0-735B79400000/Liite.pdf
+      535406 bytes, PDF=True, (bidders_ranked, criteria)=(3, 0)
+[ok  ] D8DED740 kaasusammutusjarjestelma, Kymp 2018-05-25
+      https://www.hel.fi/static/public/hela/vipaU753300VH1_Yksikon_johtaja/Suomi/Paatos/2018/Kymp_2018-05-25_94_Pk/D8DED740-0194-CF4A-8EF7-638656400000/Liite.pdf
+      281309 bytes, PDF=True, (bidders_ranked, criteria)=(2, 1)
+[ok  ] 62552BB8 Stoa siivouspalvelu, KUVA 2020-01-08
+      https://www.hel.fi/static/public/hela/vipaU48040010VH1_Kulttuurijohtaja/Suomi/Paatos/2020/KUVA_2020-01-08_2_Pk/62552BB8-3DDE-CD67-B852-6EF4DBB00001/Liite.pdf
+      477476 bytes, PDF=True, (bidders_ranked, criteria)=(6, 1)
+[ok  ] A9D97FDB nayttolaitteet 312687, Nepep 2020-10-09
+      https://www.hel.fi/static/public/hela/vipaU320200101010VH1_Neuvola-_ja_perhetyon_paallik/Suomi/Paatos/2020/Sote_2020-10-09_Nepep_4_Pk/A9D97FDB-B988-C80E-BBA3-750CA9600000/Liite.pdf
+      1397879 bytes, PDF=True, (bidders_ranked, criteria)=(2, 0)
+[ok  ] E9606988 lumenpoisto katoilta 44H13, HKLjk 2013-11-21
+      https://www.hel.fi/static/public/hela/Liikennelaitos_-liikelaitoksen_johtokunta_(HKL)/Suomi/Paatostiedote/2013/HKL_2013-11-21_HKLjk_14_Pt/E9606988-0044-4328-B456-041C31606187/Liite.pdf
+      96856 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] 03299086 kirjekuoret H003-20, Keha 2020-05-04
+      https://www.hel.fi/static/public/hela/vipaU02150015VH1_Hankintajohtaja/Suomi/Paatos/2020/Keha_2020-05-04_148_Pk/03299086-038D-C781-BA6F-71C098900000/Liite.pdf
+      976371 bytes, PDF=True, (bidders_ranked, criteria)=(4, 1)
+[ok  ] E00A618B vanhusten asumispalvelu 305075, Sote 2020-10-27
+      https://www.hel.fi/static/public/hela/vipaU32020030VH1_Sairaala-_kuntoutus-_ja_hoivapalv/Suomi/Paatos/2020/Sote_2020-10-27_47_Pk/E00A618B-9D0B-C2DB-9577-756A68000000/Liite.pdf
+      604620 bytes, PDF=True, (bidders_ranked, criteria)=(76, 0)
+[ok  ] FDAE07AE nayttolaitteet 331557, Taj 2021-03-04
+      https://www.hel.fi/static/public/hela/vipaU320200VH1_Sosiaali-_ja_terveystoimialan_toimi/Suomi/Paatos/2021/Sote_2021-03-04_Taj_35_Pk/FDAE07AE-C29E-CEA0-BBF7-77F741800000/Liite.pdf
+      1782641 bytes, PDF=True, (bidders_ranked, criteria)=(10, 0)
+[ok  ] 3B68ADE9 L&T/Palmia/SOL siivous, HKLjku 2020-06-04
+      https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2020/Kymp_2020-06-04_HKLjku_10_Pk/3B68ADE9-465A-CFCF-B862-725020700000/Liite.pdf
+      1833591 bytes, PDF=True, (bidders_ranked, criteria)=(3, 4)
+[ok  ] 56215C1F Ramboll/Siemens/Sweco sahkokonsultaatio, HKLjku 2019-12-12
+      https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2019/Kymp_2019-12-12_HKLjku_24_Pk/56215C1F-474C-C747-941C-6EC592C00000/Liite.pdf
+      381129 bytes, PDF=True, (bidders_ranked, criteria)=(5, 2)
+[ok  ] 91237622 Kylk 2021-01-26 liite
+      https://www.hel.fi/static/public/hela/Kaupunkiymparistolautakunta/Suomi/Paatos/2021/Kymp_2021-01-26_Kylk_3_Pk/91237622-7759-C3A8-99DB-766627500000/Liite.pdf
+      284269 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 8E789419 Kylk 2022-02-08 liite
+      https://www.hel.fi/static/public/hela/Kaupunkiymparistolautakunta/Suomi/Paatos/2022/Kymp_2022-02-08_Kylk_5_Pk/8E789419-ED8C-C149-BB1F-7E71FE600000/Liite.pdf
+      1429345 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 0A4876EB Kylk 2022-01-18 liite
+      https://www.hel.fi/static/public/hela/Kaupunkiymparistolautakunta/Suomi/Paatos/2022/Kymp_2022-01-18_Kylk_2_Pk/0A4876EB-2AF9-C490-94AF-7D9E1C800000/Liite.pdf
+      440160 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] DD2E3C73 Vesalan nuorisotalo siivous tarjouspyynto, KUVA 2019-12-10
+      https://www.hel.fi/static/public/hela/vipaU48040030VH1_Nuorisoasiainjohtaja/Suomi/Paatos/2019/KUVA_2019-12-10_8_Pk/DD2E3C73-4753-C302-BB68-6EEF21500000/Liite.pdf
+      358246 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 662FDD54 KUVA 2022-09-13 liite
+      https://www.hel.fi/static/public/hela/Kulttuuri-_ja_vapaa-aikalautakunta/Suomi/Paatos/2022/KUVA_2022-09-13_Kuvalk_17_Pk/662FDD54-86FC-C41E-B86D-833C33200000/Liite.pdf
+      1000383 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] D5B2AC19 Oodin julkitilakalusteet 186926, KUVA 2018-06-19
+      https://www.hel.fi/static/public/hela/Kulttuuri-_ja_vapaa-aikalautakunta/Suomi/Paatos/2018/KUVA_2018-06-19_Kuvalk_12_Pk/D5B2AC19-6747-CCB0-8D23-63F331B00000/Liite.pdf
+      408843 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 5C18598A Tarjousvertailu, Sote 2020-12-18
+      https://www.hel.fi/static/public/hela/vipaU32020030VH1_Sairaala-_kuntoutus-_ja_hoivapalv/Suomi/Paatos/2020/Sote_2020-12-18_67_Pk/5C18598A-85C7-C96C-B97C-7674D9000000/Liite.pdf
+      415602 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 638BC698 raitiovaunun istuinpaalliset, Kymp 2021-07-23
+      https://www.hel.fi/static/public/hela/vipaU7500110VH1_Yksikon_johtaja/Suomi/Paatos/2021/Kymp_2021-07-23_45_Pk/638BC698-6A6E-CE15-BBB2-7ACDC1100000/Liite.pdf
+      86857 bytes, PDF=True, (bidders_ranked, criteria)=(2, 5)
+[ok  ] F77AA1D5 ikaantyneiden ymparivuorokautinen palveluasuminen, 76 tarjousta, Sote 2020-10-27
+      https://www.hel.fi/static/public/hela/vipaU32020030VH1_Sairaala-_kuntoutus-_ja_hoivapalv/Suomi/Paatos/2020/Sote_2020-10-27_47_Pk/F77AA1D5-CCC8-C9D9-8D5D-75699A400003/Ikaantyneiden_ymparivuorokautisen_palveluasumisen_.pdf
+      92244 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] FBA341FF Liikuntavirasto tarjouspyynto, LIV 2016-10-21
+      https://www.hel.fi/static/public/hela/vipa471131VH1_Osastopaallikko/Suomi/Paatos/2016/LIV_2016-10-21_32_Pk/FBA341FF-F697-CE89-A47C-57E669D00001/Liite.pdf
+      1323952 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 42472407 Taloustutka Oy vs Suomen Asiakastieto Oy, arviointikriteerit, Keha 2019-08-19
+      https://www.hel.fi/static/public/hela/vipaU021200VH1_Elinkeinojohtaja/Suomi/Paatos/2019/Keha_2019-08-19_Ekj_84_Pk/42472407-EB42-CF26-A813-6C8AE4000000/Liite.pdf
+      1187882 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] 9623E5B6 HKLn kiinteistojen puhtaanapitopalvelut, HKLjku 2020-06-16
+      https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2020/Kymp_2020-06-16_HKLjku_11_Pk/9623E5B6-F005-C9FE-86CE-72EA0CE00000/HKLn_eraiden_kiinteistojen_puhtaanapitopalvelut.pdf
+      86427 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] D8B334F3 Stara tarjouspyynto HEL 2017-013910, Starajk 2018-05-24
+      https://www.hel.fi/static/public/hela/Rakentamispalveluliikelaitoksen_johtokunta/Suomi/Paatos/2018/Keha_2018-05-24_Starajk_6_Pk/D8B334F3-D2BA-C495-8C1D-6363D2500000/Liite.pdf
+      373253 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] 96CD60B8 tyohonkuntoutuspalvelut H133-16, Pesop 2016-12-12
+      https://www.hel.fi/static/public/hela/vipa811310_Osastopaallikko/Suomi/Paatos/2016/Sote_2016-12-12_Pesop_65_Pk/96CD60B8-7AF5-C3CC-87CD-58F1FEB00000/Liite.pdf
+      953186 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] CDE20CF3 tarjouspyynto H030-14, Sotelk 2014-09-23
+      https://www.hel.fi/static/public/hela/Sosiaali-_ja_terveyslautakunta/Suomi/Paatostiedote/2014/Sote_2014-09-23_Sotelk_18_Pt/CDE20CF3-46E9-44EC-91D7-64CED2BD16CC/Liite.pdf
+      171754 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] E399E4C3 asiantuntijapalveluiden hankinta puitejarjestely, Klk 2015-06-25
+      https://www.hel.fi/static/public/hela/Kiinteistolautakunta/Suomi/Paatostiedote/2015/Kv_2015-06-25_Klk_13_Pt/E399E4C3-BF91-4D27-A99F-10D15BC48D97/Asiantuntijapalveluiden_hankinta_puitejarjestely.pdf
+      71744 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] B3AD9E82 tarjousten vertailutaulukko, Kasko 2019-07-01
+      https://www.hel.fi/static/public/hela/vipaU420300506010VH1_Ict-kehityspaallikko/Suomi/Paatos/2019/Kasko_2019-07-01_9_Pk/B3AD9E82-ED5F-CCED-8CDD-6B9D95600000/Liite.pdf
+      280616 bytes, PDF=True, (bidders_ranked, criteria)=(4, 1)
+[ok  ] hel-2025-007501 (815E898F)
+      https://ahjojulkaisu.hel.fi/815E898F-D357-CEEC-94BA-9C9547600007.pdf
+      95192 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-013665 (B26A9308)
+      https://ahjojulkaisu.hel.fi/B26A9308-3EFE-C3C5-8D21-95C6CB200000.pdf
+      98140 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-001257 (4C3B9008)
+      https://ahjojulkaisu.hel.fi/4C3B9008-AA79-C1A3-9058-9A0192B00006.pdf
+      100013 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-000403 (CE7E560A)
+      https://ahjojulkaisu.hel.fi/CE7E560A-79FB-C515-8D20-94E008E00000.pdf
+      96043 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-015235 (EFFA1778)
+      https://ahjojulkaisu.hel.fi/EFFA1778-0E56-C9BC-A0B5-93E458400004.pdf
+      100110 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2020-010257 (0290C37A)
+      https://ahjojulkaisu.hel.fi/0290C37A-CCBF-C386-AD3F-761D30100002.pdf
+      93969 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2023-004842 (0A667458)
+      https://ahjojulkaisu.hel.fi/0A667458-2C60-C361-A100-8F19AB900003.pdf
+      105814 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-007350 (1AD15D1B)
+      https://ahjojulkaisu.hel.fi/1AD15D1B-7E74-C316-B486-9F646D700005.pdf
+      121575 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] hel-2018-006678 (547A9B21)
+      https://ahjojulkaisu.hel.fi/547A9B21-24F3-C5B4-B7E6-7CC699400004.pdf
+      829724 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-006678 (8235F858)
+      https://ahjojulkaisu.hel.fi/8235F858-D84D-C1A8-A134-7CC698700001.pdf
+      593137 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-006678 (ADB321F4)
+      https://ahjojulkaisu.hel.fi/ADB321F4-4B52-C413-BBB8-7CE0AA400000.pdf
+      93796 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-009410 (2A116325)
+      https://ahjojulkaisu.hel.fi/2A116325-9798-C2A1-9677-7BEE07200000.pdf
+      276107 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-009410 (40E80F09)
+      https://ahjojulkaisu.hel.fi/40E80F09-B97C-C91E-8CA4-7BEE06000001.pdf
+      1556274 bytes, PDF=True, (bidders_ranked, criteria)=(2, 2)
+[ok  ] hel-2021-009410 (C32AA64C)
+      https://ahjojulkaisu.hel.fi/C32AA64C-FEA6-C25D-8801-7BEE05200001.pdf
+      352967 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-009410 (DE97C25A)
+      https://ahjojulkaisu.hel.fi/DE97C25A-17F7-C7DE-9A3B-7BF2C1500003.pdf
+      84622 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-001479 (2F36548F)
+      https://ahjojulkaisu.hel.fi/2F36548F-0AFC-C3C0-AACB-9EF2E9500001.pdf
+      87978 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-009945 (7215C694)
+      https://ahjojulkaisu.hel.fi/7215C694-C797-C4F2-AF4A-7D5791200000.pdf
+      142733 bytes, PDF=True, (bidders_ranked, criteria)=(6, 1)
+[ok  ] hel-2021-009945 (D3F15239)
+      https://ahjojulkaisu.hel.fi/D3F15239-286F-CB8E-87F1-7D5191F00000.pdf
+      95008 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-015469 (85E8F32D)
+      https://ahjojulkaisu.hel.fi/85E8F32D-E34E-C9A9-8AE0-88C391300000.pdf
+      80923 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-015469 (9DE55748)
+      https://ahjojulkaisu.hel.fi/9DE55748-BB79-C3D3-B83C-88AEFFE00000.pdf
+      1016962 bytes, PDF=True, (bidders_ranked, criteria)=(3, 1)
+[ok  ] hel-2023-015000 (A74B102C)
+      https://ahjojulkaisu.hel.fi/A74B102C-DCCB-CF21-8B68-8F093A10000A.pdf
+      98916 bytes, PDF=True, (bidders_ranked, criteria)=(1, 2)
+[ok  ] hel-2025-009879 (5991779A)
+      https://ahjojulkaisu.hel.fi/5991779A-F019-CA6E-95AF-9AD93C300003.pdf
+      100405 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-009879 (DEBE2FB0)
+      https://ahjojulkaisu.hel.fi/DEBE2FB0-C602-C655-8336-9AD8AE200004.pdf
+      1502102 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-007436 (5B8412AC)
+      https://ahjojulkaisu.hel.fi/5B8412AC-6D47-C53B-9418-756440100000.pdf
+      205944 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-007436 (6F200F39)
+      https://ahjojulkaisu.hel.fi/6F200F39-B27C-C732-9501-7588E1600000.pdf
+      103414 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-001978 (88F01A93)
+      https://ahjojulkaisu.hel.fi/88F01A93-A60F-C167-9ED8-720771000001.pdf
+      83474 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-014310 (9A0B7DA6)
+      https://ahjojulkaisu.hel.fi/9A0B7DA6-7207-C7F7-8530-87B81B700000.pdf
+      82408 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-014310 (A5EA979D)
+      https://ahjojulkaisu.hel.fi/A5EA979D-F1AB-C12F-9616-8746A3900000.pdf
+      1030786 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-014310 (E4C09D0D)
+      https://ahjojulkaisu.hel.fi/E4C09D0D-61B9-CA2B-BAC1-874705000000.pdf
+      867263 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-001708 (B01243F3)
+      https://ahjojulkaisu.hel.fi/B01243F3-461C-C357-85F0-8B1928800000.pdf
+      120089 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[FAIL] hel-2023-001708 (D9E19B0E)
+      https://ahjojulkaisu.hel.fi/D9E19B0E-A0ED-CB21-966B-8B1442000000.pdf
+      215 bytes, PDF=False, (bidders_ranked, criteria)=None
+[ok  ] hel-2023-001708 (DB1EBD1E)
+      https://ahjojulkaisu.hel.fi/DB1EBD1E-6473-C42A-BE13-8B1442000002.pdf
+      38246 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-011784 (5FD0697A)
+      https://ahjojulkaisu.hel.fi/5FD0697A-3BA4-C659-A4E2-92F5F7300004.pdf
+      93091 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2018-005308 (47959B5B)
+      https://ahjojulkaisu.hel.fi/47959B5B-C1AC-C729-A042-675ABF100003.pdf
+      72753 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-004114 (21A296FE)
+      https://ahjojulkaisu.hel.fi/21A296FE-AD1D-CBEC-8740-912712C00000.pdf
+      97861 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-004114 (4157CA25)
+      https://ahjojulkaisu.hel.fi/4157CA25-FD21-CE97-BD7D-907822100003.pdf
+      140918 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-001377 (C19CFF09)
+      https://ahjojulkaisu.hel.fi/C19CFF09-5ABF-C577-8751-6C99EC200000.pdf
+      77629 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-007169 (CDE5BD3E)
+      https://ahjojulkaisu.hel.fi/CDE5BD3E-0AA1-CAC8-B2C8-725EE3B00001.pdf
+      86171 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2021-004721 (4D259168)
+      https://ahjojulkaisu.hel.fi/4D259168-4296-CB1B-B8E9-78D552100000.pdf
+      863950 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] hel-2021-004721 (92F8D1E9)
+      https://ahjojulkaisu.hel.fi/92F8D1E9-472A-C931-BB49-78D55B400000.pdf
+      864470 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-004721 (D198C4E5)
+      https://ahjojulkaisu.hel.fi/D198C4E5-0A46-CCC9-B85C-78D923A00000.pdf
+      89721 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-003791 (EDE653BA)
+      https://ahjojulkaisu.hel.fi/EDE653BA-7DEA-C9DC-85B9-629A3EB00000.pdf
+      91335 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2022-008845 (EA814BBB)
+      https://ahjojulkaisu.hel.fi/EA814BBB-0CF0-CB26-B36C-82D367A00000.pdf
+      82527 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-013732 (D23F8118)
+      https://ahjojulkaisu.hel.fi/D23F8118-E582-C1F0-9C23-766A02B00000.pdf
+      91706 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2020-012767 (8A9F0132)
+      https://ahjojulkaisu.hel.fi/8A9F0132-7774-C686-8166-766B73800002.pdf
+      89655 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004003 (2FFB4D57)
+      https://ahjojulkaisu.hel.fi/2FFB4D57-34C8-CECB-B77B-82E96C100002.pdf
+      1044452 bytes, PDF=True, (bidders_ranked, criteria)=(30, 0)
+[ok  ] hel-2022-004003 (59304B6A)
+      https://ahjojulkaisu.hel.fi/59304B6A-B8BD-CF27-ACD8-8340D0000002.pdf
+      101623 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000475 (9A271309)
+      https://ahjojulkaisu.hel.fi/9A271309-7D1B-C9F5-BD34-9E820F200001.pdf
+      101931 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-003682 (5991E9B4)
+      https://ahjojulkaisu.hel.fi/5991E9B4-3800-CDA8-8D28-8B7FC7C00006.pdf
+      93774 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-013912 (F330520F)
+      https://ahjojulkaisu.hel.fi/F330520F-8540-C066-AB1B-85342E900003.pdf
+      86816 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-013678 (3256A19D)
+      https://ahjojulkaisu.hel.fi/3256A19D-A9AE-C651-BE69-857C5EF00006.pdf
+      112439 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-013678 (5D4D3B5D)
+      https://ahjojulkaisu.hel.fi/5D4D3B5D-203E-CE4A-99A5-8580C9B00005.pdf
+      459450 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-013678 (6C6C370A)
+      https://ahjojulkaisu.hel.fi/6C6C370A-4AF0-C07C-A4EA-85E409E00005.pdf
+      89419 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-013678 (7F8DDEC4)
+      https://ahjojulkaisu.hel.fi/7F8DDEC4-8F72-CE94-A824-857CF0D00000.pdf
+      1353008 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] hel-2022-013678 (ABCB8894)
+      https://ahjojulkaisu.hel.fi/ABCB8894-8008-C82E-843B-857C5EF00002.pdf
+      606612 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-013678 (D553F097)
+      https://ahjojulkaisu.hel.fi/D553F097-4405-C9D3-904A-857C5EF00005.pdf
+      683861 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-008117 (0988E811)
+      https://ahjojulkaisu.hel.fi/0988E811-5204-CE15-8EC8-9349C6A00002.pdf
+      90852 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004591 (050B9977)
+      https://ahjojulkaisu.hel.fi/050B9977-AB02-CA78-9590-841E7E200000.pdf
+      1066105 bytes, PDF=True, (bidders_ranked, criteria)=(6, 1)
+[ok  ] hel-2022-004591 (096F5C11)
+      https://ahjojulkaisu.hel.fi/096F5C11-6443-C13A-8F09-841E7E300005.pdf
+      634203 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004591 (BA8BE2E1)
+      https://ahjojulkaisu.hel.fi/BA8BE2E1-7C06-C939-B740-841E7E200008.pdf
+      1023996 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004591 (C2C3BA2A)
+      https://ahjojulkaisu.hel.fi/C2C3BA2A-5AB0-C3C4-88EA-841E7E200004.pdf
+      1862451 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004591 (D468162B)
+      https://ahjojulkaisu.hel.fi/D468162B-FF5F-CE8E-9556-847A4F000002.pdf
+      76595 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004591 (E8AEE1AF)
+      https://ahjojulkaisu.hel.fi/E8AEE1AF-5755-C54A-87FC-841E7E20000C.pdf
+      1820898 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-000416 (35C8D8B2)
+      https://ahjojulkaisu.hel.fi/35C8D8B2-03FA-CBA5-9258-876FB9A00001.pdf
+      498477 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-000416 (9E3DF79A)
+      https://ahjojulkaisu.hel.fi/9E3DF79A-253B-C5C0-9750-8774DAB00000.pdf
+      96544 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (18395C2F)
+      https://ahjojulkaisu.hel.fi/18395C2F-06B2-C06C-9774-825844900000.pdf
+      1660190 bytes, PDF=True, (bidders_ranked, criteria)=(4, 1)
+[ok  ] hel-2022-000055 (1A94639E)
+      https://ahjojulkaisu.hel.fi/1A94639E-2E19-C321-95BC-825844800000.pdf
+      1703028 bytes, PDF=True, (bidders_ranked, criteria)=(7, 1)
+[ok  ] hel-2022-000055 (1C66F095)
+      https://ahjojulkaisu.hel.fi/1C66F095-5565-C9B5-9AE6-82B484500000.pdf
+      94821 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (2C546F99)
+      https://ahjojulkaisu.hel.fi/2C546F99-2110-CCDA-BEF0-82157D000001.pdf
+      170693 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (46E9F916)
+      https://ahjojulkaisu.hel.fi/46E9F916-5248-C69C-97FD-82157D000000.pdf
+      192095 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (76CEE66D)
+      https://ahjojulkaisu.hel.fi/76CEE66D-A6CB-C165-A41F-82157D000003.pdf
+      106896 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (87370BE1)
+      https://ahjojulkaisu.hel.fi/87370BE1-F2EC-C226-9799-82157AC00000.pdf
+      591109 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-000055 (A1DE2078)
+      https://ahjojulkaisu.hel.fi/A1DE2078-0D5C-C1A5-BA1F-82157D100000.pdf
+      1864649 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-012811 (54211429)
+      https://ahjojulkaisu.hel.fi/54211429-7790-CEC7-8F78-878DAB000001.pdf
+      93255 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-007258 (0C0C9F90)
+      https://ahjojulkaisu.hel.fi/0C0C9F90-2B3A-C65A-9548-937834B00000.pdf
+      1061333 bytes, PDF=True, (bidders_ranked, criteria)=(2, 0)
+[ok  ] hel-2024-007258 (FB83337C)
+      https://ahjojulkaisu.hel.fi/FB83337C-609B-CA99-AC4D-938765300006.pdf
+      99437 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-000454 (DEDFDB20)
+      https://ahjojulkaisu.hel.fi/DEDFDB20-2D69-CC68-8C81-75B6D2500002.pdf
+      95797 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-006697 (B6ABDB19)
+      https://ahjojulkaisu.hel.fi/B6ABDB19-D0A9-CC9D-BFB3-757345C00003.pdf
+      103652 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-000820 (F16B8FD2)
+      https://ahjojulkaisu.hel.fi/F16B8FD2-74EF-CBA3-B4A7-687E56000000.pdf
+      95238 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2021-014896 (15D7368B)
+      https://ahjojulkaisu.hel.fi/15D7368B-7F0B-C9EE-BAEA-7E09DB000001.pdf
+      90021 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-004530 (215E5851)
+      https://ahjojulkaisu.hel.fi/215E5851-CEB8-CC2C-8E4A-833651300000.pdf
+      90999 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2021-014424 (3926C09B)
+      https://ahjojulkaisu.hel.fi/3926C09B-92B6-CC83-BAE6-7F0C65700003.pdf
+      95196 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2021-014424 (9182010D)
+      https://ahjojulkaisu.hel.fi/9182010D-E698-CA75-970A-7F07D3300000.pdf
+      3658105 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-004645 (FAC00325)
+      https://ahjojulkaisu.hel.fi/FAC00325-8A38-C28D-B1CE-675ABF000000.pdf
+      83539 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-005638 (685FE871)
+      https://ahjojulkaisu.hel.fi/685FE871-2519-CF3F-BDEF-7DD6EC100003.pdf
+      79491 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-007341 (9D0065EE)
+      https://ahjojulkaisu.hel.fi/9D0065EE-F39F-CCF5-88DC-72A225000003.pdf
+      87840 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-014323 (FF6A06B1)
+      https://ahjojulkaisu.hel.fi/FF6A06B1-A2AF-CB39-8B4D-8A82FF500001.pdf
+      83831 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-010551 (42C6B011)
+      https://ahjojulkaisu.hel.fi/42C6B011-E775-C2A3-9DA2-675E3AB00000.pdf
+      103745 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-010551 (93BB2DD1)
+      https://ahjojulkaisu.hel.fi/93BB2DD1-66B7-C57C-83BE-67554CD00001.pdf
+      225272 bytes, PDF=True, (bidders_ranked, criteria)=(3, 1)
+[ok  ] hel-2021-010461 (1EA6D20D)
+      https://ahjojulkaisu.hel.fi/1EA6D20D-F2C5-C517-B9EB-7D47AB200000.pdf
+      1445211 bytes, PDF=True, (bidders_ranked, criteria)=(3, 1)
+[ok  ] hel-2021-010461 (E72DE003)
+      https://ahjojulkaisu.hel.fi/E72DE003-919E-C745-AED3-7D507CA00001.pdf
+      97600 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] hel-2024-014667 (B9D0BE1F)
+      https://ahjojulkaisu.hel.fi/B9D0BE1F-86CD-C378-9767-967B7B900000.pdf
+      95691 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-008209 (01DFF6BE)
+      https://ahjojulkaisu.hel.fi/01DFF6BE-7E49-CA8C-9849-84D250700000.pdf
+      93060 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-012916 (B28FA6CC)
+      https://ahjojulkaisu.hel.fi/B28FA6CC-28F6-CC0C-86ED-7B3EAAD00000.pdf
+      91936 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2022-006306 (1C45E83A)
+      https://ahjojulkaisu.hel.fi/1C45E83A-4670-CEF9-89E9-82EDEDE00001.pdf
+      206825 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-006306 (2F58D908)
+      https://ahjojulkaisu.hel.fi/2F58D908-4E72-C366-96A8-82CEE2C00000.pdf
+      1008219 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-006306 (74A9069B)
+      https://ahjojulkaisu.hel.fi/74A9069B-F91B-C8EC-9607-835F92A00004.pdf
+      76748 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-006306 (8C1CEEBC)
+      https://ahjojulkaisu.hel.fi/8C1CEEBC-4448-CA03-B92E-82CFBD400000.pdf
+      886004 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-006306 (8EBDA9E6)
+      https://ahjojulkaisu.hel.fi/8EBDA9E6-122C-CB63-BB7D-82CEE2400000.pdf
+      987269 bytes, PDF=True, (bidders_ranked, criteria)=(2, 0)
+[ok  ] hel-2023-003379 (3739B27D)
+      https://ahjojulkaisu.hel.fi/3739B27D-F1E8-C42E-80CB-8ECC21000017.pdf
+      85747 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-015661 (4492BCF4)
+      https://ahjojulkaisu.hel.fi/4492BCF4-F14A-C85B-930D-95936750000C.pdf
+      97767 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-005475 (BC3861D8)
+      https://ahjojulkaisu.hel.fi/BC3861D8-4695-C94C-AA34-9049BC700006.pdf
+      97293 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-002460 (9AA81E7D)
+      https://ahjojulkaisu.hel.fi/9AA81E7D-1FC3-CF73-87C1-86FEDCA00004.pdf
+      91335 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2020-010701 (2F88E877)
+      https://ahjojulkaisu.hel.fi/2F88E877-2C2E-C765-8426-793C06100000.pdf
+      87147 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-013067 (B816DAE7)
+      https://ahjojulkaisu.hel.fi/B816DAE7-8EE3-C5F1-B282-9A2A06A00000.pdf
+      79195 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-000472 (74E261B6)
+      https://ahjojulkaisu.hel.fi/74E261B6-6EC4-C21E-9040-8EA7A2200006.pdf
+      86913 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-000472 (93369FE8)
+      https://ahjojulkaisu.hel.fi/93369FE8-B34E-C0D5-BBEA-8E85E7A00000.pdf
+      435091 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-000472 (BE83A0AD)
+      https://ahjojulkaisu.hel.fi/BE83A0AD-39BE-C165-BD9B-8E85E4800003.pdf
+      2021357 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-001992 (43499F03)
+      https://ahjojulkaisu.hel.fi/43499F03-BE87-C4FA-9243-842CDF800002.pdf
+      91987 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-001992 (F1972709)
+      https://ahjojulkaisu.hel.fi/F1972709-09DB-C10E-97F0-83CC22700000.pdf
+      1893015 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-008194 (143AFF9E)
+      https://ahjojulkaisu.hel.fi/143AFF9E-88DD-C56B-BBB2-72EEC7700001.pdf
+      71161 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-008977 (40040501)
+      https://ahjojulkaisu.hel.fi/40040501-AB52-C977-93FD-6E7CF5100001.pdf
+      98557 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2021-008806 (C5D5BBC7)
+      https://ahjojulkaisu.hel.fi/C5D5BBC7-129F-CA68-A8D5-7D13A8F00005.pdf
+      89498 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-004963 (7458E5EA)
+      https://ahjojulkaisu.hel.fi/7458E5EA-5E10-C5C6-84EA-8C1ACB700000.pdf
+      99177 bytes, PDF=True, (bidders_ranked, criteria)=(0, 2)
+[ok  ] hel-2020-000253 (51F2DCDC)
+      https://ahjojulkaisu.hel.fi/51F2DCDC-ED60-CD31-87F8-767099600000.pdf
+      97523 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-000253 (C2AE6324)
+      https://ahjojulkaisu.hel.fi/C2AE6324-2C63-C5FC-AEA7-762CC0400000.pdf
+      627435 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-014499 (7B16F195)
+      https://ahjojulkaisu.hel.fi/7B16F195-FE0C-CDDA-8781-7DFBB3800000.pdf
+      81867 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-012732 (D85161BD)
+      https://ahjojulkaisu.hel.fi/D85161BD-A4C7-C6B4-9C67-8DA11FD0000A.pdf
+      101903 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-004639 (BFC4274D)
+      https://ahjojulkaisu.hel.fi/BFC4274D-BF9B-C7DB-A83E-9B210D500008.pdf
+      115088 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-000017 (DD0E8E16)
+      https://ahjojulkaisu.hel.fi/DD0E8E16-8F73-CEE1-9617-9082D0F00000.pdf
+      105123 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-005735 (975ECE53)
+      https://ahjojulkaisu.hel.fi/975ECE53-9791-CB33-853E-930B6EA00001.pdf
+      88120 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-004636 (7CA7F23E)
+      https://ahjojulkaisu.hel.fi/7CA7F23E-5E25-C78D-876B-97C5B1400000.pdf
+      121004 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2019-005868 (21E2D4D2)
+      https://ahjojulkaisu.hel.fi/21E2D4D2-1483-C40E-87CC-6B892E000007.pdf
+      70991 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2019-005868 (F78C286A)
+      https://ahjojulkaisu.hel.fi/F78C286A-CD66-C2B5-8EB8-6B26BD000000.pdf
+      861656 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-010570 (2BB13107)
+      https://ahjojulkaisu.hel.fi/2BB13107-7C5C-C750-927D-8AABFAD00001.pdf
+      95020 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-010266 (899BF9EB)
+      https://ahjojulkaisu.hel.fi/899BF9EB-D77C-C59D-8097-672B44C00004.pdf
+      128240 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2018-010266 (A9132F84)
+      https://ahjojulkaisu.hel.fi/A9132F84-4461-C1C8-8F1D-66C49FE00000.pdf
+      91726 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-009822 (2ECD33BE)
+      https://ahjojulkaisu.hel.fi/2ECD33BE-F63E-C151-9291-91266C200000.pdf
+      91505 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-003467 (404DCDFD)
+      https://ahjojulkaisu.hel.fi/404DCDFD-0D3C-C786-856E-79A254000000.pdf
+      112953 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2021-003467 (67022819)
+      https://ahjojulkaisu.hel.fi/67022819-4B9D-C2B7-B8C1-79A1FAB00000.pdf
+      270695 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-010969 (CFD0B5D8)
+      https://ahjojulkaisu.hel.fi/CFD0B5D8-CC6A-C53F-8613-92C277700000.pdf
+      106408 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-010969 (F56012B1)
+      https://ahjojulkaisu.hel.fi/F56012B1-7677-CB94-916E-92BF11400004.pdf
+      135823 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2023-011682 (ACAEB3AA)
+      https://ahjojulkaisu.hel.fi/ACAEB3AA-69A7-CD54-84CF-8B6632E00000.pdf
+      89950 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2023-013563 (5127E620)
+      https://ahjojulkaisu.hel.fi/5127E620-CD26-C7C7-B2EC-934482300004.pdf
+      139777 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2023-013563 (ACE672D1)
+      https://ahjojulkaisu.hel.fi/ACE672D1-594A-CEDF-9D6D-93BA06C00005.pdf
+      85957 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-006725 (67F9514F)
+      https://ahjojulkaisu.hel.fi/67F9514F-D3E3-C4A0-8C2A-946912F00004.pdf
+      1155525 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-006725 (ECAFA9FA)
+      https://ahjojulkaisu.hel.fi/ECAFA9FA-C9A3-C2BC-941F-946DABD00000.pdf
+      97089 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-007888 (875C6921)
+      https://ahjojulkaisu.hel.fi/875C6921-A4B6-C8AC-9748-94A68BB00009.pdf
+      76955 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-008284 (3697A362)
+      https://ahjojulkaisu.hel.fi/3697A362-582A-C165-B1BA-9B368F90000A.pdf
+      97272 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (06807A22)
+      https://ahjojulkaisu.hel.fi/06807A22-E073-C119-98CA-97777C000004.pdf
+      899815 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-012621 (22513526)
+      https://ahjojulkaisu.hel.fi/22513526-59C5-C701-BAEF-977786B00000.pdf
+      126663 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (60AC9656)
+      https://ahjojulkaisu.hel.fi/60AC9656-15F8-C670-BE36-977784500004.pdf
+      1765397 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (72CE4A9E)
+      https://ahjojulkaisu.hel.fi/72CE4A9E-DDC7-C774-93DB-977783000003.pdf
+      1280160 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (85699832)
+      https://ahjojulkaisu.hel.fi/85699832-70F7-CAC4-82E1-977785500001.pdf
+      138549 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (85A1529C)
+      https://ahjojulkaisu.hel.fi/85A1529C-1E49-CFFC-A792-9777A5200008.pdf
+      101345 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-012621 (9133C8BC)
+      https://ahjojulkaisu.hel.fi/9133C8BC-90AD-CAAD-9F5C-97777F900000.pdf
+      1499114 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-012621 (B0110770)
+      https://ahjojulkaisu.hel.fi/B0110770-7EFB-CDC7-A8DA-97777D900000.pdf
+      3066106 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-012621 (FADF4E83)
+      https://ahjojulkaisu.hel.fi/FADF4E83-93FD-C797-BDE9-97777EA00001.pdf
+      870785 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-013066 (6BB3D792)
+      https://ahjojulkaisu.hel.fi/6BB3D792-618C-C9F2-91F8-932451300001.pdf
+      94049 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-013066 (9FE99B87)
+      https://ahjojulkaisu.hel.fi/9FE99B87-B9C2-CA72-82E1-93F22E800008.pdf
+      68661 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-015521 (834314BC)
+      https://ahjojulkaisu.hel.fi/834314BC-B23A-C11F-85F6-9ACA0D500000.pdf
+      103014 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-015521 (B39F66FB)
+      https://ahjojulkaisu.hel.fi/B39F66FB-A689-C7B8-B0AB-9AC4BBC00003.pdf
+      182146 bytes, PDF=True, (bidders_ranked, criteria)=(5, 2)
+[ok  ] hel-2024-015752 (2B30603A)
+      https://ahjojulkaisu.hel.fi/2B30603A-04FA-C6CA-8F63-93684ED00001.pdf
+      93208 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-015752 (A3B57B27)
+      https://ahjojulkaisu.hel.fi/A3B57B27-29DE-C116-BA57-936789E00000.pdf
+      48900 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2024-016054 (A58B94C3)
+      https://ahjojulkaisu.hel.fi/A58B94C3-C77B-CA54-AB36-97A5FEE00005.pdf
+      101327 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-000051 (DCCF2719)
+      https://ahjojulkaisu.hel.fi/DCCF2719-73BC-CC05-B1F6-97EDEBB00001.pdf
+      101114 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-010794 (6AFE740B)
+      https://ahjojulkaisu.hel.fi/6AFE740B-9E36-CB4D-ADCD-981795700000.pdf
+      32376 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-010794 (E19BB4AE)
+      https://ahjojulkaisu.hel.fi/E19BB4AE-1B73-C0FF-8DF5-97CAA0A0000A.pdf
+      103080 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-011249 (FFC17974)
+      https://ahjojulkaisu.hel.fi/FFC17974-A2EC-C8FC-87B7-9C1D58900000.pdf
+      110197 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-011545 (8918C25B)
+      https://ahjojulkaisu.hel.fi/8918C25B-ABF7-C7B0-84EB-9A9BD7300001.pdf
+      88137 bytes, PDF=True, (bidders_ranked, criteria)=(5, 0)
+[ok  ] hel-2025-011545 (B691301F)
+      https://ahjojulkaisu.hel.fi/B691301F-04BD-CFA1-8417-9A9C1DE00000.pdf
+      99887 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-012148 (72093198)
+      https://ahjojulkaisu.hel.fi/72093198-FD60-C19D-BEF8-9C51C6400000.pdf
+      120938 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-012148 (EC2555A6)
+      https://ahjojulkaisu.hel.fi/EC2555A6-C001-C13B-9B63-9C50D7500000.pdf
+      1064581 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-012148 (EFA783CD)
+      https://ahjojulkaisu.hel.fi/EFA783CD-BCE7-C4FC-B9E8-9C50DDF00000.pdf
+      407696 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-016002 (354D6F78)
+      https://ahjojulkaisu.hel.fi/354D6F78-22EC-C156-95F4-9A34D9800000.pdf
+      1583198 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-016002 (B0BBE9C9)
+      https://ahjojulkaisu.hel.fi/B0BBE9C9-CD68-C125-B7D6-9A34DA500000.pdf
+      1088699 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-016002 (F496F523)
+      https://ahjojulkaisu.hel.fi/F496F523-94A0-C74F-B7EE-9A39D4400001.pdf
+      98094 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2020-005779 (84A0FE6F)
+      https://ahjojulkaisu.hel.fi/84A0FE6F-33F4-C02B-834F-741F54600004.pdf
+      83527 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-011908 (8DBF5E67)
+      https://ahjojulkaisu.hel.fi/8DBF5E67-E526-CBC2-8F52-86EECA000004.pdf
+      1757428 bytes, PDF=True, (bidders_ranked, criteria)=(3, 2)
+[ok  ] hel-2022-011908 (A2A08FFE)
+      https://ahjojulkaisu.hel.fi/A2A08FFE-ED3D-CF29-981E-8703DE000000.pdf
+      94109 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2022-011908 (C40A3F97)
+      https://ahjojulkaisu.hel.fi/C40A3F97-CBED-CC42-8D6F-86E53AD00002.pdf
+      449944 bytes, PDF=True, (bidders_ranked, criteria)=(0, 3)
+[ok  ] hel-2022-013332 (A8E6ECD6)
+      https://ahjojulkaisu.hel.fi/A8E6ECD6-51AD-CCD4-B421-9927C8400001.pdf
+      76963 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-005425 (F001A256)
+      https://ahjojulkaisu.hel.fi/F001A256-48BA-C6D7-84E0-8E839A900000.pdf
+      93585 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-005969 (45BBB12D)
+      https://ahjojulkaisu.hel.fi/45BBB12D-8FAF-C9FE-873F-8C1AB7100000.pdf
+      91372 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-005969 (A77184A3)
+      https://ahjojulkaisu.hel.fi/A77184A3-EBBF-CF98-A6E7-8C1151900001.pdf
+      977547 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2023-014985 (7845386D)
+      https://ahjojulkaisu.hel.fi/7845386D-81C8-C594-90D3-8EEA83100002.pdf
+      100226 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-005892 (439260AC)
+      https://ahjojulkaisu.hel.fi/439260AC-27FA-C832-88F1-8FDD0A400003.pdf
+      83977 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-014777 (B9AF5F23)
+      https://ahjojulkaisu.hel.fi/B9AF5F23-36A6-C299-B36D-96393BA00008.pdf
+      94856 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-014777 (D89A3283)
+      https://ahjojulkaisu.hel.fi/D89A3283-6292-C27F-B00D-95D113600001.pdf
+      686349 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2024-014777 (FFD67223)
+      https://ahjojulkaisu.hel.fi/FFD67223-9FC1-C867-B63C-960079600001.pdf
+      1796938 bytes, PDF=True, (bidders_ranked, criteria)=(4, 0)
+[ok  ] hel-2025-000211 (52E0A0AB)
+      https://ahjojulkaisu.hel.fi/52E0A0AB-B4E2-CD6B-B9AF-98EA57C00001.pdf
+      136801 bytes, PDF=True, (bidders_ranked, criteria)=(0, 1)
+[ok  ] hel-2025-006186 (4C75D553)
+      https://ahjojulkaisu.hel.fi/4C75D553-8970-C5C1-99C1-98D0B1500000.pdf
+      99949 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-006186 (A00418F6)
+      https://ahjojulkaisu.hel.fi/A00418F6-A678-CFEE-B9C7-98D056A00000.pdf
+      82316 bytes, PDF=True, (bidders_ranked, criteria)=(1, 0)
+[ok  ] hel-2025-018021 (D4B36087)
+      https://ahjojulkaisu.hel.fi/D4B36087-CA52-CD52-9951-9B36C1700003.pdf
+      101529 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+[ok  ] hel-2025-018021 (F30E2923)
+      https://ahjojulkaisu.hel.fi/F30E2923-52DB-CFE3-8D24-9B3110100004.pdf
+      1568932 bytes, PDF=True, (bidders_ranked, criteria)=(0, 0)
+
+18/229 new candidates are real multi-criterion scoring tables (n>=2 criteria detected).
+  MULTI (0, 4): E0167DBD HEL 2019-012257 Steniuksenkenttä tarjouspyyntö
+        https://ahjojulkaisu.hel.fi/E0167DBD-E9B9-C21A-BA87-6F1938C00000.pdf
+  MULTI (5, 2): 4E279498 Kokonaistaloudellinen edullisuus, pisteytys
+        https://ahjojulkaisu.hel.fi/4E279498-6DAB-C8B2-8D7F-6A7DCFC00000.pdf
+  MULTI (0, 4): 62932B2C HEL 2022-001280 Kumpulan kärki tarjouspyyntö
+        https://ahjojulkaisu.hel.fi/62932B2C-6AE8-C679-B88B-7F6E2C600000.pdf
+  MULTI (2, 2): D29D40A8 TARJOUSTEN VERTAILUTAULUKKO 58H19 Sahko-tele
+        https://ahjojulkaisu.hel.fi/D29D40A8-6300-CB56-BBE1-6FEBDDC00000.pdf
+  MULTI (3, 4): 3B68ADE9 L&T/Palmia/SOL siivous, HKLjku 2020-06-04
+        https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2020/Kymp_2020-06-04_HKLjku_10_Pk/3B68ADE9-465A-CFCF-B862-725020700000/Liite.pdf
+  MULTI (5, 2): 56215C1F Ramboll/Siemens/Sweco sahkokonsultaatio, HKLjku 2019-12-12
+        https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2019/Kymp_2019-12-12_HKLjku_24_Pk/56215C1F-474C-C747-941C-6EC592C00000/Liite.pdf
+  MULTI (2, 5): 638BC698 raitiovaunun istuinpaalliset, Kymp 2021-07-23
+        https://www.hel.fi/static/public/hela/vipaU7500110VH1_Yksikon_johtaja/Suomi/Paatos/2021/Kymp_2021-07-23_45_Pk/638BC698-6A6E-CE15-BBB2-7ACDC1100000/Liite.pdf
+  MULTI (0, 2): 9623E5B6 HKLn kiinteistojen puhtaanapitopalvelut, HKLjku 2020-06-16
+        https://www.hel.fi/static/public/hela/Liikenneliikelaitoksen_johtokunta/Suomi/Paatos/2020/Kymp_2020-06-16_HKLjku_11_Pk/9623E5B6-F005-C9FE-86CE-72EA0CE00000/HKLn_eraiden_kiinteistojen_puhtaanapitopalvelut.pdf
+  MULTI (0, 2): hel-2025-007350 (1AD15D1B)
+        https://ahjojulkaisu.hel.fi/1AD15D1B-7E74-C316-B486-9F646D700005.pdf
+  MULTI (2, 2): hel-2021-009410 (40E80F09)
+        https://ahjojulkaisu.hel.fi/40E80F09-B97C-C91E-8CA4-7BEE06000001.pdf
+  MULTI (1, 2): hel-2023-015000 (A74B102C)
+        https://ahjojulkaisu.hel.fi/A74B102C-DCCB-CF21-8B68-8F093A10000A.pdf
+  MULTI (0, 2): hel-2021-004721 (4D259168)
+        https://ahjojulkaisu.hel.fi/4D259168-4296-CB1B-B8E9-78D552100000.pdf
+  MULTI (0, 2): hel-2022-013678 (7F8DDEC4)
+        https://ahjojulkaisu.hel.fi/7F8DDEC4-8F72-CE94-A824-857CF0D00000.pdf
+  MULTI (0, 2): hel-2021-010461 (E72DE003)
+        https://ahjojulkaisu.hel.fi/E72DE003-919E-C745-AED3-7D507CA00001.pdf
+  MULTI (0, 2): hel-2023-004963 (7458E5EA)
+        https://ahjojulkaisu.hel.fi/7458E5EA-5E10-C5C6-84EA-8C1ACB700000.pdf
+  MULTI (5, 2): hel-2024-015521 (B39F66FB)
+        https://ahjojulkaisu.hel.fi/B39F66FB-A689-C7B8-B0AB-9AC4BBC00003.pdf
+  MULTI (3, 2): hel-2022-011908 (8DBF5E67)
+        https://ahjojulkaisu.hel.fi/8DBF5E67-E526-CBC2-8F52-86EECA000004.pdf
+  MULTI (0, 3): hel-2022-011908 (C40A3F97)
+        https://ahjojulkaisu.hel.fi/C40A3F97-CBED-CC42-8D6F-86E53AD00002.pdf

@@ -28,24 +28,31 @@ HOW UNIFORM MUST A WINNING BID BE?
   15         1336.9    45.8    16.6    10.4     8.1     6.1     5.3     4.9
   20         2419.2    61.6    20.3    12.2     9.1     6.8     5.8     5.3
 
-  REAL SHAPES: THE HARVEST FAILED and the overlay is empty. 4 Finnish
-  award notices were retrieved from TED's eForms-era records and every
-  one of them is a single-criterion price award, which is not a
-  scoring table at all - there is nothing to be uniform across. TED's
-  structured record carries the criteria TYPES but not the published
-  comparison table, and the tables themselves live as PDF attachments
-  in municipal decision registers, which this run did not reach.
-  P1 and P4 are VACUOUS, not missed. The grid above needs no data: it
-  is exact arithmetic of the construction, and it is the result.
+  TED HARVEST: 0 of 4 Finnish eForms contract award
+  notices are usable - every one is a single-criterion price award,
+  which is not a scoring table at all: there is nothing to be uniform
+  across. TED's structured record carries the criteria TYPES but never
+  the published comparison table. This is a permanent, not a fixable,
+  0 - the schema does not carry the field.
 
-  P1  no usable real shapes were harvested
-      pre-registered < 0.50:  VACUOUS - no real shapes
+  AHJO OVERLAY: 11 real (bidders, criteria) shapes
+  hand-verified from Helsinki municipal decision PDF attachments
+  (ahjo_shapes.jsonl). Median bidders 3, median criteria 2.
+  Median allowed coefficient of variation: 0.11.
+  Share with 3 or fewer criteria: 64 % (exploratory -
+  see P4 note below, this is not the pre-registered TED quantity).
+  7F8DDEC4 / hel-2019-011004 excluded: n=4 confirmed but J is ambiguous (69 ranked positions, ~20-25 distinct legal entities) - not yet decided.
+
+  P1  median allowed CV at real shapes (Ahjo overlay, 11 points): 0.11
+      pre-registered < 0.50:  HIT
   P2  allowed CV at 8 bidders and 5 criteria: 0.30
       pre-registered < 0.35:  HIT
   P3  allowed CV falls as bidders are added, at every criteria count
       pre-registered yes:  HIT
-  P4  share of real shapes with <= 3 criteria
-      pre-registered >= 25 %:  VACUOUS - no real shapes
+  P4  share of real shapes with <= 3 criteria, literal TED data only
+      (0 usable TED shapes)
+      pre-registered >= 25 %:  VACUOUS - no real TED shapes
+      (exploratory, not pre-registered: Ahjo overlay's own share with <= 3 criteria is 64 % of 11 points)
 
   HOW TO USE THIS ON A REAL COMPARISON TABLE. Take the winner's points
   and the runner-up's, criterion by criterion, and subtract. If the
