@@ -1,0 +1,93 @@
+A REPORT CARD THAT IS EXACT: PRINT ORDERINGS, NOT BANDS
+====================================================================================================
+  Print k orderings; the reader takes i to beat j when i is ahead in all
+  k. A band is 2 numbers per system and admits orderings the data
+  excludes. A realizer of k orderings is k numbers per system and, short
+  of full dimension, excludes orderings the data admits. Both errors are
+  in bits of log2 ordering count. Sub-posets of 18 systems.
+  Not measured: TabArena 16 models (J=16).
+
+  board                   band (2 nums)     k=1     k=2     k=3     k=4     k=5     k=6  exact at
+  SWE-bench Verified              +2.72  -28.09   -8.92   -1.96   -0.36   -0.00                 5
+  MTEB English v2                 +2.10  -24.65   -8.77   -1.77   -0.00                         4
+  HELM classic                    +4.79  -42.30  -14.85   -6.59   -2.19   -0.16   -0.00         6
+  ProteinGym DMS                  +2.02  -23.85   -6.98   -1.64   -0.14   -0.00                 5
+  TabArena 45 variants            +3.45  -34.48  -10.73   -2.06   -0.17   -0.00                 5
+  CASP14                          +0.00  -37.44   -0.00                                         2
+  LiveBench                       +2.32  -31.40  -10.74   -3.58   -0.38   -0.00                 5
+  MathArena 2025                  +1.26  -25.30   -0.00                                         2
+
+  Positive is invented freedom, negative is invented precision, zero is
+  exact. The band column is what a report card prints today.
+
+  P1  realizer of at most 6 orderings on 8 of 8      pre-registered = all:  HIT
+  P2  at k=2, same budget as a band, smaller error on 1 of 8  pre-registered >= 6:  MISS
+  P3  error monotone in k and exactly 0 at full size on 8 of 8  pre-registered = all:  HIT
+  P4  a standard example S_3 present on 0 of 8       pre-registered >= 6:  MISS
+
+  THE ANSWER TO THE QUESTION THIS FILE WAS OPENED FOR. Exactness is
+  affordable on every board: 2 to 6 orderings, so that many numbers per system
+  against a band's 2. It selects nothing, so there is no handle for a
+  second sample of items to move, which is what killed the six-system
+  rule. That is the constructive recommendation.
+
+  AND ON 2 OF 8 BOARDS IT IS FREE. CASP14, MathArena 2025 have
+  dimension exactly 2: two orderings reproduce the relation cell for
+  cell. Two numbers per system, the same budget a band spends, with
+  zero error instead of the band's invented freedom.
+
+  P2 scores 1 of 8 rather than 2 because of a tie: on MathArena 2025 the
+  2-realizer is exact where the band invents 1.26 bits, a strict win at
+  equal budget, while on CASP14 both are exact and neither is smaller.
+
+  P2 MISSED, and the miss is half instrument. On the boards where no
+  2-realizer was found, two orderings invent far more false precision
+  than the band invents false freedom, and the band wins its own price
+  point comfortably. But the greedy cover that produced those k=2 numbers
+  is a bad upper bound: it wanted 4 orderings for CASP14 and MathArena
+  2025, where a direct construction finds 2 and is exact. So the k=2
+  column below is what a greedy realizer costs, not what a 2-realizer
+  costs, wherever the direct search came back empty.
+
+  What is not in doubt: the band is a good two-number summary. Twelve
+  iterations of measuring what it costs end by defending it at its own
+  price point. What was wrong was never the band - it was printing a band
+  and saying nothing about the 1.3 to 4.8 bits.
+
+  P4 MISSED AND LEAVES A HOLE. No standard example S_3 exists on any of
+  the 8 boards. The search is sound - the self-check plants one and finds
+  it, and rejects a total order and an antichain - so this is a
+  measurement, not a broken loop. But S_3 was the whole lower-bound
+  strategy, so nothing here PROVES the dimension exceeds 2. The realizer
+  sizes are upper bounds from a greedy cover.
+
+  A direct search stands in its place and is reported as a search. For
+  each board, 600 candidate first orderings were tried; for each, the
+  second ordering of a 2-realizer is forced - it must agree with the
+  poset and reverse every incomparable pair - so it exists exactly when
+  that tournament is acyclic, which is checkable in O(J^2).
+    SWE-bench Verified       2-realizer: none in 600 tries   greedy wanted 5
+    MTEB English v2          2-realizer: none in 600 tries   greedy wanted 4
+    HELM classic             2-realizer: none in 600 tries   greedy wanted 6
+    ProteinGym DMS           2-realizer: none in 600 tries   greedy wanted 5
+    TabArena 45 variants     2-realizer: none in 600 tries   greedy wanted 5
+    CASP14                   2-realizer: FOUND, dimension 2   greedy wanted 4
+    LiveBench                2-realizer: none in 600 tries   greedy wanted 5
+    MathArena 2025           2-realizer: FOUND, dimension 2   greedy wanted 4
+
+  S_3 WITNESSES. Three systems and three others, each of the first below
+  each of the second except its own partner. Two orderings cannot reverse
+  all three partner pairs at once, so where this appears the dimension is
+  at least 3 and two numbers per system - a band, or any pair of columns -
+  cannot be exact.
+
+  The realizer size printed here is an UPPER bound on the dimension: it
+  is what a greedy cover found, not a proof of minimality. The S_3
+  witnesses are the matching lower bound. Where the two meet the
+  dimension is pinned; where they do not, the honest statement is the
+  interval between them.
+
+  Nothing here selects a system. The failure of the six-system
+  recommendation was that a different sample of items chose different
+  six; a realizer is derived from the whole relation and has no such
+  handle to be brittle at.

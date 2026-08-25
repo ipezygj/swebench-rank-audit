@@ -144,6 +144,77 @@ def intersection(orders, J) -> np.ndarray:
     return Q
 
 
+def conjugate(beats: np.ndarray, order):
+    """The second ordering of a 2-realizer with this first one, or None.
+
+    If {L1, L2} realises P then L2 is forced: it must agree with P on every
+    ordered pair and REVERSE every incomparable pair relative to L1. That fixes
+    a tournament, and L2 exists exactly when the tournament is acyclic, which a
+    topological sort settles in O(J^2).
+    """
+    J = beats.shape[0]
+    R = order_to_relation(order)
+    inc = ~(beats | beats.T) & ~np.eye(J, dtype=bool)
+    T = beats | (inc & R.T)
+    indeg = T.sum(axis=0).astype(int)
+    done = np.zeros(J, dtype=bool)
+    out = []
+    while True:
+        avail = np.flatnonzero((indeg == 0) & ~done)
+        if not len(avail):
+            break
+        k = int(avail[0])
+        done[k] = True
+        out.append(k)
+        indeg -= T[k].astype(int)
+        indeg[k] = 1 << 30
+    return out if len(out) == J else None
+
+
+def conjugate_ok(beats: np.ndarray, order) -> bool:
+    """Given a first ordering, does the forced second ordering exist?
+
+    If {L1, L2} realises P then L2 is determined: it must agree with P on every
+    ordered pair and REVERSE every incomparable pair relative to L1. That fixes
+    a tournament, and L2 exists exactly when the tournament is acyclic. So a
+    2-realizer can be tested for a given L1 in O(J^2), and searched for by
+    trying many L1.
+    """
+    J = beats.shape[0]
+    R = order_to_relation(order)
+    inc = ~(beats | beats.T) & ~np.eye(J, dtype=bool)
+    T = beats | (inc & R.T)          # P's edges, incomparable pairs reversed
+    indeg = T.sum(axis=0).astype(int)
+    seen = 0
+    done = np.zeros(J, dtype=bool)
+    while True:
+        avail = np.flatnonzero((indeg == 0) & ~done)
+        if not len(avail):
+            break
+        k = int(avail[0])
+        done[k] = True
+        seen += 1
+        indeg -= T[k].astype(int)
+        indeg[k] = 1 << 30
+    return seen == J
+
+
+def two_dim_search(beats: np.ndarray, rng, tries: int):
+    """Try many first orderings; return a 2-realizer if one turns up, else None.
+
+    A search, not a proof: it can only say that none was found in this many
+    tries. It is worth running anyway, because the greedy cover is bad at this.
+    On CASP14 and MathArena 2025 the greedy needed 4 orderings and a 2-realizer
+    exists - the greedy size is an upper bound and a loose one.
+    """
+    for t in range(tries):
+        o = random_extension(beats, rng, None if t % 2 else rng.random(beats.shape[0]))
+        c = conjugate(beats, o)
+        if c is not None:
+            return [o, c]
+    return None
+
+
 def find_s3(beats: np.ndarray):
     """A standard example S_3: a1..a3, b1..b3 with a_i < b_j exactly when i != j.
 
@@ -155,12 +226,17 @@ def find_s3(beats: np.ndarray):
         for B in itertools.combinations(range(J), 3):
             if set(A) & set(B):
                 continue
+            if any(beats[u, v] or beats[v, u] for u, v in itertools.combinations(A, 2)):
+                continue
+            if any(beats[u, v] or beats[v, u] for u, v in itertools.combinations(B, 2)):
+                continue
             for perm in itertools.permutations(range(3)):
                 ok = True
                 for i in range(3):
                     for j in range(3):
                         want = (i != j)
-                        if bool(beats[A[i], B[perm[j]]]) != want:
+                        bb = B[perm[j]]
+                        if bool(beats[A[i], bb]) != want or beats[bb, A[i]]:
                             ok = False
                             break
                     if not ok:
@@ -195,7 +271,11 @@ def main() -> int:
         e = exact_log2(s)[0]
         band_err = math.log2(B) - math.log2(e)
 
-        orders = build_realizer(s, rng)
+        greedy_orders = build_realizer(s, rng)
+        two = two_dim_search(s, rng, 600)
+        # Where an exact 2-realizer exists, use it: it is both smaller and
+        # exact, and the greedy cover misses it.
+        orders = two if two is not None else greedy_orders
         for o in orders:
             R = order_to_relation(o)
             if (s & ~R).any():
@@ -214,13 +294,34 @@ def main() -> int:
             ok_exact = False
 
         w = find_s3(s)
-        rows.append({"name": name, "J": J, "k": len(orders), "band": band_err,
+        rows.append({"name": name, "two": two is not None,
+                     "greedy_k": len(greedy_orders),
+                     "J": J, "k": len(orders), "band": band_err,
                      "curve": curve, "s3": None if w is None else
                      ([labels[i] for i in w[0]], [labels[i] for i in w[1]])})
-        print(f"  {name:<22} realizer {len(orders)} orderings, band error "
-              f"{band_err:5.2f} bits, S_3 {'yes' if w else 'no'}")
+        print(f"  {name:<22} realizer {len(orders)} orderings (greedy "
+              f"{len(greedy_orders)}), band error {band_err:5.2f} bits, "
+              f"S_3 {'yes' if w else 'no'}")
 
     print("self-checks ...")
+    # A search that returns nothing on every board has to be shown able to
+    # return something. P4 came back 0 of 8 and without this that reads as a
+    # measurement when it could be a broken loop.
+    plant = np.zeros((SUB, SUB), dtype=bool)
+    for i in range(3):
+        for j in range(3):
+            if i != j:
+                plant[i, 3 + j] = True
+    ok_s3 = (find_s3(plant) is not None
+             and find_s3(np.triu(np.ones((SUB, SUB), dtype=bool), k=1)) is None
+             and find_s3(np.zeros((SUB, SUB), dtype=bool)) is None)
+    print(f"  [{'ok  ' if ok_s3 else 'FAIL'}] the S_3 search finds a planted S_3 and "
+          f"rejects a total order and an antichain")
+    # and the 2-realizer search must find one where a 2-realizer exists
+    tot = np.triu(np.ones((SUB, SUB), dtype=bool), k=1)
+    ok_2d = two_dim_search(tot, np.random.default_rng(1), 5) is not None
+    print(f"  [{'ok  ' if ok_2d else 'FAIL'}] the 2-realizer search finds one for a "
+          f"total order, which is 1-dimensional")
     print(f"  [{'ok  ' if ok_ext else 'FAIL'}] every ordering is a linear extension "
           f"of its poset")
     print(f"  [{'ok  ' if ok_contain else 'FAIL'}] every partial intersection contains "
@@ -232,7 +333,7 @@ def main() -> int:
     ok_n = len(rows) >= 8
     print(f"  [{'ok  ' if ok_n else 'FAIL'}] {len(rows)} boards (need >= 8)")
 
-    if not (ok_ext and ok_contain and ok_le and ok_exact and ok_n):
+    if not (ok_s3 and ok_2d and ok_ext and ok_contain and ok_le and ok_exact and ok_n):
         print(chr(10) + "A CHECK FAILED - no table is printed.")
         return 1
 
@@ -274,6 +375,55 @@ def main() -> int:
       f"pre-registered = all:  {'HIT' if mono == len(rows) else 'MISS'}")
     p(f"  P4  a standard example S_3 present on {ns3} of {len(rows)}       "
       f"pre-registered >= 6:  {'HIT' if ns3 >= 6 else 'MISS'}")
+    p("")
+    ex2 = [r["name"] for r in rows if r["two"]]
+    p("  THE ANSWER TO THE QUESTION THIS FILE WAS OPENED FOR. Exactness is")
+    p(f"  affordable on every board: {min(r['k'] for r in rows)} to "
+      f"{max(r['k'] for r in rows)} orderings, so that many numbers per system")
+    p("  against a band's 2. It selects nothing, so there is no handle for a")
+    p("  second sample of items to move, which is what killed the six-system")
+    p("  rule. That is the constructive recommendation.")
+    p("")
+    if ex2:
+        p(f"  AND ON {len(ex2)} OF {len(rows)} BOARDS IT IS FREE. "
+          f"{', '.join(ex2)} have")
+        p("  dimension exactly 2: two orderings reproduce the relation cell for")
+        p("  cell. Two numbers per system, the same budget a band spends, with")
+        p("  zero error instead of the band's invented freedom.")
+        p("")
+    p("  P2 scores 1 of 8 rather than 2 because of a tie: on MathArena 2025 the")
+    p("  2-realizer is exact where the band invents 1.26 bits, a strict win at")
+    p("  equal budget, while on CASP14 both are exact and neither is smaller.")
+    p("")
+    p("  P2 MISSED, and the miss is half instrument. On the boards where no")
+    p("  2-realizer was found, two orderings invent far more false precision")
+    p("  than the band invents false freedom, and the band wins its own price")
+    p("  point comfortably. But the greedy cover that produced those k=2 numbers")
+    p("  is a bad upper bound: it wanted 4 orderings for CASP14 and MathArena")
+    p("  2025, where a direct construction finds 2 and is exact. So the k=2")
+    p("  column below is what a greedy realizer costs, not what a 2-realizer")
+    p("  costs, wherever the direct search came back empty.")
+    p("")
+    p("  What is not in doubt: the band is a good two-number summary. Twelve")
+    p("  iterations of measuring what it costs end by defending it at its own")
+    p("  price point. What was wrong was never the band - it was printing a band")
+    p("  and saying nothing about the 1.3 to 4.8 bits.")
+    p("")
+    p("  P4 MISSED AND LEAVES A HOLE. No standard example S_3 exists on any of")
+    p("  the 8 boards. The search is sound - the self-check plants one and finds")
+    p("  it, and rejects a total order and an antichain - so this is a")
+    p("  measurement, not a broken loop. But S_3 was the whole lower-bound")
+    p("  strategy, so nothing here PROVES the dimension exceeds 2. The realizer")
+    p("  sizes are upper bounds from a greedy cover.")
+    p("")
+    p("  A direct search stands in its place and is reported as a search. For")
+    p("  each board, 600 candidate first orderings were tried; for each, the")
+    p("  second ordering of a 2-realizer is forced - it must agree with the")
+    p("  poset and reverse every incomparable pair - so it exists exactly when")
+    p("  that tournament is acyclic, which is checkable in O(J^2).")
+    for r in rows:
+        p(f"    {r['name']:<24} 2-realizer: {'FOUND, dimension 2' if r['two'] else 'none in 600 tries'}"
+          f"   greedy wanted {r['greedy_k']}")
     p("")
     p("  S_3 WITNESSES. Three systems and three others, each of the first below")
     p("  each of the second except its own partner. Two orderings cannot reverse")
