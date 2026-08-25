@@ -1,0 +1,66 @@
+THE ENTROPY ESTIMATOR AGAINST AN EXACTLY KNOWN VALUE
+============================================================================================
+  Induced sub-posets of 18 systems from each board's own beats relation.
+  Not measured, having fewer systems than the sub-poset size: TabArena 16 models (J=16).
+  Exact counts by subset DP in big integers; Knuth's estimator at 1000 samples on the same relation.
+
+  board                     J  exact log2     Knuth   rel err  Jensen lo   at 4000
+  SWE-bench Verified      134      28.089    28.265     0.63%     26.904    28.051
+  MTEB English v2         181      24.650    24.714     0.26%     23.189    24.610
+  HELM classic             90      42.297    42.056    -0.57%     38.547    42.144
+  ProteinGym DMS           96      23.854    23.671    -0.77%     22.457    23.806
+  TabArena 45 variants     45      34.476    34.579     0.30%     33.070    34.535
+  CASP14                  101      37.443    37.440    -0.01%     37.369    37.444
+  LiveBench               152      31.404    31.457     0.17%     30.489    31.477
+  MathArena 2025           35      25.304    25.329     0.10%     24.809    25.369
+
+  P1  within 5% of exact: 8 of 8                pre-registered >= 8:  HIT
+  P2  of the 0 outside the band, 0 err low        pre-registered >= half: HIT
+  P3  Jensen bound below exact: 8 of 8           pre-registered = all: HIT
+  P4  4x samples moves less than the gap: 4 of 8   pre-registered >= 7:  MISS
+
+  Largest relative error: ProteinGym DMS, -0.77% (23.671 against 23.854).
+  Mean signed error +0.01%, mean absolute 0.35%.
+
+  P4 MISSED, and the miss is the result. It was framed to detect BIAS:
+  if the estimator sat systematically below the truth, more samples would
+  not close the gap. Quadrupling the samples moved the estimate by MORE
+  than its distance to exact on half the boards, which is what happens
+  when there is no bias left to find and the residual is sampling noise.
+  P2 was written expecting the same bias and had nothing to score: no
+  board fell outside the band at all. The mean signed error is +0.01 %.
+
+  So the prediction behind both was wrong. The log of a mean of a
+  heavy-tailed variable CAN sit well below the truth, and on these posets
+  it does not: at 18 systems the estimator is accurate to 0.35 % on
+  average and 0.77 % at worst, and its Jensen bound is below the exact
+  value every time, as a bound must be.
+
+  Induced against rebuilt, which is the choice this measurement makes:
+  board                   induced edges   rebuilt  cells differing
+  SWE-bench Verified                 89       104               15
+  MTEB English v2                   101       125               24
+  HELM classic                       27        61               34
+  ProteinGym DMS                    105       119               14
+  TabArena 45 variants               62        73               11
+  CASP14                             68        72                4
+  LiveBench                          77        96               19
+  MathArena 2025                    104       115               11
+
+  Rebuilding would re-estimate the multiplicity threshold from 18
+  systems rather than from J, so it rejects a different set of pairs and
+  answers a different question. The induced order is the board's own.
+
+  What this does NOT establish: that the same holds at J = 181, where the
+  exact count cannot be computed and where the tail is longer. The rung
+  is at 18 systems and the claim stops there.
+
+  Law 2 is a statement about H / log2(J!). This measures the numerator
+  against a value that is known rather than estimated, on posets that
+  came out of real boards rather than on a chain and an antichain. The
+  estimator's own self-checks use those two extremes, which is where an
+  estimator is least likely to fail.
+
+  Recorded, not predicted: the beats relation is transitive on all nine
+  boards - its transitive closure adds exactly zero edges - so the
+  partial order is genuine and the sub-poset is well defined.

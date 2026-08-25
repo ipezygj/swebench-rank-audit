@@ -137,13 +137,17 @@ def main() -> int:
     ok2, m2 = _check_closed_forms()
     print(f"  [{'ok  ' if ok2 else 'FAIL'}] {m2}")
 
-    rows = []
+    rows, skipped = [], []
     for name, path in MATRICES.items():
         if not Path(path).exists():
             continue
         x = pd.read_csv(path, index_col=0).dropna(axis=0).to_numpy(dtype=float)
         J = x.shape[0]
         if J < SUB:
+            # Named in the output rather than dropped in silence: a table of
+            # eight where nine were available is a bounded denominator, and
+            # this file spent the evening on exactly that class.
+            skipped.append((name, J))
             continue
         beats = rs.rank_sets(x)["beats"]
         pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
@@ -152,18 +156,29 @@ def main() -> int:
         count, ex = exact_log2(sub)
         est = le.log_extensions(sub, SAMPLES, np.random.default_rng(SEED + 7))
         hi = le.log_extensions(sub, SAMPLES_HI, np.random.default_rng(SEED + 7))
-        # the estimator must have been handed the same relation, not a rebuild
-        same = bool((sub == beats[np.ix_(pick, pick)]).all())
+        # A rebuilt poset would be a DIFFERENT object: a fresh Holm run on the
+        # 18-row sub-matrix re-estimates the threshold from 18 systems instead
+        # of J, so it rejects a different set of pairs. Confirming the two
+        # differ is what makes "induced, not rebuilt" a choice rather than a
+        # word. The first version of this check compared sub against the
+        # expression sub was assigned from, which is true by construction -
+        # the same degenerate shape this evening was spent finding elsewhere.
+        rebuilt = rs.rank_sets(x[pick])["beats"]
+        differs = int((rebuilt != sub).sum())
         rows.append({"name": name, "J": J, "exact": ex, "count": count,
                      "est": est["bits"], "lower": est["bits_lower"],
-                     "se": est["se_bits"], "hi": hi["bits"], "same": same})
+                     "se": est["se_bits"], "hi": hi["bits"],
+                     "rebuilt_differs": differs,
+                     "rebuilt_edges": int(rebuilt.sum()),
+                     "induced_edges": int(sub.sum())})
         print(f"  {name:<22} exact {ex:8.3f}  knuth {est['bits']:8.3f}")
 
     ok3 = len(rows) >= 8
     print(f"  [{'ok  ' if ok3 else 'FAIL'}] {len(rows)} boards measured (need >= 8)")
-    ok4 = all(r["same"] for r in rows)
-    print(f"  [{'ok  ' if ok4 else 'FAIL'}] the estimator was handed the same relation "
-          f"the exact counter was, on {sum(r['same'] for r in rows)} of {len(rows)}")
+    ok4 = all(r["rebuilt_differs"] > 0 for r in rows)
+    print(f"  [{'ok  ' if ok4 else 'FAIL'}] the induced sub-poset differs from a rebuilt "
+          f"one on {sum(1 for r in rows if r['rebuilt_differs'] > 0)} of {len(rows)} "
+          f"boards, so the choice between them is a real choice")
 
     if not (ok1 and ok2 and ok3 and ok4):
         print(chr(10) + "A CHECK FAILED - no table is printed.")
@@ -179,6 +194,9 @@ def main() -> int:
     p("THE ENTROPY ESTIMATOR AGAINST AN EXACTLY KNOWN VALUE")
     p("=" * 92)
     p(f"  Induced sub-posets of {SUB} systems from each board's own beats relation.")
+    if skipped:
+        p("  Not measured, having fewer systems than the sub-poset size: "
+          + ", ".join(f"{n} (J={j})" for n, j in skipped) + ".")
     p(f"  Exact counts by subset DP in big integers; Knuth's estimator at "
       f"{SAMPLES} samples on the same relation.")
     p("")
@@ -208,6 +226,34 @@ def main() -> int:
       f"{100 * worst['rel']:+.2f}% ({worst['est']:.3f} against {worst['exact']:.3f}).")
     p(f"  Mean signed error {100 * float(np.mean([r['rel'] for r in rows])):+.2f}%, "
       f"mean absolute {100 * float(np.mean([abs(r['rel']) for r in rows])):.2f}%.")
+    p("")
+    p("  P4 MISSED, and the miss is the result. It was framed to detect BIAS:")
+    p("  if the estimator sat systematically below the truth, more samples would")
+    p("  not close the gap. Quadrupling the samples moved the estimate by MORE")
+    p("  than its distance to exact on half the boards, which is what happens")
+    p("  when there is no bias left to find and the residual is sampling noise.")
+    p("  P2 was written expecting the same bias and had nothing to score: no")
+    p("  board fell outside the band at all. The mean signed error is +0.01 %.")
+    p("")
+    p("  So the prediction behind both was wrong. The log of a mean of a")
+    p("  heavy-tailed variable CAN sit well below the truth, and on these posets")
+    p("  it does not: at 18 systems the estimator is accurate to 0.35 % on")
+    p("  average and 0.77 % at worst, and its Jensen bound is below the exact")
+    p("  value every time, as a bound must be.")
+    p("")
+    p("  Induced against rebuilt, which is the choice this measurement makes:")
+    p(f"  {'board':<22}{'induced edges':>15}{'rebuilt':>10}{'cells differing':>17}")
+    for r in rows:
+        p(f"  {r['name']:<22}{r['induced_edges']:>15}{r['rebuilt_edges']:>10}"
+          f"{r['rebuilt_differs']:>17}")
+    p("")
+    p("  Rebuilding would re-estimate the multiplicity threshold from 18")
+    p("  systems rather than from J, so it rejects a different set of pairs and")
+    p("  answers a different question. The induced order is the board's own.")
+    p("")
+    p("  What this does NOT establish: that the same holds at J = 181, where the")
+    p("  exact count cannot be computed and where the tail is longer. The rung")
+    p("  is at 18 systems and the claim stops there.")
     p("")
     p("  Law 2 is a statement about H / log2(J!). This measures the numerator")
     p("  against a value that is known rather than estimated, on posets that")
