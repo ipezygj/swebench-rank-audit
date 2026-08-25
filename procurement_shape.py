@@ -137,27 +137,37 @@ def main() -> int:
         q(f"  {J:<9}" + "".join(f"{crit(J, n):>8.1f}" for n in NS))
     q("")
     med_cv = float("nan")
-    if real:
-        cvs = [allowed_cv(J, n) for J, n in real if J >= 2 and n >= 2]
-        med_cv = float(np.median(cvs)) if cvs else float("nan")
-        few = sum(1 for _, n in real if n <= 3) / len(real)
-        q(f"  REAL SHAPES: {len(real)} Finnish contract award notices from TED,")
-        q(f"  eForms era. Median bidders {int(np.median([j for j, _ in real]))}, "
-          f"median criteria {int(np.median([n for _, n in real]))}.")
+    usable = [(J, n) for J, n in real if J >= 2 and n >= 2]
+    if usable:
+        cvs = [allowed_cv(J, n) for J, n in usable]
+        med_cv = float(np.median(cvs))
+        few = sum(1 for _, n in usable if n <= 3) / len(usable)
+        q(f"  REAL SHAPES: {len(usable)} usable of {len(real)} Finnish contract")
+        q(f"  award notices harvested from TED. Median bidders "
+          f"{int(np.median([j for j, _ in usable]))}, median criteria "
+          f"{int(np.median([n for _, n in usable]))}.")
         q(f"  Median allowed coefficient of variation: {med_cv:.2f}.")
         q(f"  Share with 3 or fewer criteria: {100 * few:.0f} %.")
     else:
-        q("  REAL SHAPES: none harvested; the grid above stands on its own and")
-        q("  P1 and P4 are VACUOUS rather than scored.")
+        q(f"  REAL SHAPES: THE HARVEST FAILED and the overlay is empty. "
+          f"{len(real)} Finnish")
+        q("  award notices were retrieved from TED's eForms-era records and every")
+        q("  one of them is a single-criterion price award, which is not a")
+        q("  scoring table at all - there is nothing to be uniform across. TED's")
+        q("  structured record carries the criteria TYPES but not the published")
+        q("  comparison table, and the tables themselves live as PDF attachments")
+        q("  in municipal decision registers, which this run did not reach.")
+        q("  P1 and P4 are VACUOUS, not missed. The grid above needs no data: it")
+        q("  is exact arithmetic of the construction, and it is the result.")
     q("")
-    p1 = (med_cv < 0.50) if real and not math.isnan(med_cv) else None
+    p1 = (med_cv < 0.50) if usable else None
     p2 = allowed_cv(8, 5) < 0.35
     p3 = all(allowed_cv(a, n) > allowed_cv(b, n)
              for n in NS for a, b in zip(JS, JS[1:]))
-    p4 = ((sum(1 for _, n in real if n <= 3) / len(real) >= 0.25)
-          if real else None)
-    q(f"  P1  median allowed CV at real shapes: "
-      f"{med_cv:.2f}" if real else "  P1  no real shapes")
+    p4 = ((sum(1 for _, n in usable if n <= 3) / len(usable) >= 0.25)
+          if usable else None)
+    q(f"  P1  median allowed CV at real shapes: {med_cv:.2f}" if usable
+      else "  P1  no usable real shapes were harvested")
     q(f"      pre-registered < 0.50:  "
       f"{'VACUOUS - no real shapes' if p1 is None else ('HIT' if p1 else 'MISS')}")
     q(f"  P2  allowed CV at 8 bidders and 5 criteria: {allowed_cv(8, 5):.2f}")

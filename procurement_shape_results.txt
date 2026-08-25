@@ -1,0 +1,62 @@
+HOW UNIFORM MUST A WINNING BID BE?
+============================================================================================
+  Largest coefficient of variation the winner's per-criterion advantage
+  over the runner-up may have, and still separate from it at simultaneous
+  95 % across all pairs. Lower means stricter. Exact for the most
+  significant pair; no assumption about the score distribution.
+
+  bidders       n=2     n=3     n=4     n=5     n=6     n=8    n=10    n=12
+  3            0.04    0.23    0.41    0.56    0.69    0.90    1.08    1.23
+  4            0.02    0.16    0.32    0.46    0.58    0.78    0.94    1.08
+  5            0.01    0.12    0.27    0.40    0.51    0.70    0.86    0.99
+  6            0.01    0.10    0.23    0.36    0.47    0.65    0.80    0.93
+  8            0.00    0.07    0.19    0.30    0.41    0.58    0.72    0.85
+  10           0.00    0.06    0.16    0.27    0.36    0.53    0.67    0.79
+  12           0.00    0.05    0.14    0.24    0.34    0.50    0.63    0.75
+  15           0.00    0.04    0.12    0.21    0.30    0.46    0.59    0.71
+  20           0.00    0.03    0.10    0.18    0.27    0.42    0.55    0.66
+
+  The same thing as the raw threshold c the top pair must clear:
+  bidders       n=2     n=3     n=4     n=5     n=6     n=8    n=10    n=12
+  3            38.2     7.6     4.9     4.0     3.5     3.1     2.9     2.8
+  4            76.4    10.9     6.2     4.9     4.2     3.6     3.4     3.2
+  5           127.3    14.1     7.5     5.6     4.8     4.0     3.7     3.5
+  6           191.0    17.3     8.6     6.3     5.2     4.4     4.0     3.7
+  8           356.5    23.6    10.6     7.4     6.0     4.9     4.4     4.1
+  10          573.0    30.0    12.5     8.4     6.7     5.3     4.7     4.4
+  12          840.3    36.3    14.2     9.3     7.3     5.7     5.0     4.6
+  15         1336.9    45.8    16.6    10.4     8.1     6.1     5.3     4.9
+  20         2419.2    61.6    20.3    12.2     9.1     6.8     5.8     5.3
+
+  REAL SHAPES: THE HARVEST FAILED and the overlay is empty. 4 Finnish
+  award notices were retrieved from TED's eForms-era records and every
+  one of them is a single-criterion price award, which is not a
+  scoring table at all - there is nothing to be uniform across. TED's
+  structured record carries the criteria TYPES but not the published
+  comparison table, and the tables themselves live as PDF attachments
+  in municipal decision registers, which this run did not reach.
+  P1 and P4 are VACUOUS, not missed. The grid above needs no data: it
+  is exact arithmetic of the construction, and it is the result.
+
+  P1  no usable real shapes were harvested
+      pre-registered < 0.50:  VACUOUS - no real shapes
+  P2  allowed CV at 8 bidders and 5 criteria: 0.30
+      pre-registered < 0.35:  HIT
+  P3  allowed CV falls as bidders are added, at every criteria count
+      pre-registered yes:  HIT
+  P4  share of real shapes with <= 3 criteria
+      pre-registered >= 25 %:  VACUOUS - no real shapes
+
+  HOW TO USE THIS ON A REAL COMPARISON TABLE. Take the winner's points
+  and the runner-up's, criterion by criterion, and subtract. If the
+  standard deviation of those differences is larger than the mean times
+  the number above, the two bids are not distinguishable at 95 %
+  simultaneous confidence, and the award ranked them on noise. It is one
+  subtraction and one ratio.
+
+  What makes procurement different from every other board here is not the
+  arithmetic. It is that the ranking is a decision with a counterparty:
+  the losing bidder has standing, the authority has a statutory duty to
+  justify the comparison, and neither side currently has a way to say
+  whether the gap between first and second was larger than the noise in
+  the scoring.
