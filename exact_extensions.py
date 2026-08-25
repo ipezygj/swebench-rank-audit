@@ -51,7 +51,9 @@ SELF-CHECKS (no table if any fails)
     posets of 6 and 7 elements. Two implementations, one answer;
   * it must return J! for an antichain and 1 for a chain at J = 18, where
     the DP is doing real work rather than a trivial recursion;
-  * at least 8 boards must be measured. An empty table reads as a pass;
+  * at least 8 boards must be measured, each on R independent draws rather
+    than one - the single-draw design was corrected 2026-08-25 after
+    slack_draws.py showed a draw-to-draw sd of 0.5 to 1.0 bits;
   * the estimator must be handed the same boolean matrix the exact counter
     was handed, asserted element-wise, not a matrix rebuilt from the board.
 
@@ -68,10 +70,12 @@ import pandas as pd
 
 import leaderboard_entropy as le
 import rank_sets as rs
+from draws import R_DEFAULT, fmt, subsets, summarise
 from entropy_law_test import MATRICES
 
 SEED = 20260825
-SUB = 18            # systems per induced sub-poset; exact DP is 2^SUB states
+SUB = 18
+R = R_DEFAULT            # systems per induced sub-poset; exact DP is 2^SUB states
 SAMPLES = 1000      # what entropy_law_test.py uses
 SAMPLES_HI = 4000   # for P4
 BAND = 0.05         # the 5 % band in P1
@@ -150,9 +154,18 @@ def main() -> int:
             skipped.append((name, J))
             continue
         beats = rs.rank_sets(x)["beats"]
-        pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
+        rels, exs, ests, los, his, diffs = [], [], [], [], [], []
+        for pick in subsets(J, SUB, R=R, seed=SEED + J):
+            sub = beats[np.ix_(pick, pick)].copy()
+            count, ex = exact_log2(sub)
+            est = le.log_extensions(sub, SAMPLES, np.random.default_rng(SEED + 7))
+            hi = le.log_extensions(sub, SAMPLES_HI, np.random.default_rng(SEED + 7))
+            exs.append(ex); ests.append(est["bits"]); los.append(est["bits_lower"])
+            his.append(hi["bits"])
+            rels.append((est["bits"] - ex) / ex)
+            diffs.append(int((rs.rank_sets(x[pick])["beats"] != sub).sum()))
+        pick = list(subsets(J, SUB, R=1, seed=SEED + J))[0]
         sub = beats[np.ix_(pick, pick)].copy()
-
         count, ex = exact_log2(sub)
         est = le.log_extensions(sub, SAMPLES, np.random.default_rng(SEED + 7))
         hi = le.log_extensions(sub, SAMPLES_HI, np.random.default_rng(SEED + 7))
@@ -164,10 +177,12 @@ def main() -> int:
         # expression sub was assigned from, which is true by construction -
         # the same degenerate shape this evening was spent finding elsewhere.
         rebuilt = rs.rank_sets(x[pick])["beats"]
-        differs = int((rebuilt != sub).sum())
+        differs = int(np.median(diffs))
         rows.append({"name": name, "J": J, "exact": ex, "count": count,
                      "est": est["bits"], "lower": est["bits_lower"],
                      "se": est["se_bits"], "hi": hi["bits"],
+                     "rel_s": summarise(rels), "R": R,
+                     "bound_ok": sum(1 for a, b in zip(los, exs) if a <= b),
                      "rebuilt_differs": differs,
                      "rebuilt_edges": int(rebuilt.sum()),
                      "induced_edges": int(sub.sum())})
@@ -200,16 +215,18 @@ def main() -> int:
     p(f"  Exact counts by subset DP in big integers; Knuth's estimator at "
       f"{SAMPLES} samples on the same relation.")
     p("")
-    p(f"  {'board':<22}{'J':>5}{'exact log2':>12}{'Knuth':>10}{'rel err':>10}"
-      f"{'Jensen lo':>11}{'at 4000':>10}")
+    p(f"  {'board':<22}{'J':>5}{'exact log2':>12}{'Knuth':>10}"
+      f"{'rel err % over draws, median [IQR]':>36}{'bound ok':>10}")
     for r in rows:
+        rs_ = r["rel_s"]
         p(f"  {r['name']:<22}{r['J']:>5}{r['exact']:>12.3f}{r['est']:>10.3f}"
-          f"{100 * r['rel']:>9.2f}%{r['lower']:>11.3f}{r['hi']:>10.3f}")
+          f"{100 * rs_['median']:>16.2f} [{100 * rs_['q1']:>6.2f},{100 * rs_['q3']:>6.2f}]"
+          f"{r['bound_ok']:>7}/{r['R']}")
     p("")
-    within = sum(1 for r in rows if abs(r["rel"]) <= BAND)
-    outside = [r for r in rows if abs(r["rel"]) > BAND]
+    within = sum(1 for r in rows if abs(r["rel_s"]["median"]) <= BAND)
+    outside = [r for r in rows if abs(r["rel_s"]["median"]) > BAND]
     low = sum(1 for r in outside if r["rel"] < 0)
-    bound_ok = sum(1 for r in rows if r["lower"] <= r["exact"])
+    bound_ok = sum(1 for r in rows if r["bound_ok"] == r["R"])
     stable = sum(1 for r in rows if r["move"] < r["gap"])
     p(f"  P1  within {BAND:.0%} of exact: {within} of {len(rows)}                "
       f"pre-registered >= 8:  {'HIT' if within >= 8 else 'MISS'}")
@@ -221,11 +238,15 @@ def main() -> int:
     p(f"  P4  4x samples moves less than the gap: {stable} of {len(rows)}   "
       f"pre-registered >= 7:  {'HIT' if stable >= 7 else 'MISS'}")
     p("")
-    worst = max(rows, key=lambda r: abs(r["rel"]))
-    p(f"  Largest relative error: {worst['name']}, "
-      f"{100 * worst['rel']:+.2f}% ({worst['est']:.3f} against {worst['exact']:.3f}).")
-    p(f"  Mean signed error {100 * float(np.mean([r['rel'] for r in rows])):+.2f}%, "
-      f"mean absolute {100 * float(np.mean([abs(r['rel']) for r in rows])):.2f}%.")
+    worst = max(rows, key=lambda r: abs(r["rel_s"]["median"]))
+    allr = [r["rel_s"] for r in rows]
+    p(f"  Largest median relative error: {worst['name']}, "
+      f"{100 * worst['rel_s']['median']:+.2f}%; largest single draw anywhere "
+      f"{100 * max(abs(a['min']) if abs(a['min']) > abs(a['max']) else abs(a['max']) for a in allr):.2f}%.")
+    p(f"  Median of the per-board medians "
+      f"{100 * float(np.median([a['median'] for a in allr])):+.2f}%, "
+      f"mean absolute {100 * float(np.mean([abs(a['median']) for a in allr])):.2f}%, "
+      f"over {rows[0]['R']} draws per board.")
     p("")
     p("  P4 MISSED, and the miss is the result. It was framed to detect BIAS:")
     p("  if the estimator sat systematically below the truth, more samples would")

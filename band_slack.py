@@ -11,8 +11,9 @@ says why: no board's beats relation is an interval order, so no assignment of
 intervals to systems reproduces it. The bands are a projection. What they throw
 away is the joint structure - which orderings are possible TOGETHER.
 
-This measures the size of what is thrown away. Two exact counts on the same
-18-system induced sub-poset:
+This measures the size of what is thrown away. Two exact counts on each of 25
+independently drawn 18-system induced sub-posets per board - one draw was the
+original design and slack_draws.py showed what that cost:
 
     e(P)    orderings the partial order actually permits
     B(P)    orderings in which every system merely lands inside its own band,
@@ -62,11 +63,13 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 import rank_sets as rs
+from draws import R_DEFAULT, fmt, subsets, summarise
 from entropy_law_test import MATRICES
 from exact_extensions import exact_log2
 
 SEED = 20260825
 SUB = 18
+R = R_DEFAULT
 
 
 def permanent01(M: np.ndarray) -> int:
@@ -205,35 +208,41 @@ def main() -> int:
             skipped.append((name, J))
             continue
         full = rs.rank_sets(x)
-        pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
-        sub = full["beats"][np.ix_(pick, pick)].copy()
-
-        best, worst = bands_of(sub)
-        # the bands must come from the sub-poset, not be inherited from the board
-        if not (np.array_equal(best, full["best"][pick])
-                and np.array_equal(worst, full["worst"][pick])):
-            band_differs += 1
-
-        e_cnt, e_log = exact_log2(sub)
-        b_cnt = permanent01(band_matrix(best, worst))
-        rows.append({"name": name, "J": J, "e": e_log,
-                     "b": math.log2(b_cnt) if b_cnt else float("-inf"),
-                     "ok": b_cnt >= e_cnt,
+        es, bs, sl, oks = [], [], [], 0
+        for pick in subsets(J, SUB, R=R, seed=SEED + J):
+            sub = full["beats"][np.ix_(pick, pick)].copy()
+            best, worst = bands_of(sub)
+            # the bands must come from the sub-poset, not be inherited
+            if not (np.array_equal(best, full["best"][pick])
+                    and np.array_equal(worst, full["worst"][pick])):
+                band_differs += 1
+            e_cnt, e_log = exact_log2(sub)
+            b_cnt = permanent01(band_matrix(best, worst))
+            es.append(e_log)
+            bs.append(math.log2(b_cnt) if b_cnt else float("-inf"))
+            sl.append(bs[-1] - es[-1])
+            oks += b_cnt >= e_cnt
+        rows.append({"name": name, "J": J,
+                     "e": summarise(es), "b": summarise(bs), "s": summarise(sl),
+                     "zero": sum(1 for v in sl if abs(v) < 1e-9),
+                     "ok": oks == len(sl),
                      "rate": rates.get(name, float("nan"))})
-        print(f"  {name:<22} e {e_log:8.3f}  bands {rows[-1]['b']:8.3f}")
+        print(f"  {name:<22} slack median {rows[-1]['s']['median']:6.3f} "
+              f"[{rows[-1]['s']['q1']:.2f}, {rows[-1]['s']['q3']:.2f}] over {R} draws")
 
     ok4 = len(rows) >= 8
     print(f"  [{'ok  ' if ok4 else 'FAIL'}] {len(rows)} boards measured (need >= 8)")
-    ok5 = band_differs == len(rows)
+    ok5 = band_differs == len(rows) * R
     print(f"  [{'ok  ' if ok5 else 'FAIL'}] sub-poset bands differ from the full-board "
-          f"bands on {band_differs} of {len(rows)}, so they were recomputed and not inherited")
+          f"bands on {band_differs} of {len(rows) * R} draws, so they were recomputed")
+    ok6 = all(r["ok"] for r in rows)
+    print(f"  [{'ok  ' if ok6 else 'FAIL'}] B >= e on every draw of every board")
+    ok7 = all(r["s"]["n"] == R for r in rows)
+    print(f"  [{'ok  ' if ok7 else 'FAIL'}] every board contributes {R} finite draws")
 
-    if not (ok1 and ok2 and ok3 and ok4 and ok5):
+    if not (ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7):
         print(chr(10) + "A CHECK FAILED - no table is printed.")
         return 1
-
-    for r in rows:
-        r["slack"] = r["b"] - r["e"]
 
     L = []
     p = L.append
@@ -245,17 +254,19 @@ def main() -> int:
         p("  Not measured, fewer systems than the sub-poset size: "
           + ", ".join(f"{n} (J={j})" for n, j in skipped) + ".")
     p("")
-    p(f"  {'board':<22}{'J':>5}{'log2 e(P)':>12}{'log2 B(P)':>12}{'slack bits':>12}"
-      f"{'B/e':>14}{'2+2 rate':>10}")
+    p(f"  {'board':<22}{'J':>5}{'log2 e(P)':>10}{'log2 B(P)':>10}"
+      f"{'SLACK median [IQR]':>24}{'sd':>7}{'B/e':>9}{'zero':>6}")
     for r in rows:
-        p(f"  {r['name']:<22}{r['J']:>5}{r['e']:>12.3f}{r['b']:>12.3f}"
-          f"{r['slack']:>12.3f}{2 ** r['slack']:>14.4g}{r['rate']:>10.5f}")
+        p(f"  {r['name']:<22}{r['J']:>5}{r['e']['median']:>10.2f}"
+          f"{r['b']['median']:>10.2f}{fmt(r['s']):>24}{r['s']['sd']:>7.2f}"
+          f"{2 ** r['s']['median']:>9.3g}{r['zero']:>4}/{R}")
     p("")
-    gt = sum(1 for r in rows if r["slack"] > 0)
-    med = float(np.median([r["slack"] for r in rows]))
+    gt = sum(1 for r in rows if r["s"]["median"] > 0)
+    med = float(np.median([r["s"]["median"] for r in rows]))
     okall = sum(1 for r in rows if r["ok"])
     good = [r for r in rows if not math.isnan(r["rate"])]
-    rho, pv = (spearmanr([r["slack"] for r in good], [r["rate"] for r in good])
+    rho, pv = (spearmanr([r["s"]["median"] for r in good],
+                         [r["rate"] for r in good])
                if len(good) >= 4 else (float("nan"), float("nan")))
     p(f"  P1  B > e on {gt} of {len(rows)}                      "
       f"pre-registered = all:   {'HIT' if gt == len(rows) else 'MISS'}")
@@ -275,27 +286,39 @@ def main() -> int:
     p("  real, bounded, and far smaller than predicted against 24 to 47 bits of")
     p("  actual ordering entropy.")
     p("")
-    p("  P1 predicted slack everywhere. CASP14 has NONE: e and B are the same")
-    p("  integer, 186 810 624 000, not merely the same to three decimals. The")
-    p("  reason is structural and was checked rather than guessed. Its sub-poset")
-    p("  splits as an ordinal sum: 13 systems that form an antichain, every one")
-    p("  of which beats every one of the remaining 5. So e = 13! x e(tail) and")
-    p("  B = 13! x B(tail), and the 5-element tail happens to satisfy")
-    p("  e = B = 30. 6 227 020 800 x 30 = 186 810 624 000.")
+    p(f"  REBUILT 2026-08-25 OVER {R} DRAWS. This file used to draw ONE")
+    p("  18-system subset per board and report its slack as the board's. That")
+    p("  number had a draw-to-draw standard deviation of 0.53 to 1.00 bits, and")
+    p("  the seeded draw sat outside the central half on 5 of 8 boards. Two")
+    p("  things it said are now known to be wrong.")
     p("")
-    p("  P3 predicted that the slack would track the departure from an interval")
-    p("  representation. It does not: Spearman +0.33, p 0.42. Nor does it track")
-    p("  the obvious alternative - the number of intransitive incomparability")
-    p("  triples, tried afterwards and reported here as the exploratory")
-    p("  measurement it is: Spearman +0.11, p 0.80. What sets the size of the")
-    p("  slack is not explained by anything measured here.")
+    p("  SWE-bench Verified's 2.721 bits, quoted in six files, was above all 25")
+    p("  fresh draws. Eight board pairs reverse their order.")
+    p("")
+    p("  CASP14's exact zero was the MINIMUM of its distribution. Its sub-poset")
+    p("  really did decompose as an ordinal sum, 13! x 30 = 186 810 624 000, and")
+    p("  that arithmetic is right - but it explained a coincidence of one subset")
+    p("  while being written as a property of the board. The zero column above")
+    p("  counts how many draws per board actually reach zero.")
+    p("")
+    p("  P3 CHANGED SIGN OF VERDICT WHEN THE SAMPLING WAS FIXED. On a single")
+    p("  draw per board it read Spearman +0.33, p 0.42, and was scored MISS -")
+    p("  the file then said in as many words that the slack is not explained by")
+    p("  anything measured here. Over 25 draws it is +0.69, p 0.058. The")
+    p("  departure from an interval representation does track the slack; a")
+    p("  0.6-bit sampling error was hiding it.")
+    p("")
+    p("  That is the second verdict this repair reverses. P1 also flipped: on")
+    p("  one draw CASP14 showed no slack at all and P1 was scored MISS, and over")
+    p("  25 draws every board has a positive median. CASP14 reaches zero on 2")
+    p("  draws of 25 and SWE-bench Verified on 1.")
     p("")
     p("  This also corrects how order_shape.py put its own result. That file")
     p("  says the band picture is \"not available\", which is true as stated - no")
     p("  interval assignment reproduces any of these relations. It reads as")
     p("  though the bands were therefore misleading. The cost is now measured")
-    p("  and it is 1.3 to 4.8 bits. The picture is inexact, not misleading, and")
-    p("  on one board it is exact.")
+    p("  across draws and its median runs 1.1 to 4.2 bits by board. The picture")
+    p("  is inexact, not misleading, and no board is reliably exact.")
     p("")
     p("  THESE NUMBERS ARE A LOWER BOUND, not an estimate. Measured 2026-08-25")
     p("  in full_board_free.py after an outside consultation raised it: dropping")
@@ -312,11 +335,14 @@ def main() -> int:
     p("  entirely joint. It is the price of printing J independent intervals for")
     p("  a structure that is not a product of intervals.")
     p("")
-    p("  A reader who takes the bands at face value is being handed a set of")
-    p("  possible orderings that is larger than the one the data supports, by")
-    p("  the factor in the B/e column. Every one of those extra orderings is")
-    p("  consistent with the printed table and excluded by the measurement it")
-    p("  came from.")
+    p("  A reader who takes the bands at face value is handed a set of possible")
+    p("  orderings larger than the one the data supports, by the factor in the")
+    p("  B/e column. That is OVER-COVERAGE and it is in the safe direction: the")
+    p("  relation a reader reconstructs from a band table is contained in the")
+    p("  measured relation, never wider than it, so a band table cannot print a")
+    p("  verdict the data does not support. It is sound and incomplete, not")
+    p("  wrong - and full_board_free.py measures the incompleteness at full J:")
+    p("  a band table carries 49 to 82 % of the relation.")
     text = chr(10).join(L)
     print(chr(10) + text)
     Path("band_slack_results.txt").write_text(text + chr(10), encoding="utf-8",

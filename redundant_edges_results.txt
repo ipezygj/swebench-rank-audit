@@ -6,35 +6,35 @@ WHICH VERDICTS DOES A PRINTED BAND TABLE ALREADY CONTAIN?
   edge, not assumed.
   Not measured: TabArena 16 models (J=16).
 
-  board                   edges   free  costly   free %  top-6 edges  free there  mismatch
-  SWE-bench Verified         89     60      29      67%            8           8         0
-  MTEB English v2           101     69      32      68%            2           0         0
-  HELM classic               27      0      27       0%            0           0         0
-  ProteinGym DMS            105     80      25      76%            5           5         0
-  TabArena 45 variants       62     30      32      48%            0           0         0
-  CASP14                     68     68       0     100%            0           0         0
-  LiveBench                  77     55      22      71%            7           7         0
-  MathArena 2025            104     76      28      73%            0           0         0
+  board                    free share over draws, median [IQR]  draws with a top-6 edge  all free there
+  SWE-bench Verified                    91% [ 85%, 95%]                 16/25             20%
+  MTEB English v2                       66% [ 52%, 77%]                 18/25             20%
+  HELM classic                           0% [  0%,  0%]                  0/25            nan%
+  ProteinGym DMS                        82% [ 72%, 89%]                 24/25             71%
+  TabArena 45 variants                  66% [ 62%, 70%]                  1/25              0%
+  CASP14                                75% [ 65%, 85%]                  8/25            100%
+  LiveBench                             69% [ 63%, 75%]                 16/25             25%
+  MathArena 2025                        68% [ 60%, 73%]                  7/25              0%
 
-  board                     slack   redundant edges only   non-redundant only
-  SWE-bench Verified        2.721                   0.0%               100.0%
-  MTEB English v2           2.104                   0.0%               100.0%
-  HELM classic              4.785                   0.0%               100.0%
-  ProteinGym DMS            2.016                   0.0%               100.0%
-  TabArena 45 variants      3.455                   0.0%               100.0%
-  CASP14                    0.000                   0.0%                 0.0%
-  LiveBench                 2.320                   0.0%               100.0%
-  MathArena 2025            1.259                   0.0%               100.0%
+  board                    free edges only, median   costly edges only, median   draws
+  SWE-bench Verified                          0.0%                      100.0%      24
+  MTEB English v2                             0.0%                      100.0%      25
+  HELM classic                                0.0%                      100.0%      25
+  ProteinGym DMS                              0.0%                      100.0%      25
+  TabArena 45 variants                        0.0%                      100.0%      25
+  CASP14                                      0.0%                      100.0%      23
+  LiveBench                                   0.0%                      100.0%      25
+  MathArena 2025                              0.0%                      100.0%      25
 
   P1  as pre-registered, worst_i < best_j: 39 disagreements over 633 edges   pre-registered = 0:  MISS
       CORRECTED, worst_i <= best_j: 0 disagreements over 633 edges
-  P2  every top-6 edge free on 3 of 4 boards that
+  P2  every top-6 edge free on 1 of 7 boards that
       have any top-6 edge at all.  UNREACHABLE AS WRITTEN: it asked for
-      7 of 8 and only 4 boards have a top-6 edge, so 7 was
-      never available. Scored on what exists, it is 3 of 4.
-  P3  free share below 50 % board-wide on 2 of 8   pre-registered >= 6:  MISS
-  P4  over the 7 boards with slack to divide by: redundant-only recovers 0 % on 7, non-redundant-only recovers 100 % on 7   pre-registered both = all:  HIT
-      undefined and excluded rather than scored as failures: CASP14 (slack 0, so there is no ratio)
+      7 of 8 and only 7 boards have a top-6 edge, so 7 was
+      never available. Scored on what exists, it is 1 of 7.
+  P3  free share below 50 % board-wide on 1 of 8   pre-registered >= 6:  MISS
+  P4  over the 8 boards with slack to divide by: redundant-only recovers 0 % on 8, non-redundant-only recovers 100 % on 8   pre-registered both = all:  HIT
+      undefined and excluded rather than scored as failures: SWE-bench Verified, CASP14 (slack 0, so there is no ratio)
 
   THE CRITERION I PRE-REGISTERED WAS OFF BY ONE, and the failure was
   one-directional, which is what made it fixable rather than merely
@@ -53,6 +53,14 @@ WHICH VERDICTS DOES A PRINTED BAND TABLE ALREADY CONTAIN?
   condition is disjointness: on SWE-bench Verified's top six the bands
   are [1,2] against [3,12] and [3,8], and it is the gap between 2 and 3
   that forces the order, not the 1.
+
+  REBUILT OVER 25 DRAWS 2026-08-25. This file used to classify the edges
+  of ONE 18-system subset per board. The free share it reported - 67, 68,
+  76, 71, 73 % - was a single draw of a quantity whose interquartile range
+  is printed above, and CASP14's 100 % was the extreme of its own
+  distribution. The criterion is used for the sweep because it is O(J^2);
+  exact counting still runs on the first draw of every board and is what
+  licenses the substitution.
 
   P3 MISSED AND IT MATTERS. I predicted free edges would be rare
   board-wide and concentrated at the top. They are not rare anywhere:

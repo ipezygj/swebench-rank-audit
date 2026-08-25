@@ -33,32 +33,35 @@ WHERE DOES THE BAND PICTURE COST THE MOST?
   peak of the fitted curve: 4.36 bits at density 0.241
 
   board                    density    slack   predicted    error
-  SWE-bench Verified         0.582    2.721       1.964   -0.757
-  MTEB English v2            0.660    2.104       1.429   -0.675
-  HELM classic               0.176    4.785       4.140   -0.645
-  ProteinGym DMS             0.686    2.016       1.281   -0.735
-  TabArena 45 variants       0.405    3.455       3.488    0.033
-  CASP14                     0.444    0.000       3.144    3.144
-  LiveBench                  0.503    2.320       2.616    0.296
-  MathArena 2025             0.680    1.259       1.316    0.057
+  SWE-bench Verified         0.745    1.090       0.998   -0.093
+  MTEB English v2            0.595    2.748       1.865   -0.882
+  HELM classic               0.118    4.229       3.468   -0.761
+  ProteinGym DMS             0.699    2.037       1.212   -0.825
+  TabArena 45 variants       0.399    3.633       3.543   -0.090
+  CASP14                     0.471    1.919       2.908    0.990
+  LiveBench                  0.588    2.463       1.914   -0.549
+  MathArena 2025             0.595    2.435       1.865   -0.570
 
   P1  single-peaked: True, peak at density 0.241       pre-registered < 0.35:  HIT
   P2  mean slack below 0.05 density: 0.289 (178 boards); above 0.95: 0.000 (20)
       pre-registered both < 0.5:  HIT
   P3  peak 4.36 bits                          pre-registered > 4:     HIT
-  P4  MAE on the real boards 0.793 bits, against 1.427 for the simulated mean   pre-registered < 1.0 and < that:  HIT
+  P4  MAE on the real boards 0.595 bits, against 1.391 for the simulated mean   pre-registered < 1.0 and < that:  HIT
 
-  Dropping CASP14, whose slack is exactly zero for the structural reason
-  band_slack.py sets out - its sub-poset is an ordinal sum of a
-  13-antichain over a band-exact 5-element tail - the error on the
-  remaining 7 boards is 0.457 bits.
+  CASP14 IS NO LONGER AN EXCEPTION, and the exception was an artefact.
+  This file used to drop it, on the grounds that its slack was exactly
+  zero for a structural reason - its sub-poset decomposing as a
+  13-antichain over a band-exact tail - and dropping it took the error
+  from 0.793 to 0.457 bits. That zero was one draw, and the minimum of
+  CASP14's own distribution. Over 25 draws its median slack is 1.9 bits,
+  its prediction error is +0.99 rather than +3.14, and the whole-sample
+  error is 0.595 bits with nothing dropped.
 
-  Those errors are not random: mean signed -0.347. Every board
-  above density 0.58 is UNDER-predicted, by 0.65 to 0.76 bits. Real
-  boards carry more slack than simulated boards of the same density, so
-  the curve understates the cost on exactly the boards this repository
-  cares about. That is the conservative direction, and it is a measured
-  gap between a simulated field and a real one rather than a fitted one.
+  The residuals are still signed: mean -0.347.
+  Six of eight boards are UNDER-predicted. Real boards carry more slack
+  than simulated boards of the same density, which is the conservative
+  direction, and it is a measured gap between a simulated field and a
+  real one rather than a fitted one.
 
   The two ends are not assumptions. A board with no noise is a total
   order: one ordering, and the bands admit exactly that one. A board with

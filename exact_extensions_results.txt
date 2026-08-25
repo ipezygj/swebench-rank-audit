@@ -4,23 +4,23 @@ THE ENTROPY ESTIMATOR AGAINST AN EXACTLY KNOWN VALUE
   Not measured, having fewer systems than the sub-poset size: TabArena 16 models (J=16).
   Exact counts by subset DP in big integers; Knuth's estimator at 1000 samples on the same relation.
 
-  board                     J  exact log2     Knuth   rel err  Jensen lo   at 4000
-  SWE-bench Verified      134      28.089    28.265     0.63%     26.904    28.051
-  MTEB English v2         181      24.650    24.714     0.26%     23.189    24.610
-  HELM classic             90      42.297    42.056    -0.57%     38.547    42.144
-  ProteinGym DMS           96      23.854    23.671    -0.77%     22.457    23.806
-  TabArena 45 variants     45      34.476    34.579     0.30%     33.070    34.535
-  CASP14                  101      37.443    37.440    -0.01%     37.369    37.444
-  LiveBench               152      31.404    31.457     0.17%     30.489    31.477
-  MathArena 2025           35      25.304    25.329     0.10%     24.809    25.369
+  board                     J  exact log2     Knuth  rel err % over draws, median [IQR]  bound ok
+  SWE-bench Verified      134      28.089    28.265            0.17 [ -0.01,  0.35]     25/25
+  MTEB English v2         181      24.650    24.714           -0.21 [ -0.63,  0.11]     25/25
+  HELM classic             90      42.297    42.056           -0.24 [ -0.34, -0.05]     25/25
+  ProteinGym DMS           96      23.854    23.671           -0.06 [ -0.30,  0.41]     25/25
+  TabArena 45 variants     45      34.476    34.579            0.01 [ -0.20,  0.09]     25/25
+  CASP14                  101      37.443    37.440           -0.01 [ -0.04,  0.12]     25/25
+  LiveBench               152      31.404    31.457           -0.00 [ -0.40,  0.14]     25/25
+  MathArena 2025           35      25.304    25.329            0.10 [ -0.08,  0.33]     25/25
 
   P1  within 5% of exact: 8 of 8                pre-registered >= 8:  HIT
   P2  of the 0 outside the band, 0 err low        pre-registered >= half: HIT
   P3  Jensen bound below exact: 8 of 8           pre-registered = all: HIT
   P4  4x samples moves less than the gap: 4 of 8   pre-registered >= 7:  MISS
 
-  Largest relative error: ProteinGym DMS, -0.77% (23.671 against 23.854).
-  Mean signed error +0.01%, mean absolute 0.35%.
+  Largest median relative error: HELM classic, -0.24%; largest single draw anywhere 0.94%.
+  Median of the per-board medians -0.00%, mean absolute 0.10%, over 25 draws per board.
 
   P4 MISSED, and the miss is the result. It was framed to detect BIAS:
   if the estimator sat systematically below the truth, more samples would
@@ -38,14 +38,14 @@ THE ENTROPY ESTIMATOR AGAINST AN EXACTLY KNOWN VALUE
 
   Induced against rebuilt, which is the choice this measurement makes:
   board                   induced edges   rebuilt  cells differing
-  SWE-bench Verified                 89       104               15
+  SWE-bench Verified                 89       104               11
   MTEB English v2                   101       125               24
-  HELM classic                       27        61               34
-  ProteinGym DMS                    105       119               14
-  TabArena 45 variants               62        73               11
-  CASP14                             68        72                4
+  HELM classic                       27        61               23
+  ProteinGym DMS                    105       119               11
+  TabArena 45 variants               62        73               12
+  CASP14                             68        72               13
   LiveBench                          77        96               19
-  MathArena 2025                    104       115               11
+  MathArena 2025                    104       115                8
 
   Rebuilding would re-estimate the multiplicity threshold from 18
   systems rather than from J, so it rejects a different set of pairs and

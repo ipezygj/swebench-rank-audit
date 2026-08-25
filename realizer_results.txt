@@ -8,20 +8,20 @@ A REPORT CARD THAT IS EXACT: PRINT ORDERINGS, NOT BANDS
   Not measured: TabArena 16 models (J=16).
 
   board                   band (2 nums)     k=1     k=2     k=3     k=4     k=5     k=6  exact at
-  SWE-bench Verified              +2.72  -28.09   -8.92   -1.96   -0.36   -0.00                 5
-  MTEB English v2                 +2.10  -24.65   -8.77   -1.77   -0.00                         4
-  HELM classic                    +4.79  -42.30  -14.85   -6.59   -2.19   -0.16   -0.00         6
-  ProteinGym DMS                  +2.02  -23.85   -6.98   -1.64   -0.14   -0.00                 5
-  TabArena 45 variants            +3.45  -34.48  -10.73   -2.06   -0.17   -0.00                 5
+  SWE-bench Verified              +2.72  -28.09   -8.31   -3.66   -0.71   -0.00                 5
+  MTEB English v2                 +2.10  -24.65   -8.27   -1.37   -0.47   -0.00                 5
+  HELM classic                    +4.79  -42.30  -12.19   -5.23   -2.01   -0.34   -0.00         6
+  ProteinGym DMS                  +2.02  -23.85   -7.50   -2.91   -0.00                         4
+  TabArena 45 variants            +3.45  -34.48  -12.64   -3.62   -0.38   -0.00                 5
   CASP14                          +0.00  -37.44   -0.00                                         2
-  LiveBench                       +2.32  -31.40  -10.74   -3.58   -0.38   -0.00                 5
-  MathArena 2025                  +1.26  -25.30   -0.00                                         2
+  LiveBench                       +2.32  -31.40   -8.95   -1.48   -0.10   -0.00                 5
+  MathArena 2025                  +1.26  -25.30   -6.95   -1.06   -0.00                         4
 
   Positive is invented freedom, negative is invented precision, zero is
   exact. The band column is what a report card prints today.
 
   P1  realizer of at most 6 orderings on 8 of 8      pre-registered = all:  HIT
-  P2  at k=2, same budget as a band, smaller error on 1 of 8  pre-registered >= 6:  MISS
+  P2  at k=2, same budget as a band, smaller error on 0 of 8  pre-registered >= 6:  MISS
   P3  error monotone in k and exactly 0 at full size on 8 of 8  pre-registered = all:  HIT
   P4  a standard example S_3 present on 0 of 8       pre-registered >= 6:  MISS
 
@@ -31,10 +31,14 @@ A REPORT CARD THAT IS EXACT: PRINT ORDERINGS, NOT BANDS
   second sample of items to move, which is what killed the six-system
   rule. That is the constructive recommendation.
 
-  AND ON 2 OF 8 BOARDS IT IS FREE. CASP14, MathArena 2025 have
-  dimension exactly 2: two orderings reproduce the relation cell for
-  cell. Two numbers per system, the same budget a band spends, with
-  zero error instead of the band's invented freedom.
+  RETRACTED 2026-08-25: "CASP14 and MathArena 2025 have dimension
+  exactly 2". That was one draw each, and it is a category error twice
+  over. Dimension is monotone under induced sub-posets, so a 2-dimensional
+  18-system subset proves only that the BOARD's dimension is at least 2,
+  which is trivially true of every board here. And it is not even a stable
+  property of the draws: over 25 draws per board, 18 of 200 subsets
+  admit a 2-realizer, spread across boards as the table below shows -
+  including boards this file previously reported as having none.
 
   P2 scores 1 of 8 rather than 2 because of a tie: on MathArena 2025 the
   2-realizer is exact where the band invents 1.26 bits, a strict win at
@@ -66,14 +70,15 @@ A REPORT CARD THAT IS EXACT: PRINT ORDERINGS, NOT BANDS
   second ordering of a 2-realizer is forced - it must agree with the
   poset and reverse every incomparable pair - so it exists exactly when
   that tournament is acyclic, which is checkable in O(J^2).
-    SWE-bench Verified       2-realizer: none in 600 tries   greedy wanted 5
-    MTEB English v2          2-realizer: none in 600 tries   greedy wanted 4
-    HELM classic             2-realizer: none in 600 tries   greedy wanted 6
-    ProteinGym DMS           2-realizer: none in 600 tries   greedy wanted 5
-    TabArena 45 variants     2-realizer: none in 600 tries   greedy wanted 5
-    CASP14                   2-realizer: FOUND, dimension 2   greedy wanted 4
-    LiveBench                2-realizer: none in 600 tries   greedy wanted 5
-    MathArena 2025           2-realizer: FOUND, dimension 2   greedy wanted 4
+  board                     2-dim draws   realizer size, median [IQR]   k=2 error, median
+    SWE-bench Verified           9/25                 4.0 [2, 5]              -4.53
+    MTEB English v2              0/25                 5.0 [5, 6]              -8.42
+    HELM classic                 0/25                 6.0 [5, 6]             -16.27
+    ProteinGym DMS               1/25                 4.0 [4, 5]              -5.91
+    TabArena 45 variants         2/25                 6.0 [5, 6]             -10.31
+    CASP14                       5/25                 5.0 [5, 6]             -10.50
+    LiveBench                    0/25                 5.0 [5, 6]              -8.39
+    MathArena 2025               1/25                 5.0 [5, 6]              -8.69
 
   S_3 WITNESSES. Three systems and three others, each of the first below
   each of the second except its own partner. Two orderings cannot reverse

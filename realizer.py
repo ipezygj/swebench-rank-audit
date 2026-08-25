@@ -67,12 +67,15 @@ import pandas as pd
 
 import rank_sets as rs
 from band_slack import band_matrix, bands_of, permanent01
+from draws import R_DEFAULT, subsets, summarise
 from entropy_law_test import MATRICES
 from exact_extensions import exact_log2
 
 SEED = 20260825
 SUB = 18
-TRIES = 400          # candidate orderings considered per realizer step
+TRIES = 400          # candidate orderings for the detailed first draw
+TRIES_SWEEP = 100    # per step when sweeping draws
+R_DRAWS = R_DEFAULT
 MAXK = 12
 
 
@@ -262,7 +265,30 @@ def main() -> int:
             continue
         rng = np.random.default_rng(SEED + J)
         beats = rs.rank_sets(x)["beats"]
-        pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
+
+        # THE SWEEP. Dimension is a property of a poset, and an 18-system
+        # sub-poset is not the board: dimension is monotone under induced
+        # sub-posets, so a 2-dimensional subset proves only that the board's
+        # dimension is at least 2, which is trivial. This file previously said
+        # "CASP14 and MathArena 2025 have dimension exactly 2" on the strength
+        # of one draw each. Over R draws the question becomes how OFTEN a draw
+        # is 2-dimensional, which is a statement about the sampling and is
+        # reported as one.
+        ks, two_hits, k2err = [], 0, []
+        for pick_d in subsets(J, SUB, R=R_DRAWS, seed=SEED + J):
+            sd = beats[np.ix_(pick_d, pick_d)]
+            t2 = two_dim_search(sd, rng, 400)
+            two_hits += t2 is not None
+            ords_d = t2 if t2 is not None else build_realizer(
+                sd, rng, tries=TRIES_SWEEP)
+            ks.append(len(ords_d))
+            if len(ords_d) >= 2:
+                Q2 = intersection(ords_d[:2], SUB)
+                k2err.append(math.log2(exact_log2(sd)[0])
+                             - math.log2(exact_log2(Q2)[0]))
+        k_s, k2_s = summarise(ks), summarise(k2err)
+
+        pick = list(subsets(J, SUB, R=1, seed=SEED + J))[0]
         s = beats[np.ix_(pick, pick)]
         labels = [list(df.index)[i] for i in pick]
 
@@ -296,6 +322,7 @@ def main() -> int:
         w = find_s3(s)
         rows.append({"name": name, "two": two is not None,
                      "greedy_k": len(greedy_orders),
+                     "k_s": k_s, "k2_s": k2_s, "two_hits": two_hits, "R": R_DRAWS,
                      "J": J, "k": len(orders), "band": band_err,
                      "curve": curve, "s3": None if w is None else
                      ([labels[i] for i in w[0]], [labels[i] for i in w[1]])})
@@ -384,13 +411,17 @@ def main() -> int:
     p("  second sample of items to move, which is what killed the six-system")
     p("  rule. That is the constructive recommendation.")
     p("")
-    if ex2:
-        p(f"  AND ON {len(ex2)} OF {len(rows)} BOARDS IT IS FREE. "
-          f"{', '.join(ex2)} have")
-        p("  dimension exactly 2: two orderings reproduce the relation cell for")
-        p("  cell. Two numbers per system, the same budget a band spends, with")
-        p("  zero error instead of the band's invented freedom.")
-        p("")
+    tot2 = sum(r["two_hits"] for r in rows)
+    p(f"  RETRACTED 2026-08-25: \"CASP14 and MathArena 2025 have dimension")
+    p("  exactly 2\". That was one draw each, and it is a category error twice")
+    p("  over. Dimension is monotone under induced sub-posets, so a 2-dimensional")
+    p("  18-system subset proves only that the BOARD's dimension is at least 2,")
+    p("  which is trivially true of every board here. And it is not even a stable")
+    p(f"  property of the draws: over {rows[0]['R']} draws per board, "
+      f"{tot2} of {sum(r['R'] for r in rows)} subsets")
+    p("  admit a 2-realizer, spread across boards as the table below shows -")
+    p("  including boards this file previously reported as having none.")
+    p("")
     p("  P2 scores 1 of 8 rather than 2 because of a tie: on MathArena 2025 the")
     p("  2-realizer is exact where the band invents 1.26 bits, a strict win at")
     p("  equal budget, while on CASP14 both are exact and neither is smaller.")
@@ -421,9 +452,13 @@ def main() -> int:
     p("  second ordering of a 2-realizer is forced - it must agree with the")
     p("  poset and reverse every incomparable pair - so it exists exactly when")
     p("  that tournament is acyclic, which is checkable in O(J^2).")
+    p(f"  {'board':<24}{'2-dim draws':>13}{'realizer size, median [IQR]':>30}"
+      f"{'k=2 error, median':>20}")
     for r in rows:
-        p(f"    {r['name']:<24} 2-realizer: {'FOUND, dimension 2' if r['two'] else 'none in 600 tries'}"
-          f"   greedy wanted {r['greedy_k']}")
+        k, k2 = r["k_s"], r["k2_s"]
+        p(f"    {r['name']:<22}{r['two_hits']:>8}/{r['R']:<4}"
+          f"{k['median']:>18.1f} [{k['q1']:.0f}, {k['q3']:.0f}]"
+          f"{-k2['median']:>19.2f}")
     p("")
     p("  S_3 WITNESSES. Three systems and three others, each of the first below")
     p("  each of the second except its own partner. Two orderings cannot reverse")

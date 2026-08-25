@@ -58,6 +58,7 @@ import pandas as pd
 
 import rank_sets as rs
 from band_slack import band_matrix, bands_of, permanent01
+from draws import R_DEFAULT, fmt, subsets, summarise
 from entropy_law_test import MATRICES
 from exact_extensions import exact_log2
 from top_verdicts import count_with
@@ -65,6 +66,7 @@ from top_verdicts import count_with
 SEED = 20260825
 SUB = 18
 K = 6
+R = R_DEFAULT
 
 
 def edge_set(beats: np.ndarray, edges) -> np.ndarray:
@@ -88,29 +90,66 @@ def main() -> int:
             skipped.append((name, J))
             continue
         beats = rs.rank_sets(x)["beats"]
-        pick = np.sort(np.random.default_rng(SEED + J).choice(J, SUB, replace=False))
-        s = beats[np.ix_(pick, pick)]
-        best, worst = bands_of(s)
-        M = band_matrix(best, worst)
-        B = permanent01(M)
-        e = exact_log2(s)[0]
-        slack = math.log2(B) - math.log2(e)
 
-        edges = [(i, j) for i in range(SUB) for j in range(SUB) if s[i, j]]
-        free, costly, bad, bad_strict = [], [], 0, 0
+        # The criterion worst_i <= best_j was verified against exact counting on
+        # 633 edges and is used here to classify every edge of every draw, which
+        # is O(J^2) instead of one 2^J count per edge. Exact counting still runs,
+        # on the FIRST draw only, as the validation - it is what licenses the
+        # substitution and it would catch the criterion going wrong.
+        shares, freeN, costN, topN, topfree = [], [], [], [], []
+        recF, recC = [], []
+        first = None
+        for di, pick in enumerate(subsets(J, SUB, R=R, seed=SEED + J)):
+            sd = beats[np.ix_(pick, pick)]
+            bb, ww = bands_of(sd)
+            Md = band_matrix(bb, ww)
+            Bd = permanent01(Md)
+            ed_ = exact_log2(sd)[0]
+            sld = math.log2(Bd) - math.log2(ed_)
+            edg = [(i, j) for i in range(SUB) for j in range(SUB) if sd[i, j]]
+            fr = [(i, j) for (i, j) in edg if ww[i] <= bb[j]]
+            co = [(i, j) for (i, j) in edg if ww[i] > bb[j]]
+            if edg:
+                shares.append(len(fr) / len(edg))
+            freeN.append(len(fr))
+            costN.append(len(co))
+            od = np.argsort(bb * 100 + ww, kind="stable")[:K]
+            te = [(i, j) for i in od for j in od if sd[i, j]]
+            topN.append(len(te))
+            topfree.append(sum(1 for e_ in te if ww[e_[0]] <= bb[e_[1]]))
+            if sld > 0:
+                recF.append((sld - (math.log2(count_with(Md, edge_set(sd, fr)))
+                                    - math.log2(ed_))) / sld)
+                recC.append((sld - (math.log2(count_with(Md, edge_set(sd, co)))
+                                    - math.log2(ed_))) / sld)
+            if di == 0:
+                first = (sd, bb, ww, Md, Bd)
+
+        sd, bb, ww, Md, Bd = first
+        edges = [(i, j) for i in range(SUB) for j in range(SUB) if sd[i, j]]
+        bad = bad_strict = 0
         for (i, j) in edges:
-            unchanged = count_with(M, edge_set(s, [(i, j)])) == B
-            if unchanged != (worst[i] <= best[j]):
+            unchanged = count_with(Md, edge_set(sd, [(i, j)])) == Bd
+            if unchanged != (ww[i] <= bb[j]):
                 bad += 1
-            if unchanged != (worst[i] < best[j]):
+            if unchanged != (ww[i] < bb[j]):
                 bad_strict += 1
-            (free if unchanged else costly).append((i, j))
         disagree_total += bad
         strict_total += bad_strict
+        s = sd
+        best, worst = bb, ww
+        M, B = Md, Bd
+        e = exact_log2(sd)[0]
+        slack = math.log2(B) - math.log2(e)
+        free = [(i, j) for (i, j) in edges if ww[i] <= bb[j]]
+        costly = [(i, j) for (i, j) in edges if ww[i] > bb[j]]
 
         order = np.argsort(best * 100 + worst, kind="stable")[:K]
         tope = [(i, j) for i in order for j in order if s[i, j]]
         top_free = sum(1 for e_ in tope if worst[e_[0]] <= best[e_[1]])
+        share_s = summarise(shares)
+        top_s = summarise([a / b if b else None for a, b in zip(topfree, topN)])
+        recF_s, recC_s = summarise(recF), summarise(recC)
 
         c_free = count_with(M, edge_set(s, free))
         c_cost = count_with(M, edge_set(s, costly))
@@ -124,7 +163,10 @@ def main() -> int:
                      "topn": len(tope), "top_free": top_free, "bad": bad,
                      "bad_strict": bad_strict,
                      "slack": slack, "rec_free": rec_free, "rec_cost": rec_cost,
-                     "partition": len(free) + len(costly) == len(edges)})
+                     "partition": len(free) + len(costly) == len(edges),
+                     "share_s": share_s, "top_s": top_s,
+                     "recF_s": recF_s, "recC_s": recC_s,
+                     "withtop": sum(1 for v in topN if v > 0), "R": R})
         print(f"  {name:<22} {len(free):>4}/{len(edges):<4} edges free, "
               f"criterion disagreements {bad}")
 
@@ -161,30 +203,32 @@ def main() -> int:
     if skipped:
         p("  Not measured: " + ", ".join(f"{a} (J={b})" for a, b in skipped) + ".")
     p("")
-    p(f"  {'board':<22}{'edges':>7}{'free':>7}{'costly':>8}{'free %':>9}"
-      f"{'top-6 edges':>13}{'free there':>12}{'mismatch':>10}")
+    p(f"  {'board':<22}{'free share over draws, median [IQR]':>38}"
+      f"{'draws with a top-6 edge':>25}{'all free there':>16}")
     for r in rows:
-        p(f"  {r['name']:<22}{r['edges']:>7}{r['free']:>7}{r['costly']:>8}"
-          f"{100 * r['free'] / r['edges']:>8.0f}%{r['topn']:>13}"
-          f"{r['top_free']:>12}{r['bad']:>10}")
+        a = r["share_s"]
+        p(f"  {r['name']:<22}{100 * a['median']:>18.0f}%"
+          f" [{100 * a['q1']:>3.0f}%,{100 * a['q3']:>3.0f}%]"
+          f"{r['withtop']:>19}/{r['R']}"
+          f"{(100 * r['top_s']['median'] if r['top_s']['n'] else float('nan')):>15.0f}%")
     p("")
-    p(f"  {'board':<22}{'slack':>9}{'redundant edges only':>23}"
-      f"{'non-redundant only':>21}")
+    p(f"  {'board':<22}{'free edges only, median':>26}"
+      f"{'costly edges only, median':>28}{'draws':>8}")
     for r in rows:
-        p(f"  {r['name']:<22}{r['slack']:>9.3f}{100 * r['rec_free']:>22.1f}%"
-          f"{100 * r['rec_cost']:>20.1f}%")
+        p(f"  {r['name']:<22}{100 * r['recF_s']['median']:>25.1f}%"
+          f"{100 * r['recC_s']['median']:>27.1f}%{r['recF_s']['n']:>8}")
     p("")
-    withtop = [r for r in rows if r["topn"] > 0]
-    allsame = sum(1 for r in withtop if r["top_free"] == r["topn"])
-    lowshare = sum(1 for r in rows if r["free"] / r["edges"] < 0.5)
+    withtop = [r for r in rows if r["top_s"]["n"] > 0]
+    allsame = sum(1 for r in withtop if r["top_s"]["median"] >= 1.0 - 1e-9)
+    lowshare = sum(1 for r in rows if r["share_s"]["median"] < 0.5)
     # Boards with no slack have no ratio to score. rec_cost is set to 0.0 there
     # by the guard above, which would read as a failure of a claim that is
     # simply undefined on them - the empty-measurement error again. Scored over
     # the boards where the quantity exists, with the others named.
-    scored = [r for r in rows if r["slack"] > 0]
-    undef = [r["name"] for r in rows if r["slack"] <= 0]
-    cleanA = sum(1 for r in scored if abs(r["rec_free"]) < 1e-9)
-    cleanB = sum(1 for r in scored if abs(r["rec_cost"] - 1.0) < 1e-9)
+    scored = [r for r in rows if r["recF_s"]["n"] > 0]
+    undef = [r["name"] for r in rows if r["recF_s"]["n"] < r["R"]]
+    cleanA = sum(1 for r in scored if abs(r["recF_s"]["max"]) < 1e-9)
+    cleanB = sum(1 for r in scored if abs(r["recC_s"]["min"] - 1.0) < 1e-9)
     tot_edges = sum(r["edges"] for r in rows)
     p(f"  P1  as pre-registered, worst_i < best_j: {strict_total} disagreements "
       f"over {tot_edges} edges   pre-registered = 0:  "
@@ -223,6 +267,14 @@ def main() -> int:
     p("  condition is disjointness: on SWE-bench Verified's top six the bands")
     p("  are [1,2] against [3,12] and [3,8], and it is the gap between 2 and 3")
     p("  that forces the order, not the 1.")
+    p("")
+    p(f"  REBUILT OVER {R} DRAWS 2026-08-25. This file used to classify the edges")
+    p("  of ONE 18-system subset per board. The free share it reported - 67, 68,")
+    p("  76, 71, 73 % - was a single draw of a quantity whose interquartile range")
+    p("  is printed above, and CASP14's 100 % was the extreme of its own")
+    p("  distribution. The criterion is used for the sweep because it is O(J^2);")
+    p("  exact counting still runs on the first draw of every board and is what")
+    p("  licenses the substitution.")
     p("")
     p("  P3 MISSED AND IT MATTERS. I predicted free edges would be rare")
     p("  board-wide and concentrated at the top. They are not rare anywhere:")
