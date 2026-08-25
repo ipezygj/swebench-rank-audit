@@ -1,0 +1,56 @@
+DOES THE TARGETED SIX SURVIVE A SPLIT OF THE ITEMS?
+====================================================================================================
+  Six systems chosen on half of a board's items, scored on the poset
+  built from the other half. 18-system sub-posets throughout.
+  Not measured: TabArena 16 models (J=16, n=51).
+
+  board                     J      n  cells differ   B slack  chosen on A  oracle on B   top 6   random
+  SWE-bench Verified      134    500            23      2.80          16%          41%      0%      10%
+  MTEB English v2         181     41            20      4.03          25%          37%      0%      14%
+  HELM classic             90     10             4      2.04           0%         100%      0%      10%
+  ProteinGym DMS           96    217            26      3.69          11%          36%      0%       9%
+  TabArena 45 variants     45     51            15      3.13          11%          66%      0%      13%
+  CASP14                  101     42            17      1.65           6%           9%      0%       8%
+  LiveBench               152    200            22      2.82          18%          23%      5%      12%
+  MathArena 2025           35    183            18      2.96          27%          37%      0%      10%
+
+  P1  beats a random six on 5 of 8                   pre-registered >= 6:  MISS
+  P2  beats the top six on 7 of 8                    pre-registered >= 6:  HIT
+  P3  reaches half the oracle on 4 of 8              pre-registered >= 5:  MISS
+
+  P1 MISSED and this file's pre-registration says what follows: the
+  selection is fitting the particular set of items and the
+  recommendation is to be withdrawn rather than qualified. It is
+  withdrawn. top_verdicts.py no longer says that a targeted six
+  identifies informative systems.
+
+  What survives is P2, and it survives strongly: the top six recovers
+  0 % on 7 of 8 boards out of sample as well as in. The negative finding
+  - do not spend the extra ink on the top rows - does not depend on the
+  selection working at all.
+
+  HELM classic shows how brittle the choice is, and it is the clearest
+  row here. Its two half-item posets differ in 4 cells out of 153. The
+  six chosen on that half recover 100 % of the slack when scored on
+  themselves and 0 % when scored on the other half. Four cells turn the
+  best possible choice into the worst one.
+
+  ONE DISTINCTION, and it was NOT pre-registered, so it carries less
+  weight than the miss. The in-sample number in top_verdicts.py - that
+  printing these six removes 24 to 56 % of what these bands invent - is
+  a statement about one poset and the summary printed beside it. It is
+  arithmetic on the artefact and needs no generalisation to a second
+  sample. What this file refutes is the different claim that the six are
+  a durable property of the systems. Both readings are defensible and
+  the second one is the one that was tested, so the second one governs:
+  the recommendation goes.
+
+  The oracle column is the same selection run on the half it is scored
+  on. It is not a competitor - nothing chosen out of sample can beat it -
+  it is the ceiling, and the gap between it and the out-of-sample column
+  is what the split costs.
+
+  The cells-differ column is the check that this is a real test. The two
+  halves are built from disjoint items, so they give different relations
+  on the same systems; if they did not, choosing on one and scoring on
+  the other would be choosing and scoring on the same thing.

@@ -54,8 +54,22 @@ WHAT WOULD A REPORT CARD HAVE TO PRINT?
   any other way inside the band constraints, so printing the verdict
   adds no information that the degree sequence did not already carry.
 
-  A benchmark owner holds the poset and can therefore choose. Adding the
-  system that removes the most orderings, six times, recovers 24 to 56 %
-  against 0 % for the top six - the same amount of printed table, several
-  times the information. That is the constructive result: the six rows
-  worth expanding are not the six a reader looks at.
+  WITHDRAWN 2026-08-25. This file used to close by recommending that a
+  benchmark owner choose which verdicts to print by adding the system
+  that removes the most orderings, six times, on the grounds that it
+  recovers 24 to 56 % against 0 % for the top six. Those numbers stand -
+  they are arithmetic on this poset and the summary printed beside it -
+  but targeted_split.py tested whether the choice is a property of the
+  SYSTEMS by making it on half a board's items and scoring it on the
+  poset from the other half. It beat a random six on only 5 of 8 boards,
+  against a pre-registered 6, and reached half the in-sample ceiling on
+  4 of 8 against a pre-registered 5. HELM classic is the clearest case:
+  its two half-item posets differ in 4 cells out of 153, and the six
+  chosen on one half recover 100 % scored on themselves and 0 % scored on
+  the other. So the recommendation is withdrawn rather than qualified,
+  which is what that file's pre-registration said a miss would mean.
+
+  What is left is the negative half, and it is the robust half: the top
+  six recovers nothing, in sample and out, on 7 of 8 boards. Whatever a
+  report card should print beyond bands, it is not more detail about the
+  rows at the top.
