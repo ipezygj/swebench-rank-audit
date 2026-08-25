@@ -1,0 +1,67 @@
+WHERE FINNISH PROCUREMENT COMPARISON TABLES ARE NOT
+================================================================================================
+  procurement_shape.py computes what a tender's SHAPE permits and needs no
+  data. What it wants alongside is an overlay: where real Finnish tenders sit
+  on that grid, and ideally real comparison tables to run the check on. This
+  records the attempt to obtain them, because "the harvest failed" is a claim
+  that needs a measurement behind it like any other.
+
+  FIVE ROUTES TRIED, 2026-08-25
+
+  viranhaltija.fi              403 to every request, browser user-agent included.
+  aggregator of officeholder   The one PDF reachable through a search engine
+  decisions                    cache parsed fine with pdftotext, so the format is
+                               workable and the access is not.
+
+  Finlex, market court         Client-side rendered. The decision pages return
+  MAO:182/21 and others        8 702 characters of interface and no decision text
+                               to a fetcher. This is the population that would be
+                               ideal - a contested scoring table is reproduced in
+                               the judgment precisely because it is contested.
+
+  TED, EU award notices        The structured record carries award criterion
+  api.ted.europa.eu v3         TYPES, not the published comparison table. 4
+                               Finnish eForms-era notices retrieved; all four are
+                               single-criterion price awards, which is not a
+                               scoring table at all. 18 799 Finnish notices exist
+                               in the index, so this is a schema limit and not a
+                               sample size problem.
+
+  Dynasty, officeholder pages  Not exposed. vh_frames, viranhaltijapaatokset and
+  *.oncloudos.com              four other candidate page names all return 200 with
+                               an empty body.
+
+  Dynasty, committee items     MEASURED, not assumed:
+  5 municipalities                585 item links scanned across 5 portals
+                                    5 titles matching hankinta/tarjous/kilpailut
+                                    0 containing a numeric table
+
+                               And the 5 are not award decisions: choosing a
+                               representative to a joint procurement, two
+                               supplementary appropriations for land purchase,
+                               joining a shared framework. The portals expose
+                               committee agendas, and award decisions are not
+                               taken there.
+
+  THE SCANNER HAD A BUG FIRST, and it reported the right answer for the wrong
+  reason. It read the item title as the 400 characters FOLLOWING the link rather
+  than the anchor's own text, so the keyword filter never matched and it printed
+  "0 items with numeric tables" from 20 meetings without fetching a single item.
+  Fixed; the counts above are from the fixed version, and they are still zero.
+
+  WHAT THIS MEANS. A hankintapäätös is normally an officeholder decision, and
+  the vertailutaulukko is normally its PDF ATTACHMENT. Both facts point the same
+  way: this is a PDF extraction problem against registers that either do not
+  publish attachments through an open path or block automated access, not an
+  HTML scraping problem. pdftotext handles the format; the obstacle is reach.
+
+  THREE ROUTES NOT YET TRIED
+    Finlex's own API rather than its web pages - the market court corpus is the
+    right population and is public;
+    individual city attachment directories, which some publish under a
+    predictable path;
+    a written request to a handful of contracting authorities. Comparison tables
+    are public documents and the request is routine.
+
+  Until one of those lands, procurement_shape.py's P1 and P4 stay VACUOUS and
+  its grid stands without an overlay.
