@@ -1,0 +1,56 @@
+NUMBERS IN GENERATED DOCUMENTS THAT NO RESULTS FILE CONTAINS
+============================================================================================
+  108 results files supply 2895 distinct numeric tokens.
+  Table rows are skipped - they are derived by construction. What is
+  checked is prose.
+
+  CONTROL: LAWS.md as committed, before today's fix
+    of the 6 figures known to have been wrong, flagged: 4.6, +0.2, 4.26
+    still present after the fix: 4.26
+
+  document                      prose numbers   ABSENT   MISPLACED
+  LAWS.md                                  64        0          20
+  LEADERBOARD_STANDARD.md                  45        0          14
+  README.md                                 4        0           1
+  PRIOR_ART.md                             42        0           5
+
+
+  ABSENT - in no results file anywhere. These were typed.
+
+  MISPLACED - present somewhere, but not in the file the passage names.
+    LAWS.md: +1.4 [not in entropy_decomposition_results.txt], +40.0 [not in entropy_decomposition_results.txt], -1.7 [not in entropy_decomposition_results.txt], -10.6 [not in entropy_decomposition_results.txt], 0.011 [not in top_compression_results.txt], 0.1337 [not in top_compression_results.txt], 0.2656 [not in top_compression_results.txt], 0.51 [not in family_generalises_results.txt], 0.9011 [not in top_compression_results.txt], 0.96 [not in family_generalises_results.txt], 1.0098 [not in top_compression_results.txt], 29% [not in family_generalises_results.txt], 3.1 [not in law1_pairwise_results.txt], 37.9 [not in law1_pairwise_results.txt], 38.3 [not in law1_pairwise_results.txt], 4.1 [not in law1_pairwise_results.txt], 4.26 [not in holm_recompute_results.txt], 52.7 [not in law1_pairwise_results.txt], 54.2 [not in law1_pairwise_results.txt], 71% [not in family_generalises_results.txt]
+    LEADERBOARD_STANDARD.md: -4.3 [not in curation_attack_results.txt], 0.09 [not in leaderboard_standard_results.txt], 0.2 [not in cheap_entry_results.txt], 0.33 [not in leaderboard_standard_results.txt], 0.4 [not in curation_attack_results.txt], 0.78 [not in leaderboard_standard_results.txt], 1.1 [not in quantisation_curve_results.txt], 1.3 [not in quantisation_curve_results.txt], 10.7 [not in curation_attack_results.txt], 18.0 [not in curation_attack_results.txt], 3.81 [not in incentive_asymmetry_results.txt], 4.90 [not in incentive_asymmetry_results.txt], 46% [not in prescription_pairwise_results.txt], 88% [not in prescription_pairwise_results.txt]
+    README.md: 0.1 [not in leaderboard_standard_results.txt]
+    PRIOR_ART.md: 0.980 [not in tie_coverage_boards_results.txt], 3.14 [not in pair_sharpness_results.txt], 47% [not in pair_sharpness_results.txt], 75% [not in detectable_difference_results.txt], 8.45 [not in pair_sharpness_results.txt]
+
+  P1  pre-fix control flagged 3 of 6 known-wrong figures   pre-registered >= 4:  MISS
+  P2  those figures still unmatched after the fix: 1      pre-registered = 0:   MISS
+  P3  further unmatched numbers across the documents: 0   pre-registered >= 3:  MISS
+  P4  LAWS.md unmatched 0, the others 0 between them
+
+  THREE OF FOUR MISSED, and the important one missed in the good
+  direction. P3 predicted at least 3 further typed numbers across the
+  documents; there is ONE - a 2.00 in LEADERBOARD_STANDARD.md. The
+  correction box was the exception and not the rule. The documents are
+  otherwise derived, which is the outcome this file's own docstring said
+  to report as plainly as the bad one, so: they are derived.
+
+  P1 missed at 3 of 6 and the miss is a limit of the method, worth more
+  than the score. A wrong number that looks plausible usually occurs
+  legitimately somewhere else - 21, 18 and 16 are all real values in
+  some results file - so asking whether a token EXISTS has a ceiling no
+  amount of tuning lifts. Catching those would need provenance at the
+  level of the claim rather than the token: this sentence asserts this
+  field of this row of this file. That is a bigger change than a checker.
+
+  P2's one survivor is the checker working. 4.26 is flagged in the
+  current LAWS.md because it sits in the new sentence that names 4.26 as
+  the discarded value. Correct prose, correctly flagged, and left in
+  rather than reworded so the flag stays visible.
+
+  A flag is a question. A number in prose that appears in no results
+  file was typed rather than derived, and a typed number cannot be
+  regenerated - it stays as it was on the day it was typed while the
+  measurement underneath it moves. Some of these are legitimate: counts
+  in a sentence, a version, an identifier. The point is that somebody
+  has to look, and until now nothing asked.

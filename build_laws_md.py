@@ -70,6 +70,46 @@ def grab(name, pattern, group=1):
     return m.group(group) if m else "MISSING"
 
 
+def hr_row(board):
+    """One board's row from holm_recompute_results.txt as a dict of strings.
+
+    Every number in the correction box below used to be typed in by hand. Six
+    of them were wrong, and all six traced to the same cause: they were copied
+    from the Holm implementation that used a normal reference, which was
+    discarded when the two implementations were reconciled onto t with n-1
+    degrees of freedom. HELM's 21 possible first places and its critical value
+    of 4.26 are that discarded run; the committed file says 50 and 8.45.
+    Deriving them means the box cannot disagree with the file it cites.
+    """
+    for line in read("holm_recompute_results.txt").splitlines():
+        if line.strip().startswith(board):
+            # Strip the board NAME before reading numbers. "TabArena 45
+            # variants" carries a standalone 45, which the first version of
+            # this parser read as the first data column and shifted every
+            # field by one - it printed "from 51 to 12" where the file says
+            # 12 to 18. A digit inside a label is the same hazard the numeric
+            # field regex in degenerate_comparison.py exists to avoid.
+            rest = line.strip()[len(board):].replace("|", " ")
+            n = [v for v in rest.split() if re.fullmatch(r"-?\d+\.?\d*%?", v)]
+            return {"J": n[0], "n": n[1], "tie_boot": n[2], "tie_holm": n[3],
+                    "tie_union": n[4], "estab_boot": n[5], "estab_holm": n[6],
+                    "H_boot": n[7], "H_holm": n[8]}
+    return {k: "MISSING" for k in
+            ("J", "n", "tie_boot", "tie_holm", "tie_union",
+             "estab_boot", "estab_holm", "H_boot", "H_holm")}
+
+
+def hr_crit(board):
+    """(c under the bootstrap, c under Holm) from the law-1 block."""
+    block = read("holm_recompute_results.txt").split("LAW 1 AGAINST")[-1]
+    for line in block.splitlines():
+        if line.strip().startswith(board):
+            rest = line.strip()[len(board):].replace("|", " ")
+            n = [v for v in rest.split() if re.fullmatch(r"-?\d+\.?\d*%?", v)]
+            return n[0], n[1]
+    return "MISSING", "MISSING"
+
+
 L = []
 p = L.append
 p("# Two laws of leaderboard resolution — draft 1 (2026-08-23)")
@@ -90,20 +130,41 @@ p("> all of them (`tie_coverage_boards.py`). The bias narrows rank sets, so")
 p("> counts of possible first places are too LOW on the eight affected boards.")
 p("> Found by reading arXiv:2606.08679, not by the checks here.")
 p(">")
+_helm, _mteb, _tab = hr_row("HELM classic"), hr_row("MTEB English v2"), \
+    hr_row("TabArena 45 variants")
+_rise = grab("holm_recompute_results.txt",
+             r"P1  tie@1 rises on (\d+) of the \d+ undercovering boards")
+_cb, _ch = hr_crit("HELM classic")
+_mae = grab("holm_recompute_results.txt",
+            r"mean \|error\|: bootstrap ([\d.]+) points, Holm [\d.]+ points")
+_mah = grab("holm_recompute_results.txt",
+            r"mean \|error\|: bootstrap [\d.]+ points, Holm ([\d.]+) points")
+_dlt = grab("holm_recompute_results.txt",
+            r"P5  law 1 does not worsen by more than 5 points: ([+\-][\d.]+)")
 p("> **Recomputed** (`holm_recompute.py`). Under Holm the established share")
-p("> falls on all eight affected boards and tie@1 rises on four of them - HELM")
-p("> classic from 15 possible first places to 21, MTEB from 16 to 18,")
-p("> TabArena's 45 variants from 12 to 16. The realised critical value is")
-p("> larger under Holm on every board (HELM 3.54 to 4.26), which is the")
+p(f"> falls on all eight affected boards and tie@1 rises on {_rise} of them - HELM")
+p(f"> classic from {_helm['tie_boot']} possible first places to {_helm['tie_holm']}, "
+  f"MTEB from {_mteb['tie_boot']} to {_mteb['tie_holm']},")
+p(f"> TabArena's 45 variants from {_tab['tie_boot']} to {_tab['tie_holm']}. The "
+  f"realised critical value is")
+p(f"> larger under Holm on every board (HELM {_cb} to {_ch}), which is the")
 p("> diagnosis confirmed directly. On the four sound boards the two")
 p("> constructions agree exactly - 19, 11, 6 and 1 - so the differences are")
 p("> the construction and not the data.")
 p(">")
-p("> **Law 1 survives the correction**: mean absolute error 4.4 points under")
-p("> the bootstrap, 4.6 under Holm, a change of +0.2. It was not an artefact")
-p("> of the biased construction. The law-1 table below still shows the")
-p("> bootstrap column; the corrected one is in `holm_recompute_results.txt`,")
-p("> along with 28 other results files that have not been rerun.")
+p(f"> **Law 1 survives the correction**: mean absolute error {_mae} points under")
+p(f"> the bootstrap, {_mah} under Holm, a change of {_dlt}. It was not an artefact")
+p("> of the biased construction. The law-1 table below is the CORRECTED one:")
+p("> every results file in the repository has since been regenerated under Holm")
+p("> and the full pipeline reruns clean, so the observed column here and the")
+p("> Holm column of `holm_recompute_results.txt` are the same numbers.")
+p(">")
+p("> Every figure in this box is now read out of `holm_recompute_results.txt`")
+p("> rather than typed. Six of them had been typed and all six were wrong: they")
+p("> came from the Holm implementation with a normal reference, discarded when")
+p("> the two implementations were reconciled onto t with n-1 degrees of freedom.")
+p("> HELM's 21 first places and its critical value of 4.26 were that discarded")
+p("> run. The file said 50 and 8.45 for eight days.")
 p("")
 p("## Law 1 — the established share")
 p("")

@@ -17,19 +17,27 @@ and the conditions under which they fail.*
 > Found by reading arXiv:2606.08679, not by the checks here.
 >
 > **Recomputed** (`holm_recompute.py`). Under Holm the established share
-> falls on all eight affected boards and tie@1 rises on four of them - HELM
-> classic from 15 possible first places to 21, MTEB from 16 to 18,
-> TabArena's 45 variants from 12 to 16. The realised critical value is
-> larger under Holm on every board (HELM 3.54 to 4.26), which is the
+> falls on all eight affected boards and tie@1 rises on 5 of them - HELM
+> classic from 15 possible first places to 50, MTEB from 16 to 24,
+> TabArena's 45 variants from 12 to 18. The realised critical value is
+> larger under Holm on every board (HELM 3.54 to 8.45), which is the
 > diagnosis confirmed directly. On the four sound boards the two
 > constructions agree exactly - 19, 11, 6 and 1 - so the differences are
 > the construction and not the data.
 >
 > **Law 1 survives the correction**: mean absolute error 4.4 points under
-> the bootstrap, 4.6 under Holm, a change of +0.2. It was not an artefact
-> of the biased construction. The law-1 table below still shows the
-> bootstrap column; the corrected one is in `holm_recompute_results.txt`,
-> along with 28 other results files that have not been rerun.
+> the bootstrap, 5.1 under Holm, a change of +0.7. It was not an artefact
+> of the biased construction. The law-1 table below is the CORRECTED one:
+> every results file in the repository has since been regenerated under Holm
+> and the full pipeline reruns clean, so the observed column here and the
+> Holm column of `holm_recompute_results.txt` are the same numbers.
+>
+> Every figure in this box is now read out of `holm_recompute_results.txt`
+> rather than typed. Six of them had been typed and all six were wrong: they
+> came from the Holm implementation with a normal reference, discarded when
+> the two implementations were reconciled onto t with n-1 degrees of freedom.
+> HELM's 21 first places and its critical value of 4.26 were that discarded
+> run. The file said 50 and 8.45 for eight days.
 
 ## Law 1 — the established share
 

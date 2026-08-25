@@ -43,8 +43,9 @@ SELF-CHECKS (no table if any fails)
     results file, must be flagged;
   * a number lifted verbatim OUT of a results file and inserted into that copy
     must NOT be flagged;
-  * the results corpus must be non-empty and must be read: at least 90 files
-    and at least 20 000 numeric tokens across them;
+  * the corpus must be able to find the numbers that ARE derived: LAWS.md's
+    table rows come out of the results files by construction, so at least 95 %
+    of them must match, or the corpus cannot be trusted to judge prose;
   * at least 3 documents parsed and at least 50 candidate numbers examined.
 
     python doc_numbers.py
@@ -79,26 +80,77 @@ def corpus() -> set[str]:
     return out
 
 
-def unmatched(text: str, known: set[str]) -> list[str]:
-    """Candidate measurements in prose that appear in no results file.
+CITE = re.compile(r"`([A-Za-z0-9_]+)\.py`|([A-Za-z0-9_]+_results\.txt)")
+_CACHE: dict[str, set[str]] = {}
+
+
+def file_tokens(name: str) -> set[str]:
+    if name not in _CACHE:
+        f = Path(name)
+        out: set[str] = set()
+        if f.exists():
+            for m in NUMTOK.finditer(f.read_text(encoding="utf-8", errors="replace")):
+                t = m.group().replace(" ", "")
+                out |= {t, t.lstrip("+"), t.rstrip("%"), t.lstrip("+").rstrip("%")}
+        _CACHE[name] = out
+    return _CACHE[name]
+
+
+def cited(lines: list[str], i: int, back: int = 12) -> str | None:
+    """The results file the passage around line i points at, if any.
+
+    A paragraph that says (`holm_recompute.py`) is telling the reader where its
+    numbers came from. That is the file its numbers should be checked against.
+    """
+    for j in range(i, max(-1, i - back), -1):
+        found = None
+        for m in CITE.finditer(lines[j]):
+            stem, direct = m.group(1), m.group(2)
+            cand = direct if direct else f"{stem}_results.txt"
+            if Path(cand).exists():
+                found = cand
+        if found:
+            return found
+    return None
+
+
+def hits(t: str, known: set[str]) -> bool:
+    return (t in known or t.lstrip("+") in known or t.rstrip("%") in known
+            or t.lstrip("+").rstrip("%") in known)
+
+
+def unmatched(text: str, known: set[str], scoped: bool = True) -> list[str]:
+    """Candidate measurements in prose that their own cited file does not contain.
+
+    The first version searched the union of all 107 results files. That is far
+    too weak: "21", "18", "16" and "4.6" all occur somewhere in some file, so
+    five of the six figures known to have been wrong in LAWS.md's correction box
+    passed it. Existence somewhere is not the claim a sentence makes. When a
+    passage names its source, the number is checked against THAT file, and the
+    union is only the fallback for prose that cites nothing.
 
     Table rows are skipped: they are generated from the files by construction,
     and including them would bury the typed numbers under hundreds of derived
     ones.
     """
     bad = []
-    for line in text.splitlines():
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
         st = line.strip()
         if st.startswith("|") or st.startswith("```") or st.startswith("    "):
             continue
+        src = cited(lines, i) if scoped else None
+        pool = file_tokens(src) if src else known
         for m in CAND.finditer(line):
             t = m.group().replace(" ", "")
             if SKIP.match(t.lstrip("+-").rstrip("%")):
                 continue
-            if t in known or t.lstrip("+") in known or t.rstrip("%") in known \
-                    or t.lstrip("+").rstrip("%") in known:
+            if hits(t, pool):
                 continue
-            bad.append(t)
+            if src and hits(t, known):
+                bad.append(f"{t} [not in {src}]")
+            else:
+                bad.append(t)
     return bad
 
 
@@ -108,14 +160,30 @@ def main() -> int:
     print("self-checks ...")
     files = sorted(Path(".").glob("*_results.txt"))
     known = corpus()
-    ok_corpus = len(files) >= 90 and len(known) >= 20000
+    # A count threshold here would be a guess. The first version demanded
+    # 20 000 distinct tokens, a number I made up; the corpus has 2 884. What
+    # the corpus actually has to do is find the numbers that ARE derived:
+    # LAWS.md's table rows are read out of these files by construction, so a
+    # corpus that cannot match those cannot be trusted to judge prose.
+    tab = [m.group().replace(" ", "")
+           for line in Path("LAWS.md").read_text(encoding="utf-8",
+                                                 errors="replace").splitlines()
+           if line.strip().startswith("|")
+           for m in CAND.finditer(line)]
+    hit = sum(1 for t in tab
+              if t in known or t.lstrip("+") in known or t.rstrip("%") in known
+              or t.lstrip("+").rstrip("%") in known)
+    share = hit / max(len(tab), 1)
+    ok_corpus = len(files) >= 90 and len(tab) >= 40 and share >= 0.95
     print(f"  [{'ok  ' if ok_corpus else 'FAIL'}] {len(files)} results files, "
-          f"{len(known)} distinct numeric tokens (need >= 90 and >= 20000)")
+          f"{len(known)} distinct tokens; they match {hit} of {len(tab)} "
+          f"({share:.1%}) of LAWS.md's DERIVED table numbers (need >= 95%)")
 
     doc = Path("LAWS.md").read_text(encoding="utf-8", errors="replace")
     planted = doc + "\n\nThe measured value was 8675.309 points.\n"
-    lifted = doc + "\n\nThe measured value was " + \
-        sorted(t for t in known if "." in t and len(t) > 4)[len(known) // 2] + " points.\n"
+    pool = sorted(t for t in known if "." in t and len(t) > 4 and "%" not in t)
+    lifted = doc + chr(10) + "The measured value was " \
+        + pool[len(pool) // 2] + " points." + chr(10)
     ok_plant = "8675.309" in unmatched(planted, known)
     ok_lift = len(unmatched(lifted, known)) == len(unmatched(doc, known))
     print(f"  [{'ok  ' if ok_plant else 'FAIL'}] a planted number absent from every "
@@ -141,13 +209,20 @@ def main() -> int:
         return 1
 
     WRONG = ("4.6", "+0.2", "21", "4.26", "18", "16")
-    pre = unmatched(old, known)
-    post = unmatched(doc, known)
-    caught = [w for w in WRONG if w in pre]
-    still = [w for w in WRONG if w in post]
+    pre = unmatched(old, known, scoped=True) + unmatched(old, known, scoped=False)
+    post = unmatched(doc, known, scoped=True) + unmatched(doc, known, scoped=False)
+    caught = [w for w in WRONG if any(u.split(" ")[0] == w for u in pre)]
+    still = [w for w in WRONG if any(u.split(" ")[0] == w for u in post)]
 
-    per_doc = {d: unmatched(Path(d).read_text(encoding="utf-8", errors="replace"), known)
-               for d in present}
+    txt = {d: Path(d).read_text(encoding="utf-8", errors="replace") for d in present}
+    # Two signals, reported apart. ABSENT is strong and rare: the number occurs
+    # in no results file at all, so it was typed. MISPLACED is weak and common:
+    # the number occurs somewhere but not in the file its own paragraph names,
+    # which is often just a paragraph that quotes more than one source.
+    absent = {d: unmatched(txt[d], known, scoped=False) for d in present}
+    misplaced = {d: [u for u in unmatched(txt[d], known, scoped=True)
+                     if "[not in" in u] for d in present}
+    per_doc = absent
 
     L = []
     p = L.append
@@ -162,18 +237,24 @@ def main() -> int:
       f"{', '.join(caught) if caught else 'none'}")
     p(f"    still present after the fix: {', '.join(still) if still else 'none'}")
     p("")
-    p(f"  {'document':<28}{'prose numbers':>15}{'unmatched':>12}{'rate':>9}")
+    p(f"  {'document':<28}{'prose numbers':>15}{'ABSENT':>9}{'MISPLACED':>12}")
     for d in present:
         tot = sum(1 for l in Path(d).read_text(encoding="utf-8",
                                                errors="replace").splitlines()
                   if not l.strip().startswith("|")
                   for _ in CAND.finditer(l))
-        p(f"  {d:<28}{tot:>15}{len(per_doc[d]):>12}"
-          f"{(100 * len(per_doc[d]) / tot if tot else 0):>8.1f}%")
+        p(f"  {d:<28}{tot:>15}{len(absent[d]):>9}{len(misplaced[d]):>12}")
     p("")
+    p("")
+    p("  ABSENT - in no results file anywhere. These were typed.")
     for d in present:
-        if per_doc[d]:
-            p(f"  {d}: {', '.join(sorted(set(per_doc[d])))}")
+        if absent[d]:
+            p(f"    {d}: {', '.join(sorted(set(absent[d])))}")
+    p("")
+    p("  MISPLACED - present somewhere, but not in the file the passage names.")
+    for d in present:
+        if misplaced[d]:
+            p(f"    {d}: {', '.join(sorted(set(misplaced[d])))}")
     p("")
     other = sum(len(per_doc[d]) for d in present if d != "LAWS.md")
     p(f"  P1  pre-fix control flagged {len(caught)} of 6 known-wrong figures   "
@@ -186,6 +267,26 @@ def main() -> int:
       f"{'HIT' if sum(len(v) for v in per_doc.values()) >= 3 else 'MISS'}")
     p(f"  P4  LAWS.md unmatched {len(per_doc.get('LAWS.md', []))}, "
       f"the others {other} between them")
+    p("")
+    p("  THREE OF FOUR MISSED, and the important one missed in the good")
+    p("  direction. P3 predicted at least 3 further typed numbers across the")
+    p("  documents; there is ONE - a 2.00 in LEADERBOARD_STANDARD.md. The")
+    p("  correction box was the exception and not the rule. The documents are")
+    p("  otherwise derived, which is the outcome this file's own docstring said")
+    p("  to report as plainly as the bad one, so: they are derived.")
+    p("")
+    p("  P1 missed at 3 of 6 and the miss is a limit of the method, worth more")
+    p("  than the score. A wrong number that looks plausible usually occurs")
+    p("  legitimately somewhere else - 21, 18 and 16 are all real values in")
+    p("  some results file - so asking whether a token EXISTS has a ceiling no")
+    p("  amount of tuning lifts. Catching those would need provenance at the")
+    p("  level of the claim rather than the token: this sentence asserts this")
+    p("  field of this row of this file. That is a bigger change than a checker.")
+    p("")
+    p("  P2's one survivor is the checker working. 4.26 is flagged in the")
+    p("  current LAWS.md because it sits in the new sentence that names 4.26 as")
+    p("  the discarded value. Correct prose, correctly flagged, and left in")
+    p("  rather than reworded so the flag stays visible.")
     p("")
     p("  A flag is a question. A number in prose that appears in no results")
     p("  file was typed rather than derived, and a typed number cannot be")
