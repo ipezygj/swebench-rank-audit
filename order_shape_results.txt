@@ -1,0 +1,76 @@
+WHAT KIND OF PARTIAL ORDER IS A LEADERBOARD?
+============================================================================================
+  A threshold on one latent score gives an interval order; ONE constant
+  threshold gives a semiorder. Rank sets are built from per-pair standard
+  errors, so neither is guaranteed.
+
+  board                     J     n  interval order  semiorder   2+2 rate  sigma IQR/med
+  SWE-bench Verified      134   500              NO         NO    0.00000          0.124
+  MTEB English v2         181    41              NO         NO    0.00123          0.611
+  HELM classic             90    10              NO         NO    0.00146          0.494
+  ProteinGym DMS           96   217              NO         NO    0.00138          0.376
+  TabArena 16 models       16    51              NO         NO    0.00162          0.686
+  TabArena 45 variants     45    51              NO         NO    0.00225          0.898
+  CASP14                  101    42              NO         NO    0.00018          0.374
+  LiveBench               152   200              NO         NO    0.00006          0.152
+  MathArena 2025           35   183              NO         NO    0.00010          0.309
+
+  P1  boards that are semiorders: 0 of 9          pre-registered = 0:    HIT
+  P2  boards that are interval orders: 0 of 9     pre-registered >= 1:   MISS
+  P3  Spearman(2+2 rate, sigma spread) = +0.950 (p 0.000)   pre-registered >= +0.5: HIT
+  P4  widest sigma spread: TabArena 45 variants (0.898)   pre-registered HELM classic: MISS
+
+  The 2+2 rate is estimated from 200 000 random 4-subsets per board, so
+  its floor is 5e-6 and a printed 0.00000 means BELOW that floor, not
+  zero. SWE-bench Verified shows 0.00000 and is still not an interval
+  order: the exact down-set test finds violations that 200 000 draws
+  miss. A rate estimate cannot establish absence, which is why the
+  verdict column comes from the exact test and the witnesses below come
+  from a direct search.
+
+  ONE VERIFIED INSTANCE PER BOARD. Each is four systems in which a beats
+  b, c beats d, and no other pair among the four is separable. No
+  assignment of intervals to those four systems reproduces that.
+    SWE-bench Verified
+      20250629_deepswerl_r2eagent beats 20240612_MASAI_gpt4o
+      20241030_nfactorial beats 20241120_artemis_agent
+      and no other pair of those four separates
+    MTEB English v2
+      jcorners/ingot-8b-r3 beats jinaai/jina-embeddings-v5-omni-nano
+      codefuse-ai/F2LLM-v2-8B beats codefuse-ai/F2LLM-v2-0.6B
+      and no other pair of those four separates
+    HELM classic
+      Amazon Nova Pro beats Gemma 2 Instruct (9B)
+      GPT-4o (2024-08-06) beats Claude v1.3
+      and no other pair of those four separates
+    ProteinGym DMS
+      EVmutation beats Site-Independent
+      xTrimoPGLM-10B-MLM beats RITA L
+      and no other pair of those four separates
+    TabArena 16 models
+      GBM (tuned + ensemble) beats EBM (tuned + ensemble)
+      CAT (tuned + ensemble) beats FASTAI (tuned + ensemble)
+      and no other pair of those four separates
+    TabArena 45 variants
+      GBM (tuned + ensemble) beats EBM (default)
+      EBM (tuned + ensemble) beats EBM (tuned)
+      and no other pair of those four separates
+    CASP14
+      G473 beats G013
+      G129 beats G125
+      and no other pair of those four separates
+    LiveBench
+      lcb-math-qwen2-72b-instructv3-merged-50 beats DeepSeek-Coder-V2-Lite-Instruct
+      Meta-Llama-3.1-70B-Instruct-Turbo beats Meta-Llama-3.1-8B-Instruct-Turbo
+      and no other pair of those four separates
+    MathArena 2025
+      Grok 4.1 Fast (Reasoning) beats DeepSeek-R1-0528
+      GPT-5-mini (high) beats GPT-5-nano (high)
+      and no other pair of those four separates
+
+  Why this matters for how a report card reads. Every rank set in this
+  repository is presented as a band - system i sits somewhere between
+  rank a and rank b. A band is an interval, and a relation that is not an
+  interval order cannot be produced by any assignment of intervals to
+  systems. Where the answer below is NO, the picture the reader is being
+  handed is not available, however sound the arithmetic underneath it.

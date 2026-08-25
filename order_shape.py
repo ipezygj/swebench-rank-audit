@@ -87,19 +87,51 @@ def _chain_by_inclusion(sets: list[set]) -> bool:
     return True
 
 
+def has_3plus1(beats: np.ndarray) -> bool:
+    """Is there a 3-chain with an element incomparable to all three?
+
+    For each element d, take the systems incomparable to it and ask whether
+    that induced sub-poset has height 3 or more. O(J^3) rather than the
+    O(J^4) of looking at every 4-subset.
+    """
+    J = beats.shape[0]
+    comp = beats | beats.T | np.eye(J, dtype=bool)
+    for d in range(J):
+        S = np.flatnonzero(~comp[d])
+        if len(S) < 3:
+            continue
+        sub = beats[np.ix_(S, S)]
+        # height by DP over a topological order: fewer predecessors first
+        order = np.argsort(sub.sum(axis=0), kind="stable")
+        h = np.ones(len(S), dtype=int)
+        for a in order:
+            pre = np.flatnonzero(sub[:, a])
+            if len(pre):
+                h[a] = 1 + int(h[pre].max())
+            if h[a] >= 3:
+                return True
+    return False
+
+
 def shape(beats: np.ndarray) -> tuple[bool, bool]:
-    """(is interval order, is semiorder), by set-inclusion characterisation.
+    """(is interval order, is semiorder).
 
     An interval order is exactly a poset whose strict down-sets form a chain
-    under inclusion; a semiorder is one whose down-sets AND up-sets both do.
-    Both are validated against direct 2+2 / 3+1 enumeration in the self-checks
-    rather than taken on trust.
+    under inclusion - that is the 2+2 condition, and it is validated against
+    direct enumeration in the self-checks rather than taken on trust.
+
+    The semiorder arm was first written as "down-sets AND up-sets both form a
+    chain". That is not a second condition: 2+2 is a self-dual pattern, so an
+    interval order's dual is an interval order and its up-sets form a chain
+    automatically. The two arms were the same arm, the cross-check against
+    direct enumeration disagreed 38 times out of 300, and it was right. A
+    semiorder needs the 3+1 pattern tested separately, which is what
+    has_3plus1 does.
     """
     J = beats.shape[0]
     down = [set(np.flatnonzero(beats[:, k]).tolist()) for k in range(J)]
-    up = [set(np.flatnonzero(beats[k, :]).tolist()) for k in range(J)]
     iv = _chain_by_inclusion(down)
-    return iv, iv and _chain_by_inclusion(up)
+    return iv, iv and not has_3plus1(beats)
 
 
 # --- the slow test, for validating the fast one -----------------------------
@@ -126,51 +158,114 @@ def enumerate_patterns(beats: np.ndarray) -> tuple[int, int]:
     return n22, n31
 
 
+def witness_22(beats: np.ndarray):
+    """One concrete induced 2+2, or None. Named systems beat a rate estimate.
+
+    The down-set characterisation says a violation exists but not where. Two
+    elements x, y whose predecessor sets are incomparable give the seed: some a
+    beats x but not y, some b beats y but not x. Every candidate pair is
+    checked directly against the definition - four distinct systems, exactly
+    two relations among them - so what is printed is verified, not derived.
+    """
+    J = beats.shape[0]
+    down = [set(np.flatnonzero(beats[:, k]).tolist()) for k in range(J)]
+    for x in range(J):
+        for y in range(J):
+            if x == y or down[x] <= down[y] or down[y] <= down[x]:
+                continue
+            for a in sorted(down[x] - down[y]):
+                for b in sorted(down[y] - down[x]):
+                    q = [a, x, b, y]
+                    if len(set(q)) != 4:
+                        continue
+                    sub = beats[np.ix_(q, q)]
+                    if int(sub.sum()) == 2 and sub[0, 1] and sub[2, 3]:
+                        return a, x, b, y
+    return None
+
+
+def _poset_interval(rng, J):
+    """An interval order: element i is [l_i, l_i + w_i], and i > j iff l_i > r_j.
+
+    Transitive by construction (i > j > k gives l_i > r_j > r_k) and an interval
+    order by definition, so it is the positive control for the interval test.
+    """
+    l = rng.normal(size=J)
+    w = rng.uniform(0.2, 1.5, J)
+    b = l[:, None] > (l + w)[None, :]
+    return b & ~np.eye(J, dtype=bool)
+
+
+def _poset_semi(rng, J):
+    """A semiorder: one constant width for every element."""
+    theta = rng.normal(size=J)
+    b = (theta[:, None] - theta[None, :]) > 0.6
+    return b & ~np.eye(J, dtype=bool)
+
+
+def _poset_general(rng, J):
+    """An arbitrary poset: a random DAG on a random topological order, closed.
+
+    The first version of this file generated its test cases by thresholding
+    score differences with a random per-PAIR threshold. That relation is not
+    transitive, so it is not a poset at all, and "induced 2+2" is undefined on
+    it - the cross-check reported 13 disagreements out of 300 and was right to.
+    """
+    perm = rng.permutation(J)
+    b = np.zeros((J, J), dtype=bool)
+    dens = float(rng.uniform(0.05, 0.4))
+    for a in range(J):
+        for c in range(a + 1, J):
+            if rng.random() < dens:
+                b[perm[a], perm[c]] = True
+    # transitive closure, Floyd-Warshall on the topological order
+    for m in range(J):
+        b |= np.outer(b[:, m], b[m, :])
+    return b & ~np.eye(J, dtype=bool)
+
+
 def _check_fast_against_slow(rng) -> tuple[bool, str]:
     bad_iv = bad_se = 0
-    for _ in range(300):
+    made = [0, 0, 0]
+    for i in range(300):
         J = int(rng.integers(7, 9))
-        theta = rng.normal(size=J)
-        if rng.random() < 0.5:
-            thr = float(rng.uniform(0.3, 1.2))
-            b = (theta[:, None] - theta[None, :]) > thr
-        else:
-            t = rng.uniform(0.1, 2.0, (J, J))
-            t = np.triu(t) + np.triu(t, 1).T
-            b = (theta[:, None] - theta[None, :]) > t
-        b &= ~np.eye(J, dtype=bool)
+        gen = i % 3
+        made[gen] += 1
+        b = (_poset_interval, _poset_semi, _poset_general)[gen](rng, J)
+        two_step = (b.astype(np.uint8) @ b.astype(np.uint8)) > 0
+        assert bool((two_step <= b).all()), "generator produced a non-transitive relation"
         iv, se = shape(b)
         n22, n31 = enumerate_patterns(b)
         bad_iv += iv != (n22 == 0)
         bad_se += se != (n22 == 0 and n31 == 0)
     return bad_iv == 0 and bad_se == 0, (
-        f"300 random posets of 7-8 elements: interval-order disagreements "
-        f"{bad_iv}, semiorder disagreements {bad_se}")
+        f"300 posets of 7-8 elements ({made[0]} interval, {made[1]} semiorder, "
+        f"{made[2]} general): interval disagreements {bad_iv}, "
+        f"semiorder disagreements {bad_se}")
 
 
 def _check_constant_threshold(rng) -> tuple[bool, str]:
     bad = 0
     for _ in range(200):
-        J = int(rng.integers(10, 25))
-        theta = rng.normal(size=J)
-        b = (theta[:, None] - theta[None, :]) > 0.6
-        if not shape(b)[1]:
+        if not shape(_poset_semi(rng, int(rng.integers(10, 25))))[1]:
             bad += 1
     return bad == 0, f"200 constant-threshold posets, not recognised as semiorders: {bad}"
+
+
+def _check_interval_recognised(rng) -> tuple[bool, str]:
+    bad = 0
+    for _ in range(200):
+        if not shape(_poset_interval(rng, int(rng.integers(10, 25))))[0]:
+            bad += 1
+    return bad == 0, f"200 interval orders, not recognised as interval orders: {bad}"
 
 
 def _check_can_fire(rng) -> tuple[bool, str]:
     fired = 0
     for _ in range(200):
-        J = int(rng.integers(10, 25))
-        theta = rng.normal(size=J)
-        t = rng.uniform(0.05, 3.0, (J, J))
-        t = np.triu(t) + np.triu(t, 1).T
-        b = (theta[:, None] - theta[None, :]) > t
-        b &= ~np.eye(J, dtype=bool)
-        if not shape(b)[0]:
+        if not shape(_poset_general(rng, int(rng.integers(10, 25))))[0]:
             fired += 1
-    return fired > 0, f"200 varying-threshold posets, {fired} came back not an interval order"
+    return fired > 0, f"200 arbitrary posets, {fired} came back not an interval order"
 
 
 def main() -> int:
@@ -181,8 +276,10 @@ def main() -> int:
     print(f"  [{'ok  ' if ok1 else 'FAIL'}] {m1}")
     ok2, m2 = _check_constant_threshold(np.random.default_rng(SEED + 2))
     print(f"  [{'ok  ' if ok2 else 'FAIL'}] {m2}")
-    ok3, m3 = _check_can_fire(np.random.default_rng(SEED + 3))
+    ok3, m3 = _check_interval_recognised(np.random.default_rng(SEED + 3))
     print(f"  [{'ok  ' if ok3 else 'FAIL'}] {m3}")
+    ok5, m5 = _check_can_fire(np.random.default_rng(SEED + 4))
+    print(f"  [{'ok  ' if ok5 else 'FAIL'}] {m5}")
 
     rows = []
     for name, path in MATRICES.items():
@@ -198,14 +295,18 @@ def main() -> int:
         sig = sig[np.isfinite(sig) & (sig > 0)]
         spread = float((np.percentile(sig, 75) - np.percentile(sig, 25))
                        / np.median(sig))
+        labels = list(pd.read_csv(path, index_col=0).dropna(axis=0).index)
+        w = None if iv else witness_22(b)
         rows.append({"name": name, "J": J, "n": n, "iv": iv, "se": se,
-                     "spread": spread, "edges": int(b.sum())})
+                     "spread": spread, "edges": int(b.sum()),
+                     "witness": None if w is None else
+                     (labels[w[0]], labels[w[1]], labels[w[2]], labels[w[3]])})
         print(f"  {name:<22} interval order {str(iv):<5} semiorder {se}")
 
     ok4 = len(rows) >= 8
     print(f"  [{'ok  ' if ok4 else 'FAIL'}] {len(rows)} boards measured (need >= 8)")
 
-    if not (ok1 and ok2 and ok3 and ok4):
+    if not (ok1 and ok2 and ok3 and ok4 and ok5):
         print(chr(10) + "A CHECK FAILED - no table is printed.")
         return 1
 
@@ -258,8 +359,25 @@ def main() -> int:
       f"pre-registered HELM classic: "
       f"{'HIT' if worst['name'] == 'HELM classic' else 'MISS'}")
     p("")
-    p("  The 2+2 rate is estimated from 200 000 random 4-subsets per board, not")
-    p("  enumerated: C(181,4) is 43 million and the estimate is what is needed.")
+    p("  The 2+2 rate is estimated from 200 000 random 4-subsets per board, so")
+    p("  its floor is 5e-6 and a printed 0.00000 means BELOW that floor, not")
+    p("  zero. SWE-bench Verified shows 0.00000 and is still not an interval")
+    p("  order: the exact down-set test finds violations that 200 000 draws")
+    p("  miss. A rate estimate cannot establish absence, which is why the")
+    p("  verdict column comes from the exact test and the witnesses below come")
+    p("  from a direct search.")
+    p("")
+    p("  ONE VERIFIED INSTANCE PER BOARD. Each is four systems in which a beats")
+    p("  b, c beats d, and no other pair among the four is separable. No")
+    p("  assignment of intervals to those four systems reproduces that.")
+    for r0 in rows:
+        w = r0["witness"]
+        if not w:
+            continue
+        p(f"    {r0['name']}")
+        p(f"      {str(w[0])[:44]} beats {str(w[1])[:44]}")
+        p(f"      {str(w[2])[:44]} beats {str(w[3])[:44]}")
+        p(f"      and no other pair of those four separates")
     p("")
     p("  Why this matters for how a report card reads. Every rank set in this")
     p("  repository is presented as a band - system i sits somewhere between")
