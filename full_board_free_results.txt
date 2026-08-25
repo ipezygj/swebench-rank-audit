@@ -1,0 +1,61 @@
+WHAT A BAND TABLE ALREADY CARRIES, ON THE WHOLE BOARD
+================================================================================================
+  An edge is FREE when worst_i <= best_j: the bands already force it, so
+  printing the verdict removes nothing. The criterion needs no counting,
+  so unlike everything else here it runs at full J.
+
+  board                     J      n   edges    free    FULL     m=8    m=12    m=16    m=20    m=24
+  SWE-bench Verified      134    500    6662    4979     75%    100%    100%     97%     95%     91%
+  SWE-bench Lite           84    300    1967    1021     52%     60%     64%     71%     70%     64%
+  SWE-bench Test           24   2294     257     255     99%    100%    100%     98%     99%     99%
+  MTEB English v2         181     41    9299    4605     50%    100%     62%     48%     54%     42%
+  HELM classic             90     10     527       0      0%      0%      0%      0%      0%      0%
+  ProteinGym DMS           96    217    3137    2054     65%    100%     92%     85%     75%     65%
+  TabArena 16 models       16     51      47      29     62%     81%     72%     62%       -       -
+  TabArena 45 variants     45     51     391     223     57%     94%     85%     74%     80%     74%
+  CASP14                  101     42    2125    1084     51%      0%     73%     48%     64%     62%
+  LiveBench               152    200    6616    3230     49%    100%     86%     69%     71%     65%
+  MathArena 2025           35    183     360     211     59%     67%     48%     68%     66%     67%
+  LMArena categories       35     28     435     355     82%    100%     98%     85%     84%     84%
+
+  P1  full share below the 16-system share on 7 of 11   pre-registered >= 7:  HIT
+  P2  full share below 50 % on 3 of 12          pre-registered >= 6:  MISS
+  P3  monotone falling all the way to full J on 2 of 11  pre-registered >= 6:  MISS
+  P4  HELM classic at full J: 0%
+
+  P1 HIT, P2 AND P3 MISSED, AND THE MISSES BOUND THE OBJECTION. The
+  direction is confirmed: 7 of 11 boards carry a smaller free share at
+  full J than at 16 systems, so sub-poset measurements do flatter the
+  band and the slack figures are lower bounds. But I predicted the full
+  share would fall below half on 6 of 8 boards and it does so on 3 of 12:
+  the full-board shares run 49 % to 82 % on the large boards. A band table
+  still carries roughly half to three quarters of the relation at full
+  size. The bias is real and modest, not real and large.
+
+  P3 missed harder. The share does not fall monotonically on 9 of 11
+  boards - CASP14 runs 0, 73, 48, 64, 62 and then 51 at full J, MathArena
+  67, 48, 68, 66, 67, 59. 'Free share falls as the board grows' is a
+  tendency, not a law, and I stated it as one.
+
+  EXPLORATORY, decided after seeing the table. The free share tracks the
+  shape of the board more than its size: Spearman with J/n is -0.64
+  (p 0.026), with J alone -0.55 (p 0.062), with item count +0.48
+  (p 0.117). The two extremes are the argument. HELM classic has 10 items
+  and 0 % free - nothing about its relation is deducible from its bands.
+  SWE-bench Test has 2294 items and 99 % - its bands are so tight they
+  carry the whole order. Items, not systems, decide how much a band table
+  can say.
+
+  WHAT THIS DOES TO EVERY SLACK FIGURE IN THIS REPOSITORY. The 1.3 to
+  4.8 bits measured at 18 systems were reported as the cost of a band
+  table. They are a LOWER bound on it. Dropping systems narrows every
+  band - a band's width is one plus the number of systems incomparable to
+  it, and dropping systems removes incomparable ones - so edges that cost
+  something on the full board become free in the sub-poset, and the slack
+  they carried disappears from the measurement.
+
+  The objection that produced this file came from outside, from a
+  consultation, and it was right. Nothing in the repository's own checks
+  would have caught it: every self-check verified that the sub-poset was
+  correctly induced, correctly counted and correctly compared, and none
+  asked whether the sub-poset was the right object.
