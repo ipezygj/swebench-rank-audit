@@ -3,7 +3,8 @@
 *What a leaderboard must publish beside its ranking, so that a reader can tell
 evidence from typography. Modelled on the GUM (JCGM 100:2008) for physical
 measurement, the AERA/APA/NCME Standards for tests, and CONSORT for trials —
-none of which have an equivalent for machine-learning benchmarks.*
+none of which has an equivalent for what a machine-learning leaderboard must
+report about its own ordering.*
 
 ## 0. Scope and principle
 
@@ -147,7 +148,9 @@ It does not say whether a benchmark measures anything worth measuring, whether
 its items are correct, whether its grading is sound, or whether its systems
 were trained on its items. It covers exactly one thing: whether the **order**
 the leaderboard prints is supported by the **matrix** it was printed from, and
-by how much. That is the part that has had no standard, and it is the part
+by how much. Benchmark quality standards exist — BetterBench (arXiv:2411.12990)
+assesses 24 benchmarks against 46 best practices — but none of them says what a
+published ordering must report about its own resolution, and that is the part
 that can be checked by anyone with the matrix.
 
 ## Appendix A. Two design findings, measured while testing the standard
@@ -244,3 +247,13 @@ competition mathematics, protein fitness, tabular prediction). Two
 regularities proposed along the way were falsified by pre-registered tests;
 one mechanism hypothesis has passed one discriminating test. None of the
 fields above depends on any of those hypotheses being true.
+
+
+**Correction, 19 September 2026.** The claim that the reference standards this
+one is modelled on have no equivalent for machine-learning benchmarks was too
+broad. BetterBench (Reuel et al., NeurIPS 2024, arXiv:2411.12990) assesses 24
+benchmarks against 46 best practices across a benchmark's lifecycle and publishes
+a minimum-quality checklist, and it reports that most benchmarks do not give
+statistical significance for their results. The narrower claim this document
+actually needs - that no standard specifies what a published *ordering* must
+report about its own resolution - survives, and is what it now says.

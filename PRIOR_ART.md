@@ -17,8 +17,9 @@ listed at the end.
 
 **Retired as novel.** Card, Henderson, Khandelwal, Jia, Mahowald and Jurafsky,
 *With Little Power Comes Great Responsibility* (EMNLP 2020, arXiv:2010.06595),
-does exactly this for NLP: most attempted comparisons to state of the art on
-GLUE tasks are not adequately powered, and a 2000-sentence MT test set has
+does exactly this for NLP: for several tasks in GLUE, small test sets mean most
+attempted comparisons to state of the art will not be adequately powered, and a
+2000-sentence MT test set has
 about 75 % power for 1 BLEU. `detectable_difference.py` is that calculation
 applied to leaderboards rather than single experiments.
 
@@ -46,8 +47,9 @@ computes log2 of that same quantity over the established partial order. The
 ### 4. Paired comparison, correlated errors, and the paired standard error
 
 **Not novel.** *Adding Error Bars to Evals* (arXiv:2411.00640) gives the paired
-SE with the correlation term and makes the point that eval scores are
-positively correlated across models so pairing reduces variance. *Accounting
+SE with the correlation term and makes the point that eval question scores are
+likely to be positively correlated across models, so pairing buys a reduction in
+estimator variance. *Accounting
 for Variance in Machine Learning Benchmarks* (arXiv:2103.03098) covers the
 variance decomposition.
 
@@ -60,12 +62,13 @@ not the same as it not existing.
 
 ### 5. Item response theory for benchmarks
 
-**Heavily occupied.** *Lost in Benchmarks? Rethinking LLM Benchmarking with
-Item Response Theory* (arXiv:2505.15055) runs 11 benchmarks and 41 871 items.
+**Heavily occupied.** *Lost in Benchmarks? Rethinking Large Language Model
+Benchmarking with Item Response Theory* (arXiv:2505.15055) runs 11 benchmarks and 41 871 items.
 *Can We Trust Item Response Theory for AI Evaluation?* (arXiv:2607.15190)
 raises precisely the estimation problem this repo hit in iterations 89 and 90:
-benchmark data has few models and many items, capability distributions that are
-skewed or clustered, and scalable estimators that produce unreliable item-level
+benchmark data has few models and many items, capability distributions that *may
+be* skewed, clustered or multimodal, and scalable estimators that produce
+unreliable item-level
 and ranking inferences on small or non-normal model sets. *Adaptive Testing for
 LLM Evaluation* (arXiv:2511.04689) covers the adaptive-testing direction.
 `irt_scoring.py` and the Rasch null in `top_redundancy.py` sit inside this.
@@ -83,10 +86,15 @@ Perturbation Framework for Analyzing Leaderboard Stability and Manipulation*
 ### 7. The harness matters as much as the model
 
 **Occupied, with better data.** *Stop Comparing LLM Agents Without Disclosing
-the Harness* (arXiv:2605.23950) and *The Scaffold Effect in Coding Agents*
-(arXiv:2607.22585) report cross-scaffold gaps of 34 points for Claude Sonnet
-4.5 and 48 for o4-mini on the Holistic Agent Leaderboard - larger than the
-cross-model spread under either scaffold. `model_or_harness.py` measures a
+the Harness* (arXiv:2605.23950) reports cross-scaffold gaps under SWE-Agent
+versus HAL Generalist of 34 points for Claude Sonnet 4.5, 34 for GPT-5 Medium and
+nearly 48 for o4-mini - larger than the cross-model spread under either scaffold.
+Those figures are the Holistic Agent Leaderboard's, which that paper cites
+(Kapoor et al., arXiv:2510.11977); this entry previously presented them as its
+own and also credited them to *The Scaffold Effect in Coding Agents*
+(arXiv:2607.22585), which contains none of them - it measures up to a 40x
+difference in tokens per solved task across three harnesses, with paired
+within-model pass-rate differences of 0 to 8 points. `model_or_harness.py` measures a
 within/between ratio of 0.67 on SWE-bench Verified, which is the same claim
 with weaker numbers.
 
@@ -94,8 +102,9 @@ with weaker numbers.
 
 **Occupied.** *When AI Benchmarks Plateau: A Systematic Study of Benchmark
 Saturation* (arXiv:2602.16763) defines an uncertainty-aware saturation index
-from leaderboard data and makes the point that discriminative power is lost
-when the top models sit within a couple of points.
+from leaderboard data and makes the point that discriminative power is lost when
+the top models are statistically similar, which it defines as a gap no larger
+than z times its standard error rather than as a fixed number of points.
 
 ## What reading the prior art cost, immediately
 
@@ -154,9 +163,11 @@ Stated as narrowly as the evidence allows.
    Both nearest papers were read in full rather than skimmed, and neither
    contains it. The saturation index (arXiv:2602.16763) is
    `S = exp(-R^2)` with `R = (s1 - sk)/SE`, needs an observed leaderboard, and
-   uses an unpaired binomial SE with an ad-hoc effective size `n_eff = n^0.5`
-   - an exponent standing in for exactly the pair correlation `pair_sharpness.py`
-   measures. The rank-interval paper (arXiv:2606.08679) computes intervals from
+   uses an unpaired binomial SE with an effective size `n_eff = n^alpha`, default
+   `alpha = 0.5`. Their stated reason is to keep the saturation calculation from
+   depending too strongly on test-set size, not to stand in for pair correlation;
+   an earlier version of this file asserted the latter. It remains true that the
+   quantity `pair_sharpness.py` measures is absent from it. The rank-interval paper (arXiv:2606.08679) computes intervals from
    observed scores, has no closed form for the separable share, no entropy or
    linear-extension count, and its simulation is a full multivariate-normal
    framework rather than a four-parameter reconstruction. Its non-LLM
@@ -210,3 +221,38 @@ model variance; benchmark saturation. Not searched: the psychometrics
 literature on differential item functioning, the sports-ranking literature, and
 the ecology literature on ranking uncertainty, any of which may hold more.
 Absence of a citation below means I did not find it, not that it does not exist.
+
+
+---
+
+## Corrections, 19 September 2026
+
+This file exists to describe other people's work accurately, so it is the worst
+place in the repository to get it wrong. Every claim in it was read against its
+source. Twelve did not survive; seven changed the text here and the rest are
+recorded below.
+
+- **The cross-scaffold numbers were credited to two papers.** They are in
+  arXiv:2605.23950 only, which itself takes them from the Holistic Agent
+  Leaderboard (Kapoor et al., arXiv:2510.11977, not previously cited here).
+  arXiv:2607.22585 contains no HAL, no o4-mini, no Claude Sonnet 4.5 and none of
+  those figures; it reports a token-efficiency result instead. "Nearly 48" also
+  lost its hedge.
+- **Scope and hedges** were dropped from three entries: "several tasks in GLUE"
+  became "GLUE tasks" and "will not be" became "are not"; "likely to be
+  positively correlated" became "are positively correlated"; "may be skewed,
+  clustered, or multimodal" became "are skewed or clustered".
+- **A purpose was attributed that the source assigns otherwise.** The saturation
+  index's `n_eff = n^alpha` is there to limit the calculation's dependence on
+  test-set size, by its authors' own statement, not as a stand-in for pair
+  correlation.
+- **A statistical criterion was rendered as a number of points.** The plateau
+  paper's test is a gap against its standard error.
+- **Two titles** were given with a truncation or an abbreviation not in the
+  original.
+- **Two novelty verdicts have closer neighbours than this file names.** The
+  separable-share quantity is published as "separability with confidence" in
+  arXiv:2406.11939, measured by bootstrap rather than predicted in closed form;
+  and arXiv:2508.13144 defines a signal-to-noise ratio for benchmarks that is the
+  nearest thing in the literature to law 1. Neither falsifies the closed-form
+  claim, and both are now part of the neighbourhood this file is supposed to map.

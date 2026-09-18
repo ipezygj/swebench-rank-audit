@@ -1,0 +1,35 @@
+{
+  "seed": 20260918,
+  "splits": [
+    {
+      "split": "verified",
+      "systems": 134,
+      "items": 500,
+      "top_system": "20251205_sonar-foundation-agent_claude-opus-4-5",
+      "top_rate_pct": 79.2,
+      "bootstrap_B": 2000,
+      "top1_retained_share": 0.383,
+      "sole_leader_share": 0.3095
+    },
+    {
+      "split": "lite",
+      "systems": 84,
+      "items": 300,
+      "top_system": "20250625_ExpeRepair-v1_claude-4-sonnet-20250514",
+      "top_rate_pct": 60.3333,
+      "bootstrap_B": 2000,
+      "top1_retained_share": 0.5365,
+      "sole_leader_share": 0.4565
+    },
+    {
+      "split": "test",
+      "systems": 24,
+      "items": 2294,
+      "top_system": "20251219_sonar-foundation-agent_claude-opus-4-5",
+      "top_rate_pct": 52.6155,
+      "bootstrap_B": 2000,
+      "top1_retained_share": 1.0,
+      "sole_leader_share": 1.0
+    }
+  ]
+}
