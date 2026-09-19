@@ -148,7 +148,7 @@ code{font-family:var(--mono);font-size:.85em}
 <h2>Mitä benchmarkin omistaja voi tehdä</h2>
 <div class="wrap"><table>
 <tr><th>Kysymys</th><th>Vastaus mittauksesta</th></tr>
-<tr><td>Kannattaako pisteyttää hienojakoisesti?</td><td>Kyllä, ja paljon. Binarisointi (ylitti tehtävän mediaanin vai ei) nostaa mahdollisten ykkösten määrän MTEB:llä 12→66 ja CASP14:llä 1→24; <b>CASP14:n kiistaton kärki katoaa, t 9,89 → 1,78</b>. SWE-benchin binäärisyys on sen oma pakko ja selittää osan sen ratkeamattomuudesta.</td></tr>
+<tr><td>Kannattaako pisteyttää hienojakoisesti?</td><td>Kyllä, ja paljon. Binarisointi (ylitti tehtävän mediaanin vai ei) nostaa mahdollisten ykkösten määrän MTEB:llä 21→74 ja CASP14:llä 1→42 (keskiarvojaolla 93 ja 65) [korjattu 19.9.2026, oli 12→66 ja 1→24 — lähde granularity_results.txt]; <b>CASP14:n kiistaton kärki katoaa, t 9,89 → 1,78</b>. SWE-benchin binäärisyys on sen oma pakko ja selittää osan sen ratkeamattomuudesta.</td></tr>
 <tr><td>Voiko uusi malli ajaa vain osan tehtävistä?</td><td>Kyllä. Neljäsosalla tehtävistä tulokkaan sijajoukko on 1,13–1,97× täydellisen levyinen (9/9 alle 2×), pienillä tauluilla 1,1–1,3×.</td></tr>
 <tr><td>Voiko tehtäviä karsia?</td><td>90 % vakiintuneista järjestyksistä säilyy 20–67 %:lla tehtävistä, ja säästö kestää ulkopuolisen tarkistuksen 9/9. Mutta karsittu setti on rakennettu nykyisille malleille.</td></tr>
 <tr><td>Auttaako toisen taulun liittäminen?</td><td>Ei. SWE Verified + Lite (+41 % tehtäviä) siirsi mediaanileveyttä 5→5 ja tie@1:tä 2→2.</td></tr>
