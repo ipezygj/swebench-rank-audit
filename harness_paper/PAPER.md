@@ -55,7 +55,7 @@ That the harness matters is therefore established. We do not claim it as new.
   - 46 list none.
 - **Tag normalisation.** Only word order, separators and date format (`claude-4-sonnet-20250514` = `claude-sonnet-4-20250514`); different dated snapshots are never merged.
 - **Groups used.** 10 exact tags have at least two submissions, covering 40 submissions.
-- **Data-quality flags** (added after an independent review; §3):
+- **Data-quality flags** (added after a separate AI-run review pass; §3):
   - two submissions carry a tag naming a model snapshot released *after* the submission date (e.g. a June-2024 SWE-agent run tagged with the October-2024 Claude 3.5 Sonnet);
   - four are retrieval (RAG) baselines, not agents;
   - the tag "Qwen 2.5" covers three submissions on different models.
@@ -84,7 +84,7 @@ That the harness matters is therefore established. We do not claim it as new.
 **Pre-registration.** `PREREG_original.md` (sha256 `30159dfe…`, recorded 2 November 2026 15:53 UTC) states four hypotheses and their thresholds. It was written before any result was computed. The appendices of `PREREG.md` log two deviations:
 
 1. The B inclusion rule, written after the A results existed. It concerns B only.
-2. Written after all results, following an independent review. It covers:
+2. Written after all results, following a separate AI-run review pass. It covers:
    - the data-quality flags;
    - the fact that H2 also uses model tags with a single leaderboard submission (Data A specified groups of ≥ 2);
    - a float-tolerance fix that moved one run into B.
@@ -230,7 +230,7 @@ Public data, a laptop, a few minutes after a one-off ~280 MB download.
 
 ## Acknowledgements and disclosure
 
-The SWE-bench maintainers publish per-instance results; none of these tests is possible without that. An independent review of the draft found errors corrected here (a mislabelled submission, a variance-ratio bug, a parity float artefact); see `PREREG.md`, Deviation 2. This work was carried out with AI assistance for code, analysis and drafting; the author takes responsibility for the content.
+The SWE-bench maintainers publish per-instance results; none of these tests is possible without that. A separate review pass by a second AI agent, briefed only with the code and draft, found errors corrected here (a mislabelled submission, a variance-ratio bug, a parity float artefact); see `PREREG.md`, Deviation 2. This work was carried out with AI assistance for code, analysis and drafting; the author takes responsibility for the content.
 
 ## References
 

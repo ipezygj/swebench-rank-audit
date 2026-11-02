@@ -48,7 +48,7 @@ reports AND its rebuilt score matches the published `resolved` within 0.2 pp. Ex
 `results/b_runs.csv` (`usable` = False) and counted in the summary. Seen at the time of this decision:
 the crash-test output (3 H2 rows, 2 of them from incomplete runs).
 
-## Deviation 2 (2026-11-02, after ALL pre-registered results had been computed; prompted by an independent review)
+## Deviation 2 (2026-11-02, after ALL pre-registered results had been computed; prompted by a separate AI-run review pass, not a human reviewer)
 The recorded sha256 (PREREG.sha256) covers lines 1-42 only, i.e. the text before Deviation 1; that text is
 kept verbatim as `PREREG_original.md`. Deviation 1 was written after the H1/H3 results existed (it concerns B only).
 Added after the results, therefore EXPLORATORY / sensitivity only, never replacing a pre-registered result:
