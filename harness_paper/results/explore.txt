@@ -1,0 +1,18 @@
+B all pairs (fixed harness, different models): 472/703 = 67.1 % separable (Holm); median |diff| 11.8 pp; largest non-separable 9.0 pp
+A within-model pairs (= H1): 68/111 = 61.3 %; median |diff| 8.2 pp
+smallest separable |diff|: A 2.6 pp, B 5.6 pp
+variance decomposition (groups with >= 2 submissions after each filter):
+  exact tag, all (40 subs, 10 groups): between SD 17.90 pp, within SD 6.92 pp, ratio 0.39
+  exact tag, attempts == 1 (13 subs, 4 groups): between SD 16.41 pp, within SD 6.31 pp, ratio 0.38
+  exact tag, flagged rows removed (31 subs, 7 groups): between SD 13.82 pp, within SD 6.22 pp, ratio 0.45
+  exact tag, flagged removed, attempts == 1 (9 subs, 2 groups): between SD 15.80 pp, within SD 6.00 pp, ratio 0.38
+  regex FAMILY (August method), all labelled (59 subs, 13 groups): between SD 18.13 pp, within SD 11.33 pp, ratio 0.62
+  regex FAMILY, restricted to single-model-tag submissions (44 subs, 11 groups): between SD 18.17 pp, within SD 12.09 pp, ratio 0.67
+later reference-harness runs / distinct models scoring below each model's best leaderboard harness:
+  20250514-4-claude-opus       best 73.2 % (attempts 1, n_harnesses 1) runs 25/31, distinct models 22/28; best single-attempt 73.2 % gap 5.6 p 2.6e-03
+  20250514-4-claude-sonnet     best 76.8 % (attempts 2+, n_harnesses 8) runs 30/31, distinct models 27/28; best single-attempt 74.6 % gap 9.8 p 6.8e-10
+  20250807-5-gpt               best 71.8 % (attempts 1, n_harnesses 1) runs 13/23, distinct models 11/21; best single-attempt 71.8 % gap 6.8 p 3.3e-05
+  20251101-4-5-claude-opus     best 79.2 % (attempts 1, n_harnesses 1) runs 13/13, distinct models 12/12; best single-attempt 79.2 % gap 4.8 p 5.4e-04
+  3-gemini-preview-pro         best 77.4 % (attempts 1, n_harnesses 1) runs 15/15, distinct models 14/14; best single-attempt 77.4 % gap 3.2 p 1.4e-02
+  4-5-claude-opus              best 79.2 % (attempts 1, n_harnesses 1) runs 13/13, distinct models 12/12; best single-attempt 79.2 % gap 2.4 p 9.6e-02
+  instruct-k2-kimi             best 53.4 % (attempts 1, n_harnesses 1) runs 2/30, distinct models 2/27; best single-attempt 53.4 % gap 9.6 p 4.7e-05

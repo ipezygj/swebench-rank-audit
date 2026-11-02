@@ -33,3 +33,8 @@ casp/*.tar.gz
 casp/tables/
 laws_paper/anon_mirror/
 laws_paper/anon_mirror.zip
+
+# harness paper: raw upstream data (rebuildable: fetch_bashonly.sh, swe-bench.github.io)
+harness_paper/bashonly/
+harness_paper/leaderboards.json
+harness_paper/__pycache__/

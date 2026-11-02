@@ -1,0 +1,22 @@
+Verified submissions with per-instance results: 135; instance universe 500
+  [ok] identity: McNemar(20251205_sonar-foundation-agent_claude-opus-4-5, itself) p = 1.0
+  [ok] planted 60 flips into 20251205_sonar-foundation-agent_claude-opus-4-5: p = 1.73e-18
+  [ok] parity vs official Verified leaderboard: 133/133 match within 0.2 pp; not on the board: ['20251127_openhands_claude-opus-4-5', '20260901_mini-v2.4.2_gemini-3-5-flash']
+flags: date-impossible tag ['20240612_MASAI_gpt4o', '20240620_sweagent_claude3.5sonnet']; RAG baselines ['20231010_rag_claude2', '20231010_rag_swellama7b', '20240402_rag_claude3opus', '20240402_rag_gpt4']; mixed tag ['20241128_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor_20241128', '20250306_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor', '20250511_sweagent_lm_32b']
+single-model tag: 64; multi-model: 25; no tag: 46
+model groups with >= 2 submissions: 10, covering 40 submissions
+H1 all attempts: 111 within-model pairs in 10 models; separable (Holm 5 %) 68/111 = 61.3 %; raw p<0.05 85; median |diff| 8.2 pp; largest NON-separable diff 6.6 pp; smallest separable 2.6 pp; pairs < 3 pp separable 1/21
+H3 attempts == 1: 24 within-model pairs in 4 models; separable (Holm 5 %) 11/24 = 45.8 %; raw p<0.05 17; median |diff| 4.4 pp; largest NON-separable diff 4.6 pp; smallest separable 5.8 pp; pairs < 3 pp separable 0/7
+H1 sensitivity, flagged rows removed: 93 within-model pairs in 7 models; separable (Holm 5 %) 52/93 = 55.9 %; raw p<0.05 67; median |diff| 7.4 pp; largest NON-separable diff 6.6 pp; smallest separable 5.6 pp; pairs < 3 pp separable 0/20
+H3 sensitivity, flagged rows removed: 22 within-model pairs in 2 models; separable (Holm 5 %) 9/22 = 40.9 %; raw p<0.05 15; median |diff| 4.2 pp; largest NON-separable diff 4.6 pp; smallest separable 5.8 pp; pairs < 3 pp separable 0/7
+                       model  n  best  median  worst  spread_pp
+    20250514-4-claude-sonnet  8 0.768   0.710  0.570       19.8
+  20250219-3-7-claude-sonnet  2 0.664   0.644  0.624        4.0
+  20241022-3-5-claude-sonnet 12 0.634   0.530  0.336       29.8
+30b-a3b-coder-instruct-qwen3  2 0.604   0.563  0.522        8.2
+             deepswe-preview  2 0.588   0.505  0.422       16.6
+                    2-5-qwen  3 0.402   0.328  0.302       10.0
+             20240513-4o-gpt  4 0.388   0.323  0.232       15.6
+             20240806-4o-gpt  3 0.326   0.270  0.240        8.6
+          1106-4-gpt-preview  2 0.224   0.126  0.028       19.6
+      20240229-3-claude-opus  2 0.158   0.114  0.070        8.8
