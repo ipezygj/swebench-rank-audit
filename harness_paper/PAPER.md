@@ -214,7 +214,7 @@ Neighbouring ranks are rarely distinguishable here either, with the harness fami
 
 - **Tags.** Self-reported and not checked against trajectories; two are date-impossible, and the same weights sometimes appear under different strings (Claude Opus 4.5; Kimi K2), so some real pairs go unused.
 - **Not causal.** Harnesses arrive at different times with different budgets; the reference harness changed version. H2 uses each model's best reference run (conservative for the gap).
-- **Coverage.** 17 of 55 bash-only runs are unusable (listed in `results/b_runs.csv`). One benchmark, 500 instances: gaps below about 3 points are rarely resolvable. The public per-instance record ends in early 2026 (latest reference-harness logs: February 2026); newer models, including the Claude 5 family, have no per-instance submissions and could not be tested.
+- **Coverage.** 17 of 55 bash-only runs are unusable (listed in `results/b_runs.csv`). One benchmark, 500 instances: gaps below about 3 points are rarely resolvable. The SWE-bench maintainers' per-instance record ends in early 2026 (reference-harness logs to February 2026). Epoch AI publishes per-sample logs from its own scaffold for newer models up to June 2026, not used here; we found no public per-instance results for the Claude 5 family (checked November 2026).
 
 ## 7. Reproducibility and resource
 
